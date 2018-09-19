@@ -1,5 +1,5 @@
 from django import forms
-from .models import *
+from .models import Aluno
 from django.forms import ModelForm
 
 class CadastroForm(ModelForm):

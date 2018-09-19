@@ -33,7 +33,8 @@ class Cidade(models.Model):
 
 class Bairro(models.Model):
     def __str__(self):
-        return self.nome
+        return '%s - %s' % (self.cidade, self.nome)
+#        return self.nome
 
     cidade = models.ForeignKey(Cidade, on_delete=models.PROTECT)
     nome = models.CharField(max_length=30)
@@ -68,18 +69,29 @@ SEXO = (
     ('M', 'Masculino'),
 )
 
+TURNO = (
+    ('1', 'Manhã'),
+    ('2', 'Tarde'),
+    ('4', 'Noite'),
+)
+
 class Aluno(models.Model):
     def __str__(self):
         return self.nome
 
     nome = models.CharField(max_length=60)
+    email = models.EmailField(max_length=254, blank=True, null=True)
     cpf = models.CharField(unique=True, max_length=11)
     sexo = models.CharField(max_length=1, choices=SEXO)
-    dt_nascimento = models.DateTimeField('Data Nascimento')
+    dt_nascimento = models.DateField('Data Nascimento')
+    celular = models.CharField(max_length=11)
+    fixo_residencia = models.CharField(max_length=10, blank=True, null=True)
+    fixo_trabalho = models.CharField(max_length=10, blank=True, null=True)
     endereco = models.CharField(max_length=120)
     bairro = models.ForeignKey(Bairro, on_delete=models.PROTECT)
     escolaridade = models.ForeignKey(Escolaridade, on_delete=models.PROTECT)
     profissao = models.ForeignKey(Profissao, on_delete=models.PROTECT)
+    disponibilidade = models.CharField(max_length=1, choices=TURNO)
     dt_inclusao = models.DateTimeField(auto_now_add=True)
     ativo = models.BooleanField(default=True)
 

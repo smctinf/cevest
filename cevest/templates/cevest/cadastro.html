@@ -1,5 +1,17 @@
+{% load staticfiles %}
+<!doctype html>
+
+
 <form method="post">
     {% csrf_token %}
-    {{ form }}
+    {{ form.as_p }}
     <input type="submit" class="btn btn-primary" value="Salvar">
+    <h3>Cursos:</h3>
+    {% if lista_curso %}
+        {% for curso in lista_curso %}
+            <input type="checkbox" name="curso{{ curso.id }}" value="True">{{ curso.nome }}<br>
+        {% endfor %}
+    {% else %}
+        <p>Nenhum curso disponível.</p>
+    {% endif %}
 </form>
