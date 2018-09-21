@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from django.shortcuts import render
 from django.http import HttpResponse
 from .forms import CadastroForm
-from .models import Curso
+from .models import Curso, Aluno_Quer_Curso
 
 def teste(request):
     latest_question_list = Curso.objects.order_by('-nome')[:5]
@@ -23,9 +23,15 @@ def cadastro(request):
         'lista_curso': lista_curso,
     }
     if request.method == 'POST':
+        context = {
+            'lista_curso': lista_curso, 'teste' : request.POST
+        }
+        
         form = CadastroForm(request.POST)
  
         if form.is_valid():
+            Aluno_Quer_Curso.curso(1)
+            Aluno_Quer_Curso.save()
             form.save()
 #            chave = CadastroForm.pk
 #            return redirect('')
