@@ -94,7 +94,8 @@ class Aluno(models.Model):
     disponibilidade = models.CharField(max_length=1, choices=TURNO)
     dt_inclusao = models.DateTimeField(auto_now_add=True)
     ativo = models.BooleanField(default=True)
-
+    cursos = models.ManyToManyField(Curso)
+"""
 class Aluno_Quer_Curso(models.Model):
 #    def __str__(self):
 #        return self.nome
@@ -102,3 +103,4 @@ class Aluno_Quer_Curso(models.Model):
     aluno = models.ForeignKey(Aluno, on_delete=models.PROTECT)
     curso = models.ForeignKey(Curso, on_delete=models.PROTECT)
     dt_inclusao = models.DateTimeField(auto_now_add=True)
+"""

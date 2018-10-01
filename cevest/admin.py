@@ -33,6 +33,6 @@ from .models import Aluno
 
 admin.site.register(Aluno)
 
-from .models import Aluno_Quer_Curso
+# from .models import Aluno_Quer_Curso
 
-admin.site.register(Aluno_Quer_Curso)
+# admin.site.register(Aluno_Quer_Curso)
