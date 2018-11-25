@@ -5,17 +5,60 @@ from django.db import models
 
 # Create your models here.
 
+class Escolaridade(models.Model):
+    def __str__(self):
+        return self.descricao
+
+    class Meta:
+        ordering = ('descricao',)
+
+    descricao = models.CharField(max_length=50)
+    dt_inclusao = models.DateTimeField(auto_now_add=True)
+
 class Curso(models.Model):
     def __str__(self):
         return self.nome
 
+    class Meta:
+        ordering = ('nome',)
+
     nome = models.CharField(max_length=60)
+    descricao = models.TextField(max_length=2000)
+    duracao = models.PositiveSmallIntegerField()
+    idade_minima = models.PositiveSmallIntegerField()
+    escolaridade_minima = models.ForeignKey(Escolaridade, on_delete=models.PROTECT)
+    habilidades_manuais = models.BooleanField(default=False)
+    conhecimento_avancado_do_sistema_metrico = models.BooleanField(default=False)
+    dominio_da_costura_em_maquinas_industriais = models.BooleanField(default=False)
+    ter_feito_curso_de_costura_plana = models.BooleanField(default=False)
     dt_inclusao = models.DateTimeField(auto_now_add=True)
     ativo = models.BooleanField(default=True)
+
+class Disciplina(models.Model):
+    def __str__(self):
+        return self.nome
+
+    class Meta:
+        ordering = ('nome',)
+
+    nome = models.CharField(max_length=60)
+    carga_horaria = models.PositiveSmallIntegerField()
+
+class Matriz(models.Model):
+    class Meta:
+        verbose_name_plural = "Matrizes"
+
+    def __int__(self):
+        return self.curso
+
+    curso = models.ForeignKey(Curso, on_delete=models.PROTECT)
+    disciplina = models.ForeignKey(Disciplina, on_delete=models.PROTECT)
+    num_aulas = models.PositiveSmallIntegerField()
 
 class Instrutor(models.Model):
     class Meta:
         verbose_name_plural = "Instrutores"
+        ordering = ('nome',)
 
     def __str__(self):
         return self.nome
@@ -28,6 +71,9 @@ class Cidade(models.Model):
     def __str__(self):
         return self.nome
 
+    class Meta:
+        ordering = ('nome',)
+
     nome = models.CharField(max_length=30)
     dt_inclusao = models.DateTimeField(auto_now_add=True)
 
@@ -36,20 +82,24 @@ class Bairro(models.Model):
         return '%s - %s' % (self.cidade, self.nome)
 #        return self.nome
 
+    class Meta:
+        ordering = ('cidade', 'nome',)
+
     cidade = models.ForeignKey(Cidade, on_delete=models.PROTECT)
     nome = models.CharField(max_length=30)
     dt_inclusao = models.DateTimeField(auto_now_add=True)
 
 class Turno(models.Model):
     def __str__(self):
-        return self.nome
+        return self.descricao
 
-    nome = models.CharField(max_length=30)
+    descricao = models.CharField(max_length=50)
     dt_inclusao = models.DateTimeField(auto_now_add=True)
 
 class Profissao(models.Model):
     class Meta:
         verbose_name_plural = "Profissões"
+        ordering = ('nome',)
 
     def __str__(self):
         return self.nome
@@ -57,32 +107,26 @@ class Profissao(models.Model):
     nome = models.CharField(max_length=50)
     dt_inclusao = models.DateTimeField(auto_now_add=True)
 
-class Escolaridade(models.Model):
-    def __str__(self):
-        return self.descricao
-
-    descricao = models.CharField(max_length=50)
-    dt_inclusao = models.DateTimeField(auto_now_add=True)
-
 SEXO = (
     ('F', 'Feminino'),
     ('M', 'Masculino'),
-)
-
-TURNO = (
-    ('1', 'Manhã'),
-    ('2', 'Tarde'),
-    ('4', 'Noite'),
 )
 
 class Aluno(models.Model):
     def __str__(self):
         return self.nome
 
+    class Meta:
+        ordering = ('nome',)
+
     nome = models.CharField(max_length=60)
     email = models.EmailField(max_length=254, blank=True, null=True)
     cpf = models.CharField(unique=True, max_length=11)
+    nis = models.IntegerField(unique=True, blank=True, null=True)
+    bolsa_familia = models.BooleanField(default=False)
+    quant_filhos = models.PositiveSmallIntegerField(default=0)
     sexo = models.CharField(max_length=1, choices=SEXO)
+    portador_necessidades_especiais = models.BooleanField(default=False)
     dt_nascimento = models.DateField('Data Nascimento')
     celular = models.CharField(max_length=11)
     fixo_residencia = models.CharField(max_length=10, blank=True, null=True)
@@ -91,7 +135,8 @@ class Aluno(models.Model):
     bairro = models.ForeignKey(Bairro, on_delete=models.PROTECT)
     escolaridade = models.ForeignKey(Escolaridade, on_delete=models.PROTECT)
     profissao = models.ForeignKey(Profissao, on_delete=models.PROTECT)
-    disponibilidade = models.CharField(max_length=1, choices=TURNO)
+    desempregado = models.BooleanField(default=False)
+    disponibilidade = models.ManyToManyField(Turno)
     dt_inclusao = models.DateTimeField(auto_now_add=True)
     ativo = models.BooleanField(default=True)
     cursos = models.ManyToManyField(Curso)

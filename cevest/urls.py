@@ -3,8 +3,11 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path('index', views.index, name='index'),
+    path('cursos', views.cursos, name='cursos'),
     path('cad', views.cad, name='cad'),
-    path('cadastro', views.cadastro, name='cadastro'),
+    path('altera/<int:cpf>/<int:dt_nascimento>/', views.altera, name='altera'),
+#    path('cadastro', views.cadastro, name='cadastro'),
     path('teste', views.teste, name='teste'),
 ]
 

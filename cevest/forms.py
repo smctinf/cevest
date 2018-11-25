@@ -20,9 +20,10 @@ class CadastroForm(forms.Form):
 #        fields = '__all__'
 #        exclude = ['campo']
 
-
 #class CadForm(forms.Form):
+
 class CadForm(forms.ModelForm):
+
         """
         SEX_CHOICES = (
                 ('F', 'Feminino',),
@@ -42,12 +43,15 @@ class CadForm(forms.ModelForm):
 #        disponibilidade = forms.CharField(max_length=1, choices=TURNO)
         curso = forms.ModelMultipleChoiceField(queryset=Curso.objects.all(), widget=forms.CheckboxSelectMultiple)
         """
-        dt_nascimento = forms.DateField(label='Dt.Nascimento:', initial="1990-06-21", widget=forms.SelectDateWidget(years=YEARS))
-        class Meta:
-                model = Aluno
-#                fields = '__all__'
-                exclude = ['ativo']
 
+        dt_nascimento = forms.DateField(label='Dt.Nascimento:', initial="1990-06-21", widget=forms.SelectDateWidget(years=YEARS))
+ #       curso = forms.ModelMultipleChoiceField (widget = forms.CheckboxSelectMultiple())
+        class Meta:
+            model = Aluno
+#           fields = '__all__'
+            exclude = ['ativo']
+            widgets = {'disponibilidade': forms.CheckboxSelectMultiple}
+#            filter_horizontal = {'cursos'}
 """
     dt_inclusao = models.DateTimeField(auto_now_add=True)
     ativo = models.BooleanField(default=True)
