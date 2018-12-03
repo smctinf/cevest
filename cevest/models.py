@@ -5,6 +5,18 @@ from django.db import models
 
 # Create your models here.
 
+class Pre_requisito(models.Model):
+    def __str__(self):
+        return self.descricao
+
+    class Meta:
+        verbose_name = "Pré-Requisito"
+#        verbose_name_plural = "Matrizes"
+        ordering = ('descricao',)
+
+    descricao = models.CharField(max_length=100)
+#    atende = models.BooleanField(default=False)
+
 class Escolaridade(models.Model):
     def __str__(self):
         return self.descricao
@@ -27,10 +39,7 @@ class Curso(models.Model):
     duracao = models.PositiveSmallIntegerField()
     idade_minima = models.PositiveSmallIntegerField()
     escolaridade_minima = models.ForeignKey(Escolaridade, on_delete=models.PROTECT)
-    habilidades_manuais = models.BooleanField(default=False)
-    conhecimento_avancado_do_sistema_metrico = models.BooleanField(default=False)
-    dominio_da_costura_em_maquinas_industriais = models.BooleanField(default=False)
-    ter_feito_curso_de_costura_plana = models.BooleanField(default=False)
+    pre_requisito = models.ManyToManyField(Pre_requisito)
     dt_inclusao = models.DateTimeField(auto_now_add=True)
     ativo = models.BooleanField(default=True)
 

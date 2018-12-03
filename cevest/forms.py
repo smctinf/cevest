@@ -4,11 +4,26 @@ from django.forms import ModelForm
 
 YEARS= [x for x in range(1940,2021)]
 
+class CadastroForm(forms.ModelForm):
+    dt_nascimento = forms.DateField(label='Dt.Nascimento:', initial="1990-06-21", widget=forms.SelectDateWidget(years=YEARS))
+    class Meta:
+        model = Aluno
+        exclude = ['ativo']
+        widgets = {'disponibilidade': forms.CheckboxSelectMultiple}
+
+class AlteraForm(forms.Form):
+    cpf = forms.CharField(label='CPF:', max_length=11)
+    dt_nascimento = forms.DateField(label='Dt.Nascimento:', initial="1990-06-21", widget=forms.SelectDateWidget(years=YEARS))
+
+# ///////////////////////////////////////////////////
+
 # SEXO = (
 #     ('F', 'Feminino'),
 #     ('M', 'Masculino'),
 # )
 
+
+"""
 class CadastroForm(forms.Form):
 
    nome = forms.CharField(label='nome', max_length=60)
@@ -19,6 +34,7 @@ class CadastroForm(forms.Form):
 #        fields = ['nome', 'cpf']
 #        fields = '__all__'
 #        exclude = ['campo']
+"""
 
 #class CadForm(forms.Form):
 
@@ -57,3 +73,8 @@ class CadForm(forms.ModelForm):
     ativo = models.BooleanField(default=True)
 """
 
+class Altera_cpf(forms.Form):
+        cpf = forms.CharField(label='CPF:', max_length=11)
+        dt_nascimento = forms.CharField(
+#                widget=forms.DateField
+        )

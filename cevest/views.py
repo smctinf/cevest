@@ -1,28 +1,74 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 
-from .forms import CadastroForm, CadForm
+from .forms import CadastroForm, AlteraForm
 from .models import Curso, Aluno
 
-def teste(request):
-    latest_question_list = Curso.objects.order_by('-nome')[:5]
-    output = '<br>'.join([q.nome for q in latest_question_list])
-    return HttpResponse(output)
-
+# Página index
 def index(request):
-#    lista_curso = Curso.objects.order_by('-nome')[:5]
-#    context = { 'lista_curso': lista_curso }
     return render(request, 'cevest/index.html')
 
+# Página Cursos
+def cursos(request):
+    lista_curso = Curso.objects.order_by('nome')
+    return render(request, 'cevest/cursos.html', { 'lista_curso': lista_curso })
+
+# Página Cadastro
+def cadadastro(request):
+    if request.method == 'POST':
+        form = CadastroForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/cevest/'+form.pk)
+    else:
+        form = CadastroForm()
+    return render(request,"cevest/cadastro.html",{'form':form})
+
+# Teste altera
+def altera(request):
+    if request.method == 'POST':        
+        form = AlteraForm(request.POST)
+        if form.is_valid():
+            aluno = Aluno.objects.get(cpf='96847298715', dt_nascimento='2018-11-06')
+            form = CadastroForm(instance=aluno)
+            return render(request,"cevest/cadastro.html",{'form':form})
+    else:
+        return render(request, 'cevest/altera.html')
+
+
+# /////////////////////////////////
+
+
+def altera_cpf(request):
+    if request.method == 'POST':
+#        form = Altera_cpf(request.POST)
+        aluno = Aluno.objects.get(cpf='96847298715', dt_nascimento='2018-11-06')
+#        aluno = Aluno.objects.get(cpf=form.cpf, dt_nascimento=form.dt_nascimento)
+#        aluno = Aluno.objects.filter(cpf=request.cpf)
+
+#        form = CadForm({'form':aluno})
+        return render(request,"cevest/cadastro.html",{'form':aluno})
+#        return redirect ('altera2', cpf=aluno.pk)
+    else:
+        form = Altera_cpf()
+
+        return render(request,"cevest/altera.html",{'form':form})
+
+ #       return render(request, 'cevest/altera1.html', context)
+
+#        return redirect('cad', cpf=post.cpf, dt_nascimento=post.dt_nascimento)
+#    return render(request, 'cevest/altera1.html')
+
+"""
 def cursos(request):
     lista_curso = Curso.objects.order_by('nome')
 #    context = { 'lista_curso': lista_curso }
     return render(request, 'cevest/cursos.html', { 'lista_curso': lista_curso })
-
-    """
+"""
+"""
     if request.method == 'POST':        
         form = CadForm(request.POST)
         if form.is_valid():
@@ -32,19 +78,10 @@ def cursos(request):
     else:
         form = CadForm()
     return render(request,"cevest/cursos.html",{'form':form})
-    """
+"""
 
-def cad(request):
-    if request.method == 'POST':        
-        form = CadForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect('/cevest')
-#            return redirect('post_detail', pk=post.pk)
-    else:
-        form = CadForm()
-    return render(request,"cevest/cad.html",{'form':form})
 
+"""
 def altera(request, cpf, dt_nascimento):
     aluno = Aluno.objects.get(pk=1)
 #     aluno = get_object_or_404(Aluno, cpf=cpf, dt_nascimento = dt_nascimento)
@@ -60,7 +97,7 @@ def altera(request, cpf, dt_nascimento):
     else:
         form = CadForm(instance=aluno)
     return render(request, 'cevest/cad.html', {'form': form})
-
+"""
 """
 def altera(request):
     if request.method == 'POST':        
@@ -107,4 +144,12 @@ def cadastro(request):
 # def cadastro_new(request):
 #     form = CadastroForm()
 #     return render(request, 'cevest/cadastro_edit.html', {'form': form})
+"""
+
+"""
+# Exemplo teste
+def teste(request):
+    latest_question_list = Curso.objects.order_by('-nome')[:5]
+    output = '<br>'.join([q.nome for q in latest_question_list])
+    return HttpResponse(output)
 """

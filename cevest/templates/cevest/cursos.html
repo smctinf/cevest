@@ -1,50 +1,32 @@
-{% load staticfiles %}
-<!doctype html>
-<html lang="en">
-    <head>
-        <!-- Required meta tags -->
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+{% extends "cevest/base.html" %}
 
-        <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+{% block content %}
 
-        <title>CEVEST</title>
-    </head>
-    <body>
-        <a href="https://novafriburgo.rj.gov.br"><img src="http://novafriburgo.rj.gov.br/nova/wp-content/themes/pmnf-vr2/layout/PMNF---logo-nova-300-dpi.png"  alt="Logo Pmnf" title="Logo Pmnf"  style="margin:28px 0 0 23px;position: relative;left: 10px;"/></a>
-        <center>
-            <a href="index" class="btn btn-primary" role="button">Início</a>
-            <a href="cursos" class="btn btn-primary" role="button">Cursos</a>
-            <a href="cad" class="btn btn-primary" role="button">Cadastro Cevest</a>
-            <a href="altera" class="btn btn-primary" role="button">Alteração de Cadastro</a>
-            <a href="lista" class="btn btn-primary" role="button">Classificação dos Candidatos</a>
-        </center>
+<div class="container">
+    <!-- Conteúdo aqui -->
 
-        <div class="accordion" id="accordionExample">
+    <div class="accordion" id="accordionExample">
 
         {% for l in lista_curso %}
             <div class="card">
                 <div class="card-header" id="h{{ l.id }}">
-                <h5 class="mb-0">
-                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#c{{ l.id }}" aria-expanded="false" aria-controls="c{{ l.id }}">
-                            {{ l.nome }}
-                    </button>
-                </h5>
+                    <h5 class="mb-0">
+                        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#c{{ l.id }}" aria-expanded="false" aria-controls="c{{ l.id }}">
+                                {{ l.nome }}
+                        </button>
+                    </h5>
                 </div>
             
                 <div id="c{{ l.id }}" class="collapse" aria-labelledby="h{{ l.id }}" data-parent="#accordionExample">
-                <div class="card-body">
+                    <div class="card-body">
                         {{ l.descricao|linebreaksbr }}
-                </div>
+                    </div>
                 </div>
             </div>
         {% endfor %}
     </div>
+</div>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  
-</body>
-</html>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+
+{% endblock %}

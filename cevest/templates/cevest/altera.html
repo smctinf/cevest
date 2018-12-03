@@ -1,56 +1,20 @@
-{% load staticfiles %}
-<!doctype html>
-<html lang="en">
+{% extends "cevest/base.html" %}
 
-    <head>
-        <!-- Required meta tags -->
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
-        <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    
-        <title>CEVEST</title>
-    </head>
+{% block content %}
 
-    <body>
-        <a href="https://novafriburgo.rj.gov.br"><img src="http://novafriburgo.rj.gov.br/nova/wp-content/themes/pmnf-vr2/layout/PMNF---logo-nova-300-dpi.png"  alt="Logo Pmnf" title="Logo Pmnf"  style="margin:28px 0 0 23px;position: relative;left: 10px;"/></a>
-        <center>
-            <a href="index" class="btn btn-primary" role="button">Início</a>
-            <a href="cursos" class="btn btn-primary" role="button">Cursos</a>
-            <a href="cad" class="btn btn-primary" role="button">Cadastro Cevest</a>
-            <a href="altera" class="btn btn-primary" role="button">Alteração de Cadastro</a>
-            <a href="lista" class="btn btn-primary" role="button">Classificação dos Candidatos</a>
-        </center>
+<br>
+<h2 align="center">Cadastro</h2>
 
-        <script>
-            function verifica() {
-                var x;
-                var r=confirm("Deseja mesmo descartar?");
-                if (r==true) {
-        //            x="você pressionou OK!";
-                    javascript:history.back(1)
-                } else {
-        //            x="Você pressionou Cancelar!";
-                }
-        //        document.getElementById("demo").innerHTML=x;
-            }
-        </script>
+<form name="form" method="POST">
+        {% csrf_token %}
 
-        <br>
-        <h2 align="center">Cadastro</h2>
+    <table align=center>
+        <tr><th><label for="cpf">CPF:</label></th><td><input type="text" name="cpf" maxlength="11" required id="cpf" /></td></tr>
+        <tr><th><label for="dt_nascimento">Data Nascimento:</label></th><td><input type="text" name="dt_nascimento" maxlength="10" required id="dt_nascimento" /></td></tr>
+    </table>
+    <center>
+        <input type="submit" class="btn btn-primary" value="Pesquisar">
+    </center>
+</form>
 
-        <form method="post" name="form">
-            <table align=center>
-                {% csrf_token %}
-                {{ form.as_table }}
-            </table>
-            <center>
-                <input type="submit" class="btn btn-primary" value="Salvar">
-                <input type="button" class="btn btn-primary" value="Descartar" onclick="verifica()">
-            </center>
-        </form>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-
-    </body>
-</html>
+{% endblock %}
