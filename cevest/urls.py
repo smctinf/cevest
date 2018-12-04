@@ -6,7 +6,8 @@ urlpatterns = [
     path('index', views.index, name='index'),
     path('cursos', views.cursos, name='cursos'),
     path('cadastro', views.cadadastro, name='cadastro'),
-    path('altera', views.altera, name='altera'),
+    path('altera/<int:pk>', views.altera, name='altera'),
+    path('detalhe', views.detalhe, name='detalhe'),
  
  # Teste
     path('altera_cpf', views.altera_cpf, name='altera_cpf'),

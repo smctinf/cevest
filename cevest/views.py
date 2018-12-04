@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 
-from .forms import CadastroForm, AlteraForm
+from .forms import CadastroForm, AlteraForm, DetalheForm
 from .models import Curso, Aluno
 
 # Página index
@@ -27,16 +27,34 @@ def cadadastro(request):
         form = CadastroForm()
     return render(request,"cevest/cadastro.html",{'form':form})
 
-# Teste altera
-def altera(request):
-    if request.method == 'POST':        
-        form = AlteraForm(request.POST)
+# Teste detalhe
+def detalhe(request):
+    if request.method == 'POST':
+        form = DetalheForm(request.POST)
         if form.is_valid():
-            aluno = Aluno.objects.get(cpf='96847298715', dt_nascimento='2018-11-06')
-            form = CadastroForm(instance=aluno)
-            return render(request,"cevest/cadastro.html",{'form':form})
+            cpf = form.cleaned_data['cpf']
+            dt_nascimento = form.cleaned_data['dt_nascimento']
+            aluno = Aluno.objects.get(cpf=cpf, dt_nascimento=dt_nascimento)
+            pk = aluno.pk
+#            form = AlteraForm()
+#            return render(request,"cevest/altera.html", aluno)
+            return redirect ('altera/'+str(pk))
     else:
-        return render(request, 'cevest/altera.html')
+        return render(request, 'cevest/detalhe.html')
+
+def altera(request, pk):
+    aluno = get_object_or_404(Aluno, pk=pk)
+    if request.method == 'POST':
+        form = CadastroForm(request.POST, instance=aluno)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/cevest/')
+    else:
+#        aluno = Aluno.objects.get(cpf=cpf, dt_nascimento=dt_nascimento)
+        form = CadastroForm(instance=aluno)
+#        form = CadastroForm(request.POST or None, instance=aluno)
+
+    return render(request,"cevest/cadastro.html",{'form':form})
 
 
 # /////////////////////////////////

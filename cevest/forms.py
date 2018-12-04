@@ -15,6 +15,10 @@ class AlteraForm(forms.Form):
     cpf = forms.CharField(label='CPF:', max_length=11)
     dt_nascimento = forms.DateField(label='Dt.Nascimento:', initial="1990-06-21", widget=forms.SelectDateWidget(years=YEARS))
 
+class DetalheForm(forms.Form):
+    cpf = forms.CharField(label='CPF:', max_length=11)
+    dt_nascimento = forms.DateField(label='Dt.Nascimento:', initial="1990-06-21", widget=forms.SelectDateWidget(years=YEARS))
+
 # ///////////////////////////////////////////////////
 
 # SEXO = (

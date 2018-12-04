@@ -2,19 +2,35 @@
 
 {% block content %}
 
-<br>
-<h2 align="center">Cadastro</h2>
+    <br>
+    <h2 align="center">Cadastro</h2>
 
-<form name="form" method="POST">
-        {% csrf_token %}
+    <form method="post" name="form">
+        <table align=center>
+            {% csrf_token %}
 
-    <table align=center>
-        <tr><th><label for="cpf">CPF:</label></th><td><input type="text" name="cpf" maxlength="11" required id="cpf" /></td></tr>
-        <tr><th><label for="dt_nascimento">Data Nascimento:</label></th><td><input type="text" name="dt_nascimento" maxlength="10" required id="dt_nascimento" /></td></tr>
-    </table>
-    <center>
-        <input type="submit" class="btn btn-primary" value="Pesquisar">
-    </center>
-</form>
+ {% for book in object_list %}
+    <tr>
+    <td>{{ book.name }}</td>
+    <td>{{ book.pages }}</td>
+    <td><a href="{% url "book_view" book.id %}">view</a></td>
+    <td><a href="{% url "book_edit" book.id %}">edit</a></td>
+    <td><a href="{% url "book_delete" book.id %}">delete</a></td>
+    </tr>
+    {% endfor %}
+
+
+
+
+
+
+
+            {{ form.as_table }}
+        </table>
+        <center>
+            <input type="submit" class="btn btn-primary" value="Salvar">
+            <input type="button" class="btn btn-primary" value="Descartar" onclick="verifica()">
+        </center>
+    </form>
 
 {% endblock %}
