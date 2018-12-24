@@ -3,6 +3,8 @@ from __future__ import unicode_literals
 
 from django.db import models
 
+from .functions import validate_CPF
+
 # Create your models here.
 
 class Pre_requisito(models.Model):
@@ -51,7 +53,8 @@ class Curso(models.Model):
     duracao = models.PositiveSmallIntegerField()
     idade_minima = models.PositiveSmallIntegerField()
     escolaridade_minima = models.ForeignKey(Escolaridade, on_delete=models.PROTECT)
-    pre_requisito = models.ManyToManyField(Pre_requisito)
+    pre_requisito = models.ManyToManyField(Pre_requisito, blank=True)
+    quant_alunos = models.PositiveSmallIntegerField(default=0)
     dt_inclusao = models.DateTimeField(auto_now_add=True)
     ativo = models.BooleanField(default=True)
 
@@ -143,7 +146,9 @@ class Aluno(models.Model):
 
     nome = models.CharField(max_length=60)
     email = models.EmailField(max_length=254, blank=True, null=True)
-    cpf = models.CharField(unique=True, max_length=11)
+#    cpf = models.CharField(unique=True, max_length=11)
+    cpf = models.CharField(unique=True, max_length=11, validators=[validate_CPF])
+
     nis = models.IntegerField(unique=True, blank=True, null=True)
     bolsa_familia = models.BooleanField(default=False)
     quant_filhos = models.PositiveSmallIntegerField(default=0)

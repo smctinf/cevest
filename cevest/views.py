@@ -2,10 +2,10 @@
 from __future__ import unicode_literals
 
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 
-from .forms import CadastroForm, AlteraForm, DetalheForm
-from .models import Curso, Aluno
+from .forms import CadastroForm, AlteraForm, DetalheForm, CadForm
+from .models import Curso, Aluno, Cidade, Bairro, Profissao, Escolaridade
 
 # Página index
 def index(request):
@@ -16,16 +16,29 @@ def cursos(request):
     lista_curso = Curso.objects.order_by('nome')
     return render(request, 'cevest/cursos.html', { 'lista_curso': lista_curso })
 
+# Página Detalhes de um Curso
+def curso(request, pk):
+    curso = get_object_or_404(Curso, pk=pk)
+
+    return render(request,"cevest/curso.html", {'curso':curso})
+
 # Página Cadastro
 def cadadastro(request):
+    cidades = Cidade.objects.order_by('nome')
+    profissoes = Profissao.objects.order_by('nome')
+    escolaridades = Escolaridade.objects.order_by('descricao')
+    lista_curso = Curso.objects.order_by('nome')
+
     if request.method == 'POST':
         form = CadastroForm(request.POST)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect('/cevest/'+form.pk)
     else:
-        form = CadastroForm()
-    return render(request,"cevest/cadastro.html",{'form':form})
+#        form = CadastroForm()
+        form = CadForm()
+    return render(request,"cevest/cadastro.html",{'form':form, 'cidades': cidades, 'lista_curso': lista_curso, 'escolaridades': escolaridades, 'profissoes': profissoes })
+#    return render(request,"cevest/cadastro.html",{'form':form, 'cidades': cidades })
 
 # Teste detalhe
 def detalhe(request):
@@ -56,6 +69,20 @@ def altera(request, pk):
 
     return render(request,"cevest/cadastro.html",{'form':form})
 
+# /// Teste ajax
+
+import json
+def get_bairro(request, cidade_id):
+    if request.is_ajax():
+        bairros = Bairro.objects.filter(cidade_id=cidade_id).order_by('nome')
+        bairros = [ bairro_serializer(bairro) for bairro in bairros ]
+
+        return HttpResponse(json.dumps(bairros), content_type='application/json')
+    else:
+        raise Http404
+
+def bairro_serializer(bairro):
+    return {'id': bairro.pk, 'nome': bairro.nome}
 
 # /////////////////////////////////
 

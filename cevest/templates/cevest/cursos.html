@@ -20,6 +20,15 @@
                 <div id="c{{ l.id }}" class="collapse" aria-labelledby="h{{ l.id }}" data-parent="#accordionExample">
                     <div class="card-body">
                         {{ l.descricao|linebreaksbr }}
+
+                        <p>Duração: {{ l.duracao }} Horas</p>
+                        <p>Idade mínima: {{ l.idade_minima }} anos</p>
+                        <p>Escolaridade mínima: {{ l.escolaridade_minima }}</p>
+
+                        {% if l.pre_requisito.exist %}
+                            <p>Pré-requisito: {{ l.pre_requisito }}</p>
+                        {% endif %}
+
                     </div>
                 </div>
             </div>
