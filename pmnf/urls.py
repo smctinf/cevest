@@ -22,5 +22,6 @@ admin.site.site_title = "CEVEST"
 
 urlpatterns = [
     path('cevest/', include('cevest.urls')),
+    path('accounts/', include('accounts.urls')),
     path('admin/', admin.site.urls),
 ]

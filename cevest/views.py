@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 
 from .forms import CadastroForm, AlteraForm, DetalheForm, CadForm
-from .models import Curso, Aluno, Cidade, Bairro, Profissao, Escolaridade
+from .models import Curso, Aluno, Cidade, Bairro, Profissao, Escolaridade, Matriz
 
 # Página index
 def index(request):
@@ -54,6 +54,13 @@ def detalhe(request):
             return redirect ('altera/'+str(pk))
     else:
         return render(request, 'cevest/detalhe.html')
+
+# Página Matriz Curricular de um Curso
+def matriz(request, idcurso):
+    disciplinas = Matriz.objects.filter(curso=idcurso)
+    curso = Curso.objects.get(pk=idcurso)
+
+    return render(request,"cevest/matriz.html", {'disciplinas':disciplinas, 'curso': curso})
 
 def altera(request, pk):
     aluno = get_object_or_404(Aluno, pk=pk)

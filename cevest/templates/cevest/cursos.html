@@ -2,6 +2,21 @@
 
 {% block content %}
 
+  <script language="JavaScript">
+    function abrir(URL) {
+
+      var width = 450;
+      var height = 400;
+
+      var left = 99;
+      var top = 99;
+
+      window.open(URL,'janela', 'width='+width+', height='+height+', top='+top+', left='+left+', scrollbars=yes, status=no, toolbar=no, location=no, directories=no, menubar=no, resizable=no, fullscreen=no');
+
+    }
+  </script>
+
+
 <div class="container">
     <!-- Conteúdo aqui -->
 
@@ -29,7 +44,11 @@
                             <p>Pré-requisito: {{ l.pre_requisito }}</p>
                         {% endif %}
 
+                        <div class=text-right>
+                            <a href="javascript:abrir('http://127.0.0.1:8000/cevest/matriz/{{ l.pk }}');" class="btn btn-outline-primary" role="button" aria-pressed="true">Estrutura curricular</a>
+                        </div>
                     </div>
+
                 </div>
             </div>
         {% endfor %}
