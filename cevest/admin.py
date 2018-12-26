@@ -8,6 +8,9 @@ from django.contrib import admin
 from .models import Pre_requisito
 admin.site.register(Pre_requisito)
 
+from .models import Curriculo
+admin.site.register(Curriculo)
+
 from .models import Curso
 admin.site.register(Curso)
 
@@ -15,7 +18,12 @@ from .models import Disciplina
 admin.site.register(Disciplina)
 
 from .models import Matriz
-admin.site.register(Matriz)
+class MatrizAdmin(admin.ModelAdmin):
+    # ...
+    list_display = ('curriculo', 'curso', 'disciplina')
+    list_filter = ['curso']
+
+admin.site.register(Matriz, MatrizAdmin)
 
 from .models import Instrutor
 admin.site.register(Instrutor)
@@ -48,3 +56,15 @@ class BairroAdmin(admin.ModelAdmin):
     list_filter = ['cidade']
 
 admin.site.register(Bairro, BairroAdmin)
+
+from .models import Turma_Prevista
+admin.site.register(Turma_Prevista)
+
+from .models import Turma
+admin.site.register(Turma)
+
+from .models import Horario
+admin.site.register(Horario)
+
+from .models import Aluno_Turma
+admin.site.register(Aluno_Turma)

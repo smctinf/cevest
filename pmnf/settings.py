@@ -34,6 +34,7 @@ ALLOWED_HOSTS = ["cevest.jlb.net.br", "127.0.0.1"]
 
 INSTALLED_APPS = [
     'cevest.apps.CevestConfig',
+#    'accounts.apps.AccountConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

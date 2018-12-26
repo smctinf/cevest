@@ -1,0 +1,77 @@
+{% extends "cevest/base.html" %}
+
+{% load staticfiles %}
+
+{% block content %}
+
+    <script>
+        function verifica() {
+            var x;
+            var r=confirm("Deseja mesmo descartar?");
+            if (r==true) {
+                javascript:history.back(1)
+            }
+    //        document.getElementById("demo").innerHTML=x;
+        }
+    </script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <script type="text/javascript" src="{% static '../static/cevest/js/ajax.js' %}"></script>
+
+    <br>
+    <h2 align="center">Cadastro</h2>
+
+    <form method="post" name="form2">
+        {% csrf_token %}
+        <fieldset>
+            {{ form.nome.label_tag}}
+            {{ form.nome}}
+
+            {{ form.email.label_tag}}
+            {{ form.email}}
+
+            {{ form.cpf.label_tag}}
+            {{ form.cpf}}
+
+            {{ form.nis.label_tag}}
+            {{ form.nis}}
+
+            {{ form.cidade.label_tag}}
+            {{ form.cidade}}
+
+        <select name="cidades" size="3" class="cidades">
+
+            {% for cidade in cidades %}
+
+            <option value="{{ cidade.id }}" selected>{{ cidade.nome }}</option>
+
+            {% endfor %}
+
+            <label for="id_cidade">Cidade:</label>
+            <input type="text" name="cidade" maxlength="11" required id="id_cidade" />
+
+            {{ form.bairro.label_tag}}
+            {{ form.bairro}}
+        </fieldset>
+        <center>
+            <input type="submit" class="btn btn-primary" value="Salvar">
+            <input type="button" class="btn btn-primary" value="Descartar" onclick="verifica()">
+        </center>
+    </form>
+
+
+
+
+    <form method="post" name="form">
+        <table align=center>
+            {% csrf_token %}
+            {{ form.as_table }}
+        </table>
+        <center>
+            <input type="submit" class="btn btn-primary" value="Salvar">
+            <input type="button" class="btn btn-primary" value="Descartar" onclick="verifica()">
+        </center>
+    </form>
+
+{% endblock %}
