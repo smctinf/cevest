@@ -168,16 +168,46 @@ class Aluno(models.Model):
     ativo = models.BooleanField(default=True)
     cursos = models.ManyToManyField(Curso)
 
-class Turma_Prevista(models.Model):
+class Horario(models.Model):
+
+    DIA = (
+        ('1', 'Domingo'),
+        ('2', 'Segunda'),
+        ('3', 'Terça'),
+        ('4', 'Quarta'),
+        ('5', 'Quinta'),
+        ('6', 'Sexta'),
+        ('7', 'Sábado'),
+    )
+
     class Meta:
-        ordering = ('curso',)
+        ordering = ('dia_semana','hora_inicio', 'hora_fim')
 
     def __str__(self):
-        return '%s - %s' % (self.curso, self.curriculo)
+        return '%s - %s - %s' % (self.dia_semana, self.hora_inicio, self.hora_fim)
 
+    dia_semana = models.CharField(max_length=1, choices=DIA)
+    hora_inicio = models.TimeField('Hora Início')
+    hora_fim = models.TimeField('Hora Fim')
+    dt_inclusao = models.DateTimeField(auto_now_add=True)
+
+class Turma_Prevista(models.Model):
+    class Meta:
+        ordering = ('curso', 'nome')
+        verbose_name = "Turma Prevista"
+        verbose_name_plural = "Turmas Previstas"
+
+    def __str__(self):
+        return '%s - %s - %s' % (self.curso, self.nome, self.curriculo)
+
+    nome = models.CharField(max_length=20, unique=True, blank=True, null=True)
     curso = models.ForeignKey(Curso, on_delete=models.PROTECT)
     curriculo = models.ForeignKey(Curriculo, on_delete=models.PROTECT)
+    instrutor = models.ForeignKey(Instrutor, on_delete=models.PROTECT, blank=True, null=True)
     dt_inicio = models.DateField('Data Início')
+    dt_fim = models.DateField('Data Fim', blank=True, null=True)
+    horario = models.ManyToManyField(Horario)
+    quant_alunos = models.PositiveSmallIntegerField(default=0)
     dt_inclusao = models.DateTimeField(auto_now_add=True)
 
 class Turma(models.Model):
@@ -185,34 +215,16 @@ class Turma(models.Model):
         ordering = ('curso',)
 
     def __str__(self):
-        return '%s - %s' % (self.curso, self.curriculo)
+        return '%s - %s - %s' % (self.nome, self.curso, self.curriculo)
 
+    nome = models.CharField(max_length=20, unique=True, blank=True, null=True)
     curso = models.ForeignKey(Curso, on_delete=models.PROTECT)
     curriculo = models.ForeignKey(Curriculo, on_delete=models.PROTECT)
+    instrutor = models.ForeignKey(Instrutor, on_delete=models.PROTECT, blank=True, null=True)
     dt_inicio = models.DateField('Data Início')
-    dt_inclusao = models.DateTimeField(auto_now_add=True)
-
-DIA = (
-    ('1', 'Domingo'),
-    ('2', 'Segunda'),
-    ('3', 'Terça'),
-    ('4', 'Quarta'),
-    ('5', 'Quinta'),
-    ('6', 'Sexta'),
-    ('7', 'Sábado'),
-)
-
-class Horario(models.Model):
-    class Meta:
-        ordering = ('turma_prevista',)
-
-    def __str__(self):
-        return '%s - %s' % (self.turma_prevista, self.dia_semana)
-
-    turma_prevista = models.ForeignKey(Turma_Prevista, on_delete=models.PROTECT)
-    dia_semana = models.CharField(max_length=1, choices=DIA)
-    hora_inicio = models.TimeField('Hora Início')
-    hora_fim = models.TimeField('Hora Fim')
+    dt_fim = models.DateField('Data Fim', blank=True, null=True)
+    horario = models.ManyToManyField(Horario)
+    quant_alunos = models.PositiveSmallIntegerField(default=0)
     dt_inclusao = models.DateTimeField(auto_now_add=True)
 
 class Aluno_Turma(models.Model):

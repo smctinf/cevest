@@ -1,0 +1,29 @@
+<h4>
+{{ curso.nome }}
+</h4>
+<div class="container">
+
+    {% if turmas %}
+
+            {% for t in turmas %}
+                <h4>Turma: {{ t.nome }}</h4>
+
+                <ul>
+                <li>Instrutor: {{ t.instrutor }}</li>
+                <li>Período: {{ t.dt_inicio }} a {{ t.dt_fim }}</li>
+                <li>Horário:
+                <ul>
+                {% for h in t.horario.all %}
+                        <li>{{ h.dia_semana }}º de {{ h.hora_inicio }} às {{ h.hora_fim }}</li>
+                {% endfor %}
+                </ul>
+                    </li>
+                </ul>
+            {% endfor %}
+    {% else %}
+        <center>Ainda não há turma prevista</center>
+    {% endif %}
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
