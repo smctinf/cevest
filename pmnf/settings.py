@@ -84,7 +84,7 @@ DATABASES = {
         'NAME': 'pmnf',
         'USER': 'pmnf',
         'PASSWORD': '1w6l4x9zx2cb',
-        'HOST': 'localhost',
+        'HOST': '35.225.36.72',
         'PORT': '',
     }
 }
