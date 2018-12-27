@@ -58,7 +58,13 @@ class BairroAdmin(admin.ModelAdmin):
 admin.site.register(Bairro, BairroAdmin)
 
 from .models import Turma_Prevista
-admin.site.register(Turma_Prevista)
+class Turma_PrevistaAdmin(admin.ModelAdmin):
+    # ...
+    list_display = ('curso', 'nome', 'curriculo', 'instrutor', 'dt_inicio', 'dt_fim')
+    list_filter = ['curso']
+    filter_horizontal = ('horario',)
+
+admin.site.register(Turma_Prevista, Turma_PrevistaAdmin)
 
 from .models import Turma
 admin.site.register(Turma)

@@ -10,6 +10,7 @@ urlpatterns = [
     path('altera/<int:pk>', views.altera, name='altera'),
     path('detalhe', views.detalhe, name='detalhe'),
     path('matriz/<int:idcurso>', views.matriz, name='matriz'),
+    path('turma_prevista/<int:idcurso>', views.turma_prevista, name='turma_prevista'),
 
     path('get_bairro/<int:cidade_id>', views.get_bairro, name='get_bairro'),
 
