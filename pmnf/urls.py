@@ -21,7 +21,8 @@ admin.site.site_header = "CEVEST - Prefeitura Municipal de Nova Friburgo"
 admin.site.site_title = "CEVEST"
 
 urlpatterns = [
+    path('', include('cevest.urls')),
     path('cevest/', include('cevest.urls')),
-    path('accounts/', include('accounts.urls')),
+    path('accounts/', include('accounts.urls'), name='accounts'),
     path('admin/', admin.site.urls),
 ]

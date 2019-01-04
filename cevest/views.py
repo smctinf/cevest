@@ -8,6 +8,10 @@ from .forms import CadastroForm, AlteraForm, DetalheForm, CadForm
 from .models import Curso, Aluno, Cidade, Bairro, Profissao, Escolaridade, Matriz, Turma_Prevista
 
 # Página index
+def aguarde(request):
+    return render(request, 'cevest/aguarde.html')
+
+# Página index
 def index(request):
     return render(request, 'cevest/index.html')
 
