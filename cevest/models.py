@@ -56,6 +56,7 @@ class Curso(models.Model):
     pre_requisito = models.ManyToManyField(Pre_requisito, blank=True)
     quant_alunos = models.PositiveSmallIntegerField(default=0)
     dt_inclusao = models.DateTimeField(auto_now_add=True)
+    exibir = models.BooleanField(default=True)
     ativo = models.BooleanField(default=True)
 
 class Disciplina(models.Model):
@@ -146,10 +147,8 @@ class Aluno(models.Model):
 
     nome = models.CharField(max_length=60)
     email = models.EmailField(max_length=254, blank=True, null=True)
-#    cpf = models.CharField(unique=True, max_length=11)
     cpf = models.CharField(unique=True, max_length=11, validators=[validate_CPF])
-
-    nis = models.IntegerField(unique=True, blank=True, null=True)
+    nis = models.CharField(unique=True, max_length=11, blank=True, null=True)
     bolsa_familia = models.BooleanField(default=False)
     quant_filhos = models.PositiveSmallIntegerField(default=0)
     sexo = models.CharField(max_length=1, choices=SEXO)
@@ -159,12 +158,16 @@ class Aluno(models.Model):
     fixo_residencia = models.CharField(max_length=10, blank=True, null=True)
     fixo_trabalho = models.CharField(max_length=10, blank=True, null=True)
     endereco = models.CharField(max_length=120)
+    complemento = models.CharField(max_length=120, blank=True, null=True)
     bairro = models.ForeignKey(Bairro, on_delete=models.PROTECT)
+    cep = models.CharField(max_length=8, blank=True, null=True)
     escolaridade = models.ForeignKey(Escolaridade, on_delete=models.PROTECT)
     profissao = models.ForeignKey(Profissao, on_delete=models.PROTECT)
+    outra_profissao = models.CharField(max_length=50, blank=True, null=True)
     desempregado = models.BooleanField(default=False)
     disponibilidade = models.ManyToManyField(Turno)
     dt_inclusao = models.DateTimeField(auto_now_add=True)
+    ordem_judicial = models.BooleanField(default=False)
     ativo = models.BooleanField(default=True)
     cursos = models.ManyToManyField(Curso)
 
@@ -229,6 +232,7 @@ class Turma(models.Model):
 
 class Aluno_Turma(models.Model):
     class Meta:
+        verbose_name_plural = "Relação de Alunos por Turma"
         ordering = ('turma', 'aluno',)
 
     def __str__(self):

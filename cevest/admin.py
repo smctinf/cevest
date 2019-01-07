@@ -46,6 +46,7 @@ class AlunoAdmin(admin.ModelAdmin):
 
 admin.site.register(Aluno, AlunoAdmin)
 
+
 from .models import Turno
 admin.site.register(Turno)
 
