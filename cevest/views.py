@@ -17,7 +17,7 @@ def index(request):
 
 # Página Cursos
 def cursos(request):
-    lista_curso = Curso.objects.order_by('nome')
+    lista_curso = Curso.objects.filter(ativo=True, exibir=True).order_by('nome')
     return render(request, 'cevest/cursos.html', { 'lista_curso': lista_curso })
 
 # Página Detalhes de um Curso
@@ -31,7 +31,7 @@ def cadadastro(request):
     cidades = Cidade.objects.order_by('nome')
     profissoes = Profissao.objects.order_by('nome')
     escolaridades = Escolaridade.objects.order_by('descricao')
-    lista_curso = Curso.objects.order_by('nome')
+    lista_curso = Curso.objects.filter(ativo=True, exibir=True).order_by('nome')
 
     if request.method == 'POST':
         form = CadastroForm(request.POST)
@@ -52,10 +52,13 @@ def detalhe(request):
             cpf = form.cleaned_data['cpf']
             dt_nascimento = form.cleaned_data['dt_nascimento']
             aluno = Aluno.objects.get(cpf=cpf, dt_nascimento=dt_nascimento)
-            pk = aluno.pk
-#            form = AlteraForm()
-#            return render(request,"cevest/altera.html", aluno)
-            return redirect ('altera/'+str(pk))
+            if aluno == 'None':
+                pk = aluno.pk
+#                form = AlteraForm()
+#                return render(request,"cevest/altera.html", aluno)
+                return redirect ('altera/'+str(pk))
+            else:
+                return render(request, 'cevest/detalhe.html')
     else:
         return render(request, 'cevest/detalhe.html')
 
@@ -75,6 +78,8 @@ def turma_prevista(request, idcurso):
 
 def altera(request, pk):
     aluno = get_object_or_404(Aluno, pk=pk)
+#    aluno = Aluno.objects.get(cpf='96847298715', dt_nascimento='2018-11-06')
+
     if request.method == 'POST':
         form = CadastroForm(request.POST, instance=aluno)
         if form.is_valid():

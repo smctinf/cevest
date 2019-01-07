@@ -25,48 +25,50 @@
       <p class="lead">Após preenchido este cadastro, você fará parte de uma lista de interessados em um curso do CEVEST. Assim que uma turma do curso de interesse for oferecida, os alunos selecionados serão contactados por e-mail. Caso não compareça em até 7 dias, outro aluno será chamado para esta vaga. Você pode selecionar mais de um curso. Mesmo concluindo um curso, poderá ser chamado para outro curso que tenha marcado como sendo de seu interesse.</p>
     </div>
 
-    <div class="row">
-      <div class="col-md-4 order-md-2 mb-4">
-        <h4 class="d-flex justify-content-between align-items-center mb-3">
-          <span class="text-muted">Cursos</span>
-          <span class="badge badge-secondary badge-pill">0</span>
-        </h4>
+    <form method="post" class="needs-validation" name="form" novalidate>
+      {% csrf_token %}
 
-        <ul class="list-group mb-3">
+      <div class="row">
+        <div class="col-md-4 order-md-2 mb-4">
+          <h4 class="d-flex justify-content-between align-items-center mb-3">
+            <span class="text-muted">Cursos</span>
+            <span class="badge badge-secondary badge-pill">0</span>
+          </h4>
 
-          {% for l in lista_curso %}
+          <ul class="list-group mb-3">
 
-            <li class="list-group-item d-flex justify-content-between lh-condensed">
-              <div>
-                <h6 class="my-0">
-                
-                  <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="{{ l.id }}">
+            {% for l in lista_curso %}
 
-                    <label class="custom-control-label" for="{{ l.id }}">
-                      <a href="javascript:abrir('http://127.0.0.1:8000/cevest/curso/{{ l.id }}');">{{ l.nome }}</a>
-                    </label>
-                  </div>
+              <li class="list-group-item d-flex justify-content-between lh-condensed">
+                <div>
+                  <h6 class="my-0">
+                  
+                    <div class="custom-control custom-checkbox">
+                      <input type="checkbox" class="custom-control-input" id="{{ l.id }}">
 
-                </h6>
-<!--                <small class="text-muted">Breve descrição</small> -->
-              </div>
-<!--              <span class="text-muted">R$12</span> -->
-            </li>
+                      <label class="custom-control-label" for="{{ l.id }}">
+                        <a href="javascript:abrir('http://127.0.0.1:8000/cevest/curso/{{ l.id }}');">{{ l.nome }}</a>
+                      </label>
+                    </div>
 
-          {% endfor %}
+                  </h6>
+  <!--                <small class="text-muted">Breve descrição</small> -->
+                </div>
+  <!--              <span class="text-muted">R$12</span> -->
+              </li>
 
-        </ul>
-      </div>
+            {% endfor %}
 
-<!-- Cars 2 -->
+          </ul>
+        </div>
 
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-      <script type="text/javascript" src="{% static '../static/cevest/js/ajax.js' %}"></script>
+  <!-- Cars 2 -->
 
-      <div class="col-md-8 order-md-1">
-        <h4 class="mb-3">Dados Cadastrais</h4>
-        <form class="needs-validation" name="form" novalidate>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script type="text/javascript" src="{% static '../static/cevest/js/ajax.js' %}"></script>
+
+        <div class="col-md-8 order-md-1">
+          <h4 class="mb-3">Dados Cadastrais</h4>
 
           <div class="row">
             <div class="col-md-6 mb-3">
@@ -101,10 +103,10 @@
           <div class="row">
             <div class="col-md-6 mb-3">
               <label for="nis">NIS</label>
-              <input type="text" class="form-control" id="nis" placeholder="" value="" required>
-              <div class="invalid-feedback">
+              <input type="text" class="form-control" id="nis" placeholder="" value="">
+  <!--          <div class="invalid-feedback">
                 É obrigatório inserir um número de NIS válido.
-              </div>
+              </div> -->
             </div>
             <div class="col-md-3 mb-3">
               <label for="bolsa_familia">Bolsa Família</label>
@@ -147,13 +149,13 @@
           <div class="row">
             <div class="col-md-2 mb-3">
               <label for="quant_filhos">Quant.Filhos</label>
-              <input type="text" class="form-control" id="quant_filhos" placeholder="" value="" required>
+              <input type="text" class="form-control" id="quant_filhos" placeholder="" value="0" required>
               <div class="invalid-feedback">
                 É obrigatório informar quantidade de filhos.
               </div>
             </div>
             <div class="col-md-6 mb-3">
-              <label for="dt_nascimento">Data Nascimento</label>
+              <label for="dt_nascimento">Data Nascimento</label><br>
                 {{ form.dt_nascimento}}
 
               <div class="invalid-feedback">
@@ -203,24 +205,24 @@
           <div class="row">
             <div class="col-md-4 mb-3">
               <label for="celular">Celular</label>
-              <input type="text" class="form-control" id="celular" placeholder="" value="" required>
-              <div class="invalid-feedback">
+              <input type="text" class="form-control" id="celular" placeholder="" value="">
+  <!--          <div class="invalid-feedback">
                 É obrigatório inserir um número de celular.
-              </div>
+              </div> -->
             </div>
             <div class="col-md-4 mb-3">
               <label for="fixo_residencia">Tel. Residência</label>
-              <input type="text" class="form-control" id="fixo_residencia" placeholder="" value="" required>
-              <div class="invalid-feedback">
+              <input type="text" class="form-control" id="fixo_residencia" placeholder="" value="">
+  <!--              <div class="invalid-feedback">
                 É obrigatório inserir um número de telefone residencial.
-              </div>
+              </div> -->
             </div>
             <div class="col-md-4 mb-3">
               <label for="fixo_trabalho">Tel. Trabalho</label>
-              <input type="text" class="form-control" id="fixo_trabalho" placeholder="" value="" required>
-              <div class="invalid-feedback">
+              <input type="text" class="form-control" id="fixo_trabalho" placeholder="" value="">
+  <!--              <div class="invalid-feedback">
                 É obrigatório inserir um número de telefone comercial.
-              </div>
+              </div> -->
             </div>
           </div>
 
@@ -260,7 +262,7 @@
 
           <div class="mb-3">
             <label for="endereco">Endereço</label>
-            <input type="endereco" class="form-control" id="endereco" placeholder="">
+            <input type="endereco" class="form-control" id="endereco" placeholder="" required>
             <div class="invalid-feedback">
               Favor inserir endereço
             </div>
@@ -314,9 +316,10 @@
 
           <hr class="mb-4">
           <button class="btn btn-primary btn-lg btn-block" type="submit">Cadastrar</button>
-        </form>
+        </div>
       </div>
-    </div>
+
+    </form>
   </div>
 
     <!-- Principal JavaScript do Bootstrap
