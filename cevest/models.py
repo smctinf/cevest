@@ -212,6 +212,7 @@ class Turma_Prevista(models.Model):
     horario = models.ManyToManyField(Horario)
     quant_alunos = models.PositiveSmallIntegerField(default=0)
     dt_inclusao = models.DateTimeField(auto_now_add=True)
+    exibir = models.BooleanField(default=True)
 
 class Turma(models.Model):
     class Meta:

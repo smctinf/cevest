@@ -71,7 +71,7 @@ def matriz(request, idcurso):
 
 # Página Turma Prevista de um Curso
 def turma_prevista(request, idcurso):
-    turmas = Turma_Prevista.objects.filter(curso=idcurso)
+    turmas = Turma_Prevista.objects.filter(curso=idcurso, exibir=True)
     curso = Curso.objects.get(pk=idcurso)
 
     return render(request,"cevest/turma_prevista.html", {'turmas':turmas, 'curso': curso})

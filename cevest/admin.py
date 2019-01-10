@@ -40,8 +40,8 @@ admin.site.register(Profissao)
 from .models import Aluno
 class AlunoAdmin(admin.ModelAdmin):
     # ...
-    list_display = ('nome', 'cpf')
-#    list_filter = ['cursos']
+    list_display = ('nome', 'cpf', 'celular', 'dt_inclusao')
+    list_filter = ['cursos']
     filter_horizontal = ('cursos',)
 
 admin.site.register(Aluno, AlunoAdmin)
