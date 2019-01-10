@@ -23,9 +23,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '++wlc1(z793vjl0u3q4&u!q#f!^pjo=7m!*wcj#4@xbx=jx5(j'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["cevest.jlb.net.br", "127.0.0.1"]
+
 
 
 # Application definition
@@ -80,9 +82,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'pmnf',
-        'USER': 'root',
-        'PASSWORD': 'x1pfrhlo',
-        'HOST': 'localhost',
+        'USER': 'pmnf',
+        'PASSWORD': '1w6l4x9zx2cb',
+        'HOST': '35.225.36.72',
         'PORT': '',
     }
 }
@@ -126,3 +128,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = '/home/cevest/public_html/pmnf/cevest/static'
+
+# JLB para SSL
+
+MIDDLEWARE_CLASSES = (
+    'sslify.middleware.SSLifyMiddleware',
+    # ...
+)
+
