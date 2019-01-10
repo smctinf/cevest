@@ -40,8 +40,15 @@
                         <p>Idade mínima: {{ l.idade_minima }} anos</p>
                         <p>Escolaridade mínima: {{ l.escolaridade_minima }}</p>
 
-                        {% if l.pre_requisito.exist %}
-                            <p>Pré-requisito: {{ l.pre_requisito }}</p>
+
+
+                        {% if l.pre_requisito.count != 0 %}
+                            <p>Pré-requisito:</p>
+
+                            {% for p in l.pre_requisito.all %}
+                                    <li>{{ p.descricao }}</li>
+                            {% endfor %}
+
                         {% endif %}
 
                         <div class=text-right>
