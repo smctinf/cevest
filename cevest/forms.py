@@ -10,7 +10,9 @@ class CadastroForm(forms.ModelForm):
     class Meta:
         model = Aluno
         exclude = ['ativo']
-        widgets = {'disponibilidade': forms.CheckboxSelectMultiple}
+        widgets = {'disponibilidade': forms.CheckboxSelectMultiple, 'cursos': forms.CheckboxSelectMultiple}
+#        widgets = {'curso': forms.CheckboxSelectMultiple}
+#   curso = forms.ModelMultipleChoiceField(queryset=Curso.objects.all(), widget=forms.CheckboxSelectMultiple)
 
 class AlteraForm(forms.Form):
     cpf = forms.CharField(label='CPF:', max_length=11)

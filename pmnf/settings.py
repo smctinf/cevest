@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '++wlc1(z793vjl0u3q4&u!q#f!^pjo=7m!*wcj#4@xbx=jx5(j'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 # ALLOWED_HOSTS = []
 ALLOWED_HOSTS = ["cevest.jlb.net.br", "127.0.0.1"]
@@ -58,7 +58,7 @@ ROOT_URLCONF = 'pmnf.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'accounts/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -82,10 +82,15 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'pmnf',
-        'USER': 'pmnf',
-        'PASSWORD': '1w6l4x9zx2cb',
-        'HOST': '35.225.36.72',
+#        'USER': 'pmnf',
+#        'PASSWORD': '1w6l4x9zx2cb',
+#        'HOST': '35.225.36.72',
         'PORT': '',
+
+        'USER': 'root',
+        'PASSWORD': 'x1pfrhlo',
+        'HOST': '127.0.0.1',
+
     }
 }
 
@@ -137,3 +142,4 @@ MIDDLEWARE_CLASSES = (
     # ...
 )
 
+LOGIN_REDIRECT_URL = '/cevest/inicio'

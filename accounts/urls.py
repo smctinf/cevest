@@ -1,11 +1,12 @@
 from django.urls import path
-#from django.contrib.auth.views import login
+from django.contrib.auth.views import login
 
 #from django.conf.urls import patterns, include, url
 from . import views
 
 urlpatterns = [
-#    path('', views.index, name='index'),
+    path('entrar', login,
+        {'template_name': 'accounts/login.html'}, name='login'),
 ####    path('entrar', login, name='login'),
 #    path('cursos', views.cursos, name='cursos'),
 #    path('curso/<int:pk>', views.curso, name='curso'),

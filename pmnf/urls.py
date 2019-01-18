@@ -23,6 +23,7 @@ admin.site.site_title = "CEVEST"
 urlpatterns = [
     path('', include('cevest.urls')),
     path('cevest/', include('cevest.urls')),
-    path('accounts/', include('accounts.urls'), name='accounts'),
+#    path('accounts/', include('accounts.urls'), name='accounts'),
+    path('accounts/', include('django.contrib.auth.urls')), # new
     path('admin/', admin.site.urls),
 ]

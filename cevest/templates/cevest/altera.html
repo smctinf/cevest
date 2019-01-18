@@ -8,7 +8,7 @@
     <form method="post" name="form">
         <table align=center>
             {% csrf_token %}
-
+<!--
  {% for book in object_list %}
     <tr>
     <td>{{ book.name }}</td>
@@ -18,14 +18,25 @@
     <td><a href="{% url "book_delete" book.id %}">delete</a></td>
     </tr>
     {% endfor %}
+-->
+
+{% for field in form.visible_fields %}
+      <tr>
+        <th>{{ field.label_tag }}</th>
+        <td>
+
+        {% print field.errors %}
+          {{ field.errors }}
+          {{ field }}
+          {{ field.help_text }}
+        </td>
+      </tr>
+{% endfor %}
 
 
 
 
-
-
-
-            {{ form.as_table }}
+<!--            {{ form.as_table }} -->
         </table>
         <center>
             <input type="submit" class="btn btn-primary" value="Salvar">

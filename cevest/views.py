@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 
 from .forms import CadastroForm, AlteraForm, DetalheForm, CadForm
-from .models import Curso, Aluno, Cidade, Bairro, Profissao, Escolaridade, Matriz, Turma_Prevista
+from .models import Curso, Aluno, Cidade, Bairro, Profissao, Escolaridade, Matriz, Turma_Prevista, Aluno_Turma
 
 # Página index
 def aguarde(request):
@@ -51,14 +51,16 @@ def detalhe(request):
         if form.is_valid():
             cpf = form.cleaned_data['cpf']
             dt_nascimento = form.cleaned_data['dt_nascimento']
-            aluno = Aluno.objects.get(cpf=cpf, dt_nascimento=dt_nascimento)
-            if aluno == 'None':
+#            aluno = Aluno.objects.get(cpf=cpf, dt_nascimento=dt_nascimento)
+            aluno = Aluno.objects.get(cpf='05334010700', dt_nascimento='1978-11-02')
+            if aluno != 'None':
                 pk = aluno.pk
 #                form = AlteraForm()
 #                return render(request,"cevest/altera.html", aluno)
-                return redirect ('altera/'+str(pk))
-            else:
-                return render(request, 'cevest/detalhe.html')
+            return redirect ('altera/'+str(pk))
+#            else:
+#            return render(request, 'cevest/detalhe.html')
+#        print('teste')
     else:
         return render(request, 'cevest/detalhe.html')
 
@@ -90,7 +92,7 @@ def altera(request, pk):
         form = CadastroForm(instance=aluno)
 #        form = CadastroForm(request.POST or None, instance=aluno)
 
-    return render(request,"cevest/cadastro.html",{'form':form})
+    return render(request,"cevest/altera.html",{'form':form})
 
 # /// Teste ajax
 
@@ -129,6 +131,30 @@ def altera_cpf(request):
 
 #        return redirect('cad', cpf=post.cpf, dt_nascimento=post.dt_nascimento)
 #    return render(request, 'cevest/altera1.html')
+
+def inicio(request):
+    if request.user.is_authenticated:
+        return render(request, 'cevest/inicio.html')
+    else:
+#        return render(request, 'accounts/login.html')
+        return redirect('/accounts/login')
+
+def sair(request):
+    if request.user.is_authenticated:
+        return redirect('/accounts/logout')
+    else:
+        return redirect('/accounts/login')
+
+def alocados(request):
+    if request.user.is_authenticated:
+        cursos = Curso.objects.filter(ativo=True)[1]
+        quant_necessidades_especiais = int(cursos.quant_alunos * 0.3)
+        necessidades = Aluno_Turma.objects.raw('select cevest_aluno.id as aluno_id, cevest_turma_prevista.id as turma_id from cevest_aluno, cevest_turma_prevista, cevest_aluno_cursos where cevest_aluno, cevest_turma_prevista.id and cevest_aluno_cursos.curso_id = cursos.id and cevest_aluno.cursos_id = cursos.id')
+#        necessidades = Aluno.objects.filter(portador_necessidades_especiais=True, curso_id=cursos.id)[quant_necessidades_especiais]
+        return HttpResponse("Cursos %s." % necessidades)
+
+    else:
+        return redirect('/accounts/login')
 
 """
 def cursos(request):
