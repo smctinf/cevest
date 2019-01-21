@@ -246,11 +246,12 @@ class Aluno_Turma(models.Model):
 class Aluno_Turma_Prevista(models.Model):
     class Meta:
         verbose_name_plural = "Relação de Alunos por Turma - Previsão"
-        ordering = ('turma', 'aluno',)
+        ordering = ('turma_prevista', 'aluno',)
 
     def __str__(self):
-        return '%s - %s' % (self.turma, self.aluno)
+        return '%s - %s' % (self.turma_prevista, self.aluno)
 
-    turma = models.ForeignKey(Turma, on_delete=models.PROTECT)
+    turma_prevista = models.ForeignKey(Turma_Prevista, on_delete=models.PROTECT)
     aluno = models.ForeignKey(Aluno, on_delete=models.PROTECT)
     dt_inclusao = models.DateTimeField(auto_now_add=True)
+
