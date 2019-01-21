@@ -15,6 +15,10 @@ def aguarde(request):
 def index(request):
     return render(request, 'cevest/index.html')
 
+# Página Resultado
+def resultado(request):
+    return render(request, 'cevest/resultado.html')
+
 # Página Cursos
 def cursos(request):
     lista_curso = Curso.objects.filter(ativo=True, exibir=True).order_by('nome')

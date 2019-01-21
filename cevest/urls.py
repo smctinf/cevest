@@ -18,6 +18,8 @@ urlpatterns = [
     path('turma_prevista/<int:idcurso>', views.turma_prevista, name='turma_prevista'),
 
     path('get_bairro/<int:cidade_id>', views.get_bairro, name='get_bairro'),
+    path('resultado', views.resultado, name='resultado'),
+
 
  # Teste
     path('altera_cpf', views.altera_cpf, name='altera_cpf'),
