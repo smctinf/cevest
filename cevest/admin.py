@@ -67,6 +67,14 @@ class Turma_PrevistaAdmin(admin.ModelAdmin):
 
 admin.site.register(Turma_Prevista, Turma_PrevistaAdmin)
 
+from .models import Aluno_Turma_Prevista
+class Aluno_Turma_PrevistaAdmin(admin.ModelAdmin):
+    # ...
+    list_display = ('turma_prevista', 'aluno', 'dt_inclusao')
+    list_filter = ['turma_prevista']
+
+admin.site.register(Aluno_Turma_Prevista, Aluno_Turma_PrevistaAdmin)
+
 from .models import Turma
 admin.site.register(Turma)
 
