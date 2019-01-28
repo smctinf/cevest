@@ -1,5 +1,5 @@
 from django import forms
-from .models import Aluno, Curso, Bairro, Escolaridade, Profissao, Escolaridade
+from .models import Aluno, Curso, Bairro, Escolaridade, Profissao, Escolaridade, Turma_Prevista
 from django.forms import ModelForm
 
 YEARS= [x for x in range(1940,2021)]
@@ -22,6 +22,9 @@ class DetalheForm(forms.Form):
     cpf = forms.CharField(label='CPF:', max_length=11)
     dt_nascimento = forms.DateField(label='Dt.Nascimento:', initial="1990-06-21", widget=forms.SelectDateWidget(years=YEARS))
 
+class ConfirmaTurmaForm(forms.Form):
+#    cpf = forms.CharField(label='CPF:', max_length=11)
+    turma = forms.ModelChoiceField(queryset=Turma_Prevista.objects.all())
 
 """
 class CadastroForm(forms.Form):

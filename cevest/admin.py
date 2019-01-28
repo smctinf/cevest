@@ -75,11 +75,29 @@ class Aluno_Turma_PrevistaAdmin(admin.ModelAdmin):
 
 admin.site.register(Aluno_Turma_Prevista, Aluno_Turma_PrevistaAdmin)
 
+from .models import Turma_Prevista_Turma_Definitiva
+class Turma_Prevista_Turma_DefinitivaAdmin(admin.ModelAdmin):
+    # ...
+    list_display = ('turma_prevista', 'turma', 'dt_inclusao')
+#    list_filter = ['turma_prevista']
+
+admin.site.register(Turma_Prevista_Turma_Definitiva, Turma_Prevista_Turma_DefinitivaAdmin)
+
 from .models import Turma
-admin.site.register(Turma)
+class TurmaAdmin(admin.ModelAdmin):
+    # ...
+    list_display = ('curso', 'nome', 'curriculo', 'instrutor', 'dt_inicio', 'dt_fim')
+    list_filter = ['curso']
+
+admin.site.register(Turma, TurmaAdmin)
 
 from .models import Horario
 admin.site.register(Horario)
 
 from .models import Aluno_Turma
-admin.site.register(Aluno_Turma)
+class Aluno_TurmaAdmin(admin.ModelAdmin):
+    # ...
+    list_display = ('turma', 'aluno', 'dt_inclusao')
+    list_filter = ['turma']
+
+admin.site.register(Aluno_Turma, Aluno_TurmaAdmin)

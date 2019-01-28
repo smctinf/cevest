@@ -1,0 +1,21 @@
+{% extends "cevest/base_adm.html" %}
+
+{% block content %}
+
+<br>
+<h2 align="center">Portadores de Necessidades Especiais</h2>
+<table border="1" align="center">
+
+{% for p in portador %}
+
+    <tr>
+    <td>{{ forloop.counter }}</td>
+    <td>{{ p.nome }}</td>
+    <td>{{ p.id }}
+    </tr>
+
+{% endfor %}
+
+</table>
+
+{% endblock %}

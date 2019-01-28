@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 
-from .forms import CadastroForm, AlteraForm, DetalheForm, CadForm
+from .forms import CadastroForm, AlteraForm, DetalheForm, CadForm, ConfirmaTurmaForm
 from .models import Curso, Aluno, Cidade, Bairro, Profissao, Escolaridade, Matriz, Turma_Prevista, Aluno_Turma
 
 # Página index
@@ -29,7 +29,7 @@ def curso(request, pk):
     curso = get_object_or_404(Curso, pk=pk)
 
     return render(request,"cevest/curso.html", {'curso':curso})
-
+"""
 # Página Cadastro
 def cadadastro(request):
     cidades = Cidade.objects.order_by('nome')
@@ -47,7 +47,7 @@ def cadadastro(request):
         form = CadForm()
     return render(request,"cevest/cadastro.html",{'form':form, 'cidades': cidades, 'lista_curso': lista_curso, 'escolaridades': escolaridades, 'profissoes': profissoes })
 #    return render(request,"cevest/cadastro.html",{'form':form, 'cidades': cidades })
-
+"""
 # Teste detalhe
 def detalhe(request):
     if request.method == 'POST':
@@ -81,6 +81,15 @@ def turma_prevista(request, idcurso):
     curso = Curso.objects.get(pk=idcurso)
 
     return render(request,"cevest/turma_prevista.html", {'turmas':turmas, 'curso': curso})
+
+# Página Turma Prevista de um Curso
+def portador(request):
+    if request.user.is_authenticated:
+        portador = Aluno.objects.filter(portador_necessidades_especiais=True).order_by('nome')
+#        alocados = Aluno_Turma_Prevista.objects.filter(portador_necessidades_especiais=True).order_by('nome')
+        return render(request,"cevest/portador.html", {'portador':portador})
+    else:
+        return HttpResponseRedirect('/accounts/login')
 
 def altera(request, pk):
     aluno = get_object_or_404(Aluno, pk=pk)
@@ -159,6 +168,36 @@ def alocados(request):
 
     else:
         return redirect('/accounts/login')
+
+def confirmaturma(request):
+
+    form = ConfirmaTurmaForm()
+    return render(request, "accounts/confirmaturma.html", {'form': form})
+"""
+    if request.user.is_authenticated:
+        turma_prevista = Turma_Prevista.objects.all()
+        if request.method == 'POST':
+            form = ConfirmaTurmaForm(request.POST)
+            if form.is_valid():
+                post = form.save(commit=False)
+                nome = form.cleaned_data['nome']
+                curso = form.cleaned_data['curso']
+                curriculo = form.cleaned_data['curriculo']
+                instrutor = form.cleaned_data['instrutor']
+                dt_inicio = form.cleaned_data['dt_inicio']
+                dt_fim = form.cleaned_data['dt_fim']
+                horario = form.cleaned_data['horario']
+                quant_alunos = form.cleaned_data['quant_alunos']
+
+                turma_prevista = form.save(commit=False)
+                turma = request.user
+
+                form.save()
+            return render(request,"accounts/confirmaturma.html", {'turma_prevista':turma_prevista})
+        else:
+            form = ConfirmaTurmaForm()
+            return render(request,"accounts/confirmaturma.html", {'turma_prevista':turma_prevista})
+"""
 
 """
 def cursos(request):

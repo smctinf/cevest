@@ -143,3 +143,14 @@ MIDDLEWARE_CLASSES = (
 )
 
 LOGIN_REDIRECT_URL = '/cevest/inicio'
+
+# E-mail
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+DEFAULT_FROM_EMAIL = 'CEVEST <cevest@pmnf.rj.gov.br>'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.pmnf.rj.gov.br'
+EMAIL_HOST_USER = 'loyola@jlb.net.br'
+EMAIL_HOST_PASSWORD = 'SENHA'
+EMAIL_PORT = 465

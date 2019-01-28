@@ -5,8 +5,8 @@ from django.contrib.auth.views import login
 from . import views
 
 urlpatterns = [
-    path('entrar', login,
-        {'template_name': 'accounts/login.html'}, name='login'),
+#    path('entrar', login,
+#        {'template_name': 'accounts/login.html'}, name='login'),
 ####    path('entrar', login, name='login'),
 #    path('cursos', views.cursos, name='cursos'),
 #    path('curso/<int:pk>', views.curso, name='curso'),

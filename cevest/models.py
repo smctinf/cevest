@@ -243,6 +243,17 @@ class Aluno_Turma(models.Model):
     aluno = models.ForeignKey(Aluno, on_delete=models.PROTECT)
     dt_inclusao = models.DateTimeField(auto_now_add=True)
 
+class Status_Aluno_Turma_Prevista(models.Model):
+    class Meta:
+        verbose_name_plural = "Status de Alunos por Turma Prevista"
+        ordering = ('descricao',)
+
+    def __str__(self):
+        return self.descricao
+
+    descricao = models.CharField(max_length=60, unique=True)
+    dt_inclusao = models.DateTimeField(auto_now_add=True)
+
 class Aluno_Turma_Prevista(models.Model):
     class Meta:
         verbose_name_plural = "Relação de Alunos por Turma - Previsão"
@@ -253,5 +264,17 @@ class Aluno_Turma_Prevista(models.Model):
 
     turma_prevista = models.ForeignKey(Turma_Prevista, on_delete=models.PROTECT)
     aluno = models.ForeignKey(Aluno, on_delete=models.PROTECT)
+    status_aluno_turma_prevista = models.ForeignKey(Status_Aluno_Turma_Prevista, on_delete=models.PROTECT)
     dt_inclusao = models.DateTimeField(auto_now_add=True)
 
+class Turma_Prevista_Turma_Definitiva(models.Model):
+    class Meta:
+        verbose_name_plural = "Relação entre turma Prevista e Turma Definitiva"
+        ordering = ('turma_prevista', 'turma',)
+
+    def __str__(self):
+        return '%s - %s' % (self.turma_prevista, self.turma)
+
+    turma_prevista = models.ForeignKey(Turma_Prevista, on_delete=models.PROTECT)
+    turma = models.ForeignKey(Turma, on_delete=models.PROTECT)
+    dt_inclusao = models.DateTimeField(auto_now_add=True)
