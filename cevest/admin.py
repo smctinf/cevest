@@ -5,6 +5,9 @@ from django.contrib import admin
 
 # Register your models here.
 
+from .models import Status_Aluno_Turma_Prevista
+admin.site.register(Status_Aluno_Turma_Prevista)
+
 from .models import Pre_requisito
 admin.site.register(Pre_requisito)
 
@@ -83,3 +86,7 @@ admin.site.register(Horario)
 
 from .models import Aluno_Turma
 admin.site.register(Aluno_Turma)
+
+from .models import Turma_Prevista_Turma_Definitiva
+admin.site.register(Turma_Prevista_Turma_Definitiva)
+
