@@ -264,7 +264,7 @@ class Aluno_Turma_Prevista(models.Model):
 
     turma_prevista = models.ForeignKey(Turma_Prevista, on_delete=models.PROTECT)
     aluno = models.ForeignKey(Aluno, on_delete=models.PROTECT)
-    status_aluno_turma_prevista = models.ForeignKey(Status_Aluno_Turma_Prevista, on_delete=models.PROTECT)
+    status_aluno_turma_prevista = models.ForeignKey(Status_Aluno_Turma_Prevista, default=1, on_delete=models.PROTECT)
     dt_inclusao = models.DateTimeField(auto_now_add=True)
 
 class Turma_Prevista_Turma_Definitiva(models.Model):

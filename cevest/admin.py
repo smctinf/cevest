@@ -5,6 +5,11 @@ from django.contrib import admin
 
 # Register your models here.
 
+# Status_Aluno_Turma_Prevista
+
+from .models import Status_Aluno_Turma_Prevista
+admin.site.register(Status_Aluno_Turma_Prevista)
+
 from .models import Pre_requisito
 admin.site.register(Pre_requisito)
 
@@ -70,7 +75,7 @@ admin.site.register(Turma_Prevista, Turma_PrevistaAdmin)
 from .models import Aluno_Turma_Prevista
 class Aluno_Turma_PrevistaAdmin(admin.ModelAdmin):
     # ...
-    list_display = ('turma_prevista', 'aluno', 'dt_inclusao')
+    list_display = ('turma_prevista', 'aluno', 'dt_inclusao', 'status_aluno_turma_prevista')
     list_filter = ['turma_prevista']
 
 admin.site.register(Aluno_Turma_Prevista, Aluno_Turma_PrevistaAdmin)
@@ -95,6 +100,7 @@ from .models import Horario
 admin.site.register(Horario)
 
 from .models import Aluno_Turma
+
 class Aluno_TurmaAdmin(admin.ModelAdmin):
     # ...
     list_display = ('turma', 'aluno', 'dt_inclusao')

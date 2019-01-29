@@ -87,9 +87,9 @@ DATABASES = {
 #        'HOST': '35.225.36.72',
         'PORT': '',
 
-        'USER': 'root',
-        'PASSWORD': 'x1pfrhlo',
-        'HOST': '127.0.0.1',
+         'USER': 'root',
+         'PASSWORD': 'x1pfrhlo',
+         'HOST': '127.0.0.1',
 
     }
 }
