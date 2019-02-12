@@ -2,6 +2,9 @@ from django import forms
 from .models import Aluno, Curso, Bairro, Escolaridade, Profissao, Escolaridade, Turma_Prevista
 from django.forms import ModelForm
 
+class Recibo_IndForm(forms.Form):
+    codigo = forms.CharField(label='Código:', max_length=5)
+
 YEARS= [x for x in range(1940,2021)]
 
 class CadastroForm(forms.ModelForm):

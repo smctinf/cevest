@@ -4,8 +4,8 @@ from __future__ import unicode_literals
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 
-from .forms import CadastroForm, AlteraForm, DetalheForm, CadForm, ConfirmaTurmaForm
-from .models import Curso, Aluno, Cidade, Bairro, Profissao, Escolaridade, Matriz, Turma_Prevista, Aluno_Turma
+from .forms import CadastroForm, AlteraForm, DetalheForm, CadForm, ConfirmaTurmaForm, Recibo_IndForm
+from .models import Curso, Aluno, Cidade, Bairro, Profissao, Escolaridade, Matriz, Turma_Prevista, Aluno_Turma, Turma
 
 # Página index
 def aguarde(request):
@@ -29,6 +29,42 @@ def curso(request, pk):
     curso = get_object_or_404(Curso, pk=pk)
 
     return render(request,"cevest/curso.html", {'curso':curso})
+
+def recibo_ind(request):
+    if request.method == 'POST':
+        form = Recibo_IndForm(request.POST)
+        if form.is_valid():
+            codigo = form.cleaned_data['codigo']
+            return HttpResponseRedirect('/recibo_ind/'+codigo)
+    else:
+        form = Recibo_IndForm()
+        return render(request,"cevest/altera.html",{'form':form,})
+
+def recibo_ind2(request, pk):
+#    aluno = Aluno.objects.get(pk=pk)
+    aluno = Aluno.objects.get(cpf='05334010700', dt_nascimento='1978-11-02')
+
+    return render(request,"cevest/recibo_ind.html",{'aluno':aluno,})
+
+#//////////////////
+#// Imprime pauta
+#//////////////////
+
+def pauta(request, turma_id):
+#    aluno = Aluno.objects.get(pk=pk)
+
+#    alunos = Aluno.objects.select_related('Aluno_Turma',).filter(turma_id__Aluno_Turma=turma_id)
+
+#select_related
+
+    alunos = Aluno_Turma.objects.order_by('aluno').filter(turma=turma_id)
+#    turma = Turma.objects.prefetch_related('horario__hora_inicio',).get(pk=turma_id)
+    turma = Turma.objects.get(pk=turma_id)
+    dias = range(20)
+
+    return render(request,"cevest/pauta.html",{'alunos':alunos,'dias':dias,'turma':turma,})
+
+# ///////////////////////////////////////
 """
 # Página Cadastro
 def cadadastro(request):
