@@ -93,6 +93,7 @@ class TurmaAdmin(admin.ModelAdmin):
     # ...
     list_display = ('curso', 'nome', 'curriculo', 'instrutor', 'dt_inicio', 'dt_fim')
     list_filter = ['curso']
+    filter_horizontal = ('horario',)
 
 admin.site.register(Turma, TurmaAdmin)
 

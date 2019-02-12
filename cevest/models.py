@@ -217,10 +217,10 @@ class Turma_Prevista(models.Model):
 
 class Turma(models.Model):
     class Meta:
-        ordering = ('curso',)
+        ordering = ('curso','nome')
 
     def __str__(self):
-        return '%s - %s - %s' % (self.nome, self.curso, self.curriculo)
+        return '%s - %s - %s' % (self.curso, self.nome, self.curriculo)
 
     nome = models.CharField(max_length=20, unique=True, blank=True, null=True)
     curso = models.ForeignKey(Curso, on_delete=models.PROTECT)
