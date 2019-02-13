@@ -1,139 +1,22 @@
-<html>
-<style>
-.break { page-break-before: always; }
+{% extends "cevest/base_adm.html" %}
 
-.fonte {
-    font-size: 14px;
-}
-</style>
-<body class="fonte">
+{% block content %}
 
-    {% for aluno in alunos %}
+<br>
+<h2 align="center">Sistema Administrativo</h2>
 
-        <!-- Primeiro cabeçalho -->
+<br>
+<table align="center">
+    {% for turma in turmas %}
 
-
-        {% if forloop.first %}
-            <div class="break"></div>
-
-            <table border="1" width="100%" class="fonte">
-
-            <tr width="100%">
-                <td rowspan="2">
-                    Centro de Formação Profissional e Transferência
-                    <br>
-                    Tecnológica para a Indústria do Vestuário
-                </td>
-                <td>
-                    {{ aluno.turma }}
-                </td>
-                <td>
-                    Instrutor(a): {{ turma.instrutor }}
-<!--                    Horário: {{ turma.horario }} -->
-                </td>
-                <td>
-                    Início do curso: {{ turma.dt_inicio }}
-                    <br>
-                    Fim do curso: {{ turma.dt_fim }}
-                </td>
-            </tr>
-
-            </table>
-            <table border="1" width="100%" class="fonte">
-                <tr>
-                    <td rowspan="2" align="center">#</td>
-                    <td rowspan="2" align="center">Matrícula</td>
-                    <td rowspan="2" align="center">Nome</td>
-                    <td colspan="20" align="center">Frequência</td>
-                    <td rowspan="2" align="center">Código da<br>Legenda</td>
-                </tr>
-                <tr height="35px">
-                    {% for dia in dias %}
-                        <td width="25px">
-                        </td>
-                    {% endfor %}
-
-                </tr>
-
-        {% endif %}
-
-        <!-- Cabeçalhos seguintes -->
-
-
-        {% if forloop.counter == 18 or forloop.counter == 36 %}
-            </table>
-            Legenda: (.) Presença / (F) Falta / (AP) Aprovado / (REP) Reprovado / (EV) Evadido / (DES) Desistente
-            <div class="break"></div>
-
-            <table border="1" width="100%" class="fonte">
-
-            <tr width="100%">
-                <td rowspan="2">
-                    Centro de Formação Profissional e Transferência
-                    <br>
-                    Tecnológica para a Indústria do Vestuário
-                </td>
-                <td>
-                    {{ aluno.turma }}
-                </td>
-                <td>
-                    Instrutor(a): {{ turma.instrutor }}
-<!--                    Horário: {{ turma.horario }} -->
-                </td>
-                <td>
-                    Início do curso: {{ turma.dt_inicio }}
-                    <br>
-                    Fim do curso: {{ turma.dt_fim }}
-                </td>
-            </tr>
-
-            </table>
-            <table border="1" width="100%" class="fonte">
-                <tr>
-                    <td rowspan="2" align="center">#</td>
-                    <td rowspan="2" align="center">Matrícula</td>
-                    <td rowspan="2" align="center">Nome</td>
-                    <td colspan="20" align="center">Frequência</td>
-                    <td rowspan="2" align="center">Código da<br>Legenda</td>
-                </tr>
-                <tr height="35px">
-                    {% for dia in dias %}
-                        <td width="25px">
-                        </td>
-                    {% endfor %}
-
-                </tr>
-
-        {% endif %}
-
-
-
-<!-- Corpo -->
-
-
-        <tr height="30px">
-            <td align="center">{{ forloop.counter }}</td>
-            <td align="center">
-                2019.{{ aluno.aluno.id | stringformat:"05d" }}
-            </td>
+        <tr>
             <td>
-                {{ aluno.aluno }}
+                <a href="pauta2/{{ turma.id }}" target="_blank">{{ turma.curso }} - {{ turma.nome }}</a><br>
             </td>
-
-            {% for dia in dias %}
-                <td>
-                </td>
-            {% endfor %}
-            <td></td>
         </tr>
     
     {% endfor %}
+
 </table>
-Legenda: (.) Presença / (F) Falta / (AP) Aprovado / (REP) Reprovado / (EV) Evadido / (DES) Desistente
-</body>
 
-<SCRIPT LANGUAGE="JavaScript">
-    window.print();
-</SCRIPT>
-
-</html>
+{% endblock %}

@@ -50,7 +50,13 @@ def recibo_ind2(request, pk):
 #// Imprime pauta
 #//////////////////
 
-def pauta(request, turma_id):
+def pauta(request):
+
+    turmas = Turma.objects.all()
+
+    return render(request,"cevest/pauta.html",{'turmas':turmas,})
+
+def pauta2(request, turma_id):
 #    aluno = Aluno.objects.get(pk=pk)
 
 #    alunos = Aluno.objects.select_related('Aluno_Turma',).filter(turma_id__Aluno_Turma=turma_id)
@@ -62,7 +68,7 @@ def pauta(request, turma_id):
     turma = Turma.objects.get(pk=turma_id)
     dias = range(20)
 
-    return render(request,"cevest/pauta.html",{'alunos':alunos,'dias':dias,'turma':turma,})
+    return render(request,"cevest/pauta2.html",{'alunos':alunos,'dias':dias,'turma':turma,})
 
 # ///////////////////////////////////////
 """

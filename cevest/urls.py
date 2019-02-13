@@ -9,7 +9,8 @@ urlpatterns = [
     path('portador', views.portador, name='portador'),
     path('recibo_ind', views.recibo_ind, name='recibo_individual'),
     path('recibo_ind/<int:pk>', views.recibo_ind2, name='recibo_individual2'),
-    path('pauta/<int:turma_id>', views.pauta, name='pauta'),
+    path('pauta', views.pauta, name='pauta'),
+    path('pauta2/<int:turma_id>', views.pauta2, name='pauta2'),
     path('sair', views.sair, name='sair'),
     #Usuário
     path('aguarde', views.aguarde, name='aguarde'),
