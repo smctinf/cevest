@@ -82,9 +82,6 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'pmnf',
-#        'USER': 'pmnf',
-#        'PASSWORD': '1w6l4x9zx2cb',
-#        'HOST': '35.225.36.72',
         'PORT': '',
 
          'USER': 'root',
