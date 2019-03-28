@@ -2,9 +2,9 @@
 from __future__ import unicode_literals
 
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse, HttpResponseRedirect, Http404
-
-from .forms import CadastroForm, AlteraForm, DetalheForm, CadForm, ConfirmaTurmaForm, Recibo_IndForm
+from django.http import HttpResponse, HttpResponseRedirect, Http404, QueryDict
+from django.forms.models import model_to_dict
+from .forms import CadastroForm, AlteraForm, DetalheForm, CadForm, ConfirmaTurmaForm, Recibo_IndForm, Altera_cpf
 from .models import Curso, Aluno, Cidade, Bairro, Profissao, Escolaridade, Matriz, Turma_Prevista, Aluno_Turma, Turma
 
 # Página index
@@ -71,25 +71,29 @@ def pauta2(request, turma_id):
     return render(request,"cevest/pauta2.html",{'alunos':alunos,'dias':dias,'turma':turma,})
 
 # ///////////////////////////////////////
-"""
-# Página Cadastro
-def cadadastro(request):
-    cidades = Cidade.objects.order_by('nome')
-    profissoes = Profissao.objects.order_by('nome')
-    escolaridades = Escolaridade.objects.order_by('descricao')
-    lista_curso = Curso.objects.filter(ativo=True, exibir=True).order_by('nome')
 
+# Página Cadastro
+def cadastro(request):
     if request.method == 'POST':
-        form = CadastroForm(request.POST)
+        form = CadForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect('/cevest/'+form.pk)
+            return HttpResponseRedirect('/cevest/index')#+form.pk)
     else:
-#        form = CadastroForm()
         form = CadForm()
-    return render(request,"cevest/cadastro.html",{'form':form, 'cidades': cidades, 'lista_curso': lista_curso, 'escolaridades': escolaridades, 'profissoes': profissoes })
+    return render(request,"cevest/cadastro2.html",{'form':form})#, 'cidades': cidades, 'lista_curso': lista_curso, 'escolaridades': escolaridades, 'profissoes': profissoes })
 #    return render(request,"cevest/cadastro.html",{'form':form, 'cidades': cidades })
-"""
+
+def AlterarCadastro(request,aluno):
+    if request.method == 'POST':
+        form = CadForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/cevest/index')
+    else:
+        form = CadForm()
+    return render(request,"cevest/cadastro2.html",{'form':form})
+
 # Teste detalhe
 def detalhe(request):
     if request.method == 'POST':
@@ -168,24 +172,27 @@ def bairro_serializer(bairro):
 
 
 def altera_cpf(request):
-    if request.method == 'POST':
-#        form = Altera_cpf(request.POST)
-        aluno = Aluno.objects.get(cpf='96847298715', dt_nascimento='2018-11-06')
-#        aluno = Aluno.objects.get(cpf=form.cpf, dt_nascimento=form.dt_nascimento)
-#        aluno = Aluno.objects.filter(cpf=request.cpf)
+    #Pegar CPF
+    #Procurar aluno com esse CPF
+    #Pegar instância de aluno
+    #jogar informações para CadForm
+    #atualizar com .save(instance)
 
-#        form = CadForm({'form':aluno})
-        return render(request,"cevest/cadastro.html",{'form':aluno})
-#        return redirect ('altera2', cpf=aluno.pk)
+    if request.method == 'POST':
+        cpf_temp = request.POST.get('cpf')
+        aluno_temp = Aluno.objects.get(cpf=cpf_temp)
+        
+        #qdict = QuerryDict('')
+        #qdict.update(model_to_dict(aluno_temp))
+        print("what")
+        #print(aluno_temp.get('nome'))
+        form = CadForm(instance=aluno_temp)
+        return render(request,"cevest/cadastro2.html",{'form':form})
     else:
         form = Altera_cpf()
-
         return render(request,"cevest/altera.html",{'form':form})
 
- #       return render(request, 'cevest/altera1.html', context)
-
-#        return redirect('cad', cpf=post.cpf, dt_nascimento=post.dt_nascimento)
-#    return render(request, 'cevest/altera1.html')
+        #return render(request,"cevest/altera.html",{ 'form' : form})
 
 def inicio(request):
     if request.user.is_authenticated:

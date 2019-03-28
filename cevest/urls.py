@@ -18,6 +18,7 @@ urlpatterns = [
     path('cursos', views.cursos, name='cursos'),
     path('curso/<int:pk>', views.curso, name='curso'),
     path('altera/<int:pk>', views.altera, name='altera'),
+    #path('alterar_cadastro/',views.AlterarCadastro, name='alterar_cadastro')
     path('detalhe', views.detalhe, name='detalhe'),
     path('matriz/<int:idcurso>', views.matriz, name='matriz'),
     path('turma_prevista/<int:idcurso>', views.turma_prevista, name='turma_prevista'),
@@ -28,8 +29,8 @@ urlpatterns = [
 
  # Teste
     path('altera_cpf', views.altera_cpf, name='altera_cpf'),
-#    path('altera/<int:cpf>/<int:dt_nascimento>/', views.altera, name='altera'),
-#    path('cadastro', views.cadastro, name='cadastro'),
+    path('altera/<int:cpf>/<int:dt_nascimento>/', views.altera, name='altera'),
+    path('cadastro', views.cadastro, name='cadastro'),
 #    path('teste', views.teste, name='teste'),
 ]
 

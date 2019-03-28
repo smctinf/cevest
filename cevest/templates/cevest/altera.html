@@ -2,44 +2,12 @@
 
 {% block content %}
 
-    <br>
-    <h2 align="center">Cadastro</h2>
-
-    <form method="post" name="form">
-        <table align=center>
-            {% csrf_token %}
-<!--
- {% for book in object_list %}
-    <tr>
-    <td>{{ book.name }}</td>
-    <td>{{ book.pages }}</td>
-    <td><a href="{% url "book_view" book.id %}">view</a></td>
-    <td><a href="{% url "book_edit" book.id %}">edit</a></td>
-    <td><a href="{% url "book_delete" book.id %}">delete</a></td>
-    </tr>
-    {% endfor %}
--->
-
-{% for field in form.visible_fields %}
-      <tr>
-        <th>{{ field.label_tag }}</th>
-        <td>
-          {{ field.errors }}
-          {{ field }}
-          {{ field.help_text }}
-        </td>
-      </tr>
-{% endfor %}
 
 
+<form action="altera_cpf" method='POST'>{% csrf_token %}
+  {{ form.as_p }}
+  <input type='submit' value='Save' />
+</form>
 
-
-<!--            {{ form.as_table }} -->
-        </table>
-        <center>
-            <input type="submit" class="btn btn-primary" value="Salvar">
-            <input type="button" class="btn btn-primary" value="Descartar" onclick="verifica()">
-        </center>
-    </form>
 
 {% endblock %}

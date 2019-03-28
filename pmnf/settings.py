@@ -26,7 +26,7 @@ SECRET_KEY = '++wlc1(z793vjl0u3q4&u!q#f!^pjo=7m!*wcj#4@xbx=jx5(j'
 DEBUG = True
 
 # ALLOWED_HOSTS = []
-ALLOWED_HOSTS = ["cevest.jlb.net.br", "127.0.0.1"]
+ALLOWED_HOSTS = ["cevest.jlb.net.br", "127.0.0.1", "localhost"]
 
 
 
@@ -80,12 +80,12 @@ WSGI_APPLICATION = 'pmnf.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'mysql.connector.django',
         'NAME': 'pmnf',
         'PORT': '',
 
          'USER': 'root',
-         'PASSWORD': 'x1pfrhlo',
+         'PASSWORD': 's3nh4d3sql',
          'HOST': '127.0.0.1',
 
     }
