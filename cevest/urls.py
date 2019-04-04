@@ -12,13 +12,14 @@ urlpatterns = [
     path('pauta', views.pauta, name='pauta'),
     path('pauta2/<int:turma_id>', views.pauta2, name='pauta2'),
     path('sair', views.sair, name='sair'),
+    path('gerar_certificados', views.GerarCertificados, name='gerar_certificados'),
     #Usuário
     path('aguarde', views.aguarde, name='aguarde'),
     path('index', views.index, name='index'),
     path('cursos', views.cursos, name='cursos'),
     path('curso/<int:pk>', views.curso, name='curso'),
     path('altera/<int:pk>', views.altera, name='altera'),
-    #path('alterar_cadastro/',views.AlterarCadastro, name='alterar_cadastro')
+    path('altera_cadastro',views.AlterarCadastro, name='altera_cadastro'),
     path('detalhe', views.detalhe, name='detalhe'),
     path('matriz/<int:idcurso>', views.matriz, name='matriz'),
     path('turma_prevista/<int:idcurso>', views.turma_prevista, name='turma_prevista'),
@@ -29,11 +30,6 @@ urlpatterns = [
 
  # Teste
     path('altera_cpf', views.altera_cpf, name='altera_cpf'),
-    path('altera/<int:cpf>/<int:dt_nascimento>/', views.altera, name='altera'),
+    #path('altera/<int:cpf>/<int:dt_nascimento>/', views.altera, name='altera'),
     path('cadastro', views.cadastro, name='cadastro'),
-#    path('teste', views.teste, name='teste'),
 ]
-
-# urlpatterns = patterns('',
-#     url(r'^cevest/$', views.index, name='index'),
-# )

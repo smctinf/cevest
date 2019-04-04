@@ -4,8 +4,9 @@ from __future__ import unicode_literals
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, Http404, QueryDict
 from django.forms.models import model_to_dict
-from .forms import CadastroForm, AlteraForm, DetalheForm, CadForm, ConfirmaTurmaForm, Recibo_IndForm, Altera_cpf
+from .forms import CadastroForm, AlteraForm, DetalheForm, CadForm, ConfirmaTurmaForm, Recibo_IndForm, Altera_cpf, Altera_Cadastro
 from .models import Curso, Aluno, Cidade, Bairro, Profissao, Escolaridade, Matriz, Turma_Prevista, Aluno_Turma, Turma
+import datetime
 
 # Página index
 def aguarde(request):
@@ -83,16 +84,6 @@ def cadastro(request):
         form = CadForm()
     return render(request,"cevest/cadastro2.html",{'form':form})#, 'cidades': cidades, 'lista_curso': lista_curso, 'escolaridades': escolaridades, 'profissoes': profissoes })
 #    return render(request,"cevest/cadastro.html",{'form':form, 'cidades': cidades })
-
-def AlterarCadastro(request,aluno):
-    if request.method == 'POST':
-        form = CadForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect('/cevest/index')
-    else:
-        form = CadForm()
-    return render(request,"cevest/cadastro2.html",{'form':form})
 
 # Teste detalhe
 def detalhe(request):
@@ -172,27 +163,63 @@ def bairro_serializer(bairro):
 
 
 def altera_cpf(request):
-    #Pegar CPF
-    #Procurar aluno com esse CPF
-    #Pegar instância de aluno
-    #jogar informações para CadForm
-    #atualizar com .save(instance)
-
     if request.method == 'POST':
-        cpf_temp = request.POST.get('cpf')
-        aluno_temp = Aluno.objects.get(cpf=cpf_temp)
-        
-        #qdict = QuerryDict('')
-        #qdict.update(model_to_dict(aluno_temp))
-        print("what")
-        #print(aluno_temp.get('nome'))
-        form = CadForm(instance=aluno_temp)
-        return render(request,"cevest/cadastro2.html",{'form':form})
-    else:
-        form = Altera_cpf()
-        return render(request,"cevest/altera.html",{'form':form})
+        altera_form = Altera_cpf(request.POST)   
+        cpf_temp = request.POST.get("cpf")
+        request.session["aluno_cpf"] = cpf_temp
+        print(cpf_temp)
+        return HttpResponseRedirect("/altera_cadastro")
+    form = Altera_cpf()
+    return render(request,"cevest/altera.html",{'form':form})
 
-        #return render(request,"cevest/altera.html",{ 'form' : form})
+
+def AlterarCadastro(request):
+    cpf_temp = request.session["aluno_cpf"]
+    aluno_temp = Aluno.objects.get(cpf=cpf_temp)
+    
+    if request.method == 'POST':
+        form = Altera_Cadastro(request.POST, instance = aluno_temp)
+        if form.is_valid():
+            form.save(aluno_temp)
+            return HttpResponseRedirect('/cevest/index')
+    #form = CadForm(aluno_temp)
+    form=Altera_Cadastro(instance=aluno_temp)
+    return render(request,"cevest/altera_cadastro.html",{'form':form})
+
+def GerarCertificados(request):
+    turma = Turma.objects.get(id=1)
+    turma_aluno = Aluno_Turma.objects.filter(turma = turma)
+    alunos = []
+    for ta in turma_aluno:
+        alunos.append(ta.aluno)
+    curso_turma = turma.curso
+    data_inicio = turma.dt_inicio.strftime("%d/%m")
+    data_fim = turma.dt_fim.strftime("%d/%m/%Y")
+    data_atual = datetime.date.today()
+    instrutor = turma.instrutor
+
+    matrizes = Matriz.objects.filter(curso=curso_turma, curriculo = turma.curriculo)
+    disciplinas = []
+    total_horas = 0
+    for mat in matrizes:
+        disciplinas.append(mat.disciplina)
+        total_horas = total_horas + mat.disciplina.carga_horaria
+
+    context = {
+        'alunos' : alunos,
+        'curso' : curso_turma,
+        'turma' : turma,
+        'data_inicio' : data_inicio,
+        'data_fim' : data_fim,
+        'data_atual' : data_atual,
+        'instrutor' : instrutor,
+        'disciplinas': disciplinas,
+        'total_horas' : total_horas,
+    }
+
+    template_name = 'cevest/certificados.html'
+    return render(request, template_name,context)
+
 
 def inicio(request):
     if request.user.is_authenticated:

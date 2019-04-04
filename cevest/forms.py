@@ -50,7 +50,7 @@ class CadForm(forms.ModelForm):
         )
         
         nome = forms.CharField(max_length=60)
-        cpf = forms.CharField(label='CPF:', max_length=11)
+        #cpf = forms.CharField(label='CPF:', max_length=11)
         email = forms.EmailField(label='E-Mail:',max_length=254)
         nis = forms.IntegerField()
         sexo = forms.ChoiceField(widget=forms.RadioSelect, choices=SEX_CHOICES)
@@ -76,6 +76,10 @@ class CadForm(forms.ModelForm):
             fields = ['nome','cpf','email','nis','sexo','quant_filhos','dt_nascimento', 'bolsa_familia',
             'portador_necessidades_especiais', 'disponibilidade', 'celular','fixo_residencia','fixo_trabalho',
             'cidade','bairro','cep','endereco','escolaridade','profissao','desempregado']
+        
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self.fields['nis'].required = False
 """
         def __init__(self,*args,**kwargs):
             super().__init__(*args,**kwargs)
@@ -110,3 +114,9 @@ class Altera_cpf(forms.Form):
         def getCPF(self):
             return self.cpf
         #dt_nascimento = forms.CharField(widget=forms.DateField)
+
+class Altera_Cadastro(CadForm):
+    class Meta(CadForm.Meta):
+        exclude = ('cpf',)
+    
+
