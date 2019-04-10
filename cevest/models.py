@@ -90,6 +90,7 @@ class Instrutor(models.Model):
         return self.nome
 
     nome = models.CharField(max_length=60)
+    matricula = models.CharField(unique = True, null = True, max_length=11) 
     dt_inclusao = models.DateTimeField(auto_now_add=True)
     ativo = models.BooleanField(default=True)
 
@@ -231,6 +232,16 @@ class Turma(models.Model):
     quant_alunos = models.PositiveSmallIntegerField(default=0)
     dt_inclusao = models.DateTimeField(auto_now_add=True)
 
+class Situacao(models.Model):
+    class Meta:
+        verbose_name = "Situação"
+        verbose_name_plural = "Situações"
+
+    def __str__(self):
+        return self.descricao
+
+    descricao = models.CharField(max_length=10, unique = True, null = True)
+
 class Aluno_Turma(models.Model):
     class Meta:
         verbose_name_plural = "Relação de Alunos por Turma"
@@ -241,6 +252,7 @@ class Aluno_Turma(models.Model):
 
     turma = models.ForeignKey(Turma, on_delete=models.PROTECT)
     aluno = models.ForeignKey(Aluno, on_delete=models.PROTECT)
+    situacao = models.ForeignKey(Situacao, on_delete=models.PROTECT)
     dt_inclusao = models.DateTimeField(auto_now_add=True)
 
 class Status_Aluno_Turma_Prevista(models.Model):

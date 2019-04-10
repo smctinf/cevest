@@ -12,6 +12,7 @@ urlpatterns = [
     path('pauta', views.pauta, name='pauta'),
     path('pauta2/<int:turma_id>', views.pauta2, name='pauta2'),
     path('sair', views.sair, name='sair'),
+    path('selecionar_turma_para_certificado', views.SelecionarTurmaParaCertificado, name='selecionar_turma_para_certificado'),
     path('gerar_certificados', views.GerarCertificados, name='gerar_certificados'),
     #Usuário
     path('aguarde', views.aguarde, name='aguarde'),
@@ -32,4 +33,5 @@ urlpatterns = [
     path('altera_cpf', views.altera_cpf, name='altera_cpf'),
     #path('altera/<int:cpf>/<int:dt_nascimento>/', views.altera, name='altera'),
     path('cadastro', views.cadastro, name='cadastro'),
+    path('corrigir_capitalizacao', views.capitalizar_nomes, name="capitalizar_nomes")
 ]

@@ -4,9 +4,11 @@ from __future__ import unicode_literals
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, Http404, QueryDict
 from django.forms.models import model_to_dict
-from .forms import CadastroForm, AlteraForm, DetalheForm, CadForm, ConfirmaTurmaForm, Recibo_IndForm, Altera_cpf, Altera_Cadastro
-from .models import Curso, Aluno, Cidade, Bairro, Profissao, Escolaridade, Matriz, Turma_Prevista, Aluno_Turma, Turma
+from .forms import CadastroForm, AlteraForm, DetalheForm, CadForm, ConfirmaTurmaForm, Recibo_IndForm, Altera_cpf, Altera_Cadastro, EscolherTurma
+from .models import Curso, Aluno, Cidade, Bairro, Profissao, Escolaridade, Matriz, Turma_Prevista, Aluno_Turma, Turma, Situacao
 import datetime
+from .functions import get_proper_casing
+
 
 # Página index
 def aguarde(request):
@@ -161,12 +163,23 @@ def bairro_serializer(bairro):
 
 # /////////////////////////////////
 
+def capitalizar_nomes(request):
+    alunos = Aluno.objects.all()
+    for aluno in alunos:
+        aluno.nome = get_proper_casing(aluno.nome)
+        aluno.save()
+    return HttpResponseRedirect("/index")
 
 def altera_cpf(request):
     if request.method == 'POST':
-        altera_form = Altera_cpf(request.POST)   
-        cpf_temp = request.POST.get("cpf")
+        altera_form = Altera_cpf(request.POST)
+        temp_post = request.POST.copy()   
+        cpf_temp = temp_post.get("cpf")
+        #nasc_temp = temp_post.get("dt_nascimento")
+        print(cpf_temp)
+        #print(nasc_temp)
         request.session["aluno_cpf"] = cpf_temp
+        #request.session["aluno_nasc"] = nasc_temp
         print(cpf_temp)
         return HttpResponseRedirect("/altera_cadastro")
     form = Altera_cpf()
@@ -175,20 +188,46 @@ def altera_cpf(request):
 
 def AlterarCadastro(request):
     cpf_temp = request.session["aluno_cpf"]
-    aluno_temp = Aluno.objects.get(cpf=cpf_temp)
+    #nasc_temp = request.session["aluno_nasc"]
+    aluno_temp = Aluno.objects.get(cpf=cpf_temp)#,dt_nascimento = nasc_temp)
     
     if request.method == 'POST':
         form = Altera_Cadastro(request.POST, instance = aluno_temp)
         if form.is_valid():
             form.save(aluno_temp)
             return HttpResponseRedirect('/cevest/index')
-    #form = CadForm(aluno_temp)
-    form=Altera_Cadastro(instance=aluno_temp)
+    form=Altera_Cadastro(initial={'cidade':aluno_temp.bairro.cidade}, instance=aluno_temp)
     return render(request,"cevest/altera_cadastro.html",{'form':form})
 
+class temp_disciplina:
+    nome = None
+    numero_aulas = None
+    numero_horas = None
+    def __init__(self, nome, numero_aulas, numero_horas):
+        self.nome = nome
+        self.numero_aulas=numero_aulas
+        self.numero_horas=numero_horas
+        self.clean()
+    def clean(self):
+        if self.numero_aulas < 10:
+            self.numero_aulas = "0" + str(self.numero_aulas)
+        if self.numero_horas < 10:
+            self.numero_horas = "0" + str(self.numero_horas)
+
+def SelecionarTurmaParaCertificado(request):
+    if request.method == 'POST':
+        turma = EscolherTurma(request.POST)   
+        turma = request.POST.get("turma")
+        request.session["turma"] = turma
+        return HttpResponseRedirect("/gerar_certificados")
+    form = EscolherTurma()
+    return render(request,"cevest/escolher_turma.html",{'form':form})
+
 def GerarCertificados(request):
-    turma = Turma.objects.get(id=1)
-    turma_aluno = Aluno_Turma.objects.filter(turma = turma)
+    turma_id = request.session["turma"]
+    turma = Turma.objects.get(id=turma_id)
+    aprovado = Situacao.objects.get(descricao = "aprovado")
+    turma_aluno = Aluno_Turma.objects.filter(turma = turma,situacao=aprovado.id)
     alunos = []
     for ta in turma_aluno:
         alunos.append(ta.aluno)
@@ -201,9 +240,12 @@ def GerarCertificados(request):
     matrizes = Matriz.objects.filter(curso=curso_turma, curriculo = turma.curriculo)
     disciplinas = []
     total_horas = 0
+    total_aulas = 0
+
     for mat in matrizes:
-        disciplinas.append(mat.disciplina)
+        disciplinas.append(temp_disciplina(mat.disciplina.nome,mat.num_aulas,mat.disciplina.carga_horaria))
         total_horas = total_horas + mat.disciplina.carga_horaria
+        total_aulas = total_aulas + mat.num_aulas
 
     context = {
         'alunos' : alunos,
@@ -215,6 +257,7 @@ def GerarCertificados(request):
         'instrutor' : instrutor,
         'disciplinas': disciplinas,
         'total_horas' : total_horas,
+        'total_aulas': total_aulas,
     }
 
     template_name = 'cevest/certificados.html'

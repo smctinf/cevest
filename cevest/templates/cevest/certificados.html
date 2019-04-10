@@ -146,15 +146,16 @@
 <body>
 <div class="break">
 <!--Colocar imagens aqui-->
+{% load staticfiles %}
     <div class = logos>
         <div class = logofriburgo>
-            <img src="file://C:\Users\luisv\Documents\projetocevest\pmnf\cevest\static\cevest\images\logo-nova-friburgo.jpg" alt="Logo Nova Friburgo">
+            <img src="{% static "cevest\images\logo-nova-friburgo.jpg" %}" alt="Logo Nova Friburgo">
         </div>
         <div class = logo200anos>
-            <img src="file://C:\Users\luisv\Documents\projetocevest\pmnf\cevest\static\cevest\images\logo-200-anos.png" alt="Logo 200 anos">
+            <img src="{% static "cevest\images\logo-200-anos.png" %}" alt="Logo 200 anos">
         </div>
         <div class = logocevest>
-            <img src="file://C:\Users\luisv\Documents\projetocevest\pmnf\cevest\static\cevest\images\logo-cevest.png" alt="Logo cevest">
+            <img src="{% static "cevest\images\logo-cevest.png" %}" alt="Logo cevest">
         </div>
     </div>
     <div class = fontecabecalho1>
@@ -173,6 +174,7 @@
     </div>
 
     <div class = data>
+        <br>
         Nova Friburgo, {{data_atual}}.
     </div>
 
@@ -232,13 +234,13 @@
                         <td>{{forloop.counter}}</td>
                         <td>{{disciplina.nome}}</td>
                         <td>{{disciplina.numero_aulas}}</td>
-                        <td>{{disciplina.carga_horaria}}</td>
+                        <td>{{disciplina.numero_horas}}</td>
                     </tr>
                     {% endfor %}
                     <tr>
                         <td colspan="2" class = tablePart2>TOTAL</td>
-                        <td>{{total_aulas}}</td>
-                        <td>{{total_horas}}</td>
+                        <td>{{total_aulas}} aulas</td>
+                        <td>{{total_horas}}h</td>
                     </tr>
             </table>
     </div>

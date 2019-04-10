@@ -1,6 +1,7 @@
 from django import forms
-from .models import Aluno, Curso, Bairro, Escolaridade, Profissao, Escolaridade, Turma_Prevista, Turno, Cidade
+from .models import Aluno, Curso, Bairro, Escolaridade, Profissao, Escolaridade,Turma, Turma_Prevista, Turno, Cidade
 from django.forms import ModelForm
+from .functions import get_proper_casing
 
 class Recibo_IndForm(forms.Form):
     codigo = forms.CharField(label='Código:', max_length=5)
@@ -48,7 +49,7 @@ class CadForm(forms.ModelForm):
                 ('F', 'Feminino',),
                 ('M', 'Masculino',),
         )
-        
+        cursos = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple,queryset=Curso.objects.all())
         nome = forms.CharField(max_length=60)
         #cpf = forms.CharField(label='CPF:', max_length=11)
         email = forms.EmailField(label='E-Mail:',max_length=254)
@@ -73,13 +74,20 @@ class CadForm(forms.ModelForm):
         
         class Meta:
             model = Aluno
-            fields = ['nome','cpf','email','nis','sexo','quant_filhos','dt_nascimento', 'bolsa_familia',
+            fields = ['cursos', 'nome','cpf','email','nis','sexo','quant_filhos','dt_nascimento', 'bolsa_familia',
             'portador_necessidades_especiais', 'disponibilidade', 'celular','fixo_residencia','fixo_trabalho',
-            'cidade','bairro','cep','endereco','escolaridade','profissao','desempregado']
+            'cidade','bairro','cep','endereco','complemento','profissao','escolaridade','desempregado']
         
         def __init__(self, *args, **kwargs):
             super().__init__(*args, **kwargs)
             self.fields['nis'].required = False
+
+        def clean_nome(self):
+            nome = self.cleaned_data["nome"]
+            nome = nome.lower()
+            nome = nome.title()
+            return nome
+
 """
         def __init__(self,*args,**kwargs):
             super().__init__(*args,**kwargs)
@@ -109,10 +117,12 @@ class CadForm(forms.ModelForm):
     ativo = models.BooleanField(default=True)
 """
 
+class EscolherTurma(forms.Form):
+    turma = forms.ModelChoiceField(queryset=Turma.objects.all())
+
 class Altera_cpf(forms.Form):
         cpf = forms.CharField(label='CPF:', max_length=11)
-        def getCPF(self):
-            return self.cpf
+        #dt_nascimento = forms.DateField(label='Data de nascimento:', initial="1990-06-21", widget=forms.SelectDateWidget(years=YEARS),localize=True)
         #dt_nascimento = forms.CharField(widget=forms.DateField)
 
 class Altera_Cadastro(CadForm):
