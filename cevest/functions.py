@@ -86,10 +86,3 @@ def validate_CNPJ(value):
         raise ValidationError(error_messages['invalid'])
 
     return orig_value
-
-    
-def get_proper_casing(name):
-    temp_name = name
-    temp_name = temp_name.lower()
-    temp_name = temp_name.title()
-    return temp_name

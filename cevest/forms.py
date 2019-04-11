@@ -1,26 +1,11 @@
 from django import forms
-from .models import Aluno, Curso, Bairro, Escolaridade, Profissao, Escolaridade,Turma, Turma_Prevista, Turno, Cidade
+from .models import Aluno, Curso, Bairro, Escolaridade, Profissao, Escolaridade,Turma, Turma_Prevista, Turno, Cidade, Situacao
 from django.forms import ModelForm
-from .functions import get_proper_casing
 
 class Recibo_IndForm(forms.Form):
     codigo = forms.CharField(label='Código:', max_length=5)
 
 YEARS= [x for x in range(1940,2021)]
-
-class CadastroForm(forms.ModelForm):
-    dt_nascimento = forms.DateField(label='Dt.Nascimento:', initial="1990-06-21", widget=forms.SelectDateWidget(years=YEARS))
-#    cidade = forms.CharField(label='Cidade:', max_length=11)
-    class Meta:
-        model = Aluno
-        exclude = ['ativo','ordem_judicial']
-        widgets = {'disponibilidade': forms.CheckboxSelectMultiple, 'cursos': forms.CheckboxSelectMultiple}
-#        widgets = {'curso': forms.CheckboxSelectMultiple}
-#   curso = forms.ModelMultipleChoiceField(queryset=Curso.objects.all(), widget=forms.CheckboxSelectMultiple)
-
-class AlteraForm(forms.Form):
-    cpf = forms.CharField(label='CPF:', max_length=11)
-    dt_nascimento = forms.DateField(label='Dt.Nascimento:', initial="1990-06-21", widget=forms.SelectDateWidget(years=YEARS))
 
 class DetalheForm(forms.Form):
     cpf = forms.CharField(label='CPF:', max_length=11)
@@ -30,18 +15,6 @@ class ConfirmaTurmaForm(forms.Form):
 #    cpf = forms.CharField(label='CPF:', max_length=11)
     turma = forms.ModelChoiceField(queryset=Turma_Prevista.objects.all())
 
-"""
-class CadastroForm(forms.Form):
-
-   nome = forms.CharField(label='nome', max_length=60)
-   curso = forms.ModelMultipleChoiceField(queryset=Curso.objects.all(), widget=forms.CheckboxSelectMultiple)
-
-   class Meta:
-        model = Aluno
-#        fields = ['nome', 'cpf']
-#        fields = '__all__'
-#        exclude = ['campo']
-"""
 
 class CadForm(forms.ModelForm):
 
@@ -88,45 +61,12 @@ class CadForm(forms.ModelForm):
             nome = nome.title()
             return nome
 
-"""
-        def __init__(self,*args,**kwargs):
-            super().__init__(*args,**kwargs)
-            self.fields['bairro'].queryset = Bairro.objects.none()
-            if 'cidade' in self.data:
-                try:
-                    cidade_temp = int(self.data.get('cidade'))
-                    self.fields['bairro'].queryset = Bairro.objects.queryset.filter(cidade=cidade_temp)
-                except (ValueError, TypeError):
-                    pass  # invalid input from the client; ignore and fallback to empty City queryset
-"""
-"""
-#        disponibilidade = forms.CharField(max_length=1, choices=TURNO)
-#        curso = forms.ModelMultipleChoiceField(queryset=Curso.objects.all(), widget=forms.CheckboxSelectMultiple)
-
-#        dt_nascimento = forms.DateField(label='Dt.Nascimento:', initial="1990-06-21", widget=forms.SelectDateWidget(years=YEARS))
- #       curso = forms.ModelMultipleChoiceField (widget = forms.CheckboxSelectMultiple())
-#        class Meta:
-#            model = Aluno
-#           fields = '__all__'
-#            exclude = ['ativo']
-#            widgets = {'disponibilidade': forms.CheckboxSelectMultiple}
-#            filter_horizontal = {'cursos'}
-"""
-"""
-    dt_inclusao = models.DateTimeField(auto_now_add=True)
-    ativo = models.BooleanField(default=True)
-"""
-
-class EscolherTurma(forms.Form):
-    turma = forms.ModelChoiceField(queryset=Turma.objects.all())
 
 class Altera_cpf(forms.Form):
         cpf = forms.CharField(label='CPF:', max_length=11)
-        #dt_nascimento = forms.DateField(label='Data de nascimento:', initial="1990-06-21", widget=forms.SelectDateWidget(years=YEARS),localize=True)
+        dt_nascimento = forms.DateField(label='Data de nascimento:', initial="1990-06-21", widget=forms.SelectDateWidget(years=YEARS))
         #dt_nascimento = forms.CharField(widget=forms.DateField)
 
 class Altera_Cadastro(CadForm):
     class Meta(CadForm.Meta):
         exclude = ('cpf',)
-    
-

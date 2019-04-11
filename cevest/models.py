@@ -7,6 +7,7 @@ from .functions import validate_CPF
 
 # Create your models here.
 
+
 class Pre_requisito(models.Model):
     def __str__(self):
         return self.descricao

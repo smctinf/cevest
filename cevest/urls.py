@@ -1,8 +1,10 @@
-from django.urls import path
+from django.urls import path,include
+from django.contrib.auth import views as auth_views
 from . import views
 
 urlpatterns = [
     #Administrativo
+    path('administracao/',include('Administracao.urls')),
     path('inicio', views.inicio, name='inicio'),
     path('confirmaturma', views.confirmaturma, name='confirmaturma'),
     path('alocados', views.alocados, name='alocados'),
@@ -12,11 +14,10 @@ urlpatterns = [
     path('pauta', views.pauta, name='pauta'),
     path('pauta2/<int:turma_id>', views.pauta2, name='pauta2'),
     path('sair', views.sair, name='sair'),
-    path('selecionar_turma_para_certificado', views.SelecionarTurmaParaCertificado, name='selecionar_turma_para_certificado'),
-    path('gerar_certificados', views.GerarCertificados, name='gerar_certificados'),
+
     #Usuário
     path('aguarde', views.aguarde, name='aguarde'),
-    path('index', views.index, name='index'),
+    path('', views.index, name='index'),
     path('cursos', views.cursos, name='cursos'),
     path('curso/<int:pk>', views.curso, name='curso'),
     path('altera/<int:pk>', views.altera, name='altera'),
@@ -33,5 +34,4 @@ urlpatterns = [
     path('altera_cpf', views.altera_cpf, name='altera_cpf'),
     #path('altera/<int:cpf>/<int:dt_nascimento>/', views.altera, name='altera'),
     path('cadastro', views.cadastro, name='cadastro'),
-    path('corrigir_capitalizacao', views.capitalizar_nomes, name="capitalizar_nomes")
 ]
