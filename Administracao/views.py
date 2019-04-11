@@ -87,8 +87,8 @@ def GerarCertificados(request):
     total_aulas = 0
 
     for mat in matrizes:
-        disciplinas.append(temp_disciplina(mat.disciplina.nome,mat.num_aulas,mat.disciplina.carga_horaria))
-        total_horas = total_horas + mat.disciplina.carga_horaria
+        disciplinas.append(temp_disciplina(mat.disciplina.nome,mat.num_aulas,mat.carga_horaria_total))
+        total_horas = total_horas + mat.carga_horaria_total
         total_aulas = total_aulas + mat.num_aulas
 
     context = {

@@ -81,6 +81,7 @@ class Matriz(models.Model):
     curso = models.ForeignKey(Curso, on_delete=models.PROTECT)
     disciplina = models.ForeignKey(Disciplina, on_delete=models.PROTECT)
     num_aulas = models.PositiveSmallIntegerField()
+    carga_horaria_total = models.PositiveSmallIntegerField()
 
 class Instrutor(models.Model):
     class Meta:
