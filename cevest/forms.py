@@ -1,6 +1,7 @@
 from django import forms
 from .models import Aluno, Curso, Bairro, Escolaridade, Profissao, Escolaridade,Turma, Turma_Prevista, Turno, Cidade, Situacao
 from django.forms import ModelForm
+from .functions import validate_CPF
 
 class Recibo_IndForm(forms.Form):
     codigo = forms.CharField(label='Código:', max_length=5)
@@ -65,6 +66,10 @@ class CadForm(forms.ModelForm):
 class Altera_cpf(forms.Form):
         cpf = forms.CharField(label='CPF:', max_length=11)
         dt_nascimento = forms.DateField(label='Data de nascimento:', initial="1990-06-21", widget=forms.SelectDateWidget(years=YEARS))
+
+        def clean_cpf(self):
+            cpf = validate_CPF(self.cleaned_data["cpf"])
+            return cpf
         #dt_nascimento = forms.CharField(widget=forms.DateField)
 
 class Altera_Cadastro(CadForm):

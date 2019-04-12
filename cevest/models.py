@@ -150,7 +150,7 @@ class Aluno(models.Model):
 
     nome = models.CharField(max_length=60)
     email = models.EmailField(max_length=254, blank=True, null=True)
-    cpf = models.CharField(unique=True, max_length=11)#, validators=[validate_CPF])
+    cpf = models.CharField(unique=True, max_length=11, validators=[validate_CPF])
     nis = models.CharField(unique=True, max_length=11, null=True)
     bolsa_familia = models.BooleanField(default=False)
     quant_filhos = models.PositiveSmallIntegerField(default=0)

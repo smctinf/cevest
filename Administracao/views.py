@@ -1,15 +1,18 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, Http404, QueryDict
 from django.forms.models import model_to_dict
-from .forms import EscolherTurma#, Altera_Situacao
+from .forms import EscolherTurma, Altera_Situacao
 from cevest.models import Curso, Aluno, Cidade, Bairro, Profissao, Escolaridade, Matriz, Turma_Prevista, Aluno_Turma, Turma, Situacao
 import datetime
 from .functions import get_proper_casing
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth import logout
 from django.urls import reverse
+from django.forms.formsets import formset_factory
 
 
+@login_required
+@permission_required('cevest.acesso_admin', raise_exception=True)
 def capitalizar_nomes(request):
     print(request.user)
     alunos = Aluno.objects.all()
@@ -22,17 +25,6 @@ def capitalizar_nomes(request):
 @permission_required('cevest.acesso_admin', raise_exception=True)
 def AreaAdmin(request):
     return render(request,"Administracao/admin_area.html")
-
-# @login_required
-# @permission_required('cevest.acesso_admin', raise_exception=True)
-# def SelecionarTurmaParaSituacao(request):
-#     if request.method == 'POST':
-#         turma = EscolherTurma(request.POST)   
-#         turma = request.POST.get("turma")
-#         request.session["turma"] = turma
-#         return HttpResponseRedirect(reverse('GerarCertificados'))
-#     form = EscolherTurma()
-#     return render(request,"Administracao/escolher_turma.html",{'form':form})
 
 def logout_view(request):
     logout(request)
@@ -107,12 +99,42 @@ def GerarCertificados(request):
     template_name = 'Administracao/certificados.html'
     return render(request, template_name,context)
 
-# @login_required
-# @permission_required('cevest.acesso_admin', raise_exception=True)
-# def AlterarSituacaoAluno(request):
-#     temp_turma = request.session["turma"]
-#     turma_aluno = Aluno_Turma.objects.filter(turma = temp_turma)
-#     alunos=[]
-#     for ta in turma_aluno:
-#         alunos.append(ta.aluno)
-#     SituacaoFormset = formset_factory(Altera_Situacao,extra=len(alunos))
+@login_required
+@permission_required('cevest.acesso_admin', raise_exception=True)
+def SelecionarTurmaParaSituacao(request):
+    if request.method == 'POST':
+        turma = EscolherTurma(request.POST)   
+        turma = request.POST.get("turma")
+        request.session["turma"] = turma
+        return HttpResponseRedirect(reverse('administracao:alterar_situacao_aluno'))
+    form = EscolherTurma()
+    return render(request,"Administracao/escolher_turma.html",{'form':form})
+
+@login_required
+@permission_required('cevest.acesso_admin', raise_exception=True)
+def AlterarSituacaoAluno(request):
+    temp_turma = request.session["turma"]
+    nome_turma = Turma.objects.get(id = temp_turma)
+    turma_aluno = Aluno_Turma.objects.filter(turma = temp_turma)
+    data = []
+    for ta in turma_aluno:
+        temp_dict = {"nome" : ta.aluno.nome, "situacao": ta.situacao.id}
+        data.append(temp_dict)
+    SituacaoFormset = formset_factory(Altera_Situacao,max_num=len(data))
+    if request.method == "POST":
+        post_data = request.POST.copy()
+        formset = SituacaoFormset(post_data,data)
+        i=0
+        if formset.is_valid():
+            for ta in turma_aluno:
+                situacao_id = post_data.get('form-'+ str(i) +'-situacao')
+                situacao_id = int(situacao_id)
+                ta.situacao = Situacao.objects.get(id=situacao_id)
+                ta.save()
+                i = i+1
+            return HttpResponseRedirect(reverse('administracao:area_admin'))
+        else:
+            print("Erro:")
+            print(formset.errors)
+    formset = SituacaoFormset(initial=data)
+    return render(request,"Administracao/alterar_situacao.html",{'formset':formset, 'nome_turma':nome_turma})

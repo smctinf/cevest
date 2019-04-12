@@ -18,6 +18,7 @@ urlpatterns = [
     #Usuário
     path('aguarde', views.aguarde, name='aguarde'),
     path('', views.index, name='index'),
+    path('index', views.index, name='index'),
     path('cursos', views.cursos, name='cursos'),
     path('curso/<int:pk>', views.curso, name='curso'),
     path('altera/<int:pk>', views.altera, name='altera'),

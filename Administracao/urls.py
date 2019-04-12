@@ -8,6 +8,8 @@ urlpatterns = [
     path('gerar_certificados', views.GerarCertificados, name='gerar_certificados'),
     path('',views.AreaAdmin, name='area_admin'),
     path('corrigir_capitalizacao', views.capitalizar_nomes, name="capitalizar_nomes"),
+    path('selecionar_turma_para_alterar_situacao',views.SelecionarTurmaParaSituacao, name="selecionar_turma_para_alterar_situacao"),
+    path('alterar_situacao_aluno',views.AlterarSituacaoAluno, name="alterar_situacao_aluno"),
     path('login', auth_views.LoginView.as_view(template_name='cevest/login.html')),
     path('logout',views.logout_view,name="logout"),
 ]

@@ -9,9 +9,6 @@ from .forms import DetalheForm, CadForm, ConfirmaTurmaForm, Recibo_IndForm, Alte
 from .models import Curso, Aluno, Cidade, Bairro, Profissao, Escolaridade, Matriz, Turma_Prevista, Aluno_Turma, Turma, Situacao
 from django.urls import reverse
 
-#from django.forms.formsets import formset_factory
-
-
 
 # Página index
 def aguarde(request):
@@ -167,15 +164,15 @@ def bairro_serializer(bairro):
 # /////////////////////////////////
 
 def altera_cpf(request):
+    #Atualiza a página em caso de dados não serem válidos ao invés de mostrar qual o erro
     if request.method == 'POST':
         altera_form = Altera_cpf(request.POST)
-        altera_form.is_valid()
-        cpf_temp = altera_form.cleaned_data['cpf']
-        nasc_temp = altera_form.cleaned_data['dt_nascimento']
-        aluno_temp = Aluno.objects.get(cpf=cpf_temp, dt_nascimento = nasc_temp)
-        request.session["aluno_id"] = aluno_temp.id
-        print(cpf_temp)
-        return HttpResponseRedirect(reverse(AlterarCadastro))
+        if altera_form.is_valid():
+            cpf_temp = altera_form.cleaned_data['cpf']
+            nasc_temp = altera_form.cleaned_data['dt_nascimento']
+            aluno_temp = Aluno.objects.get(cpf=cpf_temp, dt_nascimento = nasc_temp)
+            request.session["aluno_id"] = aluno_temp.id
+            return HttpResponseRedirect(reverse(AlterarCadastro))
     form = Altera_cpf()
     return render(request,"cevest/altera.html",{'form':form})
 
