@@ -2,14 +2,14 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, Http404, QueryDict
 from django.forms.models import model_to_dict
 from .forms import EscolherTurma, Altera_Situacao
-from cevest.models import Curso, Aluno, Cidade, Bairro, Profissao, Escolaridade, Matriz, Turma_Prevista, Aluno_Turma, Turma, Situacao
+from cevest.models import Curso, Aluno, Cidade, Bairro, Profissao, Escolaridade, Matriz, Turma_Prevista, Aluno_Turma, Turma, Situacao, Disciplina
 import datetime
 from .functions import get_proper_casing
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth import logout
 from django.urls import reverse
 from django.forms.formsets import formset_factory
-
+from .criarmatrizes import getCursos
 
 @login_required
 @permission_required('cevest.acesso_admin', raise_exception=True)
@@ -138,3 +138,38 @@ def AlterarSituacaoAluno(request):
             print(formset.errors)
     formset = SituacaoFormset(initial=data)
     return render(request,"Administracao/alterar_situacao.html",{'formset':formset, 'nome_turma':nome_turma})
+
+@login_required
+@permission_required('cevest.acesso_admin', raise_exception=True)
+def AdicionarMatrizesDeTxT(request):
+    matrizes = getCursos("matrizes.txt")
+    cursos_criados = []
+    disciplinas_criadas = []
+    for m in matrizes:
+        curso_ = m['curso']
+        disciplina_ = m['disciplina']
+        num_aulas_ = m['número de aulas']
+        carga_horaria_total_ = m['carga horária']
+
+        
+
+        curso_temp, created_curso = Curso.objects.get_or_create(
+            nome = curso_
+        )
+
+        disciplina_temp, created_disciplina = Disciplina.objects.get_or_create(
+            nome = disciplina_
+        )
+
+        if created_curso:
+            cursos_criados.append(curso_)
+        if created_disciplina:
+            disciplinas_criadas.append(disciplina_)
+
+        obj, created = Matriz.objects.get_or_create(
+            curso = curso_temp,
+            disciplina = disciplina_temp,
+            num_aulas = num_aulas_,
+            carga_horaria_total = carga_horaria_total_
+        )
+    return render(request,"Administracao/criar_matriz_txt.html", {"cursos_criados":cursos_criados, "disciplinas_criadas":disciplinas_criadas})

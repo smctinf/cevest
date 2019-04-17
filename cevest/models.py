@@ -51,9 +51,9 @@ class Curso(models.Model):
 
     nome = models.CharField(max_length=60)
     descricao = models.TextField(max_length=2000)
-    duracao = models.PositiveSmallIntegerField()
-    idade_minima = models.PositiveSmallIntegerField()
-    escolaridade_minima = models.ForeignKey(Escolaridade, on_delete=models.PROTECT)
+    duracao = models.PositiveSmallIntegerField(default = 0)
+    idade_minima = models.PositiveSmallIntegerField(default = 0)
+    escolaridade_minima = models.ForeignKey(Escolaridade, on_delete=models.PROTECT, default = 1)
     pre_requisito = models.ManyToManyField(Pre_requisito, blank=True)
     quant_alunos = models.PositiveSmallIntegerField(default=0)
     dt_inclusao = models.DateTimeField(auto_now_add=True)
@@ -67,8 +67,8 @@ class Disciplina(models.Model):
     class Meta:
         ordering = ('nome',)
 
-    nome = models.CharField(max_length=60)
-    carga_horaria = models.PositiveSmallIntegerField()
+    nome = models.CharField(max_length=100)
+    carga_horaria = models.PositiveSmallIntegerField(default = 0)
 
 class Matriz(models.Model):
     class Meta:
