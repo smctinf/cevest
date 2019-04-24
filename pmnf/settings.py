@@ -81,14 +81,18 @@ WSGI_APPLICATION = 'pmnf.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
+#        'ENGINE': 'mysql.connector.django',
+
         'NAME': 'pmnf',
         'PORT': '',
 
-        'USER': 'pmnf',
-        'PASSWORD': '1w6l4x9zx2cb',
-        'HOST': '35.225.36.72',
+#        'USER': 'pmnf',
+#        'PASSWORD': '1w6l4x9zx2cb',
+#        'HOST': '35.225.36.72',
 
-#         'HOST': '127.0.0.1',
+        'USER': 'root',
+        'PASSWORD': 'x1pfrhlo',
+        'HOST': '127.0.0.1',
     }
 }
 
