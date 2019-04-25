@@ -26,7 +26,7 @@ SECRET_KEY = '++wlc1(z793vjl0u3q4&u!q#f!^pjo=7m!*wcj#4@xbx=jx5(j'
 DEBUG = True
 
 # ALLOWED_HOSTS = []
-ALLOWED_HOSTS = ["cevest.jlb.net.br", "127.0.0.1"]
+ALLOWED_HOSTS = ["cevest.jlb.net.br", "127.0.0.1", "localhost"]
 
 
 
@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'Administracao.apps.AdministracaoConfig',
+    #'administracao.apps',
 ]
 
 MIDDLEWARE = [
@@ -81,14 +83,22 @@ WSGI_APPLICATION = 'pmnf.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
+#        'ENGINE': 'mysql.connector.django',
+
         'NAME': 'pmnf',
         'PORT': '',
 
-        'USER': 'pmnf',
-        'PASSWORD': '1w6l4x9zx2cb',
-        'HOST': '35.225.36.72',
+#        'USER': 'pmnf',
+#        'PASSWORD': '1w6l4x9zx2cb',
+#        'HOST': '35.225.36.72',
 
+#         'USER': 'root',
+#         'PASSWORD': 's3nh4d3sql',
 #         'HOST': '127.0.0.1',
+
+        'USER': 'root',
+        'PASSWORD': 'x1pfrhlo',
+        'HOST': '127.0.0.1',
     }
 }
 
@@ -137,6 +147,7 @@ STATIC_ROOT = '/home/cevest/public_html/pmnf/cevest/static'
 
 MIDDLEWARE_CLASSES = (
     'sslify.middleware.SSLifyMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
     # ...
 )
 
