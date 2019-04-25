@@ -14,10 +14,17 @@ class Altera_Situacao(forms.Form):
     nome = forms.CharField(label='Aluno:',disabled = True, max_length=100, required=False)
     situacao = forms.ModelChoiceField(widget=forms.Select,queryset=Situacao.objects.all())
 
+#Tira as tags <li> do widget de checkbox para ele poder ser colocado na horizontal
 class HorizontalCheckbox(forms.CheckboxSelectMultiple):
     def render(self,*args,**kwargs):
         output = super(HorizontalCheckbox,self).render(*args,**kwargs)
         return mark_safe(output.replace(u'<li>',u''))
+
+class EscolherDia(forms.Form):
+    data = forms.ChoiceField(widget=forms.Select)
+    def __init__(self, *args, CHOICES,**kwargs):
+        super().__init__(*args,**kwargs)
+        self.fields['data'].choices = CHOICES
 
 class Controle_Presenca(forms.Form):
     nome = forms.CharField(label='Aluno:',disabled = True, max_length=100, required=False)

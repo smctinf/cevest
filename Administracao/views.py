@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, Http404, QueryDict
 from django.forms.models import model_to_dict
-from .forms import EscolherTurma, Altera_Situacao, Controle_Presenca
+from .forms import EscolherTurma, Altera_Situacao, Controle_Presenca, EscolherDia
 from cevest.models import Curso, Aluno, Cidade, Bairro, Profissao, Escolaridade, Matriz, Turma_Prevista, Aluno_Turma, Turma, Situacao, Disciplina, Presenca
 import datetime
 from .functions import get_proper_casing, compare_brazilian_to_python_weekday
@@ -181,14 +181,51 @@ def SelecionarTurmaParaControle(request):
         turma = EscolherTurma(request.POST)   
         turma = request.POST.get("turma")
         request.session["turma"] = turma
-        return HttpResponseRedirect(reverse('administracao:controle_presenca'))
+        return HttpResponseRedirect(reverse('administracao:escolher_dia_controle'))
     form = EscolherTurma()
     return render(request,"Administracao/escolher_turma.html",{'form':form})
 
 @login_required
 @permission_required('cevest.acesso_admin', raise_exception=True)
+def EscolherDiaParaControle(request):
+    temp_turma = request.session["turma"]
+    temp_turma = Turma.objects.get(id=temp_turma)
+    horarios = temp_turma.horario.all()
+    
+    data_verificacao = temp_turma.dt_inicio
+
+    total_dias = 0
+    dias_aula = []
+
+    while data_verificacao<=temp_turma.dt_fim:
+        for horario in horarios:
+            if compare_brazilian_to_python_weekday(int(horario.dia_semana), data_verificacao.weekday()):
+                total_dias += 1
+                dias_aula.append(data_verificacao)
+        data_verificacao = data_verificacao + datetime.timedelta(days=1)
+    
+    choices = []
+    i = 0
+    for dia in dias_aula:
+        choices.append((i,str(dia.day)+"/"+str(dia.month)))
+        i+=1
+    choices.append((i,"Todos"))
+    if request.method == 'POST':
+        temp_dia = EscolherDia(request.POST,CHOICES = choices)
+        if temp_dia.is_valid():
+            if temp_dia.cleaned_data['data'] == len(choices)-1:
+                request.session['data'] = dias_aula
+            else:
+                request.session['data'] = [dias_aula[int(temp_dia.cleaned_data['data'])],]
+            return HttpResponseRedirect(reverse('administracao:controle_presenca')) 
+    form = EscolherDia(CHOICES = choices)
+    return render(request, "Administracao/escolher_data.html", {"form" : form})
+
+@login_required
+@permission_required('cevest.acesso_admin', raise_exception=True)
 def ControleDePresenca(request):
     temp_turma = request.session["turma"]
+    temp_dia = request.session["data"]
     temp_turma = Turma.objects.get(id=temp_turma)
     horarios = temp_turma.horario.all()
     
@@ -207,6 +244,8 @@ def ControleDePresenca(request):
                 dias_aula.append(data_verificacao)
         data_verificacao = data_verificacao + datetime.timedelta(days=1)
     
+    #arrumar isso depois
+    dias_aula = temp_dia
     #Cria as opções de botões para o form
     choices = []
     i = 0
