@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, Http404, QueryDict
 from django.forms.models import model_to_dict
-from .forms import EscolherTurma, Altera_Situacao
-from cevest.models import Curso, Aluno, Cidade, Bairro, Profissao, Escolaridade, Matriz, Turma_Prevista, Aluno_Turma, Turma, Situacao, Disciplina
+from .forms import EscolherTurma, Altera_Situacao, Controle_Presenca
+from cevest.models import Curso, Aluno, Cidade, Bairro, Profissao, Escolaridade, Matriz, Turma_Prevista, Aluno_Turma, Turma, Situacao, Disciplina, Presenca
 import datetime
-from .functions import get_proper_casing
+from .functions import get_proper_casing, compare_brazilian_to_python_weekday
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth import logout
 from django.urls import reverse
@@ -173,3 +173,85 @@ def AdicionarMatrizesDeTxT(request):
             carga_horaria_total = carga_horaria_total_
         )
     return render(request,"Administracao/criar_matriz_txt.html", {"cursos_criados":cursos_criados, "disciplinas_criadas":disciplinas_criadas})
+
+@login_required
+@permission_required('cevest.acesso_admin', raise_exception=True)
+def SelecionarTurmaParaControle(request):
+    if request.method == 'POST':
+        turma = EscolherTurma(request.POST)   
+        turma = request.POST.get("turma")
+        request.session["turma"] = turma
+        return HttpResponseRedirect(reverse('administracao:controle_presenca'))
+    form = EscolherTurma()
+    return render(request,"Administracao/escolher_turma.html",{'form':form})
+
+@login_required
+@permission_required('cevest.acesso_admin', raise_exception=True)
+def ControleDePresenca(request):
+    temp_turma = request.session["turma"]
+    temp_turma = Turma.objects.get(id=temp_turma)
+    horarios = temp_turma.horario.all()
+    
+    data_inicio = temp_turma.dt_inicio
+    data_fim = temp_turma.dt_fim
+    data_verificacao = data_inicio
+    
+    #Pega os dias de aula
+    total_dias = 0
+    dias_aula = []
+
+    while data_verificacao<=data_fim:
+        for horario in horarios:
+            if compare_brazilian_to_python_weekday(int(horario.dia_semana), data_verificacao.weekday()):
+                total_dias += 1
+                dias_aula.append(data_verificacao)
+        data_verificacao = data_verificacao + datetime.timedelta(days=1)
+    
+    #Cria as opções de botões para o form
+    choices = []
+    i = 0
+    for dia in dias_aula:
+        choices.append((i,""))
+        i+=1
+
+    #Adquire os nomes dos alunos e as presenças já existentes e prepara para o form
+    turma_aluno = Aluno_Turma.objects.filter(turma = temp_turma)
+    initial_data = []
+    for ta in turma_aluno:
+        presenca = []
+        temp_presenca = Presenca.objects.filter(turma = temp_turma, aluno = ta.aluno)
+        for index in range(0,len(dias_aula)):
+            for p in temp_presenca:
+                if dias_aula[index]==p.data_aula and p.presente:
+                    presenca.append(str(index))
+        initial_data.append({'nome':ta.aluno.nome, 'dias':presenca})
+    
+    #cria o form
+    formset_controle_presenca = formset_factory(Controle_Presenca,max_num = len(turma_aluno))
+    formset = formset_controle_presenca(form_kwargs = {'CHOICES': choices},initial = initial_data)
+    
+    #Validação e salvar
+    if request.method != 'POST':
+        return render(request, "Administracao/controle_frequencia.html",{"formset" : formset, "data":dias_aula})
+    temp_presenca = formset_controle_presenca(request.POST, form_kwargs = {'CHOICES': choices},initial = initial_data)
+    if temp_presenca.is_valid():
+        i=0
+        for form in temp_presenca:
+            print("Savou " + str(i))
+            aluno = turma_aluno[i].aluno
+            i+=1
+            dias = form.cleaned_data['dias'] 
+            for index in range(0,len(dias_aula)):
+                if str(index) in dias:
+                    temp_presenca_criada, created_presenca = Presenca.objects.get_or_create(turma = temp_turma, aluno = aluno, data_aula = dias_aula[index])
+                    temp_presenca_criada.presente = True
+                    temp_presenca_criada.save()
+                else:
+                    if Presenca.objects.filter(turma = temp_turma, aluno = aluno, data_aula = dias_aula[index],presente=True).count()>0:
+                        temp_presenca_criada = Presenca.objects.get(turma = temp_turma, aluno = aluno, data_aula = dias_aula[index],presente=True)
+                        temp_presenca_criada.presente = False
+                        temp_presenca_criada.save()
+    else:
+        print(temp_presenca.errors)
+    return HttpResponseRedirect(reverse('administracao:area_admin'))
+

@@ -6,3 +6,4 @@ class Permissao(models.Model):
             ("pode_emitir_certificado","Pode emitir certificados"),
             ("acesso_admin","Acesso à area de admin"),
             )
+

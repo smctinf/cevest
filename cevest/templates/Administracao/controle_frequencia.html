@@ -1,0 +1,37 @@
+<html>
+<style>
+table, th, td {
+    border: 1px solid black;
+}
+</style>
+{% extends "cevest/base.html" %}
+
+{% block content %}
+
+
+<div>
+    <form action="" method='POST'>{% csrf_token %}
+        {{formset.management_form}}
+        <table style="width:100%">
+        <tr>
+            <th>Nome:</th>
+            {% for dia in data %}
+            <th> {{dia|date:"d/m"}} </th>
+            {% endfor %}
+        </tr>
+            {% for form in formset %}
+            <tr>
+                <td>{{form.nome}}</td>
+                {% for button in form.dias %}
+                <td>{{button}}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        
+        </table>
+        <input type='submit' value='Salvar' />
+    </form>
+</div>
+
+{% endblock %}
+</html>

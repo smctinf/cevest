@@ -11,6 +11,8 @@ urlpatterns = [
     path('selecionar_turma_para_alterar_situacao',views.SelecionarTurmaParaSituacao, name="selecionar_turma_para_alterar_situacao"),
     path('alterar_situacao_aluno',views.AlterarSituacaoAluno, name="alterar_situacao_aluno"),
     path('carregar_matriz_txt',views.AdicionarMatrizesDeTxT, name="carregar_matriz_txt"),
+    path('selecionar_turma_para_presenca',views.SelecionarTurmaParaControle, name = "selecionar_turma_para_presenca"),
+    path('controle_presenca',views.ControleDePresenca, name="controle_presenca"),
     path('login', auth_views.LoginView.as_view(template_name='cevest/login.html')),
     path('logout',views.logout_view,name="logout"),
 ]
