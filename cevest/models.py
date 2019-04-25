@@ -7,6 +7,7 @@ from .functions import validate_CPF
 
 # Create your models here.
 
+
 class Pre_requisito(models.Model):
     def __str__(self):
         return self.descricao
@@ -50,9 +51,9 @@ class Curso(models.Model):
 
     nome = models.CharField(max_length=60)
     descricao = models.TextField(max_length=2000)
-    duracao = models.PositiveSmallIntegerField()
-    idade_minima = models.PositiveSmallIntegerField()
-    escolaridade_minima = models.ForeignKey(Escolaridade, on_delete=models.PROTECT)
+    duracao = models.PositiveSmallIntegerField(default = 0)
+    idade_minima = models.PositiveSmallIntegerField(default = 0)
+    escolaridade_minima = models.ForeignKey(Escolaridade, on_delete=models.PROTECT, default = 1)
     pre_requisito = models.ManyToManyField(Pre_requisito, blank=True)
     quant_alunos = models.PositiveSmallIntegerField(default=0)
     dt_inclusao = models.DateTimeField(auto_now_add=True)
@@ -66,8 +67,8 @@ class Disciplina(models.Model):
     class Meta:
         ordering = ('nome',)
 
-    nome = models.CharField(max_length=60)
-    carga_horaria = models.PositiveSmallIntegerField()
+    nome = models.CharField(max_length=100)
+    carga_horaria = models.PositiveSmallIntegerField(default = 0)
 
 class Matriz(models.Model):
     class Meta:
@@ -80,6 +81,7 @@ class Matriz(models.Model):
     curso = models.ForeignKey(Curso, on_delete=models.PROTECT)
     disciplina = models.ForeignKey(Disciplina, on_delete=models.PROTECT)
     num_aulas = models.PositiveSmallIntegerField()
+    carga_horaria_total = models.PositiveSmallIntegerField()
 
 class Instrutor(models.Model):
     class Meta:
@@ -90,6 +92,7 @@ class Instrutor(models.Model):
         return self.nome
 
     nome = models.CharField(max_length=60)
+    matricula = models.CharField(unique = True, null = True, max_length=11) 
     dt_inclusao = models.DateTimeField(auto_now_add=True)
     ativo = models.BooleanField(default=True)
 
@@ -140,7 +143,6 @@ SEXO = (
 
 class Aluno(models.Model):
     def __str__(self):
-#        return self.nome
         return self.nome
 
     class Meta:
@@ -149,7 +151,7 @@ class Aluno(models.Model):
     nome = models.CharField(max_length=60)
     email = models.EmailField(max_length=254, blank=True, null=True)
     cpf = models.CharField(unique=True, max_length=11, validators=[validate_CPF])
-    nis = models.CharField(unique=True, max_length=11, blank=True, null=True)
+    nis = models.CharField(unique=True, max_length=11, null=True)
     bolsa_familia = models.BooleanField(default=False)
     quant_filhos = models.PositiveSmallIntegerField(default=0)
     sexo = models.CharField(max_length=1, choices=SEXO)
@@ -232,6 +234,16 @@ class Turma(models.Model):
     quant_alunos = models.PositiveSmallIntegerField(default=0)
     dt_inclusao = models.DateTimeField(auto_now_add=True)
 
+class Situacao(models.Model):
+    class Meta:
+        verbose_name = "Situação"
+        verbose_name_plural = "Situações"
+
+    def __str__(self):
+        return self.descricao
+
+    descricao = models.CharField(max_length=10, unique = True, null = True)
+
 class Aluno_Turma(models.Model):
     class Meta:
         verbose_name_plural = "Relação de Alunos por Turma"
@@ -242,6 +254,7 @@ class Aluno_Turma(models.Model):
 
     turma = models.ForeignKey(Turma, on_delete=models.PROTECT)
     aluno = models.ForeignKey(Aluno, on_delete=models.PROTECT)
+    situacao = models.ForeignKey(Situacao, on_delete=models.PROTECT)
     dt_inclusao = models.DateTimeField(auto_now_add=True)
 
 class Status_Aluno_Turma_Prevista(models.Model):

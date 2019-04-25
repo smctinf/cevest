@@ -55,6 +55,9 @@ admin.site.register(Aluno, AlunoAdmin)
 from .models import Turno
 admin.site.register(Turno)
 
+from .models import Situacao
+admin.site.register(Situacao)
+
 from .models import Bairro
 class BairroAdmin(admin.ModelAdmin):
     # ...
@@ -104,7 +107,7 @@ from .models import Aluno_Turma
 
 class Aluno_TurmaAdmin(admin.ModelAdmin):
     # ...
-    list_display = ('turma', 'aluno', 'dt_inclusao')
+    list_display = ('turma', 'aluno', 'dt_inclusao','situacao')
     list_filter = ['turma']
 
 admin.site.register(Aluno_Turma, Aluno_TurmaAdmin)

@@ -1,0 +1,18 @@
+{% extends "cevest/base.html" %}
+
+{% block content %}
+
+<div>
+    <p><a href="{% url 'administracao:area_admin' %}">Voltar</a></p>
+    <p>Cursos criados:</p>
+    {% for curso in cursos_criados %}
+    <p>{{curso}}</p>
+    {% endfor %}
+    <p></p>
+    <p>Disciplinas criadas:</p>
+    {% for disciplina in disciplinas_criadas %}
+    <p>{{disciplina}}</p>
+    {% endfor %}
+</div>
+
+{% endblock %}
