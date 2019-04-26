@@ -65,6 +65,12 @@ class PresencaAdmin(admin.ModelAdmin):
 
 admin.site.register(Presenca, PresencaAdmin)
 
+from .models import Feriado
+class FeriadoAdmin(admin.ModelAdmin):
+    list_display = ('nome','data')
+    list_filter = ['data']
+
+admin.site.register(Feriado,FeriadoAdmin)
 
 from .models import Bairro
 class BairroAdmin(admin.ModelAdmin):

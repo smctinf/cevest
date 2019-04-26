@@ -2,9 +2,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, Http404, QueryDict
 from django.forms.models import model_to_dict
 from .forms import EscolherTurma, Altera_Situacao, Controle_Presenca, EscolherDia
-from cevest.models import Curso, Aluno, Cidade, Bairro, Profissao, Escolaridade, Matriz, Turma_Prevista, Aluno_Turma, Turma, Situacao, Disciplina, Presenca
+from cevest.models import Curso, Aluno, Cidade, Bairro, Profissao, Escolaridade, Matriz, Turma_Prevista, Aluno_Turma, Turma, Situacao, Disciplina, Presenca, Feriado
 import datetime
-from .functions import get_proper_casing, compare_brazilian_to_python_weekday
+from .functions import get_proper_casing, compare_brazilian_to_python_weekday, convert_date_to_tuple, convert_tuple_to_data, create_select_choices, is_date_holiday,create_not_fixed_holidays_in_db
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth import logout
 from django.urls import reverse
@@ -19,6 +19,16 @@ def capitalizar_nomes(request):
     for aluno in alunos:
         aluno.nome = get_proper_casing(aluno.nome)
         aluno.save()
+    return HttpResponseRedirect("/index")
+
+@login_required
+@permission_required('cevest.acesso_admin', raise_exception=True)
+def criar_feriados_moveis(request):
+    current_year = datetime.date.today().year
+    #print(type(current_year))
+    #current_year = current_year.year
+    for i in range(0,100):
+        create_not_fixed_holidays_in_db(current_year+i)
     return HttpResponseRedirect("/index")
 
 @login_required
@@ -55,7 +65,7 @@ def SelecionarTurmaParaCertificado(request):
         request.session["turma"] = turma
         return HttpResponseRedirect(reverse('administracao:gerar_certificados'))
     form = EscolherTurma()
-    return render(request,"Administracao/escolher_turma.html",{'form':form})
+    return render(request,"Administracao/escolher_turma_nova_aba.html",{'form':form})
 
 @login_required
 @permission_required('cevest.pode_emitir_certificado', raise_exception=True)
@@ -151,8 +161,6 @@ def AdicionarMatrizesDeTxT(request):
         num_aulas_ = m['número de aulas']
         carga_horaria_total_ = m['carga horária']
 
-        
-
         curso_temp, created_curso = Curso.objects.get_or_create(
             nome = curso_
         )
@@ -188,6 +196,7 @@ def SelecionarTurmaParaControle(request):
 @login_required
 @permission_required('cevest.acesso_admin', raise_exception=True)
 def EscolherDiaParaControle(request):
+    #Pega informações
     temp_turma = request.session["turma"]
     temp_turma = Turma.objects.get(id=temp_turma)
     horarios = temp_turma.horario.all()
@@ -197,26 +206,26 @@ def EscolherDiaParaControle(request):
     total_dias = 0
     dias_aula = []
 
+    
     while data_verificacao<=temp_turma.dt_fim:
         for horario in horarios:
-            if compare_brazilian_to_python_weekday(int(horario.dia_semana), data_verificacao.weekday()):
+            if compare_brazilian_to_python_weekday(int(horario.dia_semana), data_verificacao.weekday()) and not is_date_holiday(data_verificacao):
                 total_dias += 1
                 dias_aula.append(data_verificacao)
         data_verificacao = data_verificacao + datetime.timedelta(days=1)
     
-    choices = []
-    i = 0
-    for dia in dias_aula:
-        choices.append((i,str(dia.day)+"/"+str(dia.month)))
-        i+=1
-    choices.append((i,"Todos"))
+
+    choices = create_select_choices(dias_aula)
+    choices.append((len(choices),"Todos"))
+
     if request.method == 'POST':
         temp_dia = EscolherDia(request.POST,CHOICES = choices)
         if temp_dia.is_valid():
-            if temp_dia.cleaned_data['data'] == len(choices)-1:
-                request.session['data'] = dias_aula
+            index_data = int(temp_dia.cleaned_data['data'])
+            if index_data == len(choices)-1:
+                request.session['data'] = convert_date_to_tuple(dias_aula)
             else:
-                request.session['data'] = [dias_aula[int(temp_dia.cleaned_data['data'])],]
+                request.session['data'] = convert_date_to_tuple([dias_aula[index_data],])
             return HttpResponseRedirect(reverse('administracao:controle_presenca')) 
     form = EscolherDia(CHOICES = choices)
     return render(request, "Administracao/escolher_data.html", {"form" : form})
@@ -227,25 +236,9 @@ def ControleDePresenca(request):
     temp_turma = request.session["turma"]
     temp_dia = request.session["data"]
     temp_turma = Turma.objects.get(id=temp_turma)
-    horarios = temp_turma.horario.all()
-    
-    data_inicio = temp_turma.dt_inicio
-    data_fim = temp_turma.dt_fim
-    data_verificacao = data_inicio
-    
-    #Pega os dias de aula
-    total_dias = 0
-    dias_aula = []
-
-    while data_verificacao<=data_fim:
-        for horario in horarios:
-            if compare_brazilian_to_python_weekday(int(horario.dia_semana), data_verificacao.weekday()):
-                total_dias += 1
-                dias_aula.append(data_verificacao)
-        data_verificacao = data_verificacao + datetime.timedelta(days=1)
     
     #arrumar isso depois
-    dias_aula = temp_dia
+    dias_aula = convert_tuple_to_data(temp_dia)
     #Cria as opções de botões para o form
     choices = []
     i = 0
@@ -292,5 +285,5 @@ def ControleDePresenca(request):
                         temp_presenca_criada.save()
     else:
         print(temp_presenca.errors)
-    return HttpResponseRedirect(reverse('administracao:area_admin'))
+    return HttpResponseRedirect(reverse('administracao:controle_frequencia'))
 

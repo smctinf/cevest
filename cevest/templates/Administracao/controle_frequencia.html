@@ -1,6 +1,7 @@
 <html>
 <style>
 table, th, td {
+    text-align: center;
     border: 1px solid black;
 }
 </style>
@@ -12,7 +13,7 @@ table, th, td {
 <div>
     <form action="" method='POST'>{% csrf_token %}
         {{formset.management_form}}
-        <table style="width:100%">
+        <table style="width:1%">
         <tr>
             <th>Nome:</th>
             {% for dia in data %}
@@ -21,7 +22,7 @@ table, th, td {
         </tr>
             {% for form in formset %}
             <tr>
-                <td>{{form.nome}}</td>
+                <td style="width:100%">{{form.nome}}</td>
                 {% for button in form.dias %}
                 <td>{{button}}</td>
                 {% endfor %}

@@ -263,6 +263,14 @@ class Presenca(models.Model):
     data_aula = models.DateField('Data da Aula', blank=True, null=True)
     presente = models.BooleanField(blank=True, default=False)
 
+class Feriado(models.Model):
+    class Meta:
+        verbose_name = "Feriado"
+        verbose_name_plural = "Feriados"
+    nome = models.CharField(max_length = 50, unique = False)
+    data = models.DateField()
+    fixo = models.BooleanField('Feriado fixo', blank = True, null = True, default=True)
+
 class Status_Aluno_Turma_Prevista(models.Model):
     class Meta:
         verbose_name_plural = "Status de Alunos por Turma Prevista"
