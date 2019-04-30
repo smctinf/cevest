@@ -58,6 +58,20 @@ admin.site.register(Turno)
 from .models import Situacao
 admin.site.register(Situacao)
 
+from .models import Presenca
+class PresencaAdmin(admin.ModelAdmin):
+    list_display = ('turma','aluno','data_aula')
+    list_filter = ['turma']
+
+admin.site.register(Presenca, PresencaAdmin)
+
+from .models import Feriado
+class FeriadoAdmin(admin.ModelAdmin):
+    list_display = ('nome','data')
+    list_filter = ['data']
+
+admin.site.register(Feriado,FeriadoAdmin)
+
 from .models import Bairro
 class BairroAdmin(admin.ModelAdmin):
     # ...
