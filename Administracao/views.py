@@ -142,7 +142,7 @@ def AlterarSituacaoAluno(request):
 @login_required
 @permission_required('cevest.acesso_admin', raise_exception=True)
 def AdicionarMatrizesDeTxT(request):
-    matrizes = getCursos("/matrizes.txt")
+    matrizes = getCursos("/home/cevest/public_html/pmnf/matrizes.txt")
     cursos_criados = []
     disciplinas_criadas = []
     for m in matrizes:
