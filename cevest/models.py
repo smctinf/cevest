@@ -257,6 +257,20 @@ class Aluno_Turma(models.Model):
     situacao = models.ForeignKey(Situacao, on_delete=models.PROTECT, default=1)
     dt_inclusao = models.DateTimeField(auto_now_add=True)
 
+class Presenca(models.Model):
+    turma = models.ForeignKey(Turma, on_delete=models.PROTECT)
+    aluno = models.ForeignKey(Aluno, on_delete=models.PROTECT)
+    data_aula = models.DateField('Data da Aula', blank=True, null=True)
+    presente = models.BooleanField(blank=True, default=False)
+
+class Feriado(models.Model):
+    class Meta:
+        verbose_name = "Feriado"
+        verbose_name_plural = "Feriados"
+    nome = models.CharField(max_length = 50, unique = False)
+    data = models.DateField()
+    fixo = models.BooleanField('Feriado fixo', blank = True, null = True, default=True)
+
 class Status_Aluno_Turma_Prevista(models.Model):
     class Meta:
         verbose_name_plural = "Status de Alunos por Turma Prevista"
