@@ -285,5 +285,5 @@ def ControleDePresenca(request):
                         temp_presenca_criada.save()
     else:
         print(temp_presenca.errors)
-    return HttpResponseRedirect(reverse('administracao:controle_frequencia'))
+    return HttpResponseRedirect(reverse('administracao:controle_presenca'))
 
