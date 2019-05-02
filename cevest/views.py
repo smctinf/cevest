@@ -82,6 +82,8 @@ def cadastro(request):
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse('index'))#+form.pk)
+        else:
+            print(form.errors)
     else:
         form = CadForm()
     return render(request,"cevest/cadastro2.html",{'form':form})#, 'cidades': cidades, 'lista_curso': lista_curso, 'escolaridades': escolaridades, 'profissoes': profissoes })
