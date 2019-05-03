@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, Http404, QueryDict
 from django.forms.models import model_to_dict
-from .forms import DetalheForm, CadForm, ConfirmaTurmaForm, Recibo_IndForm, Altera_cpf, Altera_Cadastro
+from .forms import DetalheForm, CadForm, ConfirmaTurmaForm, Recibo_IndForm, Altera_cpf, CadFormBase
 #from .forms import CadForm, ConfirmaTurmaForm, Recibo_IndForm, Altera_cpf, Altera_Cadastro, EscolherTurma#, Altera_Situacao
 from .models import Curso, Aluno, Cidade, Bairro, Profissao, Escolaridade, Matriz, Turma_Prevista, Aluno_Turma, Turma, Situacao
 from django.urls import reverse
@@ -82,8 +82,6 @@ def cadastro(request):
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse('index'))#+form.pk)
-        else:
-            print(form.errors)
     else:
         form = CadForm()
     return render(request,"cevest/cadastro2.html",{'form':form})#, 'cidades': cidades, 'lista_curso': lista_curso, 'escolaridades': escolaridades, 'profissoes': profissoes })
@@ -183,11 +181,11 @@ def AlterarCadastro(request):
     aluno_temp_id = request.session["aluno_id"]
     aluno_temp = get_object_or_404(Aluno,id=aluno_temp_id)
     if request.method == 'POST':
-        form = Altera_Cadastro(request.POST, instance = aluno_temp)
+        form = CadFormBase(request.POST, instance = aluno_temp)
         if form.is_valid():
             form.save(aluno_temp)
             return HttpResponseRedirect(reverse('index'))
-    form=Altera_Cadastro(initial={'cidade':aluno_temp.bairro.cidade}, instance=aluno_temp)
+    form=CadFormBase(initial={'cidade':aluno_temp.bairro.cidade}, instance=aluno_temp)
     return render(request,"cevest/altera_cadastro.html",{'form':form})
 
 

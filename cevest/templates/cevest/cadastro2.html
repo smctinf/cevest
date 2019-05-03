@@ -12,7 +12,6 @@
     </div>
 
     <form action = '' method="post">{% csrf_token %}
-
       <div class="row">
         <div class="col-md-4 order-md-2 mb-4">
           <h4 class="d-flex justify-content-between align-items-center mb-3">
@@ -20,6 +19,7 @@
           </h4>
 
           <ul class="list-group mb-3">
+                {{form.cursos.errors}}
                 {% for curso in form.cursos %}
                 <li class="list-group-item d-flex justify-content-between lh-condensed">
                         <div>
@@ -49,16 +49,19 @@
               <!--<label for="nome">Nome</label>
               <input type="text" name=nome class="form-control" id="nome" placeholder="" value="" required>-->
                 <label>{{form.nome.label}}</label>
+                {{form.nome.errors}}
                 {{form.nome}}
             </div>
             <div class="col-md-6 mb-3">
               <label>{{form.cpf.label}}</label>
+              {{form.cpf.errors}}
               {{form.cpf}}
             </div>
           </div>
 
           <div class="mb-3">
             <label>{{form.email.label}}</label>
+            {{form.email.errors}}
             <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text">@</span>
@@ -70,6 +73,7 @@
           <div class="row">
             <div class="col-md-6 mb-3">
                 <label>{{form.nis.label}}</label>
+                    {{form.nis.errors}}
                     {{form.nis}}
             </div>
 
@@ -77,6 +81,7 @@
               <label for="sexo">Sexo</label>
 
               <div class="d-block my-3">
+                {{form.sexo.errors}}
                 {% for radio in form.sexo %}
                     <div class="custom-control custom-radio">
                         {{radio.tag}}
@@ -97,15 +102,21 @@
             </div>
             <div class="col-md-2 mb-3">
                 <label>{{form.quant_filhos.label}}</label>
+                {{form.quant_filhos.errors}}
                 {{form.quant_filhos}}
             </div>
 
           </div>
 
           <div class="row">
-            <div class="col-md-6 mb-3">
+            <div class="col-md-10 mb-3">
                 <label>{{form.dt_nascimento.label}}</label>
-                {{form.dt_nascimento}}
+                {{form.dt_nascimento.errors}}
+                <div class = "form-inline">
+                    {% for i in form.dt_nascimento %}
+                        {{i}}
+                    {% endfor %}
+                </div>
             </div>
           </div>
 
@@ -113,6 +124,7 @@
 
           <div class="row">
             <div class="col-md-6 mb-3">
+                    {{form.bolsa_familia.errors}}
                 <div class="custom-control custom-checkbox">
                     {{form.bolsa_familia}}
                     <label class="custom-control-label" for="{{form.bolsa_familia.id_for_label}}">
@@ -120,6 +132,7 @@
                     </label>
                 </div>
                 <div class="custom-control custom-checkbox">
+                    {{form.portador_necessidades_especiais.errors}}
                     {{form.portador_necessidades_especiais}}
                     <label class="custom-control-label" for="{{form.portador_necessidades_especiais.id_for_label}}">
                         {{form.portador_necessidades_especiais.label}}
@@ -130,7 +143,7 @@
             <div class="col-md-4 mb-3">
 
               <label>{{form.disponibilidade.label}}</label>
-
+              {{form.disponibilidade.errors}}
               {% for radio in form.disponibilidade %}
                     <div class="custom-control custom-checkbox">
                         {{radio.tag}}
@@ -148,16 +161,19 @@
             
             <div class="col-md-4 mb-3">
                 <label>{{form.celular.label}}</label>
+                {{form.celular.errors}}
                 {{form.celular}}
             </div>
             
             <div class="col-md-4 mb-3">
                 <label>{{form.fixo_residencia.label}}</label>
+                {{form.fixo_residencia.errors}}
                 {{form.fixo_residencia}}
             </div>
             
             <div class="col-md-4 mb-3">
                 <label>{{form.fixo_trabalho.label}}</label>
+                {{form.fixo_trabalho.errors}}
                 {{form.fixo_trabalho}}
               <!-- <label for="fixo_trabalho">Tel. Trabalho</label>
               <input type="text" name="fixo_trabalho" class="form-control" id="fixo_trabalho" placeholder="" value="" onkeydown="mascara(this,telefone)" maxlength=14>             -->
@@ -168,41 +184,49 @@
           <div class="row">
             <div class="col-md-4 mb-3">
               <label>{{form.cidade.label}}</label>
+                {{form.cidade.errors}}
                 {{form.cidade}}
             </div>
 
             <div class="col-md-4 mb-3">
               <label>{{form.bairro.label}}</label>
+              {{form.bairro.errors}}
               {{form.bairro}}
             </div>
 
             <div class="col-md-3 mb-3">
                 <label>{{form.cep.label}}</label>
+                {{form.cep.errors}}
                 {{form.cep}}
             </div>
           </div>
 
           <div class="mb-3">
             <label>{{form.endereco.label}}</label>
+            {{form.endereco.errors}}
             {{form.endereco}}
           </div>
 
           <div class="mb-3">
             <label>{{form.complemento.label}}</label>
+            {{form.complemento.errors}}
             {{form.complemento}}
           </div>
 
           <div class="row">
             <div class="col-md-4 mb-3">
               <label>{{form.profissao.label}}</label>
+              {{form.profissao.errors}}
               {{form.profissao}}
             </div>
 
             <div class="col-md-5 mb-3">
               <label>{{form.escolaridade.label}}</label>
+              {{form.escolaridade.errors}}
               {{form.escolaridade}}
             </div>
             <div class="col-md-3 mb-3">
+                {{form.desempregado.errors}}
                 <div class="custom-control custom-checkbox">
                     {{form.desempregado}}
                     <label class="custom-control-label" for="{{form.desempregado.id_for_label}}">
@@ -214,6 +238,7 @@
           </div>
             <div class="mb-3">
               <label>{{form.outra_profissao.label}}</label>
+              {{form.outra_profissao.errors}}
               {{form.outra_profissao}}
             </div>
 
@@ -263,6 +288,11 @@ function telefone(v){
 	v=v.replace(/\D/g,"")                 //Remove tudo o que nao e digito
 	v=v.replace(/^(\d\d)(\d)/g,"($1) $2") //Coloca parenteses em volta dos dois primeiros digitos
 	v=v.replace(/(\d{4})(\d)/,"$1-$2")    //Coloca hifen entre o quarto e o quinto digitos
+	return v
+}
+function icep(v){
+	v=v.replace(/\D/g,"")                 //Remove tudo o que nao e digito
+	v=v.replace(/(\d{5})(\d)/,"$1-$2")    //Coloca hifen entre o quarto e o quinto digitos
 	return v
 }
 function icelular(v){
