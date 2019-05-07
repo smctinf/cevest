@@ -1,9 +1,5 @@
 def TreatStringForMatriz(location):
-<<<<<<< HEAD
-    f = open(location,"r",encoding="utf-8")
-=======
     f = open(location,"r",encoding = 'utf-8')
->>>>>>> 0a84362e00340c89a39baa683c9cf16ccc39d583
     i = 0
     if f.mode == "r":
         f = f.readlines()
