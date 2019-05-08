@@ -38,7 +38,7 @@ class CadFormBase(forms.ModelForm):
         celular = forms.CharField(label= "Celular", max_length=15, widget = forms.TextInput(attrs={'class': 'form-control','onkeydown':"mascara(this,icelular)"}))
         fixo_residencia = forms.CharField(label = "Tel. Residência",required=False, max_length=14, widget = forms.TextInput(attrs={'class': 'form-control','onkeydown':"mascara(this,telefone)"}))
         fixo_trabalho = forms.CharField(label = "Tel. Trabalho",required=False,max_length=14, widget = forms.TextInput(attrs={'class': 'form-control','onkeydown':"mascara(this,telefone)"}))
-        cidade = forms.ModelChoiceField(queryset=Cidade.objects.all(), widget = forms.Select(attrs={'class': "custom-select d-block w-100 cidades"}))
+        cidade = forms.ModelChoiceField(queryset=Cidade.objects.all(), widget = forms.Select(attrs={'class': "custom-select d-block w-100 cidades teste"}))
         bairro = forms.ModelChoiceField(queryset=Bairro.objects.all(), widget = forms.Select(attrs={'class': 'form-control'}))
         cep = forms.CharField(label = 'CEP', max_length= 9, widget = forms.TextInput(attrs={'class': 'form-control','onkeydown':"mascara(this,icep)"}))
         endereco = forms.CharField(label='Endereço',max_length=120, widget = forms.TextInput(attrs={'class': 'form-control'}))
@@ -59,6 +59,16 @@ class CadFormBase(forms.ModelForm):
         def __init__(self, *args, **kwargs):
             super().__init__(*args, **kwargs)
             self.fields['nis'].required = False
+            self.fields['bairro'].queryset = Bairro.objects.none()
+
+            if 'cidade' in self.data:
+                try:
+                    cidade_id = int(self.data.get('cidade'))
+                    self.fields['bairro'].queryset = Bairro.objects.filter(cidade = cidade_id).order_by('nome')
+                except (ValueError,TypeError):
+                    pass
+            elif self.instance.pk:
+                self.fields['bairro'].queryset = self.instance.cidade.bairro_set.order_by('nome')
 
         def clean_nome(self):
             nome = self.cleaned_data["nome"]
@@ -139,7 +149,25 @@ class Altera_cpf(forms.Form):
             cpf = validate_CPF(self.cleaned_data["cpf"])
             return cpf
         
-
 class Altera_Cadastro(CadForm):
     class Meta(CadForm.Meta):
         exclude = ('cpf',)
+
+class TesteForm(forms.ModelForm):
+    cidade = forms.ModelChoiceField(queryset=Cidade.objects.all(), widget = forms.Select(attrs = {'class': 'teste'}))
+    #bairro = forms.ModelChoiceField(queryset=Bairro.objects.none())
+    class Meta:
+        model = Aluno
+        fields = ['cidade','bairro']
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['bairro'].queryset = Bairro.objects.none()
+
+        if 'cidade' in self.data:
+            try:
+                cidade_id = int(self.data.get('cidade'))
+                self.fields['bairro'].queryset = Bairro.objects.filter(cidade = cidade_id).order_by('nome')
+            except (ValueError,TypeError):
+                pass
+        elif self.instance.pk:
+            self.fields['bairro'].queryset = self.instance.cidade.bairro_set.order_by('nome')

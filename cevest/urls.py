@@ -35,4 +35,6 @@ urlpatterns = [
     path('altera_cpf', views.altera_cpf, name='altera_cpf'),
     #path('altera/<int:cpf>/<int:dt_nascimento>/', views.altera, name='altera'),
     path('cadastro', views.cadastro, name='cadastro'),
+    path('teste', views.teste_ajax, name='teste'),
+    path('ajax/load_bairros/', views.load_bairros, name = 'ajax_load_bairros'),
 ]

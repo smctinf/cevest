@@ -2,9 +2,9 @@
 from __future__ import unicode_literals
 
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse, HttpResponseRedirect, Http404, QueryDict
+from django.http import HttpResponse, HttpResponseRedirect, Http404, QueryDict, JsonResponse
 from django.forms.models import model_to_dict
-from .forms import DetalheForm, CadForm, ConfirmaTurmaForm, Recibo_IndForm, Altera_cpf, CadFormBase
+from .forms import DetalheForm, CadForm, ConfirmaTurmaForm, Recibo_IndForm, Altera_cpf, CadFormBase, TesteForm
 #from .forms import CadForm, ConfirmaTurmaForm, Recibo_IndForm, Altera_cpf, Altera_Cadastro, EscolherTurma#, Altera_Situacao
 from .models import Curso, Aluno, Cidade, Bairro, Profissao, Escolaridade, Matriz, Turma_Prevista, Aluno_Turma, Turma, Situacao
 from django.urls import reverse
@@ -148,6 +148,23 @@ def altera(request, pk):
 
 # /// Teste ajax
 
+def teste_ajax(request):
+    if request.method == 'POST':
+        form = TesteForm(request.POST)
+        print(request.POST.get('bairro'))
+        if form.is_valid():
+            return HttpResponseRedirect(reverse('index'))
+        else:
+            print("blep")
+    else:
+        form = TesteForm()
+    return render(request,"cevest/teste.html",{'form':form})
+
+def load_bairros(request):
+    cidade_id = request.GET.get('id')
+    bairros = Bairro.objects.filter(cidade = cidade_id).order_by('nome')
+    return render(request, 'cevest/teste_options.html', {'bairros' : bairros})
+
 import json
 def get_bairro(request, cidade_id):
     if request.is_ajax():
@@ -159,7 +176,7 @@ def get_bairro(request, cidade_id):
         raise Http404
 
 def bairro_serializer(bairro):
-    return {'id': bairro.pk, 'nome': bairro.nome}
+    return {'id': bairro.id, 'nome': bairro.nome}
 
 # /////////////////////////////////
 

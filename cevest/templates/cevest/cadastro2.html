@@ -11,7 +11,8 @@
       <p class="lead">Após preenchido este cadastro, você fará parte de uma lista de interessados em um curso do CEVEST. Assim que uma turma do curso de interesse for oferecida, os alunos selecionados serão contactados por e-mail. Caso não compareça em até 7 dias, outro aluno será chamado para esta vaga. Você pode selecionar mais de um curso. Mesmo concluindo um curso, poderá ser chamado para outro que tenha marcado como sendo também de seu interesse.</p>
     </div>
 
-    <form action = '' method="post">{% csrf_token %}
+    <form method="post" id="teste2" data-bairros-url="{% url 'ajax_load_bairros' %}" novalidate>
+        {% csrf_token %}
       <div class="row">
         <div class="col-md-4 order-md-2 mb-4">
           <h4 class="d-flex justify-content-between align-items-center mb-3">
@@ -253,7 +254,7 @@
 
 <!-- JavaScript (Opcional) -->
     <!-- jQuery primeiro, depois Popper.js, depois Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 
@@ -317,6 +318,24 @@ mostra_bairro(form.cidade.value)
 
   </body>
 </html>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+    $('.teste').change(function () {
+        var url = $("#teste2").attr("data-bairros-url");  // get the url of the `load_cities` view
+        var cidadeId = $(this).val();
+            $.ajax({ 
+                url: url,
+                data: {
+                    'id':cidadeId,
+                },
+                success: function(data)
+                {
+                    $("#id_bairro").html(data);
+                }
+                });
+    })
+</script>
 
 
 
