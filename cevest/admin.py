@@ -17,16 +17,31 @@ from .models import Curriculo
 admin.site.register(Curriculo)
 
 from .models import Curso
-admin.site.register(Curso)
+class CursoAdmin(admin.ModelAdmin):
+    # ...
+    list_display = ('nome',)
+    list_filter = ['nome']
+    search_fields = ['nome']
+
+admin.site.register(Curso, CursoAdmin)
 
 from .models import Disciplina
-admin.site.register(Disciplina)
+class DisciplinaAdmin(admin.ModelAdmin):
+    # ...
+    list_display = ('nome','carga_horaria')
+    list_filter = ['nome']
+    search_fields = ['nome']
+
+admin.site.register(Disciplina, DisciplinaAdmin)
 
 from .models import Matriz
 class MatrizAdmin(admin.ModelAdmin):
     # ...
     list_display = ('curriculo', 'curso', 'disciplina')
     list_filter = ['curso']
+    # search_fields = ['curso', 'disciplina']
+    search_fields = ['curso__nome', 'disciplina__nome']
+
 
 admin.site.register(Matriz, MatrizAdmin)
 
@@ -48,6 +63,8 @@ class AlunoAdmin(admin.ModelAdmin):
     list_display = ('nome', 'cpf', 'celular', 'dt_inclusao')
     list_filter = ['cursos']
     filter_horizontal = ('cursos',)
+    search_fields = ['nome']
+
 
 admin.site.register(Aluno, AlunoAdmin)
 
@@ -77,6 +94,7 @@ class BairroAdmin(admin.ModelAdmin):
     # ...
     list_display = ('nome', 'cidade')
     list_filter = ['cidade']
+    search_fields = ['nome']
 
 admin.site.register(Bairro, BairroAdmin)
 
@@ -86,6 +104,7 @@ class Turma_PrevistaAdmin(admin.ModelAdmin):
     list_display = ('curso', 'nome', 'curriculo', 'instrutor', 'dt_inicio', 'dt_fim')
     list_filter = ['curso']
     filter_horizontal = ('horario',)
+    search_fields = ['curso__nome', 'instrutor__nome']
 
 admin.site.register(Turma_Prevista, Turma_PrevistaAdmin)
 
@@ -94,6 +113,7 @@ class Aluno_Turma_PrevistaAdmin(admin.ModelAdmin):
     # ...
     list_display = ('turma_prevista', 'aluno', 'dt_inclusao', 'status_aluno_turma_prevista')
     list_filter = ['turma_prevista']
+    search_fields = ['aluno__nome']
 
 admin.site.register(Aluno_Turma_Prevista, Aluno_Turma_PrevistaAdmin)
 
@@ -111,6 +131,7 @@ class TurmaAdmin(admin.ModelAdmin):
     list_display = ('curso', 'nome', 'curriculo', 'instrutor', 'dt_inicio', 'dt_fim')
     list_filter = ['curso']
     filter_horizontal = ('horario',)
+    search_fields = ['curso__nome', 'instrutor__nome']
 
 admin.site.register(Turma, TurmaAdmin)
 
@@ -123,5 +144,6 @@ class Aluno_TurmaAdmin(admin.ModelAdmin):
     # ...
     list_display = ('turma', 'aluno', 'dt_inclusao','situacao')
     list_filter = ['turma']
+    search_fields = ['aluno__nome']
 
 admin.site.register(Aluno_Turma, Aluno_TurmaAdmin)
