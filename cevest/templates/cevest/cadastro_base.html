@@ -15,12 +15,28 @@
 
           <ul class="list-group mb-3">
                 {{form.cursos.errors}}
+                <!-- {% for curso in form.cursos %}
+                <li class="list-group-item d-flex justify-content-between lh-condensed">
+                        <div>
+                          <h6 class="my-0">
+                <div class="custom-control custom-checkbox">
+                    {{curso.tag}}
+                    <label class="custom-control-label" for="{{curso.id_for_label}}">
+                        <a href = "curso/{{curso.0}}">{{curso}}</a>
+                    </label>
+                </div>
+                </h6>
+                </div>
+                </li>
+                
+                {% endfor %} -->
+
                 {% for curso in form.cursos.field.choices %}
                 <li class="list-group-item d-flex justify-content-between lh-condensed">
                         <div>
                           <h6 class="my-0">
                 <div class="custom-control custom-checkbox">
-                    <input type = "checkbox" name = "cursos" value = "{{curso.0}}" class="custom-control-input" id="id_cursos_{{forloop.counter0}}">
+                    <input type = "checkbox" name = "cursos" value = "{{curso.0}}" class="custom-control-input" id="id_cursos_{{forloop.counter0}}" {% if curso.0 in checked_curso_ids %} checked {% endif %}>
                     <label class="custom-control-label" for="id_cursos_{{forloop.counter0}}">
                         <a href = "curso/{{curso.0}}">{{curso.1}}</a>
                     </label>

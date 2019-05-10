@@ -88,7 +88,7 @@ def cadastro(request):
     else:
         form = CadForm()
     return render(request,"cevest/cadastro2.html",{'form':form})
-    
+
 # Teste detalhe
 def detalhe(request):
     if request.method == 'POST':
@@ -195,13 +195,16 @@ def altera_cpf(request):
 def AlterarCadastro(request):
     aluno_temp_id = request.session["aluno_id"]
     aluno_temp = get_object_or_404(Aluno,id=aluno_temp_id)
+    checked_curso_ids = []
+    for curso in aluno_temp.cursos.all():
+        checked_curso_ids.append(curso.id)
     if request.method == 'POST':
         form = CadFormBase(request.POST, instance = aluno_temp)
         if form.is_valid():
             form.save(aluno_temp)
             return HttpResponseRedirect(reverse('index'))
     form=CadFormBase(initial={'cidade':aluno_temp.bairro.cidade}, instance=aluno_temp)
-    return render(request,"cevest/altera_cadastro.html",{'form':form})
+    return render(request,"cevest/altera_cadastro.html",{'form':form, 'checked_curso_ids':checked_curso_ids})
 
 
 #???
