@@ -38,7 +38,7 @@
                 <div class="custom-control custom-checkbox">
                     <input type = "checkbox" name = "cursos" value = "{{curso.0}}" class="custom-control-input" id="id_cursos_{{forloop.counter0}}" {% if curso.0 in checked_curso_ids %} checked {% endif %}>
                     <label class="custom-control-label" for="id_cursos_{{forloop.counter0}}">
-                        <a href = "curso/{{curso.0}}">{{curso.1}}</a>
+                        <a href = "#" onclick="return open_popup('curso/{{curso.0}}')">{{curso.1}}</a>
                     </label>
                 </div>
                 </h6>
@@ -275,6 +275,13 @@
         v=v.replace(/t/gi,"7")
         return v
     }
+
+function open_popup(url)
+{
+    newwindow = window.open(url,'{{title}}', 'height = 400,width = 600');
+    if(window.focus) {newwindow.focus()}
+    return false;
+}
 
 function data(v){
 	v=v.replace(/\D/g,"")                //Remove tudo o que nao e digito
