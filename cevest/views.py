@@ -4,10 +4,11 @@ from __future__ import unicode_literals
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, Http404, QueryDict, JsonResponse
 from django.forms.models import model_to_dict
-from .forms import DetalheForm, CadForm, ConfirmaTurmaForm, Recibo_IndForm, Altera_cpf, CadFormBase, TesteForm
+from .forms import DetalheForm, CadForm, ConfirmaTurmaForm, Recibo_IndForm, Altera_cpf, TesteForm, CadFormBase
 #from .forms import CadForm, ConfirmaTurmaForm, Recibo_IndForm, Altera_cpf, Altera_Cadastro, EscolherTurma#, Altera_Situacao
 from .models import Curso, Aluno, Cidade, Bairro, Profissao, Escolaridade, Matriz, Turma_Prevista, Aluno_Turma, Turma, Situacao
 from django.urls import reverse
+from django.contrib import messages
 
 
 # Página index
@@ -77,16 +78,17 @@ def pauta2(request, turma_id):
 
 # Página Cadastro
 def cadastro(request):
+    temp_cursos = Curso.objects.all().order_by('nome')
     if request.method == 'POST':
         form = CadForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(reverse('index'))#+form.pk)
+            messages.add_message(request,messages.INFO,'Cadastro Salvo')
+            return HttpResponseRedirect(reverse('index'))
     else:
         form = CadForm()
-    return render(request,"cevest/cadastro2.html",{'form':form})#, 'cidades': cidades, 'lista_curso': lista_curso, 'escolaridades': escolaridades, 'profissoes': profissoes })
-#    return render(request,"cevest/cadastro.html",{'form':form, 'cidades': cidades })
-
+    return render(request,"cevest/cadastro2.html",{'form':form})
+    
 # Teste detalhe
 def detalhe(request):
     if request.method == 'POST':
@@ -94,7 +96,6 @@ def detalhe(request):
         if form.is_valid():
             cpf = form.cleaned_data['cpf']
             dt_nascimento = form.cleaned_data['dt_nascimento']
-#            aluno = Aluno.objects.get(cpf=cpf, dt_nascimento=dt_nascimento)
             aluno = Aluno.objects.get(cpf='05334010700', dt_nascimento='1978-11-02')
             if aluno != 'None':
                 pk = aluno.pk
@@ -132,17 +133,14 @@ def portador(request):
 
 def altera(request, pk):
     aluno = get_object_or_404(Aluno, pk=pk)
-#    aluno = Aluno.objects.get(cpf='96847298715', dt_nascimento='2018-11-06')
-
     if request.method == 'POST':
         form = CadastroForm(request.POST, instance=aluno)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect('/cevest/')
+
     else:
-#        aluno = Aluno.objects.get(cpf=cpf, dt_nascimento=dt_nascimento)
         form = CadastroForm(instance=aluno)
-#        form = CadastroForm(request.POST or None, instance=aluno)
 
     return render(request,"cevest/altera.html",{'form':form})
 

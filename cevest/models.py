@@ -108,8 +108,7 @@ class Cidade(models.Model):
 
 class Bairro(models.Model):
     def __str__(self):
-        return '%s - %s' % (self.cidade, self.nome)
-#        return self.nome
+        return '%s' % (self.nome)
 
     class Meta:
         ordering = ('cidade', 'nome',)
@@ -151,7 +150,7 @@ class Aluno(models.Model):
     nome = models.CharField(max_length=60)
     email = models.EmailField(max_length=254, blank=True, null=True)
     cpf = models.CharField(unique=True, max_length=11, validators=[validate_CPF])
-    nis = models.CharField(unique=True, max_length=11, null=True)
+    nis = models.CharField(unique=True, max_length=11, blank = True, null=True)
     bolsa_familia = models.BooleanField(default=False)
     quant_filhos = models.PositiveSmallIntegerField(default=0)
     sexo = models.CharField(max_length=1, choices=SEXO)
