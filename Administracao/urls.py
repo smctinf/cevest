@@ -18,4 +18,6 @@ urlpatterns = [
     path('controle_presenca',views.ControleDePresenca, name="controle_presenca"),
     path('login', auth_views.LoginView.as_view(template_name='cevest/login.html')),
     path('logout',views.logout_view,name="logout"),
+    path('confirmar_turma', views.ConfirmarTurma, name="confirmar_turma"),
+    path('bacalhau_arrumar_turma', views.ArrumarSituacaoTurmaBacalhau, name = 'bacalhau_arrumar_turma')
 ]

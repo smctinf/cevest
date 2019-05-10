@@ -72,6 +72,9 @@ admin.site.register(Aluno, AlunoAdmin)
 from .models import Turno
 admin.site.register(Turno)
 
+from .models import Situacao_Turma
+admin.site.register(Situacao_Turma)
+
 from .models import Situacao
 admin.site.register(Situacao)
 

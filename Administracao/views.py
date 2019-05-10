@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, Http404, QueryDict
 from django.forms.models import model_to_dict
-from .forms import EscolherTurma, Altera_Situacao, Controle_Presenca, EscolherDia
-from cevest.models import Curso, Aluno, Cidade, Bairro, Profissao, Escolaridade, Matriz, Turma_Prevista, Aluno_Turma, Turma, Situacao, Disciplina, Presenca, Feriado
+from .forms import EscolherTurma, Altera_Situacao, Controle_Presenca, EscolherDia, Confirmar_Turma
+from cevest.models import Curso, Aluno, Cidade, Bairro, Profissao, Escolaridade, Matriz, Turma_Prevista, Aluno_Turma, Turma, Situacao, Disciplina, Presenca, Feriado, Situacao_Turma, Turma_Prevista_Turma_Definitiva
+#from cevest import models
 import datetime
 from .functions import get_proper_casing, compare_brazilian_to_python_weekday, convert_date_to_tuple, convert_tuple_to_data, create_select_choices, is_date_holiday,create_not_fixed_holidays_in_db
 from django.contrib.auth.decorators import login_required, permission_required
@@ -287,3 +288,64 @@ def ControleDePresenca(request):
         print(temp_presenca.errors)
     return HttpResponseRedirect(reverse('administracao:controle_presenca'))
 
+@login_required
+@permission_required('cevest.acesso_admin', raise_exception=True)
+def ArrumarSituacaoTurmaBacalhau(request):
+    temp_relacao_turma = Turma_Prevista_Turma_Definitiva.objects.all()
+    situacao_confirmada = Situacao_Turma.objects.get(descricao = "Confirmada")
+    for turma in temp_relacao_turma:
+        turma.turma_prevista.situacao = situacao_confirmada
+        turma.turma_prevista.save()
+    return HttpResponseRedirect(reverse('administracao:index'))
+
+@login_required
+@permission_required('cevest.acesso_admin', raise_exception=True)
+def ConfirmarTurma(request):
+    situacao_aguardando = Situacao_Turma.objects.get(descricao = "Aguardando")
+    situacao_confirmada = Situacao_Turma.objects.get(descricao = "Confirmada")
+    temp_turmas = Turma_Prevista.objects.filter(situacao = situacao_aguardando)
+    initial_data = []
+    for turma in temp_turmas:
+        initial_data.append({'nome':turma})
+    formset_confirmar_turma = formset_factory(Confirmar_Turma,max_num = len(temp_turmas))
+    formset = formset_confirmar_turma(initial = initial_data)
+    
+    if request.method == 'POST':
+        temp_turmas_confirmadas = formset_confirmar_turma(request.POST, initial = initial_data)
+        if temp_turmas_confirmadas.is_valid():
+            i = 0
+            for form in temp_turmas_confirmadas:
+                print("teste" + str(i))
+                if form.cleaned_data['confirma']:
+                    temp_turmas[i].situacao = situacao_confirmada
+                    temp_turmas[i].save()
+                    
+                    temp_turma_criada,created_turma = Turma.objects.get_or_create(
+                        nome = temp_turmas[i].nome,
+                        curso = temp_turmas[i].curso,
+                        curriculo = temp_turmas[i].curriculo,
+                        instrutor = temp_turmas[i].instrutor,
+                        dt_inicio = temp_turmas[i].dt_inicio,
+                        dt_fim = temp_turmas[i].dt_fim,
+                        #horario = temp_turmas[i].horario.all(),
+                        quant_alunos = temp_turmas[i].quant_alunos
+                    )
+                    
+                    if created_turma:
+                        temp_turma_criada.horario.set(temp_turmas[i].horario.all())
+                    
+                    relacao_turmas, created_relacao = Turma_Prevista_Turma_Definitiva.objects.get_or_create(
+                        turma_prevista = temp_turmas[i],
+                        turma = temp_turma_criada
+                        )
+                    
+
+                    temp_turma_criada.save()
+                    relacao_turmas.save()
+                i+=1
+        else:
+            print(temp_turmas_confirmadas.errors)
+        return HttpResponseRedirect(reverse('administracao:confirmar_turma'))
+    return render(request, "Administracao/confirmar_turma.html",{"formset" : formset})
+
+    print(initial_data)

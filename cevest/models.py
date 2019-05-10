@@ -196,6 +196,16 @@ class Horario(models.Model):
     hora_fim = models.TimeField('Hora Fim')
     dt_inclusao = models.DateTimeField(auto_now_add=True)
 
+class Situacao_Turma(models.Model):
+    class Meta:
+        verbose_name = "Situação de turma"
+        verbose_name_plural = "Situações de turma"
+
+    def __str__(self):
+        return self.descricao
+
+    descricao = models.CharField(max_length=10, unique = True, null = True)
+
 class Turma_Prevista(models.Model):
     class Meta:
         ordering = ('curso', 'nome')
@@ -215,6 +225,7 @@ class Turma_Prevista(models.Model):
     quant_alunos = models.PositiveSmallIntegerField(default=0)
     dt_inclusao = models.DateTimeField(auto_now_add=True)
     exibir = models.BooleanField(default=True)
+    situacao = models.ForeignKey(Situacao_Turma, on_delete=models.PROTECT, default=1)
 
 class Turma(models.Model):
     class Meta:

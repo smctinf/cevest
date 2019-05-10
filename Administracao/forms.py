@@ -33,3 +33,9 @@ class Controle_Presenca(forms.Form):
     def __init__(self, *args, CHOICES,**kwargs):
         super().__init__(*args,**kwargs)
         self.fields['dias'].choices = CHOICES
+
+class Confirmar_Turma(forms.Form):
+    nome = forms.CharField(label = 'Turma:', disabled = True, required = False)
+    confirma = forms.BooleanField(widget=forms.CheckboxInput, required = False)
+
+
