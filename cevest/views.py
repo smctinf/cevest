@@ -149,11 +149,10 @@ def altera(request, pk):
 def teste_ajax(request):
     if request.method == 'POST':
         form = TesteForm(request.POST)
-        print(request.POST.get('bairro'))
         if form.is_valid():
             return HttpResponseRedirect(reverse('index'))
         else:
-            print("blep")
+            print("erro form ajax")
     else:
         form = TesteForm()
     return render(request,"cevest/teste.html",{'form':form})
@@ -202,6 +201,7 @@ def AlterarCadastro(request):
         form = CadFormBase(request.POST, instance = aluno_temp)
         if form.is_valid():
             form.save(aluno_temp)
+            messages.info(request,'Cadastro Salvo', extra_tags='alert')
             return HttpResponseRedirect(reverse('index'))
     form=CadFormBase(initial={'cidade':aluno_temp.bairro.cidade}, instance=aluno_temp)
     return render(request,"cevest/altera_cadastro.html",{'form':form, 'checked_curso_ids':checked_curso_ids})

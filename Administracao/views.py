@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, Http404, QueryDict
 from django.forms.models import model_to_dict
 from .forms import EscolherTurma, Altera_Situacao, Controle_Presenca, EscolherDia, Confirmar_Turma
-from cevest.models import Curso, Aluno, Cidade, Bairro, Profissao, Escolaridade, Matriz, Turma_Prevista, Aluno_Turma, Turma, Situacao, Disciplina, Presenca, Feriado, Situacao_Turma, Turma_Prevista_Turma_Definitiva
+from cevest.models import Curso, Aluno, Cidade, Bairro, Profissao, Escolaridade, Matriz, Turma_Prevista, Aluno_Turma, Turma, Situacao, Disciplina, Presenca, Feriado, Situacao_Turma, Turma_Prevista_Turma_Definitiva, Aluno_Turma_Prevista, Status_Aluno_Turma_Prevista
 #from cevest import models
 import datetime
 from .functions import get_proper_casing, compare_brazilian_to_python_weekday, convert_date_to_tuple, convert_tuple_to_data, create_select_choices, is_date_holiday,create_not_fixed_holidays_in_db
@@ -15,7 +15,6 @@ from .criarmatrizes import getCursos
 @login_required
 @permission_required('cevest.acesso_admin', raise_exception=True)
 def capitalizar_nomes(request):
-    print(request.user)
     alunos = Aluno.objects.all()
     for aluno in alunos:
         aluno.nome = get_proper_casing(aluno.nome)
@@ -270,7 +269,6 @@ def ControleDePresenca(request):
     if temp_presenca.is_valid():
         i=0
         for form in temp_presenca:
-            print("Savou " + str(i))
             aluno = turma_aluno[i].aluno
             i+=1
             dias = form.cleaned_data['dias'] 
@@ -304,22 +302,22 @@ def ConfirmarTurma(request):
     situacao_aguardando = Situacao_Turma.objects.get(descricao = "Aguardando")
     situacao_confirmada = Situacao_Turma.objects.get(descricao = "Confirmada")
     temp_turmas = Turma_Prevista.objects.filter(situacao = situacao_aguardando)
+    temp_status_aluno = Status_Aluno_Turma_Prevista.objects.get(descricao = "Matriculado")
+    temp_aluno_turma_prevista = []
+
     initial_data = []
     for turma in temp_turmas:
         initial_data.append({'nome':turma})
     formset_confirmar_turma = formset_factory(Confirmar_Turma,max_num = len(temp_turmas))
     formset = formset_confirmar_turma(initial = initial_data)
-    
+
     if request.method == 'POST':
         temp_turmas_confirmadas = formset_confirmar_turma(request.POST, initial = initial_data)
         if temp_turmas_confirmadas.is_valid():
             i = 0
             for form in temp_turmas_confirmadas:
-                print("teste" + str(i))
                 if form.cleaned_data['confirma']:
-                    temp_turmas[i].situacao = situacao_confirmada
-                    temp_turmas[i].save()
-                    
+                    temp_turmas[i].situacao = situacao_confirmada                    
                     temp_turma_criada,created_turma = Turma.objects.get_or_create(
                         nome = temp_turmas[i].nome,
                         curso = temp_turmas[i].curso,
@@ -327,19 +325,22 @@ def ConfirmarTurma(request):
                         instrutor = temp_turmas[i].instrutor,
                         dt_inicio = temp_turmas[i].dt_inicio,
                         dt_fim = temp_turmas[i].dt_fim,
-                        #horario = temp_turmas[i].horario.all(),
                         quant_alunos = temp_turmas[i].quant_alunos
                     )
                     
                     if created_turma:
                         temp_turma_criada.horario.set(temp_turmas[i].horario.all())
-                    
+                        temp_aluno_turma_prevista = Aluno_Turma_Prevista.objects.filter(turma_prevista = temp_turmas[i], status_aluno_turma_prevista = temp_status_aluno)
+                        for aluno_turma_relacao in temp_aluno_turma_prevista:
+                            temp_aluno_turma = Aluno_Turma.objects.create(turma = temp_turma_criada, aluno = aluno_turma_relacao.aluno)
+                            #temp_aluno_turma.save()
+
                     relacao_turmas, created_relacao = Turma_Prevista_Turma_Definitiva.objects.get_or_create(
                         turma_prevista = temp_turmas[i],
                         turma = temp_turma_criada
                         )
                     
-
+                    temp_turmas[i].save()
                     temp_turma_criada.save()
                     relacao_turmas.save()
                 i+=1
@@ -347,5 +348,3 @@ def ConfirmarTurma(request):
             print(temp_turmas_confirmadas.errors)
         return HttpResponseRedirect(reverse('administracao:confirmar_turma'))
     return render(request, "Administracao/confirmar_turma.html",{"formset" : formset})
-
-    print(initial_data)
