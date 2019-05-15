@@ -83,7 +83,7 @@ def cadastro(request):
         form = CadForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.add_message(request,messages.INFO,'Cadastro Salvo')
+            messages.info(request,'Cadastro Salvo')
             return HttpResponseRedirect(reverse('index'))
     else:
         form = CadForm()
@@ -201,7 +201,7 @@ def AlterarCadastro(request):
         form = CadFormBase(request.POST, instance = aluno_temp)
         if form.is_valid():
             form.save(aluno_temp)
-            messages.info(request,'Cadastro Salvo', extra_tags='alert')
+            messages.info(request,'Cadastro Salvo')
             return HttpResponseRedirect(reverse('index'))
     form=CadFormBase(initial={'cidade':aluno_temp.bairro.cidade}, instance=aluno_temp)
     return render(request,"cevest/altera_cadastro.html",{'form':form, 'checked_curso_ids':checked_curso_ids})

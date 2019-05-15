@@ -11,6 +11,7 @@ from django.contrib.auth import logout
 from django.urls import reverse
 from django.forms.formsets import formset_factory
 from .criarmatrizes import getCursos
+from django.contrib import messages
 
 @login_required
 @permission_required('cevest.acesso_admin', raise_exception=True)
@@ -19,16 +20,16 @@ def capitalizar_nomes(request):
     for aluno in alunos:
         aluno.nome = get_proper_casing(aluno.nome)
         aluno.save()
+    messages.info(request,'Nomes Capitalizados')
     return HttpResponseRedirect("/index")
 
 @login_required
 @permission_required('cevest.acesso_admin', raise_exception=True)
 def criar_feriados_moveis(request):
     current_year = datetime.date.today().year
-    #print(type(current_year))
-    #current_year = current_year.year
     for i in range(0,100):
         create_not_fixed_holidays_in_db(current_year+i)
+    messages.info(request,'Feriados Móveis Criados')
     return HttpResponseRedirect("/index")
 
 @login_required
@@ -142,6 +143,7 @@ def AlterarSituacaoAluno(request):
                 ta.situacao = Situacao.objects.get(id=situacao_id)
                 ta.save()
                 i = i+1
+            messages.info(request,'Situações Alteradas')
             return HttpResponseRedirect(reverse('administracao:area_admin'))
         else:
             print("Erro:")
@@ -180,6 +182,7 @@ def AdicionarMatrizesDeTxT(request):
             num_aulas = num_aulas_,
             carga_horaria_total = carga_horaria_total_
         )
+    messages.info(request,'Cursos Adicionados')
     return render(request,"Administracao/criar_matriz_txt.html", {"cursos_criados":cursos_criados, "disciplinas_criadas":disciplinas_criadas})
 
 @login_required
@@ -282,6 +285,7 @@ def ControleDePresenca(request):
                         temp_presenca_criada = Presenca.objects.get(turma = temp_turma, aluno = aluno, data_aula = dias_aula[index],presente=True)
                         temp_presenca_criada.presente = False
                         temp_presenca_criada.save()
+        messages.info(request,'Presenças Salvas')
     else:
         print(temp_presenca.errors)
     return HttpResponseRedirect(reverse('administracao:controle_presenca'))
@@ -294,6 +298,7 @@ def ArrumarSituacaoTurmaBacalhau(request):
     for turma in temp_relacao_turma:
         turma.turma_prevista.situacao = situacao_confirmada
         turma.turma_prevista.save()
+    messages.info(request,'Situação de todas as turmas previstas mudada para confirmada')
     return HttpResponseRedirect(reverse('administracao:index'))
 
 @login_required
@@ -344,6 +349,7 @@ def ConfirmarTurma(request):
                     temp_turma_criada.save()
                     relacao_turmas.save()
                 i+=1
+            messages.info(request,'Turmas Confirmadas')
         else:
             print(temp_turmas_confirmadas.errors)
         return HttpResponseRedirect(reverse('administracao:confirmar_turma'))
