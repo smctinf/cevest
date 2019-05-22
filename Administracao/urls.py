@@ -19,5 +19,7 @@ urlpatterns = [
     path('login', auth_views.LoginView.as_view(template_name='cevest/login.html')),
     path('logout',views.logout_view,name="logout"),
     path('confirmar_turma', views.ConfirmarTurma, name="confirmar_turma"),
-    path('bacalhau_arrumar_turma', views.ArrumarSituacaoTurmaBacalhau, name = 'bacalhau_arrumar_turma')
+    path('bacalhau_arrumar_turma', views.ArrumarSituacaoTurmaBacalhau, name = 'bacalhau_arrumar_turma'),
+    path('escolher_turma_para_alocacao',views.EscolherTurmaPrevistaParaAlocacao, name = "escolher_turma_para_alocacao"),
+    path('alocacao',views.Alocacao, name = 'alocacao'),
 ]

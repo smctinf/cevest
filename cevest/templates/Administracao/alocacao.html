@@ -1,0 +1,30 @@
+{% extends "cevest/base_adm.html" %}
+
+{% block content %}
+
+<center>
+<h2 align="center">Lista de alunos alocados</h2>
+<br>
+
+<div>
+    <p>{{nome_turma}}</p>
+    <p>Alunos alocados:</p>
+        {% for instancia in alocados %}
+        <p>{{forloop.counter}} - {{ instancia.aluno.nome }}</p>
+        {% empty %}
+        <p>Não há alunos</p>
+        {% endfor %}
+
+    <p>Alunos não alocados:</p>
+        {% for instancia in nao_alocados %}
+        <p>{{forloop.counter}} - {{ instancia.aluno.nome }}</p>
+        {% empty %}
+        <p>Não há alunos</p>
+        {% endfor %}
+
+    </form>
+</div>
+
+</center>
+
+{% endblock %}

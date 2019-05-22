@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from cevest.models import Turma, Situacao
+from cevest.models import Turma, Situacao,Turma_Prevista
 from django.utils.safestring import mark_safe
 
 class EscolherTurma(forms.Form):
@@ -25,6 +25,12 @@ class EscolherDia(forms.Form):
     def __init__(self, *args, CHOICES,**kwargs):
         super().__init__(*args,**kwargs)
         self.fields['data'].choices = CHOICES
+
+class EscolherTurmaPrevista(forms.Form):
+    turma = forms.ModelChoiceField(widget=forms.Select,queryset=None)
+    def __init__(self, *args, QUERYSET,**kwargs):
+        super().__init__(*args,**kwargs)
+        self.fields['turma'].queryset = QUERYSET
 
 class Controle_Presenca(forms.Form):
     nome = forms.CharField(label='Aluno:',disabled = True, max_length=100, required=False)

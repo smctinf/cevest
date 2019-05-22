@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, Http404, QueryDict
 from django.forms.models import model_to_dict
-from .forms import EscolherTurma, Altera_Situacao, Controle_Presenca, EscolherDia, Confirmar_Turma
-from cevest.models import Curso, Aluno, Cidade, Bairro, Profissao, Escolaridade, Matriz, Turma_Prevista, Aluno_Turma, Turma, Situacao, Disciplina, Presenca, Feriado, Situacao_Turma, Turma_Prevista_Turma_Definitiva, Aluno_Turma_Prevista, Status_Aluno_Turma_Prevista
+from .forms import EscolherTurma, Altera_Situacao, Controle_Presenca, EscolherDia, Confirmar_Turma, EscolherTurmaPrevista
+from cevest.models import Curso, Aluno, Cidade, Bairro, Profissao, Escolaridade, Matriz, Turma_Prevista, Aluno_Turma, Turma, Situacao, Disciplina, Presenca, Feriado, Situacao_Turma, Turma_Prevista_Turma_Definitiva, Aluno_Turma_Prevista, Status_Aluno_Turma_Prevista, Horario, Turno
 #from cevest import models
 import datetime
 from .functions import get_proper_casing, compare_brazilian_to_python_weekday, convert_date_to_tuple, convert_tuple_to_data, create_select_choices, is_date_holiday,create_not_fixed_holidays_in_db
@@ -354,3 +354,121 @@ def ConfirmarTurma(request):
             print(temp_turmas_confirmadas.errors)
         return HttpResponseRedirect(reverse('administracao:confirmar_turma'))
     return render(request, "Administracao/confirmar_turma.html",{"formset" : formset})
+
+@login_required
+@permission_required('cevest.acesso_admin', raise_exception=True)
+def EscolherTurmaPrevistaParaAlocacao(request):
+    situacao_aguardando = Situacao_Turma.objects.get(descricao = "Aguardando")
+    turmas_previstas = Turma_Prevista.objects.filter(situacao = situacao_aguardando)
+
+    if request.method == 'POST':
+        form = EscolherTurmaPrevista(request.POST, QUERYSET = turmas_previstas)
+        if form.is_valid():
+            request.session['turma_prevista_id'] = form.cleaned_data['turma'].id
+            return HttpResponseRedirect(reverse('administracao:alocacao'))
+
+    form = EscolherTurmaPrevista(QUERYSET = turmas_previstas)
+    return render(request,"Administracao/escolher_turma.html",{'form':form})
+
+@login_required
+@permission_required('cevest.acesso_admin', raise_exception=True)
+def Alocacao(request):
+    #Ordem de prioridade:
+    #1-Ordem judicial
+    #2-Necessidades Especiais
+    #----
+    #3-Bolsa família
+    #4-Programas sociais
+    #5-Desempregado
+    #6-Filhos
+    #7-Idade
+
+    turma_prevista_id = request.session['turma_prevista_id']
+    turma_prevista = Turma_Prevista.objects.get(id = turma_prevista_id)
+
+    horario_manha = Turno.objects.get(descricao = "Manhã")
+    horario_tarde = Turno.objects.get(descricao = "Tarde")
+    horario_noite = Turno.objects.get(descricao = "Noite")
+
+    alunos_compativeis = Aluno.objects.filter(cursos = turma_prevista.curso)
+
+    lista_final = []
+    
+    turma_prevista_alunos = Aluno_Turma_Prevista.objects.filter(turma_prevista = turma_prevista)
+
+    status_candidato = Status_Aluno_Turma_Prevista.objects.get(descricao = "Candidato")
+    status_matriculado = Status_Aluno_Turma_Prevista.objects.get(descricao = "Matriculado")
+    
+
+    turma_prevista_alunos = turma_prevista_alunos.exclude(status_aluno_turma_prevista = status_matriculado).exclude(status_aluno_turma_prevista = status_candidato)
+
+    #pega os alunos com horários disponíveis compatíveis com o curso.
+
+    if len(turma_prevista.horario.filter(hora_inicio = datetime.time(hour = 7))) > 0:
+        alunos_compativeis = alunos_compativeis.filter(disponibilidade = horario_manha)
+    if len(turma_prevista.horario.filter(hora_inicio = datetime.time(hour = 13))) > 0:
+        alunos_compativeis = alunos_compativeis.filter(disponibilidade = horario_tarde)
+    if len(turma_prevista.horario.filter(hora_inicio = datetime.time(hour = 18))) > 0:
+        alunos_compativeis = alunos_compativeis.filter(disponibilidade = horario_noite)
+
+    for aluno_turma in turma_prevista_alunos:
+        alunos_compativeis = alunos_compativeis.exclude(id = aluno_turma.aluno.id)
+
+    for aluno in alunos_compativeis:
+        aluno_turma = Aluno_Turma.objects.filter(aluno = aluno)
+        for turma_aluno in aluno_turma:
+            if turma_aluno.turma.dt_fim < turma_prevista.dt_inicio:
+                continue
+            for horario in turma_aluno.turma.horario.all():
+                if horario in turma_prevista.horario.all():
+                    alunos_compativeis = alunos_compativeis.exclude(id = aluno.id)
+
+    #O sistema de pontos é definido de modo que a pessoa que tem uma prioridade maior que outra sempre receba
+    #mais pontos. Por exemplo, portadores de necessidade especiais recebem 16 pontos no mínimo, e pessoas com
+    #bolsa família, a prioridade imediatamente abaixo, podem receber no máximo 15 pontos. Assim, a quantidade
+    #de pontos para cada prioridade precisa ser uma potência de 2 (1,2,4,8,16,etc.) com a prioridade maior
+    #tendo mais pontos.
+
+    #Colocar p+=1 antes de checar cada condição, do jeito que está o código abaixo, permite definir a prioridade
+    #de cada condição apenas pela ordem de verificação, sendo que a primeira condição a ser verificada tem 
+    #prioridade menor que as seguintes.
+
+    for aluno in alunos_compativeis:
+        temp_pontuacao = 0
+        p = 0
+        if aluno.quant_filhos > 0:
+            temp_pontuacao += 2**p
+        p += 1
+        if aluno.desempregado:
+            temp_pontuacao += 2**p
+        p += 1
+        if aluno.nis:
+            temp_pontuacao += 2**p
+        p += 1
+        if aluno.bolsa_familia:
+            temp_pontuacao += 2**p
+        p += 1
+        if aluno.portador_necessidades_especiais:
+            temp_pontuacao += 2**p
+        p += 1
+        if aluno.ordem_judicial:
+            temp_pontuacao += 2**p
+
+        temp_dict = {"aluno":aluno,"pontuação":temp_pontuacao,"idade":aluno.dt_nascimento,'dt_inclusao':aluno.dt_inclusao}
+        lista_final.append(temp_dict)
+
+    lista_final = sorted(lista_final, key = lambda i: (-i['pontuação'],i['idade'],i['dt_inclusao']))
+
+    i = 0
+    for aluno_pontuacao in lista_final:
+        if(i >= turma_prevista.quant_alunos):
+            break
+        temp_aluno_turma_prevista = Aluno_Turma_Prevista.objects.get_or_create(
+            aluno = aluno_pontuacao['aluno'],
+            turma_prevista = turma_prevista
+        )
+        i+=1
+
+
+    return render(request,"Administracao/alocacao.html",{'nome_turma':turma_prevista,'alocados':lista_final[0:i],"nao_alocados":lista_final[i+1:]})
+
