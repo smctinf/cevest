@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, Http404, QueryDict
 from django.forms.models import model_to_dict
-from .forms import EscolherTurma, Altera_Situacao, Controle_Presenca, EscolherDia, Confirmar_Turma, EscolherTurmaPrevista
+from .forms import EscolherTurma, Altera_Situacao, Controle_Presenca, EscolherDia, Confirmar_Turma, EscolherTurmaPrevista,Altera_Situacao_Prevista
 from cevest.models import Curso, Aluno, Cidade, Bairro, Profissao, Escolaridade, Matriz, Turma_Prevista, Aluno_Turma, Turma, Situacao, Disciplina, Presenca, Feriado, Situacao_Turma, Turma_Prevista_Turma_Definitiva, Aluno_Turma_Prevista, Status_Aluno_Turma_Prevista, Horario, Turno
-#from cevest import models
+from cevest.forms import CadForm
 import datetime
 from .functions import get_proper_casing, compare_brazilian_to_python_weekday, convert_date_to_tuple, convert_tuple_to_data, create_select_choices, is_date_holiday,create_not_fixed_holidays_in_db
 from django.contrib.auth.decorators import login_required, permission_required
@@ -404,7 +404,7 @@ def Alocacao(request):
 
     #pega os alunos com horários disponíveis compatíveis com o curso.
 
-    if len(turma_prevista.horario.filter(hora_inicio = datetime.time(hour = 7))) > 0:
+    if len(turma_prevista.horario.filter(hora_inicio = datetime.time(hour = 7 ))) > 0:
         alunos_compativeis = alunos_compativeis.filter(disponibilidade = horario_manha)
     if len(turma_prevista.horario.filter(hora_inicio = datetime.time(hour = 13))) > 0:
         alunos_compativeis = alunos_compativeis.filter(disponibilidade = horario_tarde)
@@ -418,6 +418,8 @@ def Alocacao(request):
         aluno_turma = Aluno_Turma.objects.filter(aluno = aluno)
         for turma_aluno in aluno_turma:
             if turma_aluno.turma.dt_fim < turma_prevista.dt_inicio:
+                continue
+            if turma_prevista.dt_fim < turma_aluno.turma.dt_inicio:
                 continue
             for horario in turma_aluno.turma.horario.all():
                 if horario in turma_prevista.horario.all():
@@ -454,21 +456,95 @@ def Alocacao(request):
         if aluno.ordem_judicial:
             temp_pontuacao += 2**p
 
-        temp_dict = {"aluno":aluno,"pontuação":temp_pontuacao,"idade":aluno.dt_nascimento,'dt_inclusao':aluno.dt_inclusao}
+        temp_dict = {"aluno":aluno,"pontuação":temp_pontuacao,"dt_nasc":aluno.dt_nascimento,'dt_inclusao':aluno.dt_inclusao,'situacao':Status_Aluno_Turma_Prevista.objects.none()}
         lista_final.append(temp_dict)
 
-    lista_final = sorted(lista_final, key = lambda i: (-i['pontuação'],i['idade'],i['dt_inclusao']))
+    lista_final = sorted(lista_final, key = lambda i: (-i['pontuação'],i['dt_nasc'],i['dt_inclusao']))
 
     i = 0
     for aluno_pontuacao in lista_final:
         if(i >= turma_prevista.quant_alunos):
             break
-        temp_aluno_turma_prevista = Aluno_Turma_Prevista.objects.get_or_create(
+        temp_aluno_turma_prevista,created = Aluno_Turma_Prevista.objects.get_or_create(
             aluno = aluno_pontuacao['aluno'],
-            turma_prevista = turma_prevista
+            turma_prevista = turma_prevista,
         )
+        aluno_pontuacao['situacao'] = temp_aluno_turma_prevista.status_aluno_turma_prevista
         i+=1
 
+    return render(request,"Administracao/alocacao.html",{'nome_turma':turma_prevista,'alocados':lista_final[0:i],"nao_alocados":lista_final[i:],"nao_considerados":turma_prevista_alunos})
 
-    return render(request,"Administracao/alocacao.html",{'nome_turma':turma_prevista,'alocados':lista_final[0:i],"nao_alocados":lista_final[i+1:]})
+@login_required
+@permission_required('cevest.acesso_admin', raise_exception=True)
+def EscolherTurmaPrevistaParaAlterarSituacao(request):
+    situacao_aguardando = Situacao_Turma.objects.get(descricao = "Aguardando")
+    turmas_previstas = Turma_Prevista.objects.filter(situacao = situacao_aguardando)
 
+    if request.method == 'POST':
+        form = EscolherTurmaPrevista(request.POST, QUERYSET = turmas_previstas)
+        if form.is_valid():
+            request.session['turma_prevista_id'] = form.cleaned_data['turma'].id
+            return HttpResponseRedirect(reverse('administracao:alterar_situacao_turma_prevista'))
+
+    form = EscolherTurmaPrevista(QUERYSET = turmas_previstas)
+    return render(request,"Administracao/escolher_turma.html",{'form':form})
+
+@login_required
+@permission_required('cevest.acesso_admin', raise_exception=True)
+def AlterarSituacaoTurmaPrevista(request):
+    turma_prevista_id = request.session['turma_prevista_id']
+    turma_prevista = Turma_Prevista.objects.get(id = turma_prevista_id)
+    aluno_turma_prevista = Aluno_Turma_Prevista.objects.filter(turma_prevista = turma_prevista)
+
+    data = []
+    for ta in aluno_turma_prevista:
+        temp_dict = {"nome" : ta.aluno.nome, "situacao": ta.status_aluno_turma_prevista.id, "aluno_id":ta.aluno.id}
+        data.append(temp_dict)
+    SituacaoFormset = formset_factory(Altera_Situacao_Prevista,max_num=len(data))
+    if request.method == "POST":
+        post_data = request.POST.copy()
+        formset = SituacaoFormset(post_data,data)
+        i=0
+        if formset.is_valid():
+            for ta in aluno_turma_prevista:
+                situacao_id = post_data.get('form-'+ str(i) +'-situacao')
+                situacao_id = int(situacao_id)
+                ta.status_aluno_turma_prevista = Status_Aluno_Turma_Prevista.objects.get(id=situacao_id)
+                ta.save()
+                i = i+1
+            messages.info(request,'Situações Alteradas')
+            return HttpResponseRedirect(reverse('administracao:area_admin'))
+        else:
+            print("Erro:")
+            print(formset.errors)
+    formset = SituacaoFormset(initial=data)
+    return render(request,"Administracao/alterar_situacao_alunos_turma_prevista.html",{'formset':formset, 'nome_turma':turma_prevista})
+
+@login_required
+@permission_required('cevest.acesso_admin', raise_exception=True)
+def ConfirmarInformacoesAlunoPrevisto(request,aluno_id,turma_id):
+    turma = Turma_Prevista.objects.get(id = turma_id)
+    aluno = get_object_or_404(Aluno,id=aluno_id)
+
+    checked_curso_ids = []
+    for curso in aluno.cursos.all():
+        checked_curso_ids.append(curso.id)
+    if request.method == 'POST':
+        form = CadForm(request.POST, instance = aluno)
+        if form.is_valid():
+            form.save(aluno)
+            messages.info(request,'Cadastro Salvo')
+            return HttpResponseRedirect(reverse('administracao:index'))
+    form=CadForm(initial={'cidade':aluno.bairro.cidade,'cpf':aluno.cpf}, instance=aluno)
+    return render(request,"administracao/corrigir_cadastro.html",{'form':form, 'checked_curso_ids':checked_curso_ids})
+
+@login_required
+@permission_required('cevest.acesso_admin', raise_exception=True)
+def ConfirmarAluno(request,aluno_id,turma_id):
+    turma = Turma_Prevista.objects.get(id = turma_id)
+    aluno = get_object_or_404(Aluno,id=aluno_id)
+    aluno_turma_prevista = Aluno_Turma_Prevista.objects.get(aluno = aluno, turma_prevista = turma)
+    status_confirma = Status_Aluno_Turma_Prevista.objects.get(descricao = "Matriculado")
+    aluno_turma_prevista.status_aluno_turma_prevista = status_confirma
+    aluno_turma_prevista.save()
+    return HttpResponseRedirect(reverse('administracao:index'))

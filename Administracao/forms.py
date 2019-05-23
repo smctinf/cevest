@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from cevest.models import Turma, Situacao,Turma_Prevista
+from cevest.models import Turma, Situacao,Turma_Prevista, Status_Aluno_Turma_Prevista, Aluno
 from django.utils.safestring import mark_safe
 
 class EscolherTurma(forms.Form):
@@ -13,6 +13,11 @@ class login(forms.Form):
 class Altera_Situacao(forms.Form):
     nome = forms.CharField(label='Aluno:',disabled = True, max_length=100, required=False)
     situacao = forms.ModelChoiceField(widget=forms.Select,queryset=Situacao.objects.all())
+
+class Altera_Situacao_Prevista(forms.Form):
+    nome = forms.CharField(label='Aluno:',disabled = True, max_length=100, required=False)
+    situacao = forms.ModelChoiceField(widget=forms.Select,queryset=Status_Aluno_Turma_Prevista.objects.all())
+    aluno_id = forms.IntegerField()
 
 #Tira as tags <li> do widget de checkbox para ele poder ser colocado na horizontal
 class HorizontalCheckbox(forms.CheckboxSelectMultiple):

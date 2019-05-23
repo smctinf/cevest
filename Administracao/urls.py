@@ -22,4 +22,7 @@ urlpatterns = [
     path('bacalhau_arrumar_turma', views.ArrumarSituacaoTurmaBacalhau, name = 'bacalhau_arrumar_turma'),
     path('escolher_turma_para_alocacao',views.EscolherTurmaPrevistaParaAlocacao, name = "escolher_turma_para_alocacao"),
     path('alocacao',views.Alocacao, name = 'alocacao'),
+    path('escolher_turma_prevista_para_alterar_situacao',views.EscolherTurmaPrevistaParaAlterarSituacao, name = 'escolher_turma_prevista_para_alterar_situacao'),
+    path('alterar_situacao_turma_prevista',views.AlterarSituacaoTurmaPrevista, name = 'alterar_situacao_turma_prevista'),
+    path('confirmar_informacoes_aluno_previsto/<int:turma_id>/<int:aluno_id>/',views.ConfirmarInformacoesAlunoPrevisto, name = 'confirmar_informacoes_aluno_previsto')
 ]
