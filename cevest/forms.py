@@ -42,13 +42,13 @@ class CadFormBase(forms.ModelForm):
         bairro = forms.ModelChoiceField(queryset=Bairro.objects.all(), widget = forms.Select(attrs={'class': 'form-control'}))
         cep = forms.CharField(label = 'CEP', max_length= 9, widget = forms.TextInput(attrs={'class': 'form-control','onkeydown':"mascara(this,icep)", 'onload' : 'mascara(this,icep)'}))
         endereco = forms.CharField(label='Endereço',max_length=120, widget = forms.TextInput(attrs={'class': 'form-control'}))
-        complemento = forms.CharField(label='Complemento',max_length=120, widget = forms.TextInput(attrs={'class': 'form-control'}))
+        complemento = forms.CharField(label='Complemento',required=False,max_length=120, widget = forms.TextInput(attrs={'class': 'form-control'}))
 
         escolaridade = forms.ModelChoiceField(label = 'Escolaridade',queryset=Escolaridade.objects.all(), widget = forms.Select(attrs={'class': "custom-select d-block w-100 cidades"}))
 
         profissao = forms.ModelChoiceField(label = 'Profissão',queryset=Profissao.objects.all(), widget = forms.Select(attrs={'class': "custom-select d-block w-100 cidades"}))
         desempregado = forms.BooleanField(label = 'Desempregado',required=False,widget=forms.CheckboxInput(attrs={'class' : "custom-control-input"}))
-        outra_profissao = forms.CharField(label='Outra Profissão',max_length=60, widget = forms.TextInput(attrs={'class': 'form-control'}))
+        outra_profissao = forms.CharField(label='Outra Profissão',max_length=60, widget = forms.TextInput(attrs={'class': 'form-control'}),required = False)
 
         class Meta:
             model = Aluno

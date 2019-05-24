@@ -1,5 +1,5 @@
 from django import forms
-from django.forms import ModelForm
+from django.forms import ModelForm, BaseFormSet
 from cevest.models import Turma, Situacao,Turma_Prevista, Status_Aluno_Turma_Prevista, Aluno
 from django.utils.safestring import mark_safe
 
@@ -16,8 +16,14 @@ class Altera_Situacao(forms.Form):
 
 class Altera_Situacao_Prevista(forms.Form):
     nome = forms.CharField(label='Aluno:',disabled = True, max_length=100, required=False)
-    situacao = forms.ModelChoiceField(widget=forms.Select,queryset=Status_Aluno_Turma_Prevista.objects.all())
-    aluno_id = forms.IntegerField()
+    situacao = forms.ModelChoiceField(widget=forms.Select,queryset = Status_Aluno_Turma_Prevista.objects.none())
+    aluno_id = forms.IntegerField(disabled = True, required = False)
+
+class Altera_Situacao_Prevista_Formset(BaseFormSet):
+    def __init__(self, *args, QUERYSET,**kwargs):
+        super().__init__(*args,**kwargs)
+        for form in self.forms:
+            form.fields['situacao'].queryset = QUERYSET
 
 #Tira as tags <li> do widget de checkbox para ele poder ser colocado na horizontal
 class HorizontalCheckbox(forms.CheckboxSelectMultiple):
@@ -39,7 +45,7 @@ class EscolherTurmaPrevista(forms.Form):
 
 class Controle_Presenca(forms.Form):
     nome = forms.CharField(label='Aluno:',disabled = True, max_length=100, required=False)
-    dias = forms.MultipleChoiceField(widget=HorizontalCheckbox, required = False)
+    dias = forms.MultipleChoiceField(widget=HorizontalCheckbox(), required = False)
     #dia = forms.ChoiceField(widget=forms.CheckboxInput, label = '')
     def __init__(self, *args, CHOICES,**kwargs):
         super().__init__(*args,**kwargs)

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, Http404, QueryDict
 from django.forms.models import model_to_dict
-from .forms import EscolherTurma, Altera_Situacao, Controle_Presenca, EscolherDia, Confirmar_Turma, EscolherTurmaPrevista,Altera_Situacao_Prevista
+from .forms import EscolherTurma, Altera_Situacao, Controle_Presenca, EscolherDia, Confirmar_Turma, EscolherTurmaPrevista,Altera_Situacao_Prevista, Altera_Situacao_Prevista_Formset
 from cevest.models import Curso, Aluno, Cidade, Bairro, Profissao, Escolaridade, Matriz, Turma_Prevista, Aluno_Turma, Turma, Situacao, Disciplina, Presenca, Feriado, Situacao_Turma, Turma_Prevista_Turma_Definitiva, Aluno_Turma_Prevista, Status_Aluno_Turma_Prevista, Horario, Turno
 from cevest.forms import CadForm
 import datetime
@@ -492,33 +492,72 @@ def EscolherTurmaPrevistaParaAlterarSituacao(request):
 @login_required
 @permission_required('cevest.acesso_admin', raise_exception=True)
 def AlterarSituacaoTurmaPrevista(request):
+    situacao_matriculado = Status_Aluno_Turma_Prevista.objects.get(descricao = "Matriculado")
+    situacoes_nao_matriculados = Status_Aluno_Turma_Prevista.objects.exclude(descricao = "Matriculado")
+    #situacoes_nao_candidatos_ou_matriculados = Status_Aluno_Turma_Prevista.objects.exclude(descricao = "Matriculado").exclude(descricao = "Candidato")
+    situacao_candidato = Status_Aluno_Turma_Prevista.objects.get(descricao = "Candidato")
+
     turma_prevista_id = request.session['turma_prevista_id']
     turma_prevista = Turma_Prevista.objects.get(id = turma_prevista_id)
     aluno_turma_prevista = Aluno_Turma_Prevista.objects.filter(turma_prevista = turma_prevista)
+    aluno_turma_prevista_candidato = aluno_turma_prevista.filter(status_aluno_turma_prevista = situacao_candidato)
+    aluno_turma_prevista_matriculado = aluno_turma_prevista.filter(status_aluno_turma_prevista = situacao_matriculado)
+    aluno_turma_prevista_nao_matriculado = aluno_turma_prevista.exclude(status_aluno_turma_prevista = situacao_candidato).exclude(status_aluno_turma_prevista = situacao_matriculado)
 
-    data = []
-    for ta in aluno_turma_prevista:
+
+    data_matriculados = []
+    for ta in aluno_turma_prevista_matriculado:
         temp_dict = {"nome" : ta.aluno.nome, "situacao": ta.status_aluno_turma_prevista.id, "aluno_id":ta.aluno.id}
-        data.append(temp_dict)
-    SituacaoFormset = formset_factory(Altera_Situacao_Prevista,max_num=len(data))
+        data_matriculados.append(temp_dict)
+    data_matriculados = sorted(data_matriculados, key = lambda i: (i['situacao'],i['nome']))
+
+    data_candidatos = []
+    for ta in aluno_turma_prevista_candidato:
+        temp_dict = {"nome" : ta.aluno.nome, "situacao": ta.status_aluno_turma_prevista.id, "aluno_id":ta.aluno.id}
+        data_candidatos.append(temp_dict)
+    data_candidatos = sorted(data_candidatos, key = lambda i: (i['situacao'],i['nome']))
+
+    data_nao_matriculados = []
+    for ta in aluno_turma_prevista_nao_matriculado:
+        temp_dict = {"nome" : ta.aluno.nome, "situacao": ta.status_aluno_turma_prevista.id, "aluno_id":ta.aluno.id}
+        data_nao_matriculados.append(temp_dict)
+    data_nao_matriculados = sorted(data_nao_matriculados, key = lambda i: (i['situacao'],i['nome']))
+
+    SituacaoFormset = formset_factory(form = Altera_Situacao_Prevista, formset = Altera_Situacao_Prevista_Formset, max_num=0)
+
     if request.method == "POST":
         post_data = request.POST.copy()
-        formset = SituacaoFormset(post_data,data)
-        i=0
-        if formset.is_valid():
-            for ta in aluno_turma_prevista:
-                situacao_id = post_data.get('form-'+ str(i) +'-situacao')
-                situacao_id = int(situacao_id)
-                ta.status_aluno_turma_prevista = Status_Aluno_Turma_Prevista.objects.get(id=situacao_id)
-                ta.save()
-                i = i+1
+        formset_candidatos = SituacaoFormset(post_data,initial = data_candidatos,QUERYSET = situacoes_nao_matriculados, prefix = "candidatos")
+        formset_matriculados = SituacaoFormset(post_data,initial = data_matriculados,QUERYSET = Status_Aluno_Turma_Prevista.objects.all(), prefix = "matriculados")
+        formset_nao_matriculados = SituacaoFormset(post_data,initial = data_nao_matriculados,QUERYSET = situacoes_nao_matriculados, prefix = "nao_matriculados")
+
+        if formset_candidatos.is_valid() and formset_matriculados.is_valid() and formset_nao_matriculados.is_valid():
+            for form in formset_candidatos:
+                id = form.cleaned_data['aluno_id']
+                aluno_turma_temp = Aluno_Turma_Prevista.objects.get(turma_prevista = turma_prevista,aluno = form.cleaned_data['aluno_id'])
+                aluno_turma_temp.status_aluno_turma_prevista = form.cleaned_data['situacao']
+                aluno_turma_temp.save()
+            for form in formset_matriculados:
+                id = form.cleaned_data['aluno_id']
+                aluno_turma_temp = Aluno_Turma_Prevista.objects.get(turma_prevista = turma_prevista,aluno = form.cleaned_data['aluno_id'])
+                aluno_turma_temp.status_aluno_turma_prevista = form.cleaned_data['situacao']
+                aluno_turma_temp.save()
+            for form in formset_nao_matriculados:
+                id = form.cleaned_data['aluno_id']
+                aluno_turma_temp = Aluno_Turma_Prevista.objects.get(turma_prevista = turma_prevista,aluno = form.cleaned_data['aluno_id'])
+                aluno_turma_temp.status_aluno_turma_prevista = form.cleaned_data['situacao']
+                aluno_turma_temp.save()
+            
             messages.info(request,'Situações Alteradas')
-            return HttpResponseRedirect(reverse('administracao:area_admin'))
+            return HttpResponseRedirect(reverse('administracao:alterar_situacao_turma_prevista'))
         else:
             print("Erro:")
-            print(formset.errors)
-    formset = SituacaoFormset(initial=data)
-    return render(request,"Administracao/alterar_situacao_alunos_turma_prevista.html",{'formset':formset, 'nome_turma':turma_prevista})
+            print(formset_candidatos.errors)
+
+    formset_candidatos = SituacaoFormset(QUERYSET = situacoes_nao_matriculados,initial=data_candidatos, prefix = "candidatos")
+    formset_matriculados = SituacaoFormset(QUERYSET = Status_Aluno_Turma_Prevista.objects.all(), initial=data_matriculados, prefix = "matriculados")
+    formset_nao_matriculados = SituacaoFormset(QUERYSET = situacoes_nao_matriculados,initial = data_nao_matriculados, prefix = "nao_matriculados")
+    return render(request,"Administracao/alterar_situacao_alunos_turma_prevista.html",{'formset_candidatos':formset_candidatos, 'formset_matriculados':formset_matriculados, 'formset_nao_matriculados':formset_nao_matriculados, 'nome_turma':turma_prevista})
 
 @login_required
 @permission_required('cevest.acesso_admin', raise_exception=True)
@@ -530,11 +569,17 @@ def ConfirmarInformacoesAlunoPrevisto(request,aluno_id,turma_id):
     for curso in aluno.cursos.all():
         checked_curso_ids.append(curso.id)
     if request.method == 'POST':
-        form = CadForm(request.POST, instance = aluno)
+        post_data = request.POST
+        form = CadForm(post_data, instance = aluno)
         if form.is_valid():
             form.save(aluno)
-            messages.info(request,'Cadastro Salvo')
-            return HttpResponseRedirect(reverse('administracao:index'))
+            if "_salvar" in post_data:
+                messages.info(request,'Cadastro Salvo')
+            elif "_cadastrar" in post_data:
+                ConfirmarAluno(request,aluno_id,turma_id)
+            return HttpResponseRedirect(reverse('administracao:area_admin'))
+        else:
+            print(form.errors)
     form=CadForm(initial={'cidade':aluno.bairro.cidade,'cpf':aluno.cpf}, instance=aluno)
     return render(request,"administracao/corrigir_cadastro.html",{'form':form, 'checked_curso_ids':checked_curso_ids})
 
@@ -547,4 +592,5 @@ def ConfirmarAluno(request,aluno_id,turma_id):
     status_confirma = Status_Aluno_Turma_Prevista.objects.get(descricao = "Matriculado")
     aluno_turma_prevista.status_aluno_turma_prevista = status_confirma
     aluno_turma_prevista.save()
-    return HttpResponseRedirect(reverse('administracao:index'))
+    messages.info(request,'Cadastro Salvo')
+    return HttpResponseRedirect(reverse('administracao:area_admin'))
