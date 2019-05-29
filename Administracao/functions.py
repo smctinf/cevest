@@ -71,4 +71,3 @@ def create_select_choices(datas):
         choices.append((i,dia.strftime("%d/%m")))
         i+=1
     return choices
-

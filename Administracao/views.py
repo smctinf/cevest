@@ -358,8 +358,9 @@ def ConfirmarTurma(request):
 @login_required
 @permission_required('cevest.acesso_admin', raise_exception=True)
 def EscolherTurmaPrevistaParaAlocacao(request):
-    situacao_aguardando = Situacao_Turma.objects.get(descricao = "Aguardando")
-    turmas_previstas = Turma_Prevista.objects.filter(situacao = situacao_aguardando)
+    situacao_cancelada = Situacao_Turma.objects.get(descricao = "Cancelada")
+    turmas_previstas = Turma_Prevista.objects.exclude(situacao = situacao_cancelada)
+    turmas_previstas = turmas_previstas.exclude(dt_fim__lt = datetime.date.today())
 
     if request.method == 'POST':
         form = EscolherTurmaPrevista(request.POST, QUERYSET = turmas_previstas)
@@ -423,6 +424,7 @@ def Alocacao(request):
                 continue
             for horario in turma_aluno.turma.horario.all():
                 if horario in turma_prevista.horario.all():
+                    print("aluno removido da lista:" + str(aluno))
                     alunos_compativeis = alunos_compativeis.exclude(id = aluno.id)
 
     #O sistema de pontos é definido de modo que a pessoa que tem uma prioridade maior que outra sempre receba
@@ -477,8 +479,10 @@ def Alocacao(request):
 @login_required
 @permission_required('cevest.acesso_admin', raise_exception=True)
 def EscolherTurmaPrevistaParaAlterarSituacao(request):
-    situacao_aguardando = Situacao_Turma.objects.get(descricao = "Aguardando")
-    turmas_previstas = Turma_Prevista.objects.filter(situacao = situacao_aguardando)
+    situacao_cancelada = Situacao_Turma.objects.get(descricao = "Cancelada")
+    turmas_previstas = Turma_Prevista.objects.exclude(situacao = situacao_cancelada)
+    turmas_previstas = turmas_previstas.exclude(dt_fim__lt = datetime.date.today())
+
 
     if request.method == 'POST':
         form = EscolherTurmaPrevista(request.POST, QUERYSET = turmas_previstas)
@@ -562,12 +566,16 @@ def AlterarSituacaoTurmaPrevista(request):
 @login_required
 @permission_required('cevest.acesso_admin', raise_exception=True)
 def ConfirmarInformacoesAlunoPrevisto(request,aluno_id,turma_id):
-    turma = Turma_Prevista.objects.get(id = turma_id)
+    turma_prevista = Turma_Prevista.objects.get(id = turma_id)
     aluno = get_object_or_404(Aluno,id=aluno_id)
-
+    
+    situacao_matriculado = Status_Aluno_Turma_Prevista.objects.get(descricao = "Matriculado")
+   
     checked_curso_ids = []
     for curso in aluno.cursos.all():
         checked_curso_ids.append(curso.id)
+
+
     if request.method == 'POST':
         post_data = request.POST
         form = CadForm(post_data, instance = aluno)
@@ -576,21 +584,47 @@ def ConfirmarInformacoesAlunoPrevisto(request,aluno_id,turma_id):
             if "_salvar" in post_data:
                 messages.info(request,'Cadastro Salvo')
             elif "_cadastrar" in post_data:
+                #####
+                aluno_turma = Aluno_Turma_Prevista.objects.filter(aluno = aluno).exclude(turma_prevista = turma_prevista)
+                aluno_turma = aluno_turma.filter(status_aluno_turma_prevista = situacao_matriculado)
+                for turma_aluno in aluno_turma:
+                    if turma_aluno.turma_prevista.dt_fim < turma_prevista.dt_inicio:
+                        print("testeA")
+                        continue
+                    if turma_prevista.dt_fim < turma_aluno.turma_prevista.dt_inicio:
+                        print("testeB")
+                        continue
+                    for horario in turma_aluno.turma_prevista.horario.all():
+                        if horario in turma_prevista.horario.all():
+                            print("conflito")
+                            messages.info(request,'Conflito de horário com a turma ' + str(turma_aluno.turma_prevista))
+                            return HttpResponseRedirect(reverse('administracao:area_admin'))
+                #####
                 ConfirmarAluno(request,aluno_id,turma_id)
             return HttpResponseRedirect(reverse('administracao:area_admin'))
         else:
             print(form.errors)
+
+
     form=CadForm(initial={'cidade':aluno.bairro.cidade,'cpf':aluno.cpf}, instance=aluno)
     return render(request,"administracao/corrigir_cadastro.html",{'form':form, 'checked_curso_ids':checked_curso_ids})
 
 @login_required
 @permission_required('cevest.acesso_admin', raise_exception=True)
 def ConfirmarAluno(request,aluno_id,turma_id):
-    turma = Turma_Prevista.objects.get(id = turma_id)
+    turma_prevista = Turma_Prevista.objects.get(id = turma_id)
     aluno = get_object_or_404(Aluno,id=aluno_id)
-    aluno_turma_prevista = Aluno_Turma_Prevista.objects.get(aluno = aluno, turma_prevista = turma)
+
+    aluno_turma_prevista = Aluno_Turma_Prevista.objects.get(aluno = aluno, turma_prevista = turma_prevista)
     status_confirma = Status_Aluno_Turma_Prevista.objects.get(descricao = "Matriculado")
+
+    if len(Turma_Prevista_Turma_Definitiva.objects.filter(turma_prevista = turma_prevista))>0:
+        turma_definitiva = Turma_Prevista_Turma_Definitiva.objects.get(turma_prevista = turma_prevista)
+        aluno_turma, created = Aluno_Turma.objects.get_or_create(turma = turma_definitiva.turma, aluno = aluno)
+        aluno_turma.save()
+
     aluno_turma_prevista.status_aluno_turma_prevista = status_confirma
     aluno_turma_prevista.save()
+
     messages.info(request,'Cadastro Salvo')
     return HttpResponseRedirect(reverse('administracao:area_admin'))
