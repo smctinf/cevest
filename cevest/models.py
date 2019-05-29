@@ -108,8 +108,7 @@ class Cidade(models.Model):
 
 class Bairro(models.Model):
     def __str__(self):
-        return '%s - %s' % (self.cidade, self.nome)
-#        return self.nome
+        return '%s' % (self.nome)
 
     class Meta:
         ordering = ('cidade', 'nome',)
@@ -151,7 +150,7 @@ class Aluno(models.Model):
     nome = models.CharField(max_length=60)
     email = models.EmailField(max_length=254, blank=True, null=True)
     cpf = models.CharField(unique=True, max_length=11, validators=[validate_CPF])
-    nis = models.CharField(unique=True, max_length=11, null=True)
+    nis = models.CharField(unique=True, max_length=11, blank = True, null=True)
     bolsa_familia = models.BooleanField(default=False)
     quant_filhos = models.PositiveSmallIntegerField(default=0)
     sexo = models.CharField(max_length=1, choices=SEXO)
@@ -197,6 +196,16 @@ class Horario(models.Model):
     hora_fim = models.TimeField('Hora Fim')
     dt_inclusao = models.DateTimeField(auto_now_add=True)
 
+class Situacao_Turma(models.Model):
+    class Meta:
+        verbose_name = "Situação de turma"
+        verbose_name_plural = "Situações de turma"
+
+    def __str__(self):
+        return self.descricao
+
+    descricao = models.CharField(max_length=10, unique = True, null = True)
+
 class Turma_Prevista(models.Model):
     class Meta:
         ordering = ('curso', 'nome')
@@ -216,6 +225,7 @@ class Turma_Prevista(models.Model):
     quant_alunos = models.PositiveSmallIntegerField(default=0)
     dt_inclusao = models.DateTimeField(auto_now_add=True)
     exibir = models.BooleanField(default=True)
+    situacao = models.ForeignKey(Situacao_Turma, on_delete=models.PROTECT, default=1)
 
 class Turma(models.Model):
     class Meta:
@@ -254,7 +264,7 @@ class Aluno_Turma(models.Model):
 
     turma = models.ForeignKey(Turma, on_delete=models.PROTECT)
     aluno = models.ForeignKey(Aluno, on_delete=models.PROTECT)
-    situacao = models.ForeignKey(Situacao, on_delete=models.PROTECT)
+    situacao = models.ForeignKey(Situacao, on_delete=models.PROTECT, default=1)
     dt_inclusao = models.DateTimeField(auto_now_add=True)
 
 class Presenca(models.Model):
@@ -269,7 +279,7 @@ class Feriado(models.Model):
         verbose_name_plural = "Feriados"
     nome = models.CharField(max_length = 50, unique = False)
     data = models.DateField()
-    fixo = models.BooleanField('Feriado fixo', blank = True, null = True, default=True)
+    fixo = models.NullBooleanField('Feriado fixo', blank = True, null = True, default=True)
 
 class Status_Aluno_Turma_Prevista(models.Model):
     class Meta:
