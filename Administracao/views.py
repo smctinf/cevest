@@ -619,8 +619,8 @@ def ConfirmarAluno(request,aluno_id,turma_id):
     status_confirma = Status_Aluno_Turma_Prevista.objects.get(descricao = "Matriculado")
 
     if len(Turma_Prevista_Turma_Definitiva.objects.filter(turma_prevista = turma_prevista))>0:
-        turma_definitiva = Turma_Prevista_Turma_Definitiva.objects.get(turma_prevista = turma_prevista)
-        aluno_turma, created = Aluno_Turma.objects.get_or_create(turma = turma_definitiva.turma, aluno = aluno)
+        turma_definitiva_turma_prevista = Turma_Prevista_Turma_Definitiva.objects.get(turma_prevista = turma_prevista)
+        aluno_turma, created = Aluno_Turma.objects.get_or_create(turma = turma_definitiva_turma_prevista.turma, aluno = aluno)
         aluno_turma.save()
 
     aluno_turma_prevista.status_aluno_turma_prevista = status_confirma
