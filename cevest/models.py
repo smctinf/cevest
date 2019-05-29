@@ -191,6 +191,9 @@ class Horario(models.Model):
     def __str__(self):
         return '%s - %s - %s' % (self.dia_semana, self.hora_inicio, self.hora_fim)
 
+    def readable_str(self):
+        return '%sª - %s - %s' % (self.DIA[int(self.dia_semana)][0], self.hora_inicio.strftime("%H:%M"), self.hora_fim.strftime("%H:%M"))
+
     dia_semana = models.CharField(max_length=1, choices=DIA)
     hora_inicio = models.TimeField('Hora Início')
     hora_fim = models.TimeField('Hora Fim')

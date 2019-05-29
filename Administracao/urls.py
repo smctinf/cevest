@@ -24,5 +24,7 @@ urlpatterns = [
     path('alocacao',views.Alocacao, name = 'alocacao'),
     path('escolher_turma_prevista_para_alterar_situacao',views.EscolherTurmaPrevistaParaAlterarSituacao, name = 'escolher_turma_prevista_para_alterar_situacao'),
     path('alterar_situacao_turma_prevista',views.AlterarSituacaoTurmaPrevista, name = 'alterar_situacao_turma_prevista'),
-    path('confirmar_informacoes_aluno_previsto/<int:turma_id>/<int:aluno_id>/',views.ConfirmarInformacoesAlunoPrevisto, name = 'confirmar_informacoes_aluno_previsto')
+    path('confirmar_informacoes_aluno_previsto/<int:turma_id>/<int:aluno_id>/',views.ConfirmarInformacoesAlunoPrevisto, name = 'confirmar_informacoes_aluno_previsto'),
+    path('lista_alocados_telefone',views.lista_alocados_telefone, name = "lista_alocados_telefone"),
+
 ]

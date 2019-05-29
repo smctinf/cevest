@@ -1,0 +1,39 @@
+<html>
+<style>
+table, th, td {
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid black;
+}
+</style>
+
+{% extends "cevest/base.html" %}
+
+{% block content %}
+<center>
+    {% for lista in listas %}
+    <h2>{{lista.turma.curso.nome}}({{lista.turma.nome}})</h2>
+    Início: {{lista.turma.dt_inicio}}<br><br>
+    Horários:<br>
+    {% for horario in lista.horarios %}
+        {{horario.readable_str}}<br>
+    {% endfor %}
+    <br>
+    <table>
+        <th>#</th>
+        <th>Nome</th>
+        {% block extra_headers %}{% endblock %}
+    {% for aluno in lista.alunos %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{aluno.nome}}</td>
+            {% block extra_columns %}{% endblock %}
+
+        </tr>
+    {% endfor %}
+    </table>
+    <br>
+    {% endfor %}
+</center>
+{% endblock %}
+</html>

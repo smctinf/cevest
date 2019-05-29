@@ -6,10 +6,11 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404, QueryDict, 
 from django.forms.models import model_to_dict
 from .forms import DetalheForm, CadForm, ConfirmaTurmaForm, Recibo_IndForm, Altera_cpf, TesteForm, CadFormBase
 #from .forms import CadForm, ConfirmaTurmaForm, Recibo_IndForm, Altera_cpf, Altera_Cadastro, EscolherTurma#, Altera_Situacao
-from .models import Curso, Aluno, Cidade, Bairro, Profissao, Escolaridade, Matriz, Turma_Prevista, Aluno_Turma, Turma, Situacao
+from .models import Curso, Aluno, Cidade, Bairro, Profissao, Escolaridade, Matriz, Turma_Prevista, Aluno_Turma, Turma, Situacao, Situacao_Turma, Aluno_Turma_Prevista
+#from . import models
 from django.urls import reverse
 from django.contrib import messages
-
+import datetime
 
 # Página index
 def aguarde(request):
@@ -234,6 +235,27 @@ def alocados(request):
         return redirect('/accounts/login')
 
 def confirmaturma(request):
-
     form = ConfirmaTurmaForm()
     return render(request, "accounts/confirmaturma.html", {'form': form})
+
+def getLista_Alocados():
+    situacao_cancelada = Situacao_Turma.objects.get(descricao = "Cancelada")
+    turmas_previstas = Turma_Prevista.objects.exclude(situacao = situacao_cancelada)
+    turmas_previstas = turmas_previstas.exclude(dt_fim__lt = datetime.date.today())
+
+    lista_turmas = []
+
+    for turma in turmas_previstas:
+        temp_lista_alunos = []
+        temp_lista_horarios = []
+        temp_turma_aluno = Aluno_Turma_Prevista.objects.filter(turma_prevista = turma)
+        for aluno_turma in temp_turma_aluno:
+            temp_lista_alunos.append(aluno_turma.aluno)
+        for horario in turma.horario.all():
+            temp_lista_horarios.append(horario)
+        lista_turmas.append({"turma":turma,"alunos":temp_lista_alunos,"horarios":temp_lista_horarios})
+    return lista_turmas
+
+def lista_alocados(request):
+    lista_turmas = getLista_Alocados()
+    return render(request, "cevest/lista_alocados.html",{"listas":lista_turmas})

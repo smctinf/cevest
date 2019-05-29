@@ -4,6 +4,7 @@ from django.forms.models import model_to_dict
 from .forms import EscolherTurma, Altera_Situacao, Controle_Presenca, EscolherDia, Confirmar_Turma, EscolherTurmaPrevista,Altera_Situacao_Prevista, Altera_Situacao_Prevista_Formset
 from cevest.models import Curso, Aluno, Cidade, Bairro, Profissao, Escolaridade, Matriz, Turma_Prevista, Aluno_Turma, Turma, Situacao, Disciplina, Presenca, Feriado, Situacao_Turma, Turma_Prevista_Turma_Definitiva, Aluno_Turma_Prevista, Status_Aluno_Turma_Prevista, Horario, Turno
 from cevest.forms import CadForm
+from cevest.views import getLista_Alocados
 import datetime
 from .functions import get_proper_casing, compare_brazilian_to_python_weekday, convert_date_to_tuple, convert_tuple_to_data, create_select_choices, is_date_holiday,create_not_fixed_holidays_in_db
 from django.contrib.auth.decorators import login_required, permission_required
@@ -609,8 +610,6 @@ def ConfirmarInformacoesAlunoPrevisto(request,aluno_id,turma_id):
     form=CadForm(initial={'cidade':aluno.bairro.cidade,'cpf':aluno.cpf}, instance=aluno)
     return render(request,"administracao/corrigir_cadastro.html",{'form':form, 'checked_curso_ids':checked_curso_ids})
 
-@login_required
-@permission_required('cevest.acesso_admin', raise_exception=True)
 def ConfirmarAluno(request,aluno_id,turma_id):
     turma_prevista = Turma_Prevista.objects.get(id = turma_id)
     aluno = get_object_or_404(Aluno,id=aluno_id)
@@ -628,3 +627,10 @@ def ConfirmarAluno(request,aluno_id,turma_id):
 
     messages.info(request,'Cadastro Salvo')
     return HttpResponseRedirect(reverse('administracao:area_admin'))
+
+
+@login_required
+@permission_required('cevest.acesso_admin', raise_exception=True)
+def lista_alocados_telefone(request):
+    lista_turmas = getLista_Alocados()
+    return render(request, "cevest/lista_alocados_telefone.html",{"listas":lista_turmas})
