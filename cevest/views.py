@@ -4,10 +4,8 @@ from __future__ import unicode_literals
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, Http404, QueryDict, JsonResponse
 from django.forms.models import model_to_dict
-from .forms import DetalheForm, CadForm, ConfirmaTurmaForm, Recibo_IndForm, Altera_cpf, TesteForm, CadFormBase
-#from .forms import CadForm, ConfirmaTurmaForm, Recibo_IndForm, Altera_cpf, Altera_Cadastro, EscolherTurma#, Altera_Situacao
-from .models import Curso, Aluno, Cidade, Bairro, Profissao, Escolaridade, Matriz, Turma_Prevista, Aluno_Turma, Turma, Situacao, Situacao_Turma, Aluno_Turma_Prevista
-#from . import models
+from .forms import *
+from .models import *
 from django.urls import reverse
 from django.contrib import messages
 import datetime
@@ -238,6 +236,22 @@ def confirmaturma(request):
     form = ConfirmaTurmaForm()
     return render(request, "accounts/confirmaturma.html", {'form': form})
 
+def getLista_Candidatos():
+    situacao_cancelada = Situacao_Turma.objects.get(descricao = "Cancelada")
+    turmas_previstas_remover = Turma_Prevista.objects.filter(situacao = situacao_cancelada)
+    turmas_previstas_remover = turmas_previstas_remover.filter(dt_fim__lt = datetime.date.today())
+
+    status = Status_Aluno_Turma_Prevista.objects.get(descricao = "Candidato")
+
+    aluno_turma = Aluno_Turma_Prevista.objects.filter(status_aluno_turma_prevista = status).order_by("aluno")
+
+    for turma in turmas_previstas_remover:
+        aluno_turma = aluno_turma.exclude(turma_prevista = turma)
+
+
+    return aluno_turma
+
+
 def getLista_Alocados():
     situacao_cancelada = Situacao_Turma.objects.get(descricao = "Cancelada")
     turmas_previstas = Turma_Prevista.objects.exclude(situacao = situacao_cancelada)
@@ -256,6 +270,190 @@ def getLista_Alocados():
         lista_turmas.append({"turma":turma,"alunos":temp_lista_alunos,"horarios":temp_lista_horarios})
     return lista_turmas
 
+    
+
 def lista_alocados(request):
     lista_turmas = getLista_Alocados()
     return render(request, "cevest/lista_alocados.html",{"listas":lista_turmas})
+
+def getLista_TurmaConfirmada():
+    turmas = Turma.objects.exclude(dt_fim__lt = datetime.date.today())
+
+    lista_turmas = []
+
+    for turma in turmas:
+        temp_lista_alunos = []
+        temp_lista_horarios = []
+        temp_turma_aluno = Aluno_Turma.objects.filter(turma = turma)
+        for aluno_turma in temp_turma_aluno:
+            temp_lista_alunos.append(aluno_turma.aluno)
+        for horario in turma.horario.all():
+            temp_lista_horarios.append(horario)
+        if len(temp_lista_alunos) > 0:
+            lista_turmas.append({"turma":turma,"alunos":temp_lista_alunos,"horarios":temp_lista_horarios})
+    return lista_turmas
+
+def lista_turma(request):
+    lista_turmas = getLista_TurmaConfirmada()
+    return render(request, "cevest/lista_alocados.html",{"listas":lista_turmas})
+
+def getLista_NaoAlocados():
+    temp_lista = Aluno.objects.all()
+
+    lista_alocados = Aluno_Turma_Prevista.objects.all()
+    lista_ids = []
+    for aluno_turma in lista_alocados:
+        lista_ids.append(aluno_turma.aluno.id)
+
+    temp_lista = temp_lista.exclude(id__in = lista_ids)
+    print(temp_lista[0])
+    return temp_lista
+
+def getTotalPorSexo():
+    feminino = Aluno.objects.filter(sexo = 'F').count()
+    masculino = Aluno.objects.filter(sexo = 'M').count()
+    lista = []
+    lista_temp = []
+    lista_temp.append("F")
+    lista_temp.append(feminino)
+    lista.append(lista_temp)
+    lista_temp = []
+    lista_temp.append("M")
+    lista_temp.append(masculino)
+    lista.append(lista_temp)
+    # lista = sorted(lista, key = lambda i: (-i[1]))
+    return {'lista':lista, 'titulo': 'Total Por Sexo', 'table_headers':['Sexo','Total']}
+
+def getTotalPorCurso():
+    lista = []
+    cursos = Curso.objects.all()
+    lista_temp_cursos = []
+    for curso in cursos:
+        lista_temp_cursos.append({'Curso':curso, 'Quantidade':0})
+
+    alunos = Aluno.objects.all()
+    for aluno in alunos:
+        for curso in aluno.cursos.all():
+            for curso_temp in lista_temp_cursos:
+                if curso_temp['Curso'] == curso:
+                    curso_temp['Quantidade'] += 1
+
+    for temp in lista_temp_cursos:
+        lista_temp = []
+        lista_temp.append(temp['Curso'].nome)
+        lista_temp.append(temp['Quantidade'])
+        lista.append(lista_temp)
+
+
+    # lista = sorted(lista, key = lambda i: (-i[1]))
+
+    return {'lista':lista, 'titulo': 'Total Interesse Por Curso', 'table_headers':['Curso','Total']}
+
+def getTotalMatriculadoPorTurma():
+    lista = []
+    turmas = Turma.objects.all()
+    for turma in turmas:
+        temp_lista = []
+        temp_lista.append(turma.curso)
+        temp_lista.append(turma.nome)
+        temp_lista.append(Aluno_Turma.objects.filter(turma=turma).count())
+        temp_lista.append(turma.quant_alunos)
+        lista.append(temp_lista)
+
+    # lista = sorted(lista, key = lambda i: (-i[2]))
+
+    return {'lista': lista, 'titulo': 'Total Matriculado Por Turma', 'table_headers':['Curso','Turma','Total Alunos','Vagas'] }
+
+def getTotalPorBairro():
+    lista = []
+    bairros = Bairro.objects.all()
+    for bairro in bairros:
+        temp_lista = []
+        temp_lista.append(bairro.nome)
+        temp_lista.append(Aluno.objects.filter(bairro=bairro).count())
+        lista.append(temp_lista)
+
+    # lista = sorted(lista, key = lambda i: (-i[1]))
+
+    return {'lista': lista, 'titulo': 'Total Por Bairro', 'table_headers':['Bairro','Total'] }
+
+def getTotalPorProfissao():
+    lista = []
+    profissoes = Profissao.objects.all()
+    for profissao in profissoes:
+        temp_lista = []
+        temp_lista.append(profissao.nome)
+        temp_lista.append(Aluno.objects.filter(profissao=profissao).count())
+        lista.append(temp_lista)
+
+    # lista = sorted(lista, key = lambda i: (-i[1]))
+
+    return {'lista': lista, 'titulo': 'Total Por Profissão', 'table_headers':['Profissão','Total'] }
+
+def getTotalConcluidosPorCurso():
+    lista = []
+
+    situacao_aprovado = Situacao.objects.get(descricao = "Aprovado")
+    cursos = Curso.objects.all()
+
+    for curso in cursos:    
+        turmas = Turma.objects.filter(curso = curso)
+        lista_temp = []
+        temp_total = 0
+        for turma in turmas:
+            temp_total += Aluno_Turma.objects.filter(turma = turma, situacao = situacao_aprovado).count()
+        #ignorar as três linhas seguintes se não tiver concluidos?
+        lista_temp.append(curso.nome)
+        lista_temp.append(temp_total)
+        lista.append(lista_temp)
+
+    # lista = sorted(lista, key = lambda i: (-i[1]))
+
+    return {'lista': lista, 'titulo': 'Concluidos por turma', 'table_headers':['Turma','Total'] }
+
+def getInteresseTotalPorCursoETurno():
+    lista = []
+    cursos = Curso.objects.all()
+    lista_temp_cursos = []
+
+    manha = Turno.objects.get(descricao = "Manhã")
+    tarde = Turno.objects.get(descricao = "Tarde")
+    noite = Turno.objects.get(descricao = "Noite")
+
+    for curso in cursos:
+        lista_temp_cursos.append({'Curso':curso, manha:0, tarde:0, noite:0})
+
+
+
+    alunos = Aluno.objects.all()
+    for aluno in alunos:
+        for curso in aluno.cursos.all():
+            for curso_temp in lista_temp_cursos:
+                if curso_temp['Curso'] == curso:
+                    for turno in aluno.disponibilidade.all():
+                        curso_temp[turno] += 1
+
+    for temp in lista_temp_cursos:
+        lista_temp = []
+        lista_temp.append(temp['Curso'].nome)
+        lista_temp.append(temp[manha])
+        lista_temp.append(temp[tarde])
+        lista_temp.append(temp[noite])
+        lista.append(lista_temp)
+
+
+    # lista = sorted(lista, key = lambda i: (-(i[1]+i[2]+i[3])))
+
+    return {'lista':lista, 'titulo': 'Total Interesse Por Curso', 'table_headers':['Curso','Manhã','Tarde','Noite']}
+
+def indicadores(request):
+    print("Indicando")
+    indicadores_lista = []
+    indicadores_lista.append(getTotalPorSexo())
+    indicadores_lista.append(getTotalPorCurso())
+    indicadores_lista.append(getTotalMatriculadoPorTurma())
+    indicadores_lista.append(getTotalPorBairro())
+    indicadores_lista.append(getTotalPorProfissao())
+    indicadores_lista.append(getTotalConcluidosPorCurso())
+    indicadores_lista.append(getInteresseTotalPorCursoETurno())
+    return render(request, "cevest/indicadores.html",{"indicadores":indicadores_lista})

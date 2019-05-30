@@ -13,6 +13,7 @@ table, th, td {
 <center>
     {% for lista in listas %}
     <h2>{{lista.turma.curso.nome}}({{lista.turma.nome}})</h2>
+    Instrutor: {{lista.turma.instrutor}}<br>
     Início: {{lista.turma.dt_inicio}}<br><br>
     Horários:<br>
     {% for horario in lista.horarios %}

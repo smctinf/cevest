@@ -1,0 +1,32 @@
+<html>
+<style>
+table, th, td {
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid black;
+}
+</style>
+
+{% extends "cevest/base.html" %}
+
+{% block content %}
+<center>
+
+    <table>
+        <th>#</th>
+        <th>Nome</th>
+        <th>CPF</th>
+        <th>Telefone</th>
+    {% for teste in listas %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{teste}}</td>
+            <td>{{teste.cpf}}</td>
+            <td>{{teste.celular}}</td>
+        </tr>
+    {% endfor %}
+    </table>
+    <br>
+</center>
+{% endblock %}
+</html>

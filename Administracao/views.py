@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, Http404, QueryDict
 from django.forms.models import model_to_dict
-from .forms import EscolherTurma, Altera_Situacao, Controle_Presenca, EscolherDia, Confirmar_Turma, EscolherTurmaPrevista,Altera_Situacao_Prevista, Altera_Situacao_Prevista_Formset
+from .forms import *
 from cevest.models import Curso, Aluno, Cidade, Bairro, Profissao, Escolaridade, Matriz, Turma_Prevista, Aluno_Turma, Turma, Situacao, Disciplina, Presenca, Feriado, Situacao_Turma, Turma_Prevista_Turma_Definitiva, Aluno_Turma_Prevista, Status_Aluno_Turma_Prevista, Horario, Turno
 from cevest.forms import CadForm
-from cevest.views import getLista_Alocados
+from cevest.views import getLista_Alocados, getLista_Candidatos, getLista_NaoAlocados
 import datetime
 from .functions import get_proper_casing, compare_brazilian_to_python_weekday, convert_date_to_tuple, convert_tuple_to_data, create_select_choices, is_date_holiday,create_not_fixed_holidays_in_db
 from django.contrib.auth.decorators import login_required, permission_required
@@ -634,3 +634,21 @@ def ConfirmarAluno(request,aluno_id,turma_id):
 def lista_alocados_telefone(request):
     lista_turmas = getLista_Alocados()
     return render(request, "cevest/lista_alocados_telefone.html",{"listas":lista_turmas})
+
+@login_required
+@permission_required('cevest.acesso_admin', raise_exception=True)
+def lista_alfabetica(request):
+    lista_alfabetica = getLista_Candidatos()
+    return render(request, "administracao/lista_alfabetica.html",{"listas":lista_alfabetica}) 
+
+@login_required
+@permission_required('cevest.acesso_admin', raise_exception=True)
+def lista_alfabetica(request):
+    lista_alfabetica = getLista_Candidatos()
+    return render(request, "administracao/lista_alfabetica.html",{"listas":lista_alfabetica}) 
+
+@login_required
+@permission_required('cevest.acesso_admin', raise_exception=True)
+def lista_nao_alocados(request):
+    lista = getLista_NaoAlocados()
+    return render(request, "administracao/lista_nao_alocados.html",{"listas":lista}) 

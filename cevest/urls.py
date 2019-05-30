@@ -30,6 +30,8 @@ urlpatterns = [
     path('get_bairro/<int:cidade_id>', views.get_bairro, name='get_bairro'),
     path('resultado', views.resultado, name='resultado'),
     path('lista_alocados',views.lista_alocados, name = "lista_alocados"),
+    path('lista_turma',views.lista_turma, name = "lista_turma"),
+    path('indicadores',views.indicadores, name = "indicadores"),
 
  # Teste
     path('altera_cpf', views.altera_cpf, name='altera_cpf'),
