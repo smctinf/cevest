@@ -9,6 +9,7 @@ from .models import *
 from django.urls import reverse
 from django.contrib import messages
 import datetime
+from django.db.models import Count, Q, Sum, Avg
 
 # Página index
 def aguarde(request):
@@ -306,7 +307,6 @@ def getLista_NaoAlocados():
         lista_ids.append(aluno_turma.aluno.id)
 
     temp_lista = temp_lista.exclude(id__in = lista_ids)
-    print(temp_lista[0])
     return temp_lista
 
 def getTotalPorSexo():
@@ -321,47 +321,41 @@ def getTotalPorSexo():
     lista_temp.append("M")
     lista_temp.append(masculino)
     lista.append(lista_temp)
-    # lista = sorted(lista, key = lambda i: (-i[1]))
+    lista = sorted(lista, key = lambda i: (-i[1]))
+    #returna um dicionário com lista sendo uma lista de listas(matriz) com as linhas/colunas da tabela, o título e uma lista de strings para serem os headers da tabela
     return {'lista':lista, 'titulo': 'Total Por Sexo', 'table_headers':['Sexo','Total']}
 
 def getTotalPorCurso():
     lista = []
     cursos = Curso.objects.all()
     lista_temp_cursos = []
+    cursos = cursos.annotate(curso_count = Count('aluno'))
+
     for curso in cursos:
-        lista_temp_cursos.append({'Curso':curso, 'Quantidade':0})
-
-    alunos = Aluno.objects.all()
-    for aluno in alunos:
-        for curso in aluno.cursos.all():
-            for curso_temp in lista_temp_cursos:
-                if curso_temp['Curso'] == curso:
-                    curso_temp['Quantidade'] += 1
-
-    for temp in lista_temp_cursos:
         lista_temp = []
-        lista_temp.append(temp['Curso'].nome)
-        lista_temp.append(temp['Quantidade'])
+        lista_temp.append(curso.nome)
+        lista_temp.append(curso.curso_count)
         lista.append(lista_temp)
 
 
-    # lista = sorted(lista, key = lambda i: (-i[1]))
-
+    lista = sorted(lista, key = lambda i: (-i[1]))
+    #returna um dicionário com lista sendo uma lista de listas(matriz) com as linhas/colunas da tabela, o título e uma lista de strings para serem os headers da tabela
     return {'lista':lista, 'titulo': 'Total Interesse Por Curso', 'table_headers':['Curso','Total']}
 
 def getTotalMatriculadoPorTurma():
     lista = []
     turmas = Turma.objects.all()
+    turmas = turmas.annotate(turma_count = Count('aluno_turma'))
     for turma in turmas:
         temp_lista = []
         temp_lista.append(turma.curso)
         temp_lista.append(turma.nome)
-        temp_lista.append(Aluno_Turma.objects.filter(turma=turma).count())
+        temp_lista.append(turma.turma_count)
         temp_lista.append(turma.quant_alunos)
         lista.append(temp_lista)
 
-    # lista = sorted(lista, key = lambda i: (-i[2]))
-
+    lista = sorted(lista, key = lambda i: (-i[2]))
+    #returna um dicionário com lista sendo uma lista de listas(matriz) com as linhas/colunas da tabela, o título e uma lista de strings para serem os headers da tabela
     return {'lista': lista, 'titulo': 'Total Matriculado Por Turma', 'table_headers':['Curso','Turma','Total Alunos','Vagas'] }
 
 def getTotalPorBairro():
@@ -371,23 +365,27 @@ def getTotalPorBairro():
         temp_lista = []
         temp_lista.append(bairro.nome)
         temp_lista.append(Aluno.objects.filter(bairro=bairro).count())
+        #print(temp_lista[1].query)
         lista.append(temp_lista)
 
-    # lista = sorted(lista, key = lambda i: (-i[1]))
+    lista = sorted(lista, key = lambda i: (-i[1]))
 
+    #returna um dicionário com lista sendo uma lista de listas(matriz) com as linhas/colunas da tabela, o título e uma lista de strings para serem os headers da tabela
     return {'lista': lista, 'titulo': 'Total Por Bairro', 'table_headers':['Bairro','Total'] }
 
 def getTotalPorProfissao():
     lista = []
     profissoes = Profissao.objects.all()
+    profissoes = profissoes.annotate(count = Count('aluno'))
     for profissao in profissoes:
         temp_lista = []
         temp_lista.append(profissao.nome)
-        temp_lista.append(Aluno.objects.filter(profissao=profissao).count())
+        temp_lista.append(profissao.count)
         lista.append(temp_lista)
 
-    # lista = sorted(lista, key = lambda i: (-i[1]))
+    lista = sorted(lista, key = lambda i: (-i[1]))
 
+    #returna um dicionário com lista sendo uma lista de listas(matriz) com as linhas/colunas da tabela, o título e uma lista de strings para serem os headers da tabela
     return {'lista': lista, 'titulo': 'Total Por Profissão', 'table_headers':['Profissão','Total'] }
 
 def getTotalConcluidosPorCurso():
@@ -407,8 +405,9 @@ def getTotalConcluidosPorCurso():
         lista_temp.append(temp_total)
         lista.append(lista_temp)
 
-    # lista = sorted(lista, key = lambda i: (-i[1]))
+    lista = sorted(lista, key = lambda i: (-i[1]))
 
+    #returna um dicionário com lista sendo uma lista de listas(matriz) com as linhas/colunas da tabela, o título e uma lista de strings para serem os headers da tabela
     return {'lista': lista, 'titulo': 'Concluidos por turma', 'table_headers':['Turma','Total'] }
 
 def getInteresseTotalPorCursoETurno():
@@ -424,8 +423,11 @@ def getInteresseTotalPorCursoETurno():
         lista_temp_cursos.append({'Curso':curso, manha:0, tarde:0, noite:0})
 
 
-
     alunos = Aluno.objects.all()
+
+    #print(cursos.annotate(curso_count = Count('aluno'))[0].curso_count)
+
+    #Trocar esses fors por queries pra ver se demora menos de 20 milhões de anos para a página carregar
     for aluno in alunos:
         for curso in aluno.cursos.all():
             for curso_temp in lista_temp_cursos:
@@ -442,12 +444,15 @@ def getInteresseTotalPorCursoETurno():
         lista.append(lista_temp)
 
 
-    # lista = sorted(lista, key = lambda i: (-(i[1]+i[2]+i[3])))
+    lista = sorted(lista, key = lambda i: (-(i[1]+i[2]+i[3])))
 
+    #returna um dicionário com lista sendo uma lista de listas(matriz) com as linhas/colunas da tabela, o título e uma lista de strings para serem os headers da tabela
     return {'lista':lista, 'titulo': 'Total Interesse Por Curso', 'table_headers':['Curso','Manhã','Tarde','Noite']}
 
 def indicadores(request):
-    print("Indicando")
+    #Precisa de uma lista com um dicionário com lista sendo uma lista de listas(matriz) com as linhas/colunas da tabela, o título e uma lista de strings para serem os headers da tabela
+    #Nessas condições o html renderiza qualquer combinação de tabelas
+
     indicadores_lista = []
     indicadores_lista.append(getTotalPorSexo())
     indicadores_lista.append(getTotalPorCurso())
@@ -455,5 +460,6 @@ def indicadores(request):
     indicadores_lista.append(getTotalPorBairro())
     indicadores_lista.append(getTotalPorProfissao())
     indicadores_lista.append(getTotalConcluidosPorCurso())
-    indicadores_lista.append(getInteresseTotalPorCursoETurno())
+    #Retirar/comentar a linha seguinte se demorar muito pra carregar(até mudar os fors dentro da função getInteresseTotalPorCursoETurno para queries)
+    #indicadores_lista.append(getInteresseTotalPorCursoETurno())
     return render(request, "cevest/indicadores.html",{"indicadores":indicadores_lista})

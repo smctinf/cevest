@@ -425,7 +425,7 @@ def Alocacao(request):
                 continue
             for horario in turma_aluno.turma.horario.all():
                 if horario in turma_prevista.horario.all():
-                    print("aluno removido da lista:" + str(aluno))
+                    print("aluno removido da lista por conflito de horário:" + str(aluno))
                     alunos_compativeis = alunos_compativeis.exclude(id = aluno.id)
 
     #O sistema de pontos é definido de modo que a pessoa que tem uma prioridade maior que outra sempre receba
@@ -590,14 +590,11 @@ def ConfirmarInformacoesAlunoPrevisto(request,aluno_id,turma_id):
                 aluno_turma = aluno_turma.filter(status_aluno_turma_prevista = situacao_matriculado)
                 for turma_aluno in aluno_turma:
                     if turma_aluno.turma_prevista.dt_fim < turma_prevista.dt_inicio:
-                        print("testeA")
                         continue
                     if turma_prevista.dt_fim < turma_aluno.turma_prevista.dt_inicio:
-                        print("testeB")
                         continue
                     for horario in turma_aluno.turma_prevista.horario.all():
                         if horario in turma_prevista.horario.all():
-                            print("conflito")
                             messages.info(request,'Conflito de horário com a turma ' + str(turma_aluno.turma_prevista))
                             return HttpResponseRedirect(reverse('administracao:area_admin'))
                 #####
