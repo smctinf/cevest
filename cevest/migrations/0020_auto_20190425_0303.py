@@ -11,32 +11,32 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.CreateModel(
-            name='Situacao',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('descricao', models.CharField(max_length=10, null=True, unique=True)),
-            ],
-            options={
-                'verbose_name': 'Situação',
-                'verbose_name_plural': 'Situações',
-            },
-        ),
+#        migrations.CreateModel(
+#            name='Situacao',
+#            fields=[
+#                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+#                ('descricao', models.CharField(max_length=10, null=True, unique=True)),
+#            ],
+#            options={
+#                'verbose_name': 'Situação',
+#                'verbose_name_plural': 'Situações',
+#            },
+#        ),
         migrations.AlterModelOptions(
             name='turma',
             options={'ordering': ('curso', 'nome')},
         ),
-        migrations.AddField(
-            model_name='instrutor',
-            name='matricula',
-            field=models.CharField(max_length=11, null=True, unique=True),
-        ),
-        migrations.AddField(
-            model_name='matriz',
-            name='carga_horaria_total',
-            field=models.PositiveSmallIntegerField(default=1),
-            preserve_default=False,
-        ),
+#        migrations.AddField(
+#            model_name='instrutor',
+#            name='matricula',
+#            field=models.CharField(max_length=11, null=True, unique=True),
+#        ),
+#        migrations.AddField(
+#            model_name='matriz',
+#            name='carga_horaria_total',
+#            field=models.PositiveSmallIntegerField(default=1),
+#            preserve_default=False,
+#        ),
         migrations.AlterField(
             model_name='aluno',
             name='nis',
@@ -67,9 +67,9 @@ class Migration(migrations.Migration):
             name='nome',
             field=models.CharField(max_length=100),
         ),
-        migrations.AddField(
-            model_name='aluno_turma',
-            name='situacao',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.PROTECT, to='cevest.Situacao'),
-        ),
+#        migrations.AddField(
+#            model_name='aluno_turma',
+#            name='situacao',
+#            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.PROTECT, to='cevest.Situacao'),
+#        ),
     ]
