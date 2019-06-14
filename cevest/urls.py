@@ -29,10 +29,14 @@ urlpatterns = [
 
     path('get_bairro/<int:cidade_id>', views.get_bairro, name='get_bairro'),
     path('resultado', views.resultado, name='resultado'),
-
+    path('lista_alocados',views.lista_alocados, name = "lista_alocados"),
+    path('lista_turma',views.lista_turma, name = "lista_turma"),
+    path('indicadores',views.indicadores, name = "indicadores"),
 
  # Teste
     path('altera_cpf', views.altera_cpf, name='altera_cpf'),
     #path('altera/<int:cpf>/<int:dt_nascimento>/', views.altera, name='altera'),
     path('cadastro', views.cadastro, name='cadastro'),
+    path('teste', views.teste_ajax, name='teste'),
+    path('ajax/load_bairros/', views.load_bairros, name = 'ajax_load_bairros'),
 ]

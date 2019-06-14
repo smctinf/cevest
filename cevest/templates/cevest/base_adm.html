@@ -17,6 +17,14 @@
 
   </head>
 
+  <SCRIPT LANGUAGE="JavaScript">
+    {% if messages %}
+      {% for message in messages %}
+        alert("{{ message }}");
+      {% endfor %}
+    {% endif %}
+    </script>
+
   <body class="body">
     <div class="row">
       <div class="col-xl-5">
@@ -26,10 +34,12 @@
     </div>
     <br>
     <center>
-      <a href="inicio" class="btn btn-primary" role="button">Início</a>
-      <a href="/admin" class="btn btn-primary" role="button">Tabelas</a>
-      <a href="alocados" class="btn btn-primary" role="button">Alocados</a>
-      <a href="portador" class="btn btn-primary" role="button">Portador de Neessidades Especiais</a>
+      <a href="/administracao" class="btn btn-primary" role="button">Início</a>
+      <a href="/admin" class="btn btn-primary" role="button" target="_blank">Tabelas</a>
+      <!--
+      <a href="/alocados" class="btn btn-primary" role="button">Alocados</a>
+      -->
+      <a href="/portador" class="btn btn-primary" role="button">Portador de Neessidades Especiais</a>
       <a href="http://x.jlb.net.br/indicadores.php" class="btn btn-primary" role="button">Indicadores</a>
       <a href="http://x.jlb.net.br/altcevest.php" class="btn btn-primary" role="button">Alterar Cadastro</a>
       <a href="sair" class="btn btn-primary" role="button">Sair</a>

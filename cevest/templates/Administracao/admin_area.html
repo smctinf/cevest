@@ -1,12 +1,24 @@
-{% extends "cevest/base.html" %}
+{% extends "cevest/base_adm.html" %}
 
 {% block content %}
+<h2 align="center">Sistema Administrativo</h2>
 
-
+<center>
 <p><a href="{% url 'administracao:selecionar_turma_para_certificado' %}">Emitir certificado</a></p>
 <p><a href="{% url 'administracao:selecionar_turma_para_alterar_situacao' %}">Alterar Situação dos Alunos</a></p>
+<!--
 <p><a href="{% url 'administracao:carregar_matriz_txt' %}">Carregar matrizes de TXT</a></p>
+-->
 <p><a href="{% url 'administracao:selecionar_turma_para_presenca' %}">Controle de presença</a></p>
+<p><a href="{% url 'pauta' %}">Emissão de pautas</a></p>
+<p><a href="{% url 'administracao:confirmar_turma' %}">Confirmar turmas previstas</a></p>
+<p><a href="{% url 'administracao:escolher_turma_para_alocacao' %}">Alocar alunos</a></p>
+<p><a href="{% url 'administracao:escolher_turma_prevista_para_alterar_situacao' %}">Alterar Situação dos Alunos (turma prevista)</a></p>
+<p><a href="{% url 'administracao:lista_alocados_telefone' %}">Lista de alunos alocados por turma(com telefone)</a></p>
+<p><a href="{% url 'administracao:lista_alfabetica' %}">Lista de alunos alocados por ordem alfabética</a></p>
+<p><a href="{% url 'administracao:lista_nao_alocados' %}">Lista de cadastrados que nunca foram alocados em uma turma</a></p>
+
+</center>
 
 
 {% endblock %}

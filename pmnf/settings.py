@@ -148,6 +148,8 @@ STATIC_ROOT = '/home/cevest/public_html/pmnf/cevest/static'
 MIDDLEWARE_CLASSES = (
     'sslify.middleware.SSLifyMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+
     # ...
 )
 

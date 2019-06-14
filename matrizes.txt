@@ -4,10 +4,10 @@ Curso: AUDACES
 
 Disciplinas
 
-Nº de aulas
+N de aulas
 
 Carga
-Horária
+Horaria
 
 1
 
@@ -27,7 +27,7 @@ Segurança no trabalho
 
 3
 
-Ética profissional
+Etica profissional
 
 01
 
@@ -35,7 +35,7 @@ Segurança no trabalho
 
 4
 
-Moldes – Principais Ferramentas
+Moldes - Principais Ferramentas
 
 04
 
@@ -43,7 +43,7 @@ Moldes – Principais Ferramentas
 
 5
 
-Digiflash – Principais Ferramentas
+Digiflash - Principais Ferramentas
 
 01
 
@@ -51,7 +51,7 @@ Digiflash – Principais Ferramentas
 
 6
 
-Encaixe – Principais Ferramentas
+Encaixe - Principais Ferramentas
 
 02
 
@@ -65,13 +65,13 @@ TOTAL
 
 Matriz Curricular
 Objetivos Aplicados
-Curso: COSTURA ÍNTIMA
+Curso: COSTURA INTIMA
 
 Disciplinas
 
-Nº de aulas
+N de aulas
 
-Carga Horária
+Carga Horaria
 
 1
 
@@ -91,7 +91,7 @@ Segurança no trabalho
 
 3
 
-Ética profissional
+Etica profissional
 
 01
 
@@ -193,14 +193,14 @@ TOTAL
 
 Disciplinas
 
-Nº de aulas
+N de aulas
 
 Carga
-Horária
+Horaria
 
 1
 
-Empreendedorismo e Ética Profissional
+Empreendedorismo e Etica Profissional
 
 01
 
@@ -310,10 +310,10 @@ Curso: CORTE, COSTURA E MODELAGEM
 
 Disciplinas
 
-Nº de aulas
+N de aulas
 
 Carga
-Horária
+Horaria
 
 1
 
@@ -333,7 +333,7 @@ Segurança no trabalho
 
 3
 
-Ética profissional
+Etica profissional
 
 01
 
@@ -431,9 +431,9 @@ Curso: MODELAGEM MODINHA
 
 Disciplinas
 
-Nº de aulas
+N de aulas
 
-Carga Horária
+Carga Horaria
 
 1
 
@@ -453,7 +453,7 @@ Segurança no trabalho
 
 3
 
-Ética profissional
+Etica profissional
 
 01
 
@@ -599,10 +599,10 @@ Curso: COSTURA PLANA
 
 Disciplinas
 
-Nº de aulas
+N de aulas
 
 Carga
-Horária
+Horaria
 
 1
 
@@ -622,7 +622,7 @@ Segurança no trabalho
 
 3
 
-Ética profissional
+Etica profissional
 
 01
 
@@ -736,10 +736,10 @@ Curso: OFICINA DE CARTONAGEM
 
 Disciplinas
 
-Nº de aulas
+N de aulas
 
 Carga
-Horária
+Horaria
 
 1
 
@@ -759,7 +759,7 @@ Segurança no trabalho
 
 3
 
-Ética profissional
+Etica profissional
 
 01
 
@@ -829,14 +829,14 @@ TOTAL
 
 Matriz Curricular
 Objetivos Aplicados
-Curso: OFICINA DE PATCH APLIQUÊ
+Curso: OFICINA DE PATCH APLIQUE
 
 Disciplinas
 
-Nº de aulas
+N de aulas
 
 Carga
-Horária
+Horaria
 
 1
 
@@ -856,7 +856,7 @@ Segurança no Trabalho
 
 3
 
-Ética Profissional
+Etica Profissional
 
 ½
 
@@ -914,10 +914,10 @@ Curso: OFICINA DE BONECA
 
 Disciplinas
 
-Nº de aulas
+N de aulas
 
 Carga
-Horária
+Horaria
 
 1
 
@@ -937,7 +937,7 @@ Segurança no Trabalho
 
 3
 
-Ética Profissional
+Etica Profissional
 
 ½
 
@@ -987,10 +987,10 @@ Curso: OFICINA DE BOLSA
 
 Disciplinas
 
-Nº de aulas
+N de aulas
 
 Carga
-Horária
+Horaria
 
 1
 
@@ -1010,7 +1010,7 @@ Segurança no Trabalho
 
 3
 
-Ética Profissional
+Etica Profissional
 
 ½
 
@@ -1076,10 +1076,10 @@ Curso: MODELAGEM PLANA
 
 Disciplinas
 
-Nº de aulas
+N de aulas
 
 Carga
-Horária
+Horaria
 
 1
 
@@ -1099,7 +1099,7 @@ Segurança no trabalho
 
 3
 
-Ética profissional
+Etica profissional
 
 01
 
@@ -1213,10 +1213,10 @@ Curso: MODELAGEM FITNESS
 
 Disciplinas
 
-Nº de aulas
+N de aulas
 
 Carga
-Horária
+Horaria
 
 1
 
@@ -1236,7 +1236,7 @@ Segurança no trabalho
 
 3
 
-Ética profissional
+Etica profissional
 
 01
 
@@ -1370,14 +1370,14 @@ TOTAL
 
 Matriz Curricular
 Objetivos Aplicados
-Curso: MODELAGEM ÍNTIMA
+Curso: MODELAGEM INTIMA
 
 Disciplinas
 
-Nº de aulas
+N de aulas
 
 Carga
-Horária
+Horaria
 
 1
 
@@ -1397,7 +1397,7 @@ Segurança no trabalho
 
 3
 
-Ética profissional
+Etica profissional
 
 01
 
@@ -1445,7 +1445,7 @@ Base de body e variações
 
 9
 
-Cueca comum/ Gradação – cueca / Boxer-Gradação
+Cueca comum/ Gradaçã- cueca / Boxer-Gradação
 
 03
 

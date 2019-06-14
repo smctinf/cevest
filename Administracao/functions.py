@@ -68,6 +68,6 @@ def create_select_choices(datas):
     choices = []
     i = 0
     for dia in datas:
-        choices.append((i,str(dia.day)+"/"+str(dia.month)))
+        choices.append((i,dia.strftime("%d/%m")))
         i+=1
     return choices

@@ -1,0 +1,77 @@
+<html>
+<style>
+table, th, td {
+    text-align: center;
+    border: 1px solid black;
+}
+</style>
+
+{% extends "cevest/base_adm.html" %}
+
+{% block content %}
+
+<center>
+<h2 align="center">Lista de alunos alocados</h2>
+<br>
+
+<div>
+    <p>{{nome_turma}}</p>
+    <p>Alunos alocados:</p>
+
+    <table>
+        <tr>
+        <th>Posição</th>
+        <th>Nome</th>
+        <th>Situação</th>
+        </tr>
+        {% for instancia in alocados %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ instancia.aluno.nome }}</td>
+            <td>{{ instancia.situacao }}</td>
+        </tr>
+        {% empty %}
+        <p>Não há alunos</p>
+        {% endfor %}
+    </table>
+
+    <p></p>
+    <p>Alunos não alocados:</p>
+    <table>
+            <tr>
+            <th>Posição</th>
+            <th>Nome</th>
+            </tr>
+            {% for instancia in nao_alocados %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{ instancia.aluno.nome }}</td>
+            </tr>
+            {% empty %}
+            <p>Não há alunos</p>
+            {% endfor %}
+    </table>
+    <p></p>
+    <p>Desistências e ausências:</p>
+    <table>
+            <tr>
+            <th>Nome</th>
+            <th>Situação</th>
+            </tr>
+            {% for instancia in nao_considerados %}
+            <tr>
+                <td>{{ instancia.aluno.nome }}</td>
+                <td>{{ instancia.status_aluno_turma_prevista }}</td>
+            </tr>
+            {% empty %}
+            <p>Não há alunos</p>
+            {% endfor %}
+    </table>
+    </form>
+</div>
+
+</center>
+
+{% endblock %}
+
+</html>

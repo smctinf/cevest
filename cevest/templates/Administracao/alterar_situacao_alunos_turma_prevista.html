@@ -1,0 +1,69 @@
+{% extends "cevest/base_adm.html" %}
+
+{% block content %}
+
+
+<center>
+    <h2 align="center">Alterar Situação dos Alunos</h2>
+    <br>
+    
+    <div>
+        <p>{{nome_turma}}</p>
+        <form action="" method='POST'>{% csrf_token %}
+            {{formset_candidatos.management_form}}
+            <table>
+            {% for form in formset_candidatos %}
+                <tr>
+                    <td>
+                        <a href="confirmar_informacoes_aluno_previsto/{{nome_turma.id}}/{{form.aluno_id.value}}">
+                             {{ form.nome.value }}</a>
+                    </td> 
+                    <td>
+                        {{form.situacao}}
+                    </td>
+                </tr>
+            {% empty %}
+            <p>Não há alunos</p>
+            {% endfor %}
+            </table>    
+            <p></p>
+            <p>Já matriculados:</p>
+            {{formset_matriculados.management_form}}
+            <table>
+            {% for form in formset_matriculados %}
+                <tr>
+                    <td>
+                        {{ form.nome.value }}
+                    </td> 
+                    <td>
+                        {{form.situacao}}
+                    </td>
+                </tr>
+            {% empty %}
+            <p>Não há alunos</p>
+            {% endfor %}
+            </table>    
+            <p></p>
+            <p>Desistentes ou não compareceram:</p>
+            {{formset_nao_matriculados.management_form}}
+            <table>
+            {% for form in formset_nao_matriculados %}
+                <tr>
+                    <td>
+                        {{ form.nome.value }}
+                    </td> 
+                    <td>
+                        {{form.situacao}}
+                    </td>
+                </tr>
+            {% empty %}
+            <p>Não há alunos</p>
+            {% endfor %}
+            </table>    
+            <input type='submit' value='Salvar' />
+        </form>
+    </div>
+    
+</center>
+
+{% endblock %}
