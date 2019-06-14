@@ -1,13 +1,11 @@
-{% extends "cevest/base.html" %}
+{% extends 'cevest/cadastro_base.html' %}
+{% block preform %}
+  <div class="container">
+    <div class="py-5 text-center">
+      <h2>Alterar Cadastro</h2>
+    </div>
+{% endblock %}
 
-{% block content %}
-
-
-
-<form action="" method='POST'>{% csrf_token %}
-  {{ form.as_p }}
-  <input type='submit' value='Save' />
-</form>
-
-
+{% block endingform %}
+  <button class="btn btn-primary btn-lg btn-block" type="submit">Salvar</button>
 {% endblock %}
