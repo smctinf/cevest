@@ -2,7 +2,15 @@
 <style>
 table, th, td {
     text-align: center;
+    vertical-align: middle;
     border: 1px solid black;
+}
+input[type=checkbox] {
+    display: inline-block;
+	vertical-align:top;
+	margin-top: 8px;
+    transform: scale(1.7);
+    /* zoom:1.7 */
 }
 </style>
 {% extends "cevest/base_adm.html" %}
@@ -13,7 +21,7 @@ table, th, td {
 <div>
     <form action="" method='POST'>{% csrf_token %}
         {{formset.management_form}}
-        <table style="width:1%">
+        <table>
         <tr>
             <th>Nome:</th>
             {% for dia in data %}
@@ -22,7 +30,7 @@ table, th, td {
         </tr>
             {% for form in formset %}
             <tr>
-                <td style="width:100%">{{form.nome}}</td>
+                <td>{{form.nome}}</td>
                 {% for button in form.dias %}
                 <td>{{button}}</td>
                 {% endfor %}

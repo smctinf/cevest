@@ -2,13 +2,14 @@
 from __future__ import unicode_literals
 
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse, HttpResponseRedirect, Http404, QueryDict
+from django.http import HttpResponse, HttpResponseRedirect, Http404, QueryDict, JsonResponse
 from django.forms.models import model_to_dict
-from .forms import DetalheForm, CadForm, ConfirmaTurmaForm, Recibo_IndForm, Altera_cpf, Altera_Cadastro
-#from .forms import CadForm, ConfirmaTurmaForm, Recibo_IndForm, Altera_cpf, Altera_Cadastro, EscolherTurma#, Altera_Situacao
-from .models import Curso, Aluno, Cidade, Bairro, Profissao, Escolaridade, Matriz, Turma_Prevista, Aluno_Turma, Turma, Situacao
+from .forms import *
+from .models import *
 from django.urls import reverse
-
+from django.contrib import messages
+import datetime
+from django.db.models import Count, Q, Sum, Avg
 
 # Página index
 def aguarde(request):
@@ -77,15 +78,16 @@ def pauta2(request, turma_id):
 
 # Página Cadastro
 def cadastro(request):
+    temp_cursos = Curso.objects.all().order_by('nome')
     if request.method == 'POST':
         form = CadForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(reverse('index'))#+form.pk)
+            messages.info(request,'Cadastro Salvo')
+            return HttpResponseRedirect(reverse('index'))
     else:
         form = CadForm()
-    return render(request,"cevest/cadastro2.html",{'form':form})#, 'cidades': cidades, 'lista_curso': lista_curso, 'escolaridades': escolaridades, 'profissoes': profissoes })
-#    return render(request,"cevest/cadastro.html",{'form':form, 'cidades': cidades })
+    return render(request,"cevest/cadastro2.html",{'form':form})
 
 # Teste detalhe
 def detalhe(request):
@@ -94,7 +96,6 @@ def detalhe(request):
         if form.is_valid():
             cpf = form.cleaned_data['cpf']
             dt_nascimento = form.cleaned_data['dt_nascimento']
-#            aluno = Aluno.objects.get(cpf=cpf, dt_nascimento=dt_nascimento)
             aluno = Aluno.objects.get(cpf='05334010700', dt_nascimento='1978-11-02')
             if aluno != 'None':
                 pk = aluno.pk
@@ -132,21 +133,34 @@ def portador(request):
 
 def altera(request, pk):
     aluno = get_object_or_404(Aluno, pk=pk)
-#    aluno = Aluno.objects.get(cpf='96847298715', dt_nascimento='2018-11-06')
-
     if request.method == 'POST':
         form = CadastroForm(request.POST, instance=aluno)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect('/cevest/')
+
     else:
-#        aluno = Aluno.objects.get(cpf=cpf, dt_nascimento=dt_nascimento)
         form = CadastroForm(instance=aluno)
-#        form = CadastroForm(request.POST or None, instance=aluno)
 
     return render(request,"cevest/altera.html",{'form':form})
 
 # /// Teste ajax
+
+def teste_ajax(request):
+    if request.method == 'POST':
+        form = TesteForm(request.POST)
+        if form.is_valid():
+            return HttpResponseRedirect(reverse('index'))
+        else:
+            print("erro form ajax")
+    else:
+        form = TesteForm()
+    return render(request,"cevest/teste.html",{'form':form})
+
+def load_bairros(request):
+    cidade_id = request.GET.get('id')
+    bairros = Bairro.objects.filter(cidade = cidade_id).order_by('nome')
+    return render(request, 'cevest/teste_options.html', {'bairros' : bairros})
 
 import json
 def get_bairro(request, cidade_id):
@@ -159,7 +173,7 @@ def get_bairro(request, cidade_id):
         raise Http404
 
 def bairro_serializer(bairro):
-    return {'id': bairro.pk, 'nome': bairro.nome}
+    return {'id': bairro.id, 'nome': bairro.nome}
 
 # /////////////////////////////////
 
@@ -180,13 +194,17 @@ def altera_cpf(request):
 def AlterarCadastro(request):
     aluno_temp_id = request.session["aluno_id"]
     aluno_temp = get_object_or_404(Aluno,id=aluno_temp_id)
+    checked_curso_ids = []
+    for curso in aluno_temp.cursos.all():
+        checked_curso_ids.append(curso.id)
     if request.method == 'POST':
-        form = Altera_Cadastro(request.POST, instance = aluno_temp)
+        form = CadFormBase(request.POST, instance = aluno_temp)
         if form.is_valid():
             form.save(aluno_temp)
+            messages.info(request,'Cadastro Salvo')
             return HttpResponseRedirect(reverse('index'))
-    form=Altera_Cadastro(initial={'cidade':aluno_temp.bairro.cidade}, instance=aluno_temp)
-    return render(request,"cevest/altera_cadastro.html",{'form':form})
+    form=CadFormBase(initial={'cidade':aluno_temp.bairro.cidade}, instance=aluno_temp)
+    return render(request,"cevest/altera_cadastro.html",{'form':form, 'checked_curso_ids':checked_curso_ids})
 
 
 #???
@@ -216,6 +234,232 @@ def alocados(request):
         return redirect('/accounts/login')
 
 def confirmaturma(request):
-
     form = ConfirmaTurmaForm()
     return render(request, "accounts/confirmaturma.html", {'form': form})
+
+def getLista_Candidatos():
+    situacao_cancelada = Situacao_Turma.objects.get(descricao = "Cancelada")
+    turmas_previstas_remover = Turma_Prevista.objects.filter(situacao = situacao_cancelada)
+    turmas_previstas_remover = turmas_previstas_remover.filter(dt_fim__lt = datetime.date.today())
+
+    status = Status_Aluno_Turma_Prevista.objects.get(descricao = "Candidato")
+
+    aluno_turma = Aluno_Turma_Prevista.objects.filter(status_aluno_turma_prevista = status).order_by("aluno")
+
+    for turma in turmas_previstas_remover:
+        aluno_turma = aluno_turma.exclude(turma_prevista = turma)
+
+
+    return aluno_turma
+
+
+def getLista_Alocados():
+    situacao_cancelada = Situacao_Turma.objects.get(descricao = "Cancelada")
+    turmas_previstas = Turma_Prevista.objects.exclude(situacao = situacao_cancelada)
+    turmas_previstas = turmas_previstas.exclude(dt_fim__lt = datetime.date.today())
+
+    lista_turmas = []
+
+    for turma in turmas_previstas:
+        temp_lista_alunos = []
+        temp_lista_horarios = []
+        temp_turma_aluno = Aluno_Turma_Prevista.objects.filter(turma_prevista = turma)
+        for aluno_turma in temp_turma_aluno:
+            temp_lista_alunos.append(aluno_turma.aluno)
+        for horario in turma.horario.all():
+            temp_lista_horarios.append(horario)
+        lista_turmas.append({"turma":turma,"alunos":temp_lista_alunos,"horarios":temp_lista_horarios})
+    return lista_turmas
+
+    
+
+def lista_alocados(request):
+    lista_turmas = getLista_Alocados()
+    return render(request, "cevest/lista_alocados.html",{"listas":lista_turmas})
+
+def getLista_TurmaConfirmada():
+    turmas = Turma.objects.exclude(dt_fim__lt = datetime.date.today())
+
+    lista_turmas = []
+
+    for turma in turmas:
+        temp_lista_alunos = []
+        temp_lista_horarios = []
+        temp_turma_aluno = Aluno_Turma.objects.filter(turma = turma)
+        for aluno_turma in temp_turma_aluno:
+            temp_lista_alunos.append(aluno_turma.aluno)
+        for horario in turma.horario.all():
+            temp_lista_horarios.append(horario)
+        if len(temp_lista_alunos) > 0:
+            lista_turmas.append({"turma":turma,"alunos":temp_lista_alunos,"horarios":temp_lista_horarios})
+    return lista_turmas
+
+def lista_turma(request):
+    lista_turmas = getLista_TurmaConfirmada()
+    return render(request, "cevest/lista_alocados.html",{"listas":lista_turmas})
+
+def getLista_NaoAlocados():
+    temp_lista = Aluno.objects.all()
+
+    lista_alocados = Aluno_Turma_Prevista.objects.all()
+    lista_ids = []
+    for aluno_turma in lista_alocados:
+        lista_ids.append(aluno_turma.aluno.id)
+
+    temp_lista = temp_lista.exclude(id__in = lista_ids)
+    return temp_lista
+
+def getTotalPorSexo():
+    feminino = Aluno.objects.filter(sexo = 'F').count()
+    masculino = Aluno.objects.filter(sexo = 'M').count()
+    lista = []
+    lista_temp = []
+    lista_temp.append("F")
+    lista_temp.append(feminino)
+    lista.append(lista_temp)
+    lista_temp = []
+    lista_temp.append("M")
+    lista_temp.append(masculino)
+    lista.append(lista_temp)
+    lista = sorted(lista, key = lambda i: (-i[1]))
+    #returna um dicionário com lista sendo uma lista de listas(matriz) com as linhas/colunas da tabela, o título e uma lista de strings para serem os headers da tabela
+    return {'lista':lista, 'titulo': 'Total Por Sexo', 'table_headers':['Sexo','Total']}
+
+def getTotalPorCurso():
+    lista = []
+    cursos = Curso.objects.all()
+    lista_temp_cursos = []
+    cursos = cursos.annotate(curso_count = Count('aluno'))
+
+    for curso in cursos:
+        lista_temp = []
+        lista_temp.append(curso.nome)
+        lista_temp.append(curso.curso_count)
+        lista.append(lista_temp)
+
+
+    lista = sorted(lista, key = lambda i: (-i[1]))
+    #returna um dicionário com lista sendo uma lista de listas(matriz) com as linhas/colunas da tabela, o título e uma lista de strings para serem os headers da tabela
+    return {'lista':lista, 'titulo': 'Total Interesse Por Curso', 'table_headers':['Curso','Total']}
+
+def getTotalMatriculadoPorTurma():
+    lista = []
+    turmas = Turma.objects.all()
+    turmas = turmas.annotate(turma_count = Count('aluno_turma'))
+    for turma in turmas:
+        temp_lista = []
+        temp_lista.append(turma.curso)
+        temp_lista.append(turma.nome)
+        temp_lista.append(turma.turma_count)
+        temp_lista.append(turma.quant_alunos)
+        lista.append(temp_lista)
+
+    lista = sorted(lista, key = lambda i: (-i[2]))
+    #returna um dicionário com lista sendo uma lista de listas(matriz) com as linhas/colunas da tabela, o título e uma lista de strings para serem os headers da tabela
+    return {'lista': lista, 'titulo': 'Total Matriculado Por Turma', 'table_headers':['Curso','Turma','Total Alunos','Vagas'] }
+
+def getTotalPorBairro():
+    lista = []
+    bairros = Bairro.objects.all()
+    for bairro in bairros:
+        temp_lista = []
+        temp_lista.append(bairro.nome)
+        temp_lista.append(Aluno.objects.filter(bairro=bairro).count())
+        #print(temp_lista[1].query)
+        lista.append(temp_lista)
+
+    lista = sorted(lista, key = lambda i: (-i[1]))
+
+    #returna um dicionário com lista sendo uma lista de listas(matriz) com as linhas/colunas da tabela, o título e uma lista de strings para serem os headers da tabela
+    return {'lista': lista, 'titulo': 'Total Por Bairro', 'table_headers':['Bairro','Total'] }
+
+def getTotalPorProfissao():
+    lista = []
+    profissoes = Profissao.objects.all()
+    profissoes = profissoes.annotate(count = Count('aluno'))
+    for profissao in profissoes:
+        temp_lista = []
+        temp_lista.append(profissao.nome)
+        temp_lista.append(profissao.count)
+        lista.append(temp_lista)
+
+    lista = sorted(lista, key = lambda i: (-i[1]))
+
+    #returna um dicionário com lista sendo uma lista de listas(matriz) com as linhas/colunas da tabela, o título e uma lista de strings para serem os headers da tabela
+    return {'lista': lista, 'titulo': 'Total Por Profissão', 'table_headers':['Profissão','Total'] }
+
+def getTotalConcluidosPorCurso():
+    lista = []
+
+    situacao_aprovado = Situacao.objects.get(descricao = "Aprovado")
+    cursos = Curso.objects.all()
+
+    for curso in cursos:    
+        turmas = Turma.objects.filter(curso = curso)
+        lista_temp = []
+        temp_total = 0
+        for turma in turmas:
+            temp_total += Aluno_Turma.objects.filter(turma = turma, situacao = situacao_aprovado).count()
+        #ignorar as três linhas seguintes se não tiver concluidos?
+        lista_temp.append(curso.nome)
+        lista_temp.append(temp_total)
+        lista.append(lista_temp)
+
+    lista = sorted(lista, key = lambda i: (-i[1]))
+
+    #returna um dicionário com lista sendo uma lista de listas(matriz) com as linhas/colunas da tabela, o título e uma lista de strings para serem os headers da tabela
+    return {'lista': lista, 'titulo': 'Concluidos por turma', 'table_headers':['Turma','Total'] }
+
+def getInteresseTotalPorCursoETurno():
+    lista = []
+    cursos = Curso.objects.all()
+    lista_temp_cursos = []
+
+    manha = Turno.objects.get(descricao = "Manhã")
+    tarde = Turno.objects.get(descricao = "Tarde")
+    noite = Turno.objects.get(descricao = "Noite")
+
+    for curso in cursos:
+        lista_temp_cursos.append({'Curso':curso, manha:0, tarde:0, noite:0})
+
+
+    alunos = Aluno.objects.all()
+
+    #print(cursos.annotate(curso_count = Count('aluno'))[0].curso_count)
+
+    #Trocar esses fors por queries pra ver se demora menos de 20 milhões de anos para a página carregar
+    for aluno in alunos:
+        for curso in aluno.cursos.all():
+            for curso_temp in lista_temp_cursos:
+                if curso_temp['Curso'] == curso:
+                    for turno in aluno.disponibilidade.all():
+                        curso_temp[turno] += 1
+
+    for temp in lista_temp_cursos:
+        lista_temp = []
+        lista_temp.append(temp['Curso'].nome)
+        lista_temp.append(temp[manha])
+        lista_temp.append(temp[tarde])
+        lista_temp.append(temp[noite])
+        lista.append(lista_temp)
+
+
+    lista = sorted(lista, key = lambda i: (-(i[1]+i[2]+i[3])))
+
+    #returna um dicionário com lista sendo uma lista de listas(matriz) com as linhas/colunas da tabela, o título e uma lista de strings para serem os headers da tabela
+    return {'lista':lista, 'titulo': 'Total Interesse Por Curso', 'table_headers':['Curso','Manhã','Tarde','Noite']}
+
+def indicadores(request):
+    #Precisa de uma lista com um dicionário com lista sendo uma lista de listas(matriz) com as linhas/colunas da tabela, o título e uma lista de strings para serem os headers da tabela
+    #Nessas condições o html renderiza qualquer combinação de tabelas
+
+    indicadores_lista = []
+    indicadores_lista.append(getTotalPorSexo())
+    indicadores_lista.append(getTotalPorCurso())
+    indicadores_lista.append(getTotalMatriculadoPorTurma())
+    indicadores_lista.append(getTotalPorBairro())
+    indicadores_lista.append(getTotalPorProfissao())
+    indicadores_lista.append(getTotalConcluidosPorCurso())
+    #Retirar/comentar a linha seguinte se demorar muito pra carregar(até mudar os fors dentro da função getInteresseTotalPorCursoETurno para queries)
+    #indicadores_lista.append(getInteresseTotalPorCursoETurno())
+    return render(request, "cevest/indicadores.html",{"indicadores":indicadores_lista})

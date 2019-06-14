@@ -18,4 +18,15 @@ urlpatterns = [
     path('controle_presenca',views.ControleDePresenca, name="controle_presenca"),
     path('login', auth_views.LoginView.as_view(template_name='cevest/login.html')),
     path('logout',views.logout_view,name="logout"),
+    path('confirmar_turma', views.ConfirmarTurma, name="confirmar_turma"),
+    path('bacalhau_arrumar_turma', views.ArrumarSituacaoTurmaBacalhau, name = 'bacalhau_arrumar_turma'),
+    path('escolher_turma_para_alocacao',views.EscolherTurmaPrevistaParaAlocacao, name = "escolher_turma_para_alocacao"),
+    path('alocacao',views.Alocacao, name = 'alocacao'),
+    path('escolher_turma_prevista_para_alterar_situacao',views.EscolherTurmaPrevistaParaAlterarSituacao, name = 'escolher_turma_prevista_para_alterar_situacao'),
+    path('alterar_situacao_turma_prevista',views.AlterarSituacaoTurmaPrevista, name = 'alterar_situacao_turma_prevista'),
+    path('confirmar_informacoes_aluno_previsto/<int:turma_id>/<int:aluno_id>/',views.ConfirmarInformacoesAlunoPrevisto, name = 'confirmar_informacoes_aluno_previsto'),
+    path('lista_alocados_telefone',views.lista_alocados_telefone, name = "lista_alocados_telefone"),
+    path('lista_alfabetica',views.lista_alfabetica, name = "lista_alfabetica"),
+    path('lista_nao_alocados',views.lista_nao_alocados, name = "lista_nao_alocados"),
+
 ]

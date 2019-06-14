@@ -17,6 +17,14 @@
 
   </head>
 
+  <SCRIPT LANGUAGE="JavaScript">
+    {% if messages %}
+      {% for message in messages %}
+        alert("{{ message }}");
+      {% endfor %}
+    {% endif %}
+    </script>
+
   <body class="body">
     <div class="row">
       <div class="col-xl-5">

@@ -1,0 +1,34 @@
+<html>
+<style>
+table, th, td {
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid black;
+}
+</style>
+
+{% extends "cevest/base.html" %}
+
+{% block content %}
+<center>
+    {% for indicador in indicadores %}
+    <h3>{{indicador.titulo}}:</h3>
+    <table>
+        <tr>
+        {% for header in indicador.table_headers %}
+            <th>{{header}}</th>
+        {% endfor %}
+        </tr>
+
+        {% for elemento in indicador.lista %}
+        <tr>
+            {% for valor in elemento %}
+                <td>{{valor}}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+    {% endfor %}
+</center>
+{% endblock %}
+</html>
