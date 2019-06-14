@@ -266,8 +266,11 @@ def getLista_Alocados():
         temp_turma_aluno = Aluno_Turma_Prevista.objects.filter(turma_prevista = turma)
         for aluno_turma in temp_turma_aluno:
             temp_lista_alunos.append(aluno_turma.aluno)
+        print ('hora:')
         for horario in turma.horario.all():
+            print (horario)
             temp_lista_horarios.append(horario)
+        print (temp_lista_horarios)
         lista_turmas.append({"turma":turma,"alunos":temp_lista_alunos,"horarios":temp_lista_horarios})
     return lista_turmas
 
