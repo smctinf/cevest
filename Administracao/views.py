@@ -646,3 +646,12 @@ def lista_alfabetica(request):
 def lista_nao_alocados(request):
     lista = getLista_NaoAlocados()
     return render(request, "Administracao/lista_nao_alocados.html",{"listas":lista}) 
+
+
+@login_required
+@permission_required('cevest.acesso_admin', raise_exception=True)
+def lista_todos_por_curso_e_turno(request, curso_id, turno_id):
+    alunos = Aluno.objects.filter(cursos=curso_id, disponibilidade=turno_id)
+    print(alunos)
+    return render(request, "Administracao/lista_todos_por_curso_e_turno.html",{"alunos":alunos}) 
+

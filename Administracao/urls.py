@@ -28,5 +28,5 @@ urlpatterns = [
     path('lista_alocados_telefone',views.lista_alocados_telefone, name = "lista_alocados_telefone"),
     path('lista_alfabetica',views.lista_alfabetica, name = "lista_alfabetica"),
     path('lista_nao_alocados',views.lista_nao_alocados, name = "lista_nao_alocados"),
-
+    path('lista_todos_por_curso_e_turno/<int:curso_id>/<int:turno_id>',views.lista_todos_por_curso_e_turno, name = "lista_todos_por_curso_e_turno"),
 ]
