@@ -567,17 +567,12 @@ def AlterarSituacaoTurmaPrevista(request):
 @login_required
 @permission_required('cevest.acesso_admin', raise_exception=True)
 def ConfirmarInformacoesAlunoPrevisto(request,aluno_id,turma_id):
-    print (aluno_id, turma_id)
     turma_prevista = Turma_Prevista.objects.get(id = turma_id)
-    print (turma_prevista)
     aluno = get_object_or_404(Aluno,id=aluno_id)
-    print (aluno)
     situacao_matriculado = Status_Aluno_Turma_Prevista.objects.get(descricao = "Matriculado")
-    print (situacao_matriculado)
     checked_curso_ids = []
     for curso in aluno.cursos.all():
         checked_curso_ids.append(curso.id)
-        print (curso.id)
 
     if request.method == 'POST':
         post_data = request.POST
@@ -605,7 +600,6 @@ def ConfirmarInformacoesAlunoPrevisto(request,aluno_id,turma_id):
         else:
             print(form.errors)
 
-    print ('passou1')
     form=CadForm(initial={'cidade':aluno.bairro.cidade,'cpf':aluno.cpf}, instance=aluno)
 
     return render(request,"Administracao/corrigir_cadastro.html",{'form':form, 'checked_curso_ids':checked_curso_ids})
