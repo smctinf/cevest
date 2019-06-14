@@ -567,15 +567,17 @@ def AlterarSituacaoTurmaPrevista(request):
 @login_required
 @permission_required('cevest.acesso_admin', raise_exception=True)
 def ConfirmarInformacoesAlunoPrevisto(request,aluno_id,turma_id):
+    print (aluno_id, turma_id)
     turma_prevista = Turma_Prevista.objects.get(id = turma_id)
+    print (turma_prevista)
     aluno = get_object_or_404(Aluno,id=aluno_id)
-    
+    print (aluno)
     situacao_matriculado = Status_Aluno_Turma_Prevista.objects.get(descricao = "Matriculado")
-   
+    print (situacao_matriculado)
     checked_curso_ids = []
     for curso in aluno.cursos.all():
         checked_curso_ids.append(curso.id)
-
+        print (curso.id)
 
     if request.method == 'POST':
         post_data = request.POST
@@ -603,9 +605,10 @@ def ConfirmarInformacoesAlunoPrevisto(request,aluno_id,turma_id):
         else:
             print(form.errors)
 
-
+    print ('passou1')
     form=CadForm(initial={'cidade':aluno.bairro.cidade,'cpf':aluno.cpf}, instance=aluno)
-    return render(request,"administracao/corrigir_cadastro.html",{'form':form, 'checked_curso_ids':checked_curso_ids})
+
+    return render(request,"Administracao/corrigir_cadastro.html",{'form':form, 'checked_curso_ids':checked_curso_ids})
 
 def ConfirmarAluno(request,aluno_id,turma_id):
     turma_prevista = Turma_Prevista.objects.get(id = turma_id)
@@ -636,16 +639,16 @@ def lista_alocados_telefone(request):
 @permission_required('cevest.acesso_admin', raise_exception=True)
 def lista_alfabetica(request):
     lista_alfabetica = getLista_Candidatos()
-    return render(request, "administracao/lista_alfabetica.html",{"listas":lista_alfabetica}) 
+    return render(request, "Administracao/lista_alfabetica.html",{"listas":lista_alfabetica}) 
 
 @login_required
 @permission_required('cevest.acesso_admin', raise_exception=True)
 def lista_alfabetica(request):
     lista_alfabetica = getLista_Candidatos()
-    return render(request, "administracao/lista_alfabetica.html",{"listas":lista_alfabetica}) 
+    return render(request, "Administracao/lista_alfabetica.html",{"listas":lista_alfabetica}) 
 
 @login_required
 @permission_required('cevest.acesso_admin', raise_exception=True)
 def lista_nao_alocados(request):
     lista = getLista_NaoAlocados()
-    return render(request, "administracao/lista_nao_alocados.html",{"listas":lista}) 
+    return render(request, "Administracao/lista_nao_alocados.html",{"listas":lista}) 
