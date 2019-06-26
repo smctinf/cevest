@@ -14,6 +14,10 @@ from django.forms.formsets import formset_factory
 from .criarmatrizes import getCursos
 from django.contrib import messages
 
+#JLB
+from django.db.models import Count, Q, Sum, Avg
+
+
 @login_required
 @permission_required('cevest.acesso_admin', raise_exception=True)
 def capitalizar_nomes(request):
@@ -655,3 +659,73 @@ def lista_todos_por_curso_e_turno(request, curso_id, turno_id):
     print(alunos)
     return render(request, "Administracao/lista_todos_por_curso_e_turno.html",{"alunos":alunos}) 
 
+
+# Mostra quantidade de alunos que abandonaram ou cancelaram a matrícula em uma turma definitiva
+@login_required
+@permission_required('cevest.acesso_admin', raise_exception=True)
+def quantidade_situacao_aluno_turma(request):
+    lista = []
+    turmas = Turma.objects.all()
+
+    situacoes = Situacao.objects.all()
+
+    turmas = turmas.annotate(turma_count = Count('aluno_turma', filter=Q(aluno_turma__situacao=0)))
+    lista = []
+
+    for turma in turmas:
+        lista_tmp = []
+        for situacao in situacoes:
+
+            if situacao == situacoes[0]:
+                lista_tmp.append(turma.curso.nome)
+                lista_tmp.append(turma.nome)
+                lista_tmp.append(turma.turma_count)
+            else:
+                lista_tmp.append(Aluno_Turma.objects.filter(situacao=situacao, turma=turma).count())
+
+        lista.append(lista_tmp)
+
+    lista = sorted(lista, key = lambda i: (-i[2]))
+
+    return render(request, "Administracao/quantidade_situacao_aluno_turma.html",{"lista":lista, "situacoes":situacoes})
+
+
+# Mostra quantidade de alunos por situação em uma turma prevista
+@login_required
+@permission_required('cevest.acesso_admin', raise_exception=True)
+def quantidade_situacao_aluno_turma_prevista(request):
+    lista = []
+    turmas_previstas = Turma_Prevista.objects.all()
+
+    status_aluno_turma_prevista = Status_Aluno_Turma_Prevista.objects.all()
+
+    turmas_previstas = turmas_previstas.annotate(turma_count = Count('aluno_turma_prevista', filter=Q(aluno_turma_prevista__status_aluno_turma_prevista=0)))
+    lista = []
+
+    for turma_prevista in turmas_previstas:
+        lista_tmp = []
+        for status in status_aluno_turma_prevista:
+
+            if status == status_aluno_turma_prevista[0]:
+                lista_tmp.append(turma_prevista.curso.nome)
+                lista_tmp.append(turma_prevista.nome)
+                lista_tmp.append(turma_prevista.turma_count)
+            else:
+                lista_tmp.append(Aluno_Turma_Prevista.objects.filter(status_aluno_turma_prevista=status, turma_prevista=turma_prevista).count())
+
+        lista.append(lista_tmp)
+
+    lista = sorted(lista, key = lambda i: (-i[2]))
+
+    return render(request, "Administracao/quantidade_situacao_aluno_turma_prevista.html",{"lista":lista, "status":status_aluno_turma_prevista})
+
+
+# Mostra quantidade de alunos por situação em uma turma prevista
+@login_required
+@permission_required('cevest.acesso_admin', raise_exception=True)
+def alunos_formados_tel(request):
+    situacao = Situacao.objects.get(descricao='Cursando')
+    print (situacao)
+#    alunos_turmas = Aluno_Turma.objects.filter(turma__dt_fim__lte='2019-07-01',situacao=situacao)
+    alunos_turmas = Aluno_Turma.objects.filter(turma__dt_fim__lte='2019-07-01')
+    return render(request, "Administracao/alunos_formados_tel.html",{"alunos_turmas":alunos_turmas})
