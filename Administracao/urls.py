@@ -29,4 +29,7 @@ urlpatterns = [
     path('lista_alfabetica',views.lista_alfabetica, name = "lista_alfabetica"),
     path('lista_nao_alocados',views.lista_nao_alocados, name = "lista_nao_alocados"),
     path('lista_todos_por_curso_e_turno/<int:curso_id>/<int:turno_id>',views.lista_todos_por_curso_e_turno, name = "lista_todos_por_curso_e_turno"),
+    path('quantidade_situacao_aluno_turma',views.quantidade_situacao_aluno_turma, name = "quantidade_situacao_aluno_turma"),
+    path('quantidade_situacao_aluno_turma_prevista',views.quantidade_situacao_aluno_turma_prevista, name = "quantidade_situacao_aluno_turma_prevista"),
+    path('alunos_formados_tel',views.alunos_formados_tel, name = "alunos_formados_tel"),
 ]

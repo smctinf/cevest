@@ -1,0 +1,41 @@
+<html>
+<style>
+table, th, td {
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid black;
+}
+</style>
+
+{% extends "cevest/base_adm.html" %}
+
+{% block content %}
+<center>
+<h3>Mostra total de alunos por situação em cada turma</h3>
+<br>
+    <table>
+        <th>#</th>
+        <th>Curso</th>
+        <th>Turma</th>
+
+        {% for situacao in situacoes %}
+            <th>{{situacao}}</th>
+        {% endfor %}
+
+    {% for item in lista %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{item.0}}</td>
+            <td>{{item.1}}</td>
+            <td>{{item.2}}</td>
+            <td>{{item.3}}</td>
+            <td>{{item.4}}</td>
+            <td>{{item.5}}</td>
+            <td>{{item.6}}</td>
+        </tr>
+    {% endfor %}
+    </table>
+    <br>
+</center>
+{% endblock %}
+</html>
