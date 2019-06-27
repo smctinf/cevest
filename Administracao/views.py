@@ -38,13 +38,13 @@ def criar_feriados_moveis(request):
     return HttpResponseRedirect("/index")
 
 @login_required
-@permission_required('cevest.acesso_admin', raise_exception=True)
+# @permission_required('cevest.acesso_admin', raise_exception=True)
 def AreaAdmin(request):
     return render(request,"Administracao/admin_area.html")
 
 def logout_view(request):
     logout(request)
-    return HttpResponseRedirect("index")
+    return HttpResponseRedirect("/administracao")
 
 class temp_disciplina:
     nome = None
@@ -116,7 +116,7 @@ def GerarCertificados(request):
     return render(request, template_name,context)
 
 @login_required
-@permission_required('cevest.acesso_admin', raise_exception=True)
+#@permission_required('cevest.acesso_admin', raise_exception=True)
 def SelecionarTurmaParaSituacao(request):
     if request.method == 'POST':
         turma = EscolherTurma(request.POST)   
@@ -127,7 +127,7 @@ def SelecionarTurmaParaSituacao(request):
     return render(request,"Administracao/escolher_turma.html",{'form':form})
 
 @login_required
-@permission_required('cevest.acesso_admin', raise_exception=True)
+#@permission_required('cevest.acesso_admin', raise_exception=True)
 def AlterarSituacaoAluno(request):
     temp_turma = request.session["turma"]
     nome_turma = Turma.objects.get(id = temp_turma)
