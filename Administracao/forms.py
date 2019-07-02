@@ -4,7 +4,12 @@ from cevest.models import Turma, Situacao,Turma_Prevista, Status_Aluno_Turma_Pre
 from django.utils.safestring import mark_safe
 
 class EscolherTurma(forms.Form):
-    turma = forms.ModelChoiceField(queryset=Turma.objects.all())
+    def __init__(self, INSTRUTOR, *args,**kwargs):
+        super (EscolherTurma,self).__init__(*args, **kwargs)
+#        turma = forms.ModelChoiceField(queryset=Turma.objects.all())
+    #    self.fields['turma'] = forms.ModelChoiceField(queryset=Turma.objects.all())
+#        self.fields['turma'].queryset = forms.ModelChoiceField(queryset=Turma.objects.filter(instrutor=INSTRUTOR))
+        self.fields['turma'] = forms.ModelChoiceField(queryset=Turma.objects.filter(instrutor=INSTRUTOR))
 
 class login(forms.Form):
     username = forms.CharField(label='Usuário:',max_length=50)
