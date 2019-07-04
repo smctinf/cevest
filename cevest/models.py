@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
-
+from django.contrib.auth.models import User
 from .functions import validate_CPF
 
 # Create your models here.
@@ -91,6 +91,7 @@ class Instrutor(models.Model):
     def __str__(self):
         return self.nome
 
+    user = models.OneToOneField(User, on_delete=models.CASCADE, blank=True, null=True)
     nome = models.CharField(max_length=60)
     matricula = models.CharField(unique = True, null = True, max_length=11) 
     dt_inclusao = models.DateTimeField(auto_now_add=True)

@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, Http404, QueryDict
 from django.forms.models import model_to_dict
 from .forms import *
-from cevest.models import Curso, Aluno, Cidade, Bairro, Profissao, Escolaridade, Matriz, Turma_Prevista, Aluno_Turma, Turma, Situacao, Disciplina, Presenca, Feriado, Situacao_Turma, Turma_Prevista_Turma_Definitiva, Aluno_Turma_Prevista, Status_Aluno_Turma_Prevista, Horario, Turno
+from cevest.models import Curso, Aluno, Cidade, Bairro, Profissao, Escolaridade, Matriz, Turma_Prevista, Aluno_Turma, Turma, Situacao, Disciplina, Presenca, Feriado, Situacao_Turma, Turma_Prevista_Turma_Definitiva, Aluno_Turma_Prevista, Status_Aluno_Turma_Prevista, Horario, Turno, Instrutor, User
 from cevest.forms import CadForm
 from cevest.views import getLista_Alocados, getLista_Candidatos, getLista_NaoAlocados
 import datetime
@@ -119,11 +119,16 @@ def GerarCertificados(request):
 #@permission_required('cevest.acesso_admin', raise_exception=True)
 def SelecionarTurmaParaSituacao(request):
     if request.method == 'POST':
-        turma = EscolherTurma(request.POST)   
-        turma = request.POST.get("turma")
-        request.session["turma"] = turma
+#        turma = EscolherTurma(request.POST)
+        turma_aux = request.POST.get("turma")
+        request.session["turma"] = turma_aux
         return HttpResponseRedirect(reverse('administracao:alterar_situacao_aluno'))
-    form = EscolherTurma()
+
+    usuario = User.objects.get(username=request.user.username)
+    INSTRUTOR = Instrutor.objects.get(user=usuario)
+    # turma = EscolherTurma(request.POST)   
+
+    form = EscolherTurma(INSTRUTOR)
     return render(request,"Administracao/escolher_turma.html",{'form':form})
 
 @login_required
@@ -720,12 +725,12 @@ def quantidade_situacao_aluno_turma_prevista(request):
     return render(request, "Administracao/quantidade_situacao_aluno_turma_prevista.html",{"lista":lista, "status":status_aluno_turma_prevista})
 
 
-# Mostra quantidade de alunos por situação em uma turma prevista
+# Mostra lista de alunos "Cursando" em turmas encerradas até uma data
 @login_required
 @permission_required('cevest.acesso_admin', raise_exception=True)
 def alunos_formados_tel(request):
     situacao = Situacao.objects.get(descricao='Cursando')
     print (situacao)
-#    alunos_turmas = Aluno_Turma.objects.filter(turma__dt_fim__lte='2019-07-01',situacao=situacao)
-    alunos_turmas = Aluno_Turma.objects.filter(turma__dt_fim__lte='2019-07-01')
+    alunos_turmas = Aluno_Turma.objects.filter(turma__dt_fim__lte='2019-07-01',situacao=situacao)
+#    alunos_turmas = Aluno_Turma.objects.filter(turma__dt_fim__lte='2019-07-01')
     return render(request, "Administracao/alunos_formados_tel.html",{"alunos_turmas":alunos_turmas})
