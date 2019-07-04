@@ -487,12 +487,12 @@ def Alocacao(request):
     return render(request,"Administracao/alocacao.html",{'nome_turma':turma_prevista,'alocados':lista_final[0:i],"nao_alocados":lista_final[i:],"nao_considerados":turma_prevista_alunos})
 
 @login_required
-@permission_required('cevest.acesso_admin', raise_exception=True)
+#@permission_required('cevest.acesso_admin', raise_exception=True)
+@permission_required('Administracao.pode_emitir_certificado', raise_exception=True)
 def EscolherTurmaPrevistaParaAlterarSituacao(request):
     situacao_cancelada = Situacao_Turma.objects.get(descricao = "Cancelada")
     turmas_previstas = Turma_Prevista.objects.exclude(situacao = situacao_cancelada)
     turmas_previstas = turmas_previstas.exclude(dt_fim__lt = datetime.date.today())
-
 
     if request.method == 'POST':
         form = EscolherTurmaPrevista(request.POST, QUERYSET = turmas_previstas)
@@ -504,7 +504,8 @@ def EscolherTurmaPrevistaParaAlterarSituacao(request):
     return render(request,"Administracao/escolher_turma.html",{'form':form})
 
 @login_required
-@permission_required('cevest.acesso_admin', raise_exception=True)
+#@permission_required('cevest.acesso_admin', raise_exception=True)
+@permission_required('Administracao.pode_emitir_certificado', raise_exception=True)
 def AlterarSituacaoTurmaPrevista(request):
     situacao_matriculado = Status_Aluno_Turma_Prevista.objects.get(descricao = "Matriculado")
     situacoes_nao_matriculados = Status_Aluno_Turma_Prevista.objects.exclude(descricao = "Matriculado")
