@@ -5,5 +5,5 @@ class Permissao(models.Model):
         permissions = (
             ("pode_emitir_certificado","Pode emitir certificados"),
             ("acesso_admin","Acesso à area de admin"),
+            ("eh_professor","Permissão para professores"),
             )
-

@@ -125,10 +125,15 @@ def SelecionarTurmaParaSituacao(request):
         return HttpResponseRedirect(reverse('administracao:alterar_situacao_aluno'))
 
     usuario = User.objects.get(username=request.user.username)
+    if request.user.is_superuser:
+        administrador = 's'
+    else:
+        administrador = 'n'
+
     INSTRUTOR = Instrutor.objects.get(user=usuario)
     # turma = EscolherTurma(request.POST)   
 
-    form = EscolherTurma(INSTRUTOR)
+    form = EscolherTurma(administrador, INSTRUTOR)
     return render(request,"Administracao/escolher_turma.html",{'form':form})
 
 @login_required
