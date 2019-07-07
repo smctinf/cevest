@@ -4,12 +4,16 @@ from cevest.models import Turma, Situacao,Turma_Prevista, Status_Aluno_Turma_Pre
 from django.utils.safestring import mark_safe
 
 class EscolherTurma(forms.Form):
-    def __init__(self, INSTRUTOR, *args,**kwargs):
+    def __init__(self, administrador, INSTRUTOR, *args,**kwargs):
         super (EscolherTurma,self).__init__(*args, **kwargs)
 #        turma = forms.ModelChoiceField(queryset=Turma.objects.all())
     #    self.fields['turma'] = forms.ModelChoiceField(queryset=Turma.objects.all())
 #        self.fields['turma'].queryset = forms.ModelChoiceField(queryset=Turma.objects.filter(instrutor=INSTRUTOR))
-        self.fields['turma'] = forms.ModelChoiceField(queryset=Turma.objects.filter(instrutor=INSTRUTOR))
+
+        if administrador == 's':
+            self.fields['turma'] = forms.ModelChoiceField(queryset=Turma.objects.all())
+        else:
+            self.fields['turma'] = forms.ModelChoiceField(queryset=Turma.objects.filter(instrutor=INSTRUTOR))
 
 class login(forms.Form):
     username = forms.CharField(label='Usuário:',max_length=50)
@@ -59,5 +63,3 @@ class Controle_Presenca(forms.Form):
 class Confirmar_Turma(forms.Form):
     nome = forms.CharField(label = 'Turma:', disabled = True, required = False)
     confirma = forms.BooleanField(widget=forms.CheckboxInput, required = False)
-
-
