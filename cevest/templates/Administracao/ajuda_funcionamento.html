@@ -1,0 +1,50 @@
+{% extends "cevest/base_adm.html" %}
+
+{% block content %}
+<h2 align="center">Sistema Administrativo</h2>
+<br>
+
+<center>
+<h3>Funcionamento do Sistema</h3>
+<br>
+<b>- CADASTRO DOS ALUNOS -</b>
+<br><br>
+O aluno fará seu cadastro, informando os cursos desejados e os turnos (manhã, tarde ou noite) que tenha disponibilidade.
+<br><br>
+Este cadastro ficará armazenado no sistema eternamente.
+<br><br>
+Conforme forem abrindo turmas (turmas previstas), o sistema buscará neste cadastro todos os alunos que demonstraram interesse no respectivo curso, e que tenha disponibilidade para o turno oferecido.
+
+
+<br><br>
+<b>- TURMAS E SELEÇÃO DOS ALUNOS -</b>
+<br><br>
+O administrador do sistema deverá criar uma TURMA PREVISTA, e então executar a alocação. Essa alocação selecionará os alunos que tenham marcado interesse no respectivo curso, além de disponibilidade para o turno oferecido.
+<br><br>
+Caso tenham mais alunos que vagas disponíveis, o módulo de alocação irá priorizar os alunos segundo os critérios apresentados no edital publicado.
+<br><br>
+Conforme os alunos forem sendo contactados, deverão ter sua situação alterada para "Desistiu da Vaga", "Não compareceu", ou clicar sobre o nome para confirmar o cadastro.
+<br><br>
+Ao confirmar o cadastro, o aluno terá sua situação alterada para "Matriculado".
+<br><br>
+Quando se decidir que uma TURMA PREVISTA será realmente oferecida, ou seja, quando quiser confirmar uma TURMA PREVISTA, o administrador do sistema deverá entrar na opção de Confirmar Turmas Previstas para efetivar esta confirmação.
+<br><br>
+A confirmação de uma TURMA PREVISTA criará um registro na tabela TURMA, e incluirá todos os alunos MATRICULADOS que estavam na relação de alunos da TURMA PREVISTA na relação da TURMA.
+
+<br><br>
+<b>- CHAMAR MAIS ALUNOS PARA UMA TURMA PREVISTA -</b>
+<br><br>
+Caso queira convocar mais alunos para completar uma turma prevista, o administrador deverá rodar novamente a alocação para a turma desejada.
+<br><br>
+A alocação poderá ser executada quantas vezes quiser. Assim, o sistema analisará quantas vagas faltam para completar a turma, e selecionará novos alunos.
+<br><br>
+Como o sistema verificará quantas vagas sobraram para chamar novos alunos, os candidatos que não compareceram ou abriram mão de suas vagas deverão ter seus status atualizados, sobrando assim vagas para novos candidatos.
+
+<br><br>
+<b>- PAUTAS E CERTIFICADOS -</b>
+<br><br>
+As pautas, lançamento de frequência e certificados só podem ser emitidos sobre turmas confirmadas.
+
+
+</center>
+{% endblock %}

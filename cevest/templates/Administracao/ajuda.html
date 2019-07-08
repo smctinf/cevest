@@ -1,0 +1,13 @@
+{% extends "cevest/base_adm.html" %}
+
+{% block content %}
+<h2 align="center">Sistema Administrativo</h2>
+<br>
+
+<center>
+<h3>AJUDA</h3>
+<p><a href="{% url 'administracao:ajuda_funcionamento' %}">Funcionamento do Sistema</a></p>
+<p><a href="{% url 'administracao:ajuda_atualizacoes' %}">Últimas atualizações do Sistema</a></p>
+</center>
+
+{% endblock %}

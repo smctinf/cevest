@@ -258,7 +258,7 @@ class Situacao(models.Model):
     def __str__(self):
         return self.descricao
 
-    descricao = models.CharField(max_length=10, unique = True, null = True)
+    descricao = models.CharField(max_length=30, unique = True, null = True)
 
 class Aluno_Turma(models.Model):
     class Meta:
