@@ -127,10 +127,10 @@ def SelecionarTurmaParaSituacao(request):
     usuario = User.objects.get(username=request.user.username)
     if request.user.is_superuser:
         administrador = 's'
+        INSTRUTOR = ''
     else:
         administrador = 'n'
-
-    INSTRUTOR = Instrutor.objects.get(user=usuario)
+        INSTRUTOR = Instrutor.objects.get(user=usuario)
     # turma = EscolherTurma(request.POST)   
 
     form = EscolherTurma(administrador, INSTRUTOR)
