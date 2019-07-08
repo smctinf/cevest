@@ -740,3 +740,15 @@ def alunos_formados_tel(request):
     alunos_turmas = Aluno_Turma.objects.filter(turma__dt_fim__lte='2019-07-01',situacao=situacao)
 #    alunos_turmas = Aluno_Turma.objects.filter(turma__dt_fim__lte='2019-07-01')
     return render(request, "Administracao/alunos_formados_tel.html",{"alunos_turmas":alunos_turmas})
+
+@login_required
+def ajuda(request):
+    return render(request,"Administracao/ajuda.html")
+
+@login_required
+def ajuda_funcionamento(request):
+    return render(request,"Administracao/ajuda_funcionamento.html")
+
+@login_required
+def ajuda_atualizacoes(request):
+    return render(request,"Administracao/ajuda_atualizacoes.html")

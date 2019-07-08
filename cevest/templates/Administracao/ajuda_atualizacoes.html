@@ -1,0 +1,31 @@
+<html>
+<style>
+table, th, td {
+    padding: 8px;
+    border: 1px solid black;
+}
+</style>
+
+{% extends "cevest/base_adm.html" %}
+
+{% block content %}
+<h2 align="center">Sistema Administrativo</h2>
+<br>
+
+<center>
+<h3>Atualizações do Sistema</h3>
+
+<table align="center" width="80%">
+<tr>
+<td>
+07/07/2019
+</td>
+<td>
+Alteração na opção de Aprovação/Reprovação de aluno para que só apareçam as respectivas turmas de cada professor. No caso do usuário ser Administrador, verá todas as turmas.
+</td>
+</tr>
+</table>
+
+</center>
+{% endblock %}
+</html>

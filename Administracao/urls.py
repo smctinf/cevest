@@ -32,4 +32,7 @@ urlpatterns = [
     path('quantidade_situacao_aluno_turma',views.quantidade_situacao_aluno_turma, name = "quantidade_situacao_aluno_turma"),
     path('quantidade_situacao_aluno_turma_prevista',views.quantidade_situacao_aluno_turma_prevista, name = "quantidade_situacao_aluno_turma_prevista"),
     path('alunos_formados_tel',views.alunos_formados_tel, name = "alunos_formados_tel"),
+    path('ajuda',views.ajuda, name = "ajuda"),
+    path('ajuda_funcionamento',views.ajuda_funcionamento, name = "ajuda_funcionamento"),
+    path('ajuda_atualizacoes',views.ajuda_atualizacoes, name = "ajuda_atualizacoes"),
 ]
