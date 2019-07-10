@@ -66,11 +66,19 @@ class temp_disciplina:
 @permission_required('cevest.pode_emitir_certificado', raise_exception=True)
 def SelecionarTurmaParaCertificado(request):
     if request.method == 'POST':
-        turma = EscolherTurma(request.POST)   
         turma = request.POST.get("turma")
         request.session["turma"] = turma
         return HttpResponseRedirect(reverse('administracao:gerar_certificados'))
-    form = EscolherTurma()
+
+    usuario = User.objects.get(username=request.user.username)
+    if request.user.is_superuser:
+        administrador = 's'
+        INSTRUTOR = ''
+    else:
+        administrador = 'n'
+        INSTRUTOR = Instrutor.objects.get(user=usuario)
+
+    form = EscolherTurma(administrador, INSTRUTOR)
     return render(request,"Administracao/escolher_turma_nova_aba.html",{'form':form})
 
 @login_required
@@ -204,11 +212,21 @@ def AdicionarMatrizesDeTxT(request):
 @permission_required('cevest.acesso_admin', raise_exception=True)
 def SelecionarTurmaParaControle(request):
     if request.method == 'POST':
-        turma = EscolherTurma(request.POST)   
+#        turma = EscolherTurma(request.POST)   
         turma = request.POST.get("turma")
         request.session["turma"] = turma
         return HttpResponseRedirect(reverse('administracao:escolher_dia_controle'))
-    form = EscolherTurma()
+
+    usuario = User.objects.get(username=request.user.username)
+    if request.user.is_superuser:
+        administrador = 's'
+        INSTRUTOR = ''
+    else:
+        administrador = 'n'
+        INSTRUTOR = Instrutor.objects.get(user=usuario)
+
+
+    form = EscolherTurma(administrador, INSTRUTOR)
     return render(request,"Administracao/escolher_turma.html",{'form':form})
 
 @login_required
