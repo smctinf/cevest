@@ -755,7 +755,7 @@ def quantidade_situacao_aluno_turma_prevista(request):
 def alunos_formados_tel(request):
     situacao = Situacao.objects.get(descricao='Cursando')
     print (situacao)
-    alunos_turmas = Aluno_Turma.objects.filter(turma__dt_fim__lte='2019-07-01',situacao=situacao)
+    alunos_turmas = Aluno_Turma.objects.filter(turma__dt_fim__lte='2019-07-14',situacao=situacao)
 #    alunos_turmas = Aluno_Turma.objects.filter(turma__dt_fim__lte='2019-07-01')
     return render(request, "Administracao/alunos_formados_tel.html",{"alunos_turmas":alunos_turmas})
 
