@@ -753,7 +753,7 @@ def quantidade_situacao_aluno_turma_prevista(request):
 @login_required
 @permission_required('cevest.acesso_admin', raise_exception=True)
 def alunos_formados_tel(request):
-    situacao = Situacao.objects.get(descricao='Cursando')
+    situacao = Situacao.objects.get(descricao='Aprovado')
     print (situacao)
     alunos_turmas = Aluno_Turma.objects.filter(turma__dt_fim__lte='2019-07-14',situacao=situacao)
 #    alunos_turmas = Aluno_Turma.objects.filter(turma__dt_fim__lte='2019-07-01')
