@@ -68,6 +68,9 @@ def SelecionarTurmaParaCertificado(request):
     if request.method == 'POST':
         turma = request.POST.get("turma")
         request.session["turma"] = turma
+        cpf = request.POST.get("cpf")
+        request.session["cpf"] = cpf
+
         return HttpResponseRedirect(reverse('administracao:gerar_certificados'))
 
     usuario = User.objects.get(username=request.user.username)
@@ -78,7 +81,7 @@ def SelecionarTurmaParaCertificado(request):
         administrador = 'n'
         INSTRUTOR = Instrutor.objects.get(user=usuario)
 
-    form = EscolherTurma(administrador, INSTRUTOR)
+    form = EscolherTurmaCertificado(administrador, INSTRUTOR)
     return render(request,"Administracao/escolher_turma_nova_aba.html",{'form':form})
 
 @login_required
@@ -87,7 +90,24 @@ def GerarCertificados(request):
     turma_id = request.session["turma"]
     turma = get_object_or_404(Turma,id=turma_id)
     aprovado = Situacao.objects.get(descricao = "aprovado")
-    turma_aluno = Aluno_Turma.objects.filter(turma = turma,situacao=aprovado.id)
+
+    cpf = request.session["cpf"]
+    print('CPF:',cpf)
+
+    if (cpf):
+        try:
+            aluno = Aluno.objects.get(cpf=cpf)
+        except:
+            print("Retorno de mais de um CPF!")
+            aluno = ''
+
+        if (aluno):
+            turma_aluno = Aluno_Turma.objects.filter(turma = turma,situacao=aprovado.id,aluno=aluno)
+        else:
+            turma_aluno = []
+    else:
+        turma_aluno = Aluno_Turma.objects.filter(turma = turma,situacao=aprovado.id)
+
     alunos = []
     for ta in turma_aluno:
         alunos.append(ta.aluno)
