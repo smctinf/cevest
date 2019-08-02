@@ -790,3 +790,35 @@ def ajuda_funcionamento(request):
 @login_required
 def ajuda_atualizacoes(request):
     return render(request,"Administracao/ajuda_atualizacoes.html")
+
+
+# Lista alunos com seus celulares por turma
+@login_required
+def lista_celular_por_turma(request):
+    if request.method == 'POST':
+#        form = EscolherTurma(request.POST)
+
+#        if form.is_valid():
+#            turma_id = form.cleaned_data['nome']
+
+
+
+        turma_id = request.POST.get("turma")
+        print ('Turma_id:', turma_id)
+        turma = Turma.objects.get(pk=turma_id)
+        print ('Turma:', turma)
+
+        alunos_turmas = Aluno_Turma.objects.filter(turma=turma_id)
+        print ('alunos:', alunos_turmas)
+        return render(request,"Administracao/lista_celular_por_turma.html",{'alunos_turmas':alunos_turmas, 'turma':turma})
+
+    usuario = User.objects.get(username=request.user.username)
+    if request.user.is_superuser:
+        administrador = 's'
+        INSTRUTOR = ''
+    else:
+        administrador = 'n'
+        INSTRUTOR = Instrutor.objects.get(user=usuario)
+
+    form = EscolherTurma(administrador, INSTRUTOR)
+    return render(request,"Administracao/escolher_lista_celular_por_turma.html",{'form':form})

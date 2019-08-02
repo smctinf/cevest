@@ -1,0 +1,15 @@
+{% extends "cevest/base_adm.html" %}
+
+{% block content %}
+
+
+<center>
+<h2 align="center">Escolher Turma para Listar Alunos com Celulares</h2>
+<br>
+<form action="" method='POST'>{% csrf_token %}
+  {{ form.as_p }}
+  <input type='submit' value='Próximo' />
+</form>
+</center>
+
+{% endblock %}
