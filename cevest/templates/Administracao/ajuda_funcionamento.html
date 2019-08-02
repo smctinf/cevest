@@ -1,10 +1,19 @@
+<html>
+<style>
+table, th, td {
+    padding: 8px;
+    border: 1px solid black;
+}
+</style>
 {% extends "cevest/base_adm.html" %}
 
 {% block content %}
 <h2 align="center">Sistema Administrativo</h2>
 <br>
 
-<center>
+<table>
+<tr>
+<td>
 <h3>Funcionamento do Sistema</h3>
 <br>
 <b>- CADASTRO DOS ALUNOS -</b>
@@ -30,8 +39,8 @@ Ao confirmar o cadastro, o aluno terá sua situação alterada para "Matriculado
 Quando se decidir que uma TURMA PREVISTA será realmente oferecida, ou seja, quando quiser confirmar uma TURMA PREVISTA, o administrador do sistema deverá entrar na opção de Confirmar Turmas Previstas para efetivar esta confirmação.
 <br><br>
 A confirmação de uma TURMA PREVISTA criará um registro na tabela TURMA, e incluirá todos os alunos MATRICULADOS que estavam na relação de alunos da TURMA PREVISTA na relação da TURMA.
-
-<br><br>
+</td>
+<td>
 <b>- CHAMAR MAIS ALUNOS PARA UMA TURMA PREVISTA -</b>
 <br><br>
 Caso queira convocar mais alunos para completar uma turma prevista, o administrador deverá rodar novamente a alocação para a turma desejada.
@@ -59,5 +68,8 @@ Uma vez tendo já todas as disciplinas incluídas, será montada a grade curricu
 - Número de aulas: A quantidade de aulas que essa disciplina terá neste curso nessa matriz curricular.
 <br>Exemplo: Se a aula é dada em 2 tardes, deverá ser informado 2, se 1 manhã, deverá ser informado 1.
 - Carga horária total: Informar a quantidade de horas desta disciplina, multiplicando a quantidade de aulas pela quantidade de horas por aula.
-</center>
+</td>
+</tr>
+</table>
 {% endblock %}
+</html>
