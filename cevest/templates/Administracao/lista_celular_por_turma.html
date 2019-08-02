@@ -1,0 +1,53 @@
+<html>
+<style>
+table, th, td {
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid black;
+    padding: 8px;
+}
+</style>
+
+{% extends "cevest/base_adm.html" %}
+
+{% block content %}
+
+
+<center>
+    <h2 align="center">Relação de Alunos por Turma com Celular</h2>
+    <br>
+    <h4>{{ turma.curso.nome }}: {{ turma.nome }}</h4>
+    <h6>Instrutor: {{ turma.instrutor.nome }}</h6>
+    <br>
+    <table>
+        <tr>
+            <th>#</th>
+            <th>Nome</th>
+            <th>Celular</th>
+            <th>Situação</th>
+        </tr>
+
+    {% for aluno_turma in alunos_turmas %}
+        <tr>
+            <td>
+                {{ forloop.counter }}
+            </td>
+            <td>
+                {{ aluno_turma.aluno.nome }}
+            </td>
+            <td>
+                {{aluno_turma.aluno.celular}}
+            </td>
+            <td>
+                {{aluno_turma.situacao}}
+            </td>
+        </tr>
+    {% empty %}
+    <p>Não há alunos</p>
+    {% endfor %}
+    </table>    
+    
+</center>
+
+{% endblock %}
+</html>

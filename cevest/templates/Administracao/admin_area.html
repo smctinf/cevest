@@ -10,6 +10,7 @@
 
 {% if perms.Administracao.eh_professor %}
     <p><a href="{% url 'administracao:selecionar_turma_para_alterar_situacao' %}">Alterar Situação dos Alunos</a></p>
+    <p><a href="{% url 'administracao:lista_celular_por_turma' %}">Relação de Alunos por Turma com Celular</a></p>
 {% endif %}
 <!--
 <p><a href="{% url 'administracao:carregar_matriz_txt' %}">Carregar matrizes de TXT</a></p>
