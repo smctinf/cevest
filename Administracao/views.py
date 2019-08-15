@@ -63,7 +63,7 @@ class temp_disciplina:
     
 
 @login_required
-@permission_required('cevest.pode_emitir_certificado', raise_exception=True)
+@permission_required('Administracao.pode_emitir_certificado', raise_exception=True)
 def SelecionarTurmaParaCertificado(request):
     if request.method == 'POST':
         turma = request.POST.get("turma")
@@ -85,7 +85,7 @@ def SelecionarTurmaParaCertificado(request):
     return render(request,"Administracao/escolher_turma_nova_aba.html",{'form':form})
 
 @login_required
-@permission_required('cevest.pode_emitir_certificado', raise_exception=True)
+@permission_required('Administracao.pode_emitir_certificado', raise_exception=True)
 def GerarCertificados(request):
     turma_id = request.session["turma"]
     turma = get_object_or_404(Turma,id=turma_id)
@@ -618,7 +618,8 @@ def AlterarSituacaoTurmaPrevista(request):
     return render(request,"Administracao/alterar_situacao_alunos_turma_prevista.html",{'formset_candidatos':formset_candidatos, 'formset_matriculados':formset_matriculados, 'formset_nao_matriculados':formset_nao_matriculados, 'nome_turma':turma_prevista})
 
 @login_required
-@permission_required('cevest.acesso_admin', raise_exception=True)
+#@permission_required('cevest.acesso_admin', raise_exception=True)
+@permission_required('Administracao.pode_emitir_certificado', raise_exception=True)
 def ConfirmarInformacoesAlunoPrevisto(request,aluno_id,turma_id):
     turma_prevista = Turma_Prevista.objects.get(id = turma_id)
     aluno = get_object_or_404(Aluno,id=aluno_id)
