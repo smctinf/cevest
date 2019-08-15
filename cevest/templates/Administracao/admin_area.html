@@ -3,38 +3,54 @@
 {% block content %}
 <h2 align="center">Sistema Administrativo</h2>
 
-<center>
-{% if user.is_superuser %}
-    <p><a href="{% url 'administracao:selecionar_turma_para_certificado' %}">Emitir certificado</a></p>
-{% endif %}
+<table align="center">
+<tr><td>
 
 {% if perms.Administracao.eh_professor %}
-    <p><a href="{% url 'administracao:selecionar_turma_para_alterar_situacao' %}">Alterar Situação dos Alunos</a></p>
-    <p><a href="{% url 'administracao:lista_celular_por_turma' %}">Relação de Alunos por Turma com Celular</a></p>
+    Área do Professor:
+    <ul>
+    <li><a href="{% url 'administracao:selecionar_turma_para_presenca' %}">Controle de presença</a></li>
+    <li><a href="{% url 'administracao:selecionar_turma_para_alterar_situacao' %}">Alterar Situação dos Alunos</a></li>
+    <li><a href="{% url 'administracao:lista_celular_por_turma' %}">Relação de Alunos por Turma com Celular</a></li>
+    </ul>
 {% endif %}
 <!--
 <p><a href="{% url 'administracao:carregar_matriz_txt' %}">Carregar matrizes de TXT</a></p>
 -->
-{% if user.is_superuser %}
-    <p><a href="{% url 'administracao:selecionar_turma_para_presenca' %}">Controle de presença</a></p>
-    <p><a href="{% url 'pauta' %}">Emissão de pautas</a></p>
-    <p><a href="{% url 'administracao:confirmar_turma' %}">Confirmar turmas previstas</a></p>
-    <p><a href="{% url 'administracao:escolher_turma_para_alocacao' %}">Alocar alunos</a></p>
-{% endif %}
 
+{% if user.is_superuser %}
+
+    Relatórios:
+    <ul>
+    <li><a href="{% url 'administracao:quantidade_situacao_aluno_turma' %}">Mostra total de alunos por situação em cada turma</a></li>
+    <li><a href="{% url 'administracao:quantidade_situacao_aluno_turma_prevista' %}">Mostra total de alunos por status em cada turma prevista</a></li>
+    </ul>
+    Organização das turmas:
+    <ul>
+    <li><a href="{% url 'pauta' %}">Emissão de pautas</a></li>
+    <li><a href="{% url 'administracao:confirmar_turma' %}">Confirmar turmas previstas</a></li>
+    </ul>
+    Encerramento:
+    <ul>
+        <li><a href="{% url 'administracao:alunos_formados_tel' %}">Lista alunos de turmas já encerradas com seus respectivos números de celulares</a></li>
+        <li><a href="{% url 'administracao:selecionar_turma_para_certificado' %}">Emitir certificado</a></li>
+    </ul>
+{% endif %}
 {% if perms.Administracao.pode_emitir_certificado %}
-    <p><a href="{% url 'administracao:escolher_turma_prevista_para_alterar_situacao' %}">Confirmar Inscrição (Alterar Situação dos Alunos: turma prevista)</a></p>
+    Alocação:
+    <ul>
+        <li><a href="{% url 'administracao:escolher_turma_prevista_para_alterar_situacao' %}">Confirmar Inscrição (Alterar Situação dos Alunos: turma prevista)</a></li>
 {% endif %}
 
 {% if user.is_superuser %}
-    <p><a href="{% url 'administracao:lista_alocados_telefone' %}">Lista de alunos alocados por turma(com telefone)</a></p>
-    <p><a href="{% url 'administracao:lista_alfabetica' %}">Lista de alunos alocados por ordem alfabética</a></p>
-    <p><a href="{% url 'administracao:lista_nao_alocados' %}">Lista de cadastrados que nunca foram alocados em uma turma</a></p>
-    <p><a href="{% url 'administracao:quantidade_situacao_aluno_turma' %}">Mostra total de alunos por situação em cada turma</a></p>
-    <p><a href="{% url 'administracao:quantidade_situacao_aluno_turma_prevista' %}">Mostra total de alunos por status em cada turma prevista</a></p>
-    <p><a href="{% url 'administracao:alunos_formados_tel' %}">Lista alunos de turmas já encerradas com seus respectivos números de celulares</a></p>
+        <li><a href="{% url 'administracao:escolher_turma_para_alocacao' %}">Alocar alunos</a></li>
+        <li><a href="{% url 'administracao:lista_alfabetica' %}">Lista de alunos alocados por ordem alfabética</a></li>
+        <li><a href="{% url 'administracao:lista_alocados_telefone' %}">Lista de alunos alocados por turma(com telefone)</a></li>
+        <li><a href="{% url 'administracao:lista_nao_alocados' %}">Lista de cadastrados que nunca foram alocados em uma turma</a></li>
+    </ul>
+
 {% endif %}
 
-</center>
-
+</td></tr>
+</table>
 {% endblock %}
