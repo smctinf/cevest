@@ -2,13 +2,13 @@
 
 {% block content %}
 
-
 <center>
     <h2 align="center">Alterar Situação dos Alunos</h2>
     <br>
-    
+    <font color="red">Clicar sobre o nome do aluno para conferir cadastro e confirmar inscrição</font>
+    <br><br>
     <div>
-        <p>{{nome_turma}}</p>
+        <h3>{{nome_turma}}</h3>
         <form action="" method='POST'>{% csrf_token %}
             {{formset_candidatos.management_form}}
             <table>
