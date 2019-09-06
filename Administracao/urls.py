@@ -36,4 +36,6 @@ urlpatterns = [
     path('ajuda_funcionamento',views.ajuda_funcionamento, name = "ajuda_funcionamento"),
     path('ajuda_atualizacoes',views.ajuda_atualizacoes, name = "ajuda_atualizacoes"),
     path('lista_celular_por_turma',views.lista_celular_por_turma, name = "lista_celular_por_turma"),
+
+    path('change_password', views.change_password, name='change_password'),
 ]

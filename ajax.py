@@ -2,7 +2,7 @@ import json
 from django.http import Http404, HttpResponse
 
 from .models import Cidade, Bairro
-
+"""
 def get_bairro(request, cidade_id):
     if request.is_ajax():
         bairros = Bairro.objects.filter(cidade_id=cidade_id).order_by('nome')
@@ -24,3 +24,4 @@ def more_todo(request):
     else:
         raise Http404
 
+"""

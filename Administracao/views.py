@@ -8,7 +8,8 @@ from cevest.views import getLista_Alocados, getLista_Candidatos, getLista_NaoAlo
 import datetime
 from .functions import get_proper_casing, compare_brazilian_to_python_weekday, convert_date_to_tuple, convert_tuple_to_data, create_select_choices, is_date_holiday,create_not_fixed_holidays_in_db
 from django.contrib.auth.decorators import login_required, permission_required
-from django.contrib.auth import logout
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
 from django.urls import reverse
 from django.forms.formsets import formset_factory
 from .criarmatrizes import getCursos
@@ -823,3 +824,20 @@ def lista_celular_por_turma(request):
 
     form = EscolherTurma(administrador, INSTRUTOR)
     return render(request,"Administracao/escolher_lista_celular_por_turma.html",{'form':form})
+
+
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Important!
+            messages.success(request, 'Senha alterada.')
+            return redirect('change_password')
+        else:
+            messages.error(request, 'Corrigir o erro apresentado.')
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request, 'Administracao/change_password.html', {
+        'form': form
+    })
