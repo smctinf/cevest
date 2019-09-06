@@ -24,6 +24,7 @@
     <ul>
     <li><a href="{% url 'administracao:quantidade_situacao_aluno_turma' %}">Mostra total de alunos por situação em cada turma</a></li>
     <li><a href="{% url 'administracao:quantidade_situacao_aluno_turma_prevista' %}">Mostra total de alunos por status em cada turma prevista</a></li>
+    <li><a href="{% url 'portador' %}">Portador de Necessidades Especiais</a></li>
     </ul>
     Organização das turmas:
     <ul>
@@ -50,7 +51,10 @@
     </ul>
 
 {% endif %}
-
+    Conta:
+    <ul>
+        <li><a href="{% url 'administracao:change_password' %}">Alterar senha</a></li>
+    </ul>
 </td></tr>
 </table>
 {% endblock %}
