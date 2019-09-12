@@ -61,7 +61,7 @@ class temp_disciplina:
             self.numero_aulas = "0" + str(self.numero_aulas)
         if self.numero_horas < 10:
             self.numero_horas = "0" + str(self.numero_horas)
-    
+
 
 @login_required
 @permission_required('Administracao.pode_emitir_certificado', raise_exception=True)
@@ -833,7 +833,7 @@ def change_password(request):
             user = form.save()
             update_session_auth_hash(request, user)  # Important!
             messages.success(request, 'Senha alterada.')
-            return redirect('change_password')
+            return redirect('/Administracao/change_password')
         else:
             messages.error(request, 'Corrigir o erro apresentado.')
     else:
@@ -841,3 +841,92 @@ def change_password(request):
     return render(request, 'Administracao/change_password.html', {
         'form': form
     })
+
+
+# Selecionar aluno para declaração
+@login_required
+@permission_required('Administracao.pode_emitir_certificado', raise_exception=True)
+def SelecionarAlunoParaDeclaracao(request):
+    if request.method == 'POST':
+        aluno = request.POST.get("aluno")
+        request.session["aluno"] = aluno
+        cpf = request.POST.get("cpf")
+        request.session["cpf"] = cpf
+
+        return HttpResponseRedirect(reverse('administracao:gerar_declaracao'))
+
+    form = EscolherAlunoDeclaracao()
+    return render(request,"Administracao/escolher_aluno_nova_aba.html",{'form':form})
+
+
+# Emitir declaração
+@login_required
+@permission_required('Administracao.pode_emitir_certificado', raise_exception=True)
+def GerarDeclaracao(request):
+
+    cpf = request.session["cpf"]
+
+    if (cpf):
+        try:
+            aluno = Aluno.objects.get(cpf=cpf)
+        except:
+            print("Retorno de mais de um CPF!")
+            aluno = ''
+    else:
+        aluno_id = request.session["aluno"]
+        aluno = get_object_or_404(Aluno,id=aluno_id)
+
+        if (aluno):
+            cursando = Situacao.objects.get(descricao = "cursando")
+            print ('Cursando:', cursando)
+            aluno_turma = Aluno_Turma.objects.get(aluno = aluno, situacao=cursando)
+            print ('Aluno_Turna: ', aluno_turma)
+            turma = get_object_or_404(Turma,id=aluno_turma.turma_id)
+            print ('turma:', turma)
+            print('Curso:', turma.curso.nome)
+#            curso = Curso.objects.get(curso = turma.curso)
+#            print ('curso:', curso)
+
+##            aluno = Aluno.objects.get(id=aluno)
+#            aluno = Aluno.objects.get(aluno=aluno,situacao=cursando.id)
+#            turma_aluno = Aluno_Turma.objects.filter(turma = turma,situacao=aprovado.id,aluno=aluno)
+        else:
+            turma_aluno = []
+#    else:
+#        turma_aluno = Aluno_Turma.objects.filter(turma = turma,situacao=aprovado.id)
+    """
+    alunos = []
+    for ta in turma_aluno:
+        alunos.append(ta.aluno)
+    curso_turma = turma.curso
+    data_inicio = turma.dt_inicio.strftime("%d/%m")
+    data_fim = turma.dt_fim.strftime("%d/%m/%Y")
+    data_atual = datetime.date.today()
+    instrutor = turma.instrutor
+    """
+    """
+    matrizes = Matriz.objects.filter(curso=curso_turma, curriculo = turma.curriculo)
+    disciplinas = []
+    total_horas = 0
+    total_aulas = 0
+
+    for mat in matrizes:
+        disciplinas.append(temp_disciplina(mat.disciplina.nome,mat.num_aulas,mat.carga_horaria_total))
+        total_horas = total_horas + mat.carga_horaria_total
+        total_aulas = total_aulas + mat.num_aulas
+    """
+    context = {
+        'aluno' : aluno,
+        'curso' : turma.curso,
+##        'turma' : turma,
+##        'data_inicio' : data_inicio,
+##        'data_fim' : data_fim,
+        'data_atual' : datetime.date.today(),
+ #       'instrutor' : instrutor,
+ #       'disciplinas': disciplinas,
+ #       'total_horas' : total_horas,
+ #       'total_aulas': total_aulas,
+    }
+
+    template_name = 'Administracao/declaracao.html'
+    return render(request, template_name,context)

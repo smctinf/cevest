@@ -1,0 +1,231 @@
+<html>
+    <style>
+    .break { 
+        page-break-before: always;
+        margin-top:1cm;
+        margin-bottom:1cm;
+        margin-right:1cm;
+        margin-left:1cm;
+        }
+    
+    div.logos{    
+        display: flex;
+        justify-content:space-between;
+        margin-top: 0.5cm;
+        margin-right: 0.5cm;
+        margin-left: 0.5cm;
+    }
+
+    .logofriburgo{
+        display: inline-block;
+        height:3.14cm;
+        width: 2.58cm;   
+    }
+    .logofriburgo img{  
+        height:100%;
+        width:100%
+    }
+
+    .logo200anos{
+        display: inline-block;
+        height:3.18cm;
+        width: 3.18cm;   
+    }
+    .logo200anos img{
+        height:100%;
+        width:100%
+    }
+
+    .logocevest{
+        display: inline-block;
+        height:2.74cm;
+        width: 6.44cm;   
+    }
+    .logocevest img{
+        height:100%;
+        width:100%
+    }
+
+    div.fontecabecalho1 {
+        font-size: 42pt;
+        line-height: 0px;
+        color: rgba(0,112,196,1);
+    }
+
+    div.subcabecalho{
+        font-size: 18pt;
+        text-align: center;
+        
+        color: rgba(0,112,196,1);
+    }
+    div.texto{
+        font-size: 18pt;
+        margin-left: 2.5cm;
+        margin-right: 1cm;
+        text-align: justify;
+    }
+    div.data
+    {
+        font-size: 14pt;
+        text-align: right;
+        margin-right: 2.4cm;
+    }
+
+    .assinaturanome
+    {
+        font-size: 12px;
+    }
+    .assinaturatextosecundario
+    {
+        font-size:10.5px;
+    }
+    .assinatura
+    {
+        text-align: center;
+    }
+    .assinaturabloco
+    {
+        display: flex;
+        justify-content:space-between;
+        margin-right: 4.5cm;
+        margin-left: 4.5cm;
+        margin-top:1cm;
+        margin-bottom: 1cm;
+    }
+    
+    .nome
+    {
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+    .nomecurso
+    {
+        font-style: italic;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+    table, th, td {
+        border: 1px solid black;
+    }
+    .tablePart1
+    {
+        font-size: 12pt;
+        font-style: normal;
+        text-align: left;
+        width:100%;
+    }
+    .tablePart2
+    {
+        font-style: bold;
+        text-align: center;
+    }
+    .matrizTituloAeC
+    {
+        text-align: center;
+        font-size: 24pt;
+    }
+    .matrizTituloB
+    {
+        text-align: center;
+        font-size:20pt;
+    }
+    table {
+        height:100%;
+        margin-top:1cm;
+        margin-bottom: 1cm;
+        border-collapse: collapse;
+    }
+
+    table, th, td {
+        border: 1px solid black;
+    }
+</style>
+
+<body>
+<div class="break">
+<!--Colocar imagens aqui-->
+{% load staticfiles %}
+    <div class = logos>
+        <div class = logofriburgo>
+            <img src="{% static "cevest\images\logo-nova-friburgo.jpg" %}" alt="Logo Nova Friburgo">
+        </div>
+        Estado do Rio de Janeiro<br>
+        PREFEITURA MUNICIPAL DE NOVA FRIBURGO<br>
+        Secretaria Municipal de Ciência, Tecnologia,<br>
+        Inovação e Educação Profissionalizante e Superior
+        <div class = logo200anos>
+            <img src="{% static "cevest\images\logo-200-anos.png" %}" alt="Logo 200 anos">
+        </div>
+    </div>
+    <div class = fontecabecalho1>
+        <p style="text-align:center">DECLARAÇÃO</p>
+    </div>
+
+    <div class = texto>
+
+		Declaramos para os devidos fins que <span class = nome>{{aluno.nome}}</span> está matriculada no curso 
+        de <span class = nomecurso>{{curso.nome}}</span> nesta unidade pública de ensino, com término previsto para dia {{data_fim}}, podendo ser 
+        prorrogado, no horário compreendido das 18:00 às 21:40, necessitando assim do transporte público do 
+        Município de Cantagalo.
+<!--
+        Declaro para os devidos fins
+        Conferimos a <span class = nome>{{aluno.nome}}</span> o presente certificado pela conclusão do <span class = nomecurso>CURSO DE {{curso.nome}}</span>, 
+        oferecido pelo Centro de Formação Profissional e Transferência de Tecnologia para a Indústria do Vestuário (CEVEST),
+        órgão da Secretaria de Ciência, Tecnologia, Inovação e Educação Profissionalizante e Superior,
+        ministrado no período de {{data_inicio}} a {{data_fim}}, com duração de {{curso.duracao}} horas.
+        -->
+    </div>
+
+    <div class = data>
+        <br>
+        Nova Friburgo, {{data_atual}}.
+    </div>
+    
+        <div class = assinatura>
+            _______________________
+            <div class = assinaturanome>
+                Marcelo Verly de Lemos
+            </div>
+            <div class = assinaturatextosecundario>
+                Secretário de Ciência, Tecnologia, Inovação,<br> e Educação Profissionalizante e Superior
+            </div>
+        </div>
+</div>
+    <div class="break">
+            <div class = matrizTituloAeC>
+                Matriz Curricular
+            </div>
+            <div class = matrizTituloB>
+                Objetivos Aplicados
+            </div>
+            <div class = matrizTituloAeC>
+                Curso: {{curso.nome}}
+            </div>
+            <table class = tablePart1>
+                    <tr>
+                      <td style = "width:8%"></td>
+                      <td>Disciplinas</td> 
+                      <td style = "width:8%">N° de aulas</td>
+                      <td style = "width:8%">Carga <br> Horária</td>
+                    </tr>
+                    {% for disciplina in disciplinas %}
+                    <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td>{{disciplina.nome}}</td>
+                        <td>{{disciplina.numero_aulas}}</td>
+                        <td>{{disciplina.numero_horas}}</td>
+                    </tr>
+                    {% endfor %}
+                    <tr>
+                        <td colspan="2" class = tablePart2>TOTAL</td>
+                        <td>{{total_aulas}} aulas</td>
+                        <td>{{total_horas}}h</td>
+                    </tr>
+            </table>
+    </div>
+</body>
+
+<SCRIPT LANGUAGE="JavaScript">
+    window.print();
+</SCRIPT>
+</html>

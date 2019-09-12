@@ -28,6 +28,16 @@ class EscolherTurmaCertificado(forms.Form):
             self.fields['turma'] = forms.ModelChoiceField(queryset=Turma.objects.filter(instrutor=INSTRUTOR))
         self.fields['cpf'] = forms.CharField(label='CPF:',max_length=11, required=False)
 
+class EscolherAlunoDeclaracao(forms.Form):
+    def __init__(self, *args,**kwargs):
+        super (EscolherAlunoDeclaracao,self).__init__(*args, **kwargs)
+#        turma = forms.ModelChoiceField(queryset=Turma.objects.all())
+    #    self.fields['turma'] = forms.ModelChoiceField(queryset=Turma.objects.all())
+#        self.fields['turma'].queryset = forms.ModelChoiceField(queryset=Turma.objects.filter(instrutor=INSTRUTOR))
+
+        self.fields['aluno'] = forms.ModelChoiceField(queryset=Aluno.objects.all())
+        self.fields['cpf'] = forms.CharField(label='CPF:',max_length=11, required=False)
+
 class login(forms.Form):
     username = forms.CharField(label='Usuário:',max_length=50)
     password = forms.CharField(label='Senha:',max_length=50,widget=forms.PasswordInput())
