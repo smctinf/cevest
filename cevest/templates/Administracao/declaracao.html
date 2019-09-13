@@ -167,7 +167,7 @@
     <div class = texto>
 		Declaramos para os devidos fins que <span class = nome>{{aluno.nome}}</span> está matriculada no curso 
         de <span class = nomecurso>{{curso.nome}}</span> nesta unidade pública de ensino, com término previsto para dia {{data_fim}}, podendo ser 
-        prorrogado, no horário:<br>
+        prorrogado, conforme horário(s) abaixo:<br>
     </div>
     <br><br>
     <div class = horario>
@@ -176,16 +176,16 @@
         {% endfor %}
     </div>
     <br><br>
+    <!--
     <div class = texto>
         necessitando assim de transporte público de ida e volta entre este município e Nova Friburgo.
-<!--
         Declaro para os devidos fins
         Conferimos a <span class = nome>{{aluno.nome}}</span> o presente certificado pela conclusão do <span class = nomecurso>CURSO DE {{curso.nome}}</span>, 
         oferecido pelo Centro de Formação Profissional e Transferência de Tecnologia para a Indústria do Vestuário (CEVEST),
         órgão da Secretaria de Ciência, Tecnologia, Inovação e Educação Profissionalizante e Superior,
         ministrado no período de {{data_inicio}} a {{data_fim}}, com duração de {{curso.duracao}} horas.
-        -->
     </div>
+     -->
     <br><br><br>
     <div class = data>
         <br>
@@ -205,38 +205,6 @@
         </div>
     </div>
 </div>
-    <div class="break">
-            <div class = matrizTituloAeC>
-                Matriz Curricular
-            </div>
-            <div class = matrizTituloB>
-                Objetivos Aplicados
-            </div>
-            <div class = matrizTituloAeC>
-                Curso: {{curso.nome}}
-            </div>
-            <table class = tablePart1>
-                    <tr>
-                      <td style = "width:8%"></td>
-                      <td>Disciplinas</td> 
-                      <td style = "width:8%">N° de aulas</td>
-                      <td style = "width:8%">Carga <br> Horária</td>
-                    </tr>
-                    {% for disciplina in disciplinas %}
-                    <tr>
-                        <td>{{forloop.counter}}</td>
-                        <td>{{disciplina.nome}}</td>
-                        <td>{{disciplina.numero_aulas}}</td>
-                        <td>{{disciplina.numero_horas}}</td>
-                    </tr>
-                    {% endfor %}
-                    <tr>
-                        <td colspan="2" class = tablePart2>TOTAL</td>
-                        <td>{{total_aulas}} aulas</td>
-                        <td>{{total_horas}}h</td>
-                    </tr>
-            </table>
-    </div>
 </body>
 
 <SCRIPT LANGUAGE="JavaScript">
