@@ -876,56 +876,42 @@ def GerarDeclaracao(request):
         aluno_id = request.session["aluno"]
         aluno = get_object_or_404(Aluno,id=aluno_id)
 
-        if (aluno):
-            cursando = Situacao.objects.get(descricao = "cursando")
-            print ('Cursando:', cursando)
-            aluno_turma = Aluno_Turma.objects.get(aluno = aluno, situacao=cursando)
-            print ('Aluno_Turna: ', aluno_turma)
-            turma = get_object_or_404(Turma,id=aluno_turma.turma_id)
-            print ('turma:', turma)
-            print('Curso:', turma.curso.nome)
-#            curso = Curso.objects.get(curso = turma.curso)
-#            print ('curso:', curso)
-
-##            aluno = Aluno.objects.get(id=aluno)
-#            aluno = Aluno.objects.get(aluno=aluno,situacao=cursando.id)
-#            turma_aluno = Aluno_Turma.objects.filter(turma = turma,situacao=aprovado.id,aluno=aluno)
-        else:
-            turma_aluno = []
+    if (aluno):
+        cursando = Situacao.objects.get(descricao = "cursando")
+        aluno_turma = Aluno_Turma.objects.get(aluno = aluno, situacao=cursando)
+        turma = get_object_or_404(Turma,id=aluno_turma.turma_id)
+    else:
+        turma_aluno = []
 #    else:
 #        turma_aluno = Aluno_Turma.objects.filter(turma = turma,situacao=aprovado.id)
-    """
-    alunos = []
-    for ta in turma_aluno:
-        alunos.append(ta.aluno)
-    curso_turma = turma.curso
-    data_inicio = turma.dt_inicio.strftime("%d/%m")
-    data_fim = turma.dt_fim.strftime("%d/%m/%Y")
-    data_atual = datetime.date.today()
-    instrutor = turma.instrutor
-    """
-    """
-    matrizes = Matriz.objects.filter(curso=curso_turma, curriculo = turma.curriculo)
-    disciplinas = []
-    total_horas = 0
-    total_aulas = 0
 
-    for mat in matrizes:
-        disciplinas.append(temp_disciplina(mat.disciplina.nome,mat.num_aulas,mat.carga_horaria_total))
-        total_horas = total_horas + mat.carga_horaria_total
-        total_aulas = total_aulas + mat.num_aulas
-    """
+    temp_horario = []
+
+    for horario in turma.horario.all():
+
+        if horario.dia_semana == '1':
+            dia = 'Domingo'
+        elif horario.dia_semana == '2':
+            dia = 'Segunda-feira'
+        elif horario.dia_semana == '3':
+            dia = 'Terça-feira'
+        elif horario.dia_semana == '4':
+            dia = 'Quarta-feira'
+        elif horario.dia_semana == '5':
+            dia = 'Quinta-feira'
+        elif horario.dia_semana == '6':
+            dia = 'Sexta-feira'
+        else:
+            dia = 'Sábado'
+
+        temp_horario.append(dia + ' de ' + str(horario.hora_inicio) + ' a ' + str(horario.hora_fim))
+
     context = {
         'aluno' : aluno,
         'curso' : turma.curso,
-##        'turma' : turma,
-##        'data_inicio' : data_inicio,
-##        'data_fim' : data_fim,
+        'data_fim' : turma.dt_fim.strftime("%d/%m/%Y"),
         'data_atual' : datetime.date.today(),
- #       'instrutor' : instrutor,
- #       'disciplinas': disciplinas,
- #       'total_horas' : total_horas,
- #       'total_aulas': total_aulas,
+        'horarios' : temp_horario,
     }
 
     template_name = 'Administracao/declaracao.html'

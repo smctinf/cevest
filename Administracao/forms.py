@@ -35,7 +35,7 @@ class EscolherAlunoDeclaracao(forms.Form):
     #    self.fields['turma'] = forms.ModelChoiceField(queryset=Turma.objects.all())
 #        self.fields['turma'].queryset = forms.ModelChoiceField(queryset=Turma.objects.filter(instrutor=INSTRUTOR))
 
-        self.fields['aluno'] = forms.ModelChoiceField(queryset=Aluno.objects.all())
+        self.fields['aluno'] = forms.ModelChoiceField(queryset=Aluno.objects.all(), required=False)
         self.fields['cpf'] = forms.CharField(label='CPF:',max_length=11, required=False)
 
 class login(forms.Form):

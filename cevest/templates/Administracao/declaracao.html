@@ -26,6 +26,10 @@
         width:100%
     }
 
+    .estado{
+        font-size: 10pt;
+    }
+
     .logo200anos{
         display: inline-block;
         height:3.18cm;
@@ -51,13 +55,6 @@
         line-height: 0px;
         color: rgba(0,112,196,1);
     }
-
-    div.subcabecalho{
-        font-size: 18pt;
-        text-align: center;
-        
-        color: rgba(0,112,196,1);
-    }
     div.texto{
         font-size: 18pt;
         margin-left: 2.5cm;
@@ -71,13 +68,18 @@
         margin-right: 2.4cm;
     }
 
+    div.horario{
+        font-size: 14pt;
+        text-align: center;
+    }
+
     .assinaturanome
     {
-        font-size: 12px;
+        font-size: 16px;
     }
     .assinaturatextosecundario
     {
-        font-size:10.5px;
+        font-size:14px;
     }
     .assinatura
     {
@@ -157,16 +159,25 @@
             <img src="{% static "cevest\images\logo-200-anos.png" %}" alt="Logo 200 anos">
         </div>
     </div>
+    <br><br>
     <div class = fontecabecalho1>
         <p style="text-align:center">DECLARAÇÃO</p>
     </div>
-
+    <br><br><br>
     <div class = texto>
-
 		Declaramos para os devidos fins que <span class = nome>{{aluno.nome}}</span> está matriculada no curso 
         de <span class = nomecurso>{{curso.nome}}</span> nesta unidade pública de ensino, com término previsto para dia {{data_fim}}, podendo ser 
-        prorrogado, no horário compreendido das 18:00 às 21:40, necessitando assim do transporte público do 
-        Município de Cantagalo.
+        prorrogado, no horário:<br>
+    </div>
+    <br><br>
+    <div class = horario>
+        {% for horario in horarios %}
+            {{horario}}<br>
+        {% endfor %}
+    </div>
+    <br><br>
+    <div class = texto>
+        necessitando assim de transporte público de ida e volta entre este município e Nova Friburgo.
 <!--
         Declaro para os devidos fins
         Conferimos a <span class = nome>{{aluno.nome}}</span> o presente certificado pela conclusão do <span class = nomecurso>CURSO DE {{curso.nome}}</span>, 
@@ -175,14 +186,16 @@
         ministrado no período de {{data_inicio}} a {{data_fim}}, com duração de {{curso.duracao}} horas.
         -->
     </div>
-
+    <br><br><br>
     <div class = data>
         <br>
         Nova Friburgo, {{data_atual}}.
     </div>
-    
+    <br><br>
+    <div class = assinaturabloco>
         <div class = assinatura>
-            _______________________
+            ______________________________
+            <br><br>
             <div class = assinaturanome>
                 Marcelo Verly de Lemos
             </div>
@@ -190,6 +203,7 @@
                 Secretário de Ciência, Tecnologia, Inovação,<br> e Educação Profissionalizante e Superior
             </div>
         </div>
+    </div>
 </div>
     <div class="break">
             <div class = matrizTituloAeC>
