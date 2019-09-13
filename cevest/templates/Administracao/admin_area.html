@@ -51,6 +51,14 @@
     </ul>
 
 {% endif %}
+
+{% if perms.Administracao.pode_emitir_certificado %}
+    Outros:
+    <ul>
+        <li><a href="{% url 'administracao:selecionar_aluno_para_declaracao' %}">Emissão de declaração de que aluno está cursando</a></li>
+{% endif %}
+    </ul>
+
     Conta:
     <ul>
         <li><a href="{% url 'administracao:change_password' %}">Alterar senha</a></li>

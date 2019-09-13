@@ -61,7 +61,7 @@ class temp_disciplina:
             self.numero_aulas = "0" + str(self.numero_aulas)
         if self.numero_horas < 10:
             self.numero_horas = "0" + str(self.numero_horas)
-    
+
 
 @login_required
 @permission_required('Administracao.pode_emitir_certificado', raise_exception=True)
@@ -833,7 +833,7 @@ def change_password(request):
             user = form.save()
             update_session_auth_hash(request, user)  # Important!
             messages.success(request, 'Senha alterada.')
-            return redirect('change_password')
+            return redirect('/Administracao/change_password')
         else:
             messages.error(request, 'Corrigir o erro apresentado.')
     else:
@@ -841,3 +841,78 @@ def change_password(request):
     return render(request, 'Administracao/change_password.html', {
         'form': form
     })
+
+
+# Selecionar aluno para declaração
+@login_required
+@permission_required('Administracao.pode_emitir_certificado', raise_exception=True)
+def SelecionarAlunoParaDeclaracao(request):
+    if request.method == 'POST':
+        aluno = request.POST.get("aluno")
+        request.session["aluno"] = aluno
+        cpf = request.POST.get("cpf")
+        request.session["cpf"] = cpf
+
+        return HttpResponseRedirect(reverse('administracao:gerar_declaracao'))
+
+    form = EscolherAlunoDeclaracao()
+    return render(request,"Administracao/escolher_aluno_nova_aba.html",{'form':form})
+
+
+# Emitir declaração
+@login_required
+@permission_required('Administracao.pode_emitir_certificado', raise_exception=True)
+def GerarDeclaracao(request):
+
+    cpf = request.session["cpf"]
+
+    if (cpf):
+        try:
+            aluno = Aluno.objects.get(cpf=cpf)
+        except:
+            print("Retorno de mais de um CPF!")
+            aluno = ''
+    else:
+        aluno_id = request.session["aluno"]
+        aluno = get_object_or_404(Aluno,id=aluno_id)
+
+    if (aluno):
+        cursando = Situacao.objects.get(descricao = "cursando")
+        aluno_turma = Aluno_Turma.objects.get(aluno = aluno, situacao=cursando)
+        turma = get_object_or_404(Turma,id=aluno_turma.turma_id)
+    else:
+        turma_aluno = []
+#    else:
+#        turma_aluno = Aluno_Turma.objects.filter(turma = turma,situacao=aprovado.id)
+
+    temp_horario = []
+
+    for horario in turma.horario.all():
+
+        if horario.dia_semana == '1':
+            dia = 'Domingo'
+        elif horario.dia_semana == '2':
+            dia = 'Segunda-feira'
+        elif horario.dia_semana == '3':
+            dia = 'Terça-feira'
+        elif horario.dia_semana == '4':
+            dia = 'Quarta-feira'
+        elif horario.dia_semana == '5':
+            dia = 'Quinta-feira'
+        elif horario.dia_semana == '6':
+            dia = 'Sexta-feira'
+        else:
+            dia = 'Sábado'
+
+        temp_horario.append(dia + ' de ' + str(horario.hora_inicio) + ' a ' + str(horario.hora_fim))
+
+    context = {
+        'aluno' : aluno,
+        'curso' : turma.curso,
+        'data_fim' : turma.dt_fim.strftime("%d/%m/%Y"),
+        'data_atual' : datetime.date.today(),
+        'horarios' : temp_horario,
+    }
+
+    template_name = 'Administracao/declaracao.html'
+    return render(request, template_name,context)
