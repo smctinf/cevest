@@ -904,7 +904,7 @@ def GerarDeclaracao(request):
         else:
             dia = 'Sábado'
 
-        temp_horario.append(dia + ' de ' + str(horario.hora_inicio) + ' a ' + str(horario.hora_fim))
+        temp_horario.append(dia + ' de ' + str(horario.hora_inicio)[:5] + ' a ' + str(horario.hora_fim)[:5])
 
     context = {
         'aluno' : aluno,
