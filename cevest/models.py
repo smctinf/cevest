@@ -270,7 +270,7 @@ class Aluno_Turma(models.Model):
 
     turma = models.ForeignKey(Turma, on_delete=models.PROTECT)
     aluno = models.ForeignKey(Aluno, on_delete=models.PROTECT)
-    situacao = models.ForeignKey(Situacao, on_delete=models.PROTECT, blank=True, null=True) # default = 1
+    situacao = models.ForeignKey(Situacao, on_delete=models.PROTECT, default=1)
     dt_inclusao = models.DateTimeField(auto_now_add=True)
 
 class Presenca(models.Model):

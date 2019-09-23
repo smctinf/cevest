@@ -476,9 +476,22 @@ def Alocacao(request):
                 continue
             if turma_prevista.dt_fim < turma_aluno.turma.dt_inicio:
                 continue
+
+            # Verifica se horário conflita
+
             for horario in turma_aluno.turma.horario.all():
                 if horario in turma_prevista.horario.all():
                     print("aluno removido da lista por conflito de horário:" + str(aluno))
+                    alunos_compativeis = alunos_compativeis.exclude(id = aluno.id)
+
+            # Verifica se aluno já cursou este curso. Caso positivo, exclui
+
+            alunos_temp = Aluno_Turma.objects.filter(aluno = aluno)
+
+            for aluno_temp in alunos_temp:
+                print ('Curso:', turma_prevista.curso)
+                if aluno_temp.turma.curso == turma_prevista.curso:
+                    print("aluno removido da lista por já ter cursado esse curso:" + str(aluno))
                     alunos_compativeis = alunos_compativeis.exclude(id = aluno.id)
 
     #O sistema de pontos é definido de modo que a pessoa que tem uma prioridade maior que outra sempre receba
@@ -514,6 +527,12 @@ def Alocacao(request):
 
         temp_dict = {"aluno":aluno,"pontuação":temp_pontuacao,"dt_nasc":aluno.dt_nascimento,'dt_inclusao':aluno.dt_inclusao,'situacao':Status_Aluno_Turma_Prevista.objects.none()}
         lista_final.append(temp_dict)
+
+        if aluno.dt_nascimento == '' or aluno.dt_inclusao == '':
+            print ('Aluno: ', aluno.id, aluno.nome)
+            exit
+        else:
+            print ('Aluno ok: ', aluno.nome)
 
     lista_final = sorted(lista_final, key = lambda i: (-i['pontuação'],i['dt_nasc'],i['dt_inclusao']))
 
@@ -864,24 +883,114 @@ def SelecionarAlunoParaDeclaracao(request):
 @permission_required('Administracao.pode_emitir_certificado', raise_exception=True)
 def GerarDeclaracao(request):
 
-    cpf = request.session["cpf"]
+    if request.method == 'POST':
+        aluno_turma = request.POST.get("aluno_turma")
 
-    if (cpf):
-        try:
-            aluno = Aluno.objects.get(cpf=cpf)
-        except:
-            print("Retorno de mais de um CPF!")
-            aluno = ''
-    else:
-        aluno_id = request.session["aluno"]
-        aluno = get_object_or_404(Aluno,id=aluno_id)
+#        request.session["aluno"] = aluno
+#        cpf = request.POST.get("cpf")
+#        request.session["cpf"] = cpf
 
-    if (aluno):
-        cursando = Situacao.objects.get(descricao = "cursando")
-        aluno_turma = Aluno_Turma.objects.get(aluno = aluno, situacao=cursando)
+        print ('aluno_turma: ', aluno_turma)
+        aluno_turma = get_object_or_404(Aluno_Turma,id=aluno_turma)
+
+        aluno = get_object_or_404(Aluno,id=aluno_turma.aluno_id)
+
+        # Verifica status
+        print ('Aprovado:', aluno_turma.situacao)
+        print ('Aluno---:', aluno_turma)
+
+        aprovado = Situacao.objects.get(descricao = "Aprovado")
+        cursando = Situacao.objects.get(descricao = "Cursando")
+
+
+        if aluno_turma.situacao != aprovado and aluno_turma.situacao != cursando:
+            messages.info(request,'Aluno não concluiu o curso. ')
+
+            context = {
+                'aluno' : aluno,
+                'form':EscolherAlunoDeclaracao2(aluno),
+            }
+
+            return render(request, "Administracao/declaracao.html", context)
+
         turma = get_object_or_404(Turma,id=aluno_turma.turma_id)
+
+        temp_horario = []
+
+        for horario in turma.horario.all():
+
+            if horario.dia_semana == '1':
+                dia = 'Domingo'
+            elif horario.dia_semana == '2':
+                dia = 'Segunda-feira'
+            elif horario.dia_semana == '3':
+                dia = 'Terça-feira'
+            elif horario.dia_semana == '4':
+                dia = 'Quarta-feira'
+            elif horario.dia_semana == '5':
+                dia = 'Quinta-feira'
+            elif horario.dia_semana == '6':
+                dia = 'Sexta-feira'
+            else:
+                dia = 'Sábado'
+
+            temp_horario.append(dia + ' de ' + str(horario.hora_inicio)[:5] + ' a ' + str(horario.hora_fim)[:5])
+
+        context = {
+            'aluno' : aluno,
+            'curso' : turma.curso,
+            'data_fim' : turma.dt_fim.strftime("%d/%m/%Y"),
+            'data_atual' : datetime.date.today(),
+            'horarios' : temp_horario,
+        }
+
+        template_name = 'Administracao/declaracao2.html'
+        return render(request, template_name,context)
+
     else:
-        turma_aluno = []
+
+        cpf = request.session["cpf"]
+
+        if (cpf):
+            try:
+                aluno = Aluno.objects.get(cpf=cpf)
+            except:
+                print("Retorno de mais de um CPF!")
+                aluno = ''
+        else:
+            aluno_id = request.session["aluno"]
+            aluno = get_object_or_404(Aluno,id=aluno_id)
+
+        if (aluno):
+
+            print ('aluno: ', aluno)
+
+            try:
+                aluno_turma = Aluno_Turma.objects.filter(aluno = aluno)
+            except Exception as e:
+                print (e)
+
+            # desvia para tela de escolha de turma, pois um aluno pode fazer mais de um curso
+
+            context = {
+                'aluno' : aluno,
+#                'aluno_turma' : aluno_turma.turma,
+                'form':EscolherAlunoDeclaracao2(aluno),
+            }
+
+            return render(request, "Administracao/declaracao.html", context)
+
+
+# Emitir declaração
+@login_required
+@permission_required('Administracao.pode_emitir_certificado', raise_exception=True)
+def GerarDeclaracao2(request):
+
+    cursando = Situacao.objects.get(descricao = "cursando")
+
+    turma = get_object_or_404(Turma,id=aluno_turma.turma_id)
+##    else:
+    turma_aluno = []
 #    else:
 #        turma_aluno = Aluno_Turma.objects.filter(turma = turma,situacao=aprovado.id)
 

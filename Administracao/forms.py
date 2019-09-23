@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm, BaseFormSet
-from cevest.models import Turma, Situacao,Turma_Prevista, Status_Aluno_Turma_Prevista, Aluno
+from cevest.models import Turma, Situacao,Turma_Prevista, Status_Aluno_Turma_Prevista, Aluno, Aluno_Turma
 from django.utils.safestring import mark_safe
 
 class EscolherTurma(forms.Form):
@@ -37,6 +37,17 @@ class EscolherAlunoDeclaracao(forms.Form):
 
         self.fields['aluno'] = forms.ModelChoiceField(queryset=Aluno.objects.all(), required=False)
         self.fields['cpf'] = forms.CharField(label='CPF:',max_length=11, required=False)
+
+class EscolherAlunoDeclaracao2(forms.Form):
+    def __init__(self, aluno, *args,**kwargs):
+        super (EscolherAlunoDeclaracao2,self).__init__(*args, **kwargs)
+#        turma = forms.ModelChoiceField(queryset=Turma.objects.all())
+    #    self.fields['turma'] = forms.ModelChoiceField(queryset=Turma.objects.all())
+#        self.fields['turma'].queryset = forms.ModelChoiceField(queryset=Turma.objects.filter(instrutor=INSTRUTOR))
+
+#        Turma
+        print('aluno form: ', aluno)
+        self.fields['aluno_turma'] = forms.ModelChoiceField(queryset=Aluno_Turma.objects.filter(aluno=aluno), required=False)
 
 class login(forms.Form):
     username = forms.CharField(label='Usuário:',max_length=50)
