@@ -472,6 +472,17 @@ def Alocacao(request):
     for aluno in alunos_compativeis:
         aluno_turma = Aluno_Turma.objects.filter(aluno = aluno)
         for turma_aluno in aluno_turma:
+
+
+            # Verifica se aluno já cursou este curso. Caso positivo, exclui
+
+            alunos_temp = Aluno_Turma.objects.filter(aluno = aluno)
+
+            for aluno_temp in alunos_temp:
+                if aluno_temp.turma.curso == turma_prevista.curso:
+                    alunos_compativeis = alunos_compativeis.exclude(id = aluno.id)
+                    continue
+
             if turma_aluno.turma.dt_fim < turma_prevista.dt_inicio:
                 continue
             if turma_prevista.dt_fim < turma_aluno.turma.dt_inicio:
@@ -482,16 +493,6 @@ def Alocacao(request):
             for horario in turma_aluno.turma.horario.all():
                 if horario in turma_prevista.horario.all():
                     print("aluno removido da lista por conflito de horário:" + str(aluno))
-                    alunos_compativeis = alunos_compativeis.exclude(id = aluno.id)
-
-            # Verifica se aluno já cursou este curso. Caso positivo, exclui
-
-            alunos_temp = Aluno_Turma.objects.filter(aluno = aluno)
-
-            for aluno_temp in alunos_temp:
-                print ('Curso:', turma_prevista.curso)
-                if aluno_temp.turma.curso == turma_prevista.curso:
-                    print("aluno removido da lista por já ter cursado esse curso:" + str(aluno))
                     alunos_compativeis = alunos_compativeis.exclude(id = aluno.id)
 
     #O sistema de pontos é definido de modo que a pessoa que tem uma prioridade maior que outra sempre receba
