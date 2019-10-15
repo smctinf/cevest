@@ -735,60 +735,96 @@ def lista_todos_por_curso_e_turno(request, curso_id, turno_id):
 @login_required
 @permission_required('cevest.acesso_admin', raise_exception=True)
 def quantidade_situacao_aluno_turma(request):
-    lista = []
+
     turmas = Turma.objects.all()
 
     situacoes = Situacao.objects.all()
 
-    turmas = turmas.annotate(turma_count = Count('aluno_turma', filter=Q(aluno_turma__situacao=0)))
+###    turmas = turmas.annotate(turma_count = Count('aluno_turma', filter=Q(aluno_turma__situacao=1)))
+
     lista = []
 
     for turma in turmas:
         lista_tmp = []
+        lista_tmp.append(turma.curso.nome)
+        lista_tmp.append(turma.nome)
         for situacao in situacoes:
 
-            if situacao == situacoes[0]:
-                lista_tmp.append(turma.curso.nome)
-                lista_tmp.append(turma.nome)
-                lista_tmp.append(turma.turma_count)
-            else:
-                lista_tmp.append(Aluno_Turma.objects.filter(situacao=situacao, turma=turma).count())
+#            lista_tmp.append(turma.turma_count)
+
+#            if situacao != situacoes[0]:
+            #else:
+
+            lista_tmp.append(Aluno_Turma.objects.filter(situacao=situacao, turma=turma).count())
 
         lista.append(lista_tmp)
 
-    lista = sorted(lista, key = lambda i: (-i[2]))
+    # Calcula total
+    tot2 = 0
+    tot3 = 0
+    tot4 = 0
+    tot5 = 0
+    tot6 = 0
+    tot7 = 0
 
-    return render(request, "Administracao/quantidade_situacao_aluno_turma.html",{"lista":lista, "situacoes":situacoes})
+    for l in lista:
+        tot2 += l[2]
+        tot3 += l[3]
+        tot4 += l[4]
+        tot5 += l[5]
+        tot6 += l[6]
+        tot7 += l[7]
+
+    total = [tot2, tot3, tot4, tot5, tot6, tot7]
+#    lista = sorted(lista, key = lambda i: (-i[2]))
+
+    return render(request, "Administracao/quantidade_situacao_aluno_turma.html",{"lista":lista, "situacoes":situacoes, "total":total})
 
 
 # Mostra quantidade de alunos por situação em uma turma prevista
 @login_required
 @permission_required('cevest.acesso_admin', raise_exception=True)
 def quantidade_situacao_aluno_turma_prevista(request):
-    lista = []
-    turmas_previstas = Turma_Prevista.objects.all()
+
+    turmas_previstas = Turma_Prevista.objects.exclude(situacao='3')
 
     status_aluno_turma_prevista = Status_Aluno_Turma_Prevista.objects.all()
 
-    turmas_previstas = turmas_previstas.annotate(turma_count = Count('aluno_turma_prevista', filter=Q(aluno_turma_prevista__status_aluno_turma_prevista=0)))
+#    turmas_previstas = turmas_previstas.annotate(turma_count = Count('aluno_turma_prevista', filter=Q(aluno_turma_prevista__status_aluno_turma_prevista=0)))
     lista = []
 
     for turma_prevista in turmas_previstas:
         lista_tmp = []
+        lista_tmp.append(turma_prevista.curso.nome)
+        lista_tmp.append(turma_prevista.nome)
+
+
         for status in status_aluno_turma_prevista:
 
-            if status == status_aluno_turma_prevista[0]:
-                lista_tmp.append(turma_prevista.curso.nome)
-                lista_tmp.append(turma_prevista.nome)
-                lista_tmp.append(turma_prevista.turma_count)
-            else:
-                lista_tmp.append(Aluno_Turma_Prevista.objects.filter(status_aluno_turma_prevista=status, turma_prevista=turma_prevista).count())
+#            if status == status_aluno_turma_prevista[0]:
+#                lista_tmp.append(turma_prevista.turma_count)
+#            else:
+            lista_tmp.append(Aluno_Turma_Prevista.objects.filter(status_aluno_turma_prevista=status, turma_prevista=turma_prevista).count())
 
         lista.append(lista_tmp)
 
-    lista = sorted(lista, key = lambda i: (-i[2]))
+    # Calcula total
+    tot2 = 0
+    tot3 = 0
+    tot4 = 0
+    tot5 = 0
 
-    return render(request, "Administracao/quantidade_situacao_aluno_turma_prevista.html",{"lista":lista, "status":status_aluno_turma_prevista})
+    for l in lista:
+        tot2 += l[2]
+        tot3 += l[3]
+        tot4 += l[4]
+        tot5 += l[5]
+
+    total = [tot2, tot3, tot4, tot5]
+
+#    lista = sorted(lista, key = lambda i: (-i[2]))
+
+    return render(request, "Administracao/quantidade_situacao_aluno_turma_prevista.html",{"lista":lista, "status":status_aluno_turma_prevista, "total":total})
 
 
 # Mostra lista de alunos "Cursando" em turmas encerradas até uma data
@@ -796,7 +832,6 @@ def quantidade_situacao_aluno_turma_prevista(request):
 @permission_required('cevest.acesso_admin', raise_exception=True)
 def alunos_formados_tel(request):
     situacao = Situacao.objects.get(descricao='Aprovado')
-    print (situacao)
     alunos_turmas = Aluno_Turma.objects.filter(turma__dt_fim__lte='2019-07-14',situacao=situacao)
 #    alunos_turmas = Aluno_Turma.objects.filter(turma__dt_fim__lte='2019-07-01')
     return render(request, "Administracao/alunos_formados_tel.html",{"alunos_turmas":alunos_turmas})
@@ -823,15 +858,10 @@ def lista_celular_por_turma(request):
 #        if form.is_valid():
 #            turma_id = form.cleaned_data['nome']
 
-
-
         turma_id = request.POST.get("turma")
-        print ('Turma_id:', turma_id)
         turma = Turma.objects.get(pk=turma_id)
-        print ('Turma:', turma)
 
         alunos_turmas = Aluno_Turma.objects.filter(turma=turma_id)
-        print ('alunos:', alunos_turmas)
         return render(request,"Administracao/lista_celular_por_turma.html",{'alunos_turmas':alunos_turmas, 'turma':turma})
 
     usuario = User.objects.get(username=request.user.username)

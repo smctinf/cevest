@@ -12,6 +12,7 @@ table, th, td {
 {% block content %}
 <center>
 <h3>Mostra total de alunos por status em cada turma prevista</h3>
+<h4>Apenas turmas previstas Aguardando e Confirmadas</h4>
 <br>
     <table>
         <th>#</th>
@@ -33,6 +34,17 @@ table, th, td {
             <td>{{item.5}}</td>
         </tr>
     {% endfor %}
+
+    <tr>
+        <td></td>
+        <td></td>
+        <td>Total:</td>
+        <td>{{total.0}}</td>
+        <td>{{total.1}}</td>
+        <td>{{total.2}}</td>
+        <td>{{total.3}}</td>
+    </tr>
+
     </table>
     <br>
 </center>
