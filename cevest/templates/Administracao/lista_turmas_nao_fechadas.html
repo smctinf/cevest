@@ -16,11 +16,13 @@ table, th, td {
     <table>
         <th>#</th>
         <th>Turma</th>
+        <th>Instrutor</th>
 
     {% for turma in turmas %}
         <tr>
             <td>{{forloop.counter}}</td>
             <td>{{turma}}</td>
+            <td>{{turma.instrutor}}</td>
         </tr>
     {% endfor %}
 
