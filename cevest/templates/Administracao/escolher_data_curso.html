@@ -1,0 +1,27 @@
+{% extends "cevest/base_adm.html" %}
+
+{% block content %}
+
+<h3 align="center">Preencher data de início e/ou fim de curso para selecionar turmas:</h3>
+
+<form action="" method='POST'>{% csrf_token %}
+
+    <center>
+    Data de início do curso entre:<br>
+    <label>{{form.dt_inicio_i.label}}</label>{{form.dt_inicio_i.errors}}{{ form.dt_inicio_i }}
+    <br>e<br>
+    <label>{{form.dt_inicio_f.label}}</label>{{form.dt_inicio_f.errors}}{{ form.dt_inicio_f }}
+
+    <br><br>e/ou<br><br>
+
+    Data de fim do curso entre:<br>
+    <label>{{form.dt_fim_i.label}}</label>{{form.dt_fim_i.errors}}{{ form.dt_fim_i }}
+    <br>e<br>
+    <label>{{form.dt_fim_f.label}}</label>{{form.dt_fim_f.errors}}{{ form.dt_fim_f }}
+    <br>
+    <input type='submit' value='Próximo' />
+    </center>
+</form>
+
+
+{% endblock %}

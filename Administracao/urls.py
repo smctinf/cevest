@@ -36,6 +36,7 @@ urlpatterns = [
     path('ajuda_funcionamento',views.ajuda_funcionamento, name = "ajuda_funcionamento"),
     path('ajuda_atualizacoes',views.ajuda_atualizacoes, name = "ajuda_atualizacoes"),
     path('lista_celular_por_turma',views.lista_celular_por_turma, name = "lista_celular_por_turma"),
+    path('lista_turmas_nao_fechadas',views.lista_turmas_nao_fechadas, name = "lista_turmas_nao_fechadas"),
     # Emitir Certificado
     path('selecionar_aluno_para_declaracao', views.SelecionarAlunoParaDeclaracao, name='selecionar_aluno_para_declaracao'),
     path('gerar_declaracao', views.GerarDeclaracao, name='gerar_declaracao'),
