@@ -97,3 +97,10 @@ class Controle_Presenca(forms.Form):
 class Confirmar_Turma(forms.Form):
     nome = forms.CharField(label = 'Turma:', disabled = True, required = False)
     confirma = forms.BooleanField(widget=forms.CheckboxInput, required = False)
+
+
+class EscolherData(forms.Form):
+    dt_inicio_i = forms.DateField(label='Data:',required=False, widget=forms.SelectDateWidget(years=range(2019, 2025)))
+    dt_inicio_f = forms.DateField(label='Data:',required=False, widget=forms.SelectDateWidget(years=range(2019, 2025)))
+    dt_fim_i = forms.DateField(label='Data:',required=False, widget=forms.SelectDateWidget(years=range(2019, 2025)))
+    dt_fim_f = forms.DateField(label='Data:',required=False, widget=forms.SelectDateWidget(years=range(2019, 2025)))

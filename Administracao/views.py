@@ -709,13 +709,13 @@ def lista_alocados_telefone(request):
 def lista_alfabetica(request):
     lista_alfabetica = getLista_Candidatos()
     return render(request, "Administracao/lista_alfabetica.html",{"listas":lista_alfabetica}) 
-
+"""
 @login_required
 @permission_required('cevest.acesso_admin', raise_exception=True)
 def lista_alfabetica(request):
     lista_alfabetica = getLista_Candidatos()
     return render(request, "Administracao/lista_alfabetica.html",{"listas":lista_alfabetica}) 
-
+"""
 @login_required
 @permission_required('cevest.acesso_admin', raise_exception=True)
 def lista_nao_alocados(request):
@@ -736,49 +736,67 @@ def lista_todos_por_curso_e_turno(request, curso_id, turno_id):
 @permission_required('cevest.acesso_admin', raise_exception=True)
 def quantidade_situacao_aluno_turma(request):
 
-    turmas = Turma.objects.all()
+    if request.method == 'POST':
 
-    situacoes = Situacao.objects.all()
+        form = EscolherData(request.POST)
+        if form.is_valid():
 
-###    turmas = turmas.annotate(turma_count = Count('aluno_turma', filter=Q(aluno_turma__situacao=1)))
+            dt_inicio_i = form.cleaned_data['dt_inicio_i']
+            dt_inicio_f = form.cleaned_data["dt_inicio_f"]
+            dt_fim_i = form.cleaned_data["dt_fim_i"]
+            dt_fim_f = form.cleaned_data["dt_fim_f"]
 
-    lista = []
+        if dt_inicio_i == None:
+            dt_inicio_i = '2019-01-01'
 
-    for turma in turmas:
-        lista_tmp = []
-        lista_tmp.append(turma.curso.nome)
-        lista_tmp.append(turma.nome)
-        for situacao in situacoes:
+        if dt_inicio_f == None:
+            dt_inicio_f = '2030-12-31'
 
-#            lista_tmp.append(turma.turma_count)
+        if dt_fim_i == None:
+            dt_fim_i = '2019-01-01'
 
-#            if situacao != situacoes[0]:
-            #else:
+        if dt_fim_f == None:
+            dt_fim_f = '2030-12-31'
 
-            lista_tmp.append(Aluno_Turma.objects.filter(situacao=situacao, turma=turma).count())
+        turmas = Turma.objects.filter(dt_inicio__gte=dt_inicio_i).filter(dt_inicio__lte=dt_inicio_f).filter(dt_fim__gte=dt_fim_i).filter(dt_fim__lte=dt_fim_f)
+        situacoes = Situacao.objects.all()
 
-        lista.append(lista_tmp)
+        ###    turmas = turmas.annotate(turma_count = Count('aluno_turma', filter=Q(aluno_turma__situacao=1)))
+        lista = []
 
-    # Calcula total
-    tot2 = 0
-    tot3 = 0
-    tot4 = 0
-    tot5 = 0
-    tot6 = 0
-    tot7 = 0
+        for turma in turmas:
+            lista_tmp = []
+            lista_tmp.append(turma.curso.nome)
+            lista_tmp.append(turma.nome)
+            for situacao in situacoes:
+                lista_tmp.append(Aluno_Turma.objects.filter(situacao=situacao, turma=turma).count())
 
-    for l in lista:
-        tot2 += l[2]
-        tot3 += l[3]
-        tot4 += l[4]
-        tot5 += l[5]
-        tot6 += l[6]
-        tot7 += l[7]
+            lista.append(lista_tmp)
 
-    total = [tot2, tot3, tot4, tot5, tot6, tot7]
-#    lista = sorted(lista, key = lambda i: (-i[2]))
+        # Calcula total
+        tot2 = 0
+        tot3 = 0
+        tot4 = 0
+        tot5 = 0
+        tot6 = 0
+        tot7 = 0
 
-    return render(request, "Administracao/quantidade_situacao_aluno_turma.html",{"lista":lista, "situacoes":situacoes, "total":total})
+        for l in lista:
+            tot2 += l[2]
+            tot3 += l[3]
+            tot4 += l[4]
+            tot5 += l[5]
+            tot6 += l[6]
+            tot7 += l[7]
+
+        total = [tot2, tot3, tot4, tot5, tot6, tot7]
+        #    lista = sorted(lista, key = lambda i: (-i[2]))
+
+        return render(request, "Administracao/quantidade_situacao_aluno_turma.html",{"lista":lista, "situacoes":situacoes, "total":total})
+
+    else:
+        form = EscolherData()
+        return render(request,"Administracao/escolher_data_curso.html",{'form':form})
 
 
 # Mostra quantidade de alunos por situação em uma turma prevista
@@ -786,45 +804,73 @@ def quantidade_situacao_aluno_turma(request):
 @permission_required('cevest.acesso_admin', raise_exception=True)
 def quantidade_situacao_aluno_turma_prevista(request):
 
-    turmas_previstas = Turma_Prevista.objects.exclude(situacao='3')
+    if request.method == 'POST':
 
-    status_aluno_turma_prevista = Status_Aluno_Turma_Prevista.objects.all()
+        form = EscolherData(request.POST)
+        if form.is_valid():
 
-#    turmas_previstas = turmas_previstas.annotate(turma_count = Count('aluno_turma_prevista', filter=Q(aluno_turma_prevista__status_aluno_turma_prevista=0)))
-    lista = []
+            dt_inicio_i = form.cleaned_data['dt_inicio_i']
+            dt_inicio_f = form.cleaned_data["dt_inicio_f"]
+            dt_fim_i = form.cleaned_data["dt_fim_i"]
+            dt_fim_f = form.cleaned_data["dt_fim_f"]
 
-    for turma_prevista in turmas_previstas:
-        lista_tmp = []
-        lista_tmp.append(turma_prevista.curso.nome)
-        lista_tmp.append(turma_prevista.nome)
+        if dt_inicio_i == None:
+            dt_inicio_i = '2019-01-01'
+
+        if dt_inicio_f == None:
+            dt_inicio_f = '2030-12-31'
+
+        if dt_fim_i == None:
+            dt_fim_i = '2019-01-01'
+
+        if dt_fim_f == None:
+            dt_fim_f = '2030-12-31'
+
+        #    turmas = Turma.objects.filter(dt_inicio__gte=dt_inicio_i).filter(dt_inicio__lte=dt_inicio_f).filter(dt_fim__gte=dt_fim_i).filter(dt_fim__lte=dt_fim_f)
+
+        turmas_previstas = Turma_Prevista.objects.exclude(situacao='3').filter(dt_inicio__gte=dt_inicio_i).filter(dt_inicio__lte=dt_inicio_f).filter(dt_fim__gte=dt_fim_i).filter(dt_fim__lte=dt_fim_f)
+
+        status_aluno_turma_prevista = Status_Aluno_Turma_Prevista.objects.all()
+
+        #    turmas_previstas = turmas_previstas.annotate(turma_count = Count('aluno_turma_prevista', filter=Q(aluno_turma_prevista__status_aluno_turma_prevista=0)))
+        lista = []
+
+        for turma_prevista in turmas_previstas:
+            lista_tmp = []
+            lista_tmp.append(turma_prevista.curso.nome)
+            lista_tmp.append(turma_prevista.nome)
 
 
-        for status in status_aluno_turma_prevista:
+            for status in status_aluno_turma_prevista:
 
-#            if status == status_aluno_turma_prevista[0]:
-#                lista_tmp.append(turma_prevista.turma_count)
-#            else:
-            lista_tmp.append(Aluno_Turma_Prevista.objects.filter(status_aluno_turma_prevista=status, turma_prevista=turma_prevista).count())
+        #            if status == status_aluno_turma_prevista[0]:
+        #                lista_tmp.append(turma_prevista.turma_count)
+        #            else:
+                lista_tmp.append(Aluno_Turma_Prevista.objects.filter(status_aluno_turma_prevista=status, turma_prevista=turma_prevista).count())
 
-        lista.append(lista_tmp)
+            lista.append(lista_tmp)
 
-    # Calcula total
-    tot2 = 0
-    tot3 = 0
-    tot4 = 0
-    tot5 = 0
+        # Calcula total
+        tot2 = 0
+        tot3 = 0
+        tot4 = 0
+        tot5 = 0
 
-    for l in lista:
-        tot2 += l[2]
-        tot3 += l[3]
-        tot4 += l[4]
-        tot5 += l[5]
+        for l in lista:
+            tot2 += l[2]
+            tot3 += l[3]
+            tot4 += l[4]
+            tot5 += l[5]
 
-    total = [tot2, tot3, tot4, tot5]
+        total = [tot2, tot3, tot4, tot5]
 
-#    lista = sorted(lista, key = lambda i: (-i[2]))
+        #    lista = sorted(lista, key = lambda i: (-i[2]))
 
-    return render(request, "Administracao/quantidade_situacao_aluno_turma_prevista.html",{"lista":lista, "status":status_aluno_turma_prevista, "total":total})
+        return render(request, "Administracao/quantidade_situacao_aluno_turma_prevista.html",{"lista":lista, "status":status_aluno_turma_prevista, "total":total})
+
+    else:
+        form = EscolherData()
+        return render(request,"Administracao/escolher_data_curso.html",{'form':form})
 
 
 # Mostra lista de alunos "Cursando" em turmas encerradas até uma data
@@ -921,14 +967,14 @@ def GerarDeclaracao(request):
 #        cpf = request.POST.get("cpf")
 #        request.session["cpf"] = cpf
 
-        print ('aluno_turma: ', aluno_turma)
+#        print ('aluno_turma: ', aluno_turma)
         aluno_turma = get_object_or_404(Aluno_Turma,id=aluno_turma)
 
         aluno = get_object_or_404(Aluno,id=aluno_turma.aluno_id)
 
         # Verifica status
-        print ('Aprovado:', aluno_turma.situacao)
-        print ('Aluno---:', aluno_turma)
+#        print ('Aprovado:', aluno_turma.situacao)
+#        print ('Aluno---:', aluno_turma)
 
         aprovado = Situacao.objects.get(descricao = "Aprovado")
         cursando = Situacao.objects.get(descricao = "Cursando")
@@ -994,7 +1040,7 @@ def GerarDeclaracao(request):
 
         if (aluno):
 
-            print ('aluno: ', aluno)
+#            print ('aluno: ', aluno)
 
             try:
                 aluno_turma = Aluno_Turma.objects.filter(aluno = aluno)
@@ -1056,3 +1102,23 @@ def GerarDeclaracao2(request):
 
     template_name = 'Administracao/declaracao.html'
     return render(request, template_name,context)
+
+
+@login_required
+@permission_required('Administracao.pode_emitir_certificado', raise_exception=True)
+def lista_turmas_nao_fechadas(request):
+
+    from datetime import date
+
+    hoje = date.today()
+
+    turmas = Turma.objects.filter(dt_fim__lt=hoje)
+    lista = []
+
+    for turma in turmas:
+        print(turma)
+        quant = Aluno_Turma.objects.filter(turma=turma, situacao='1').count()
+        if quant > 0:
+            lista.append(turma)
+
+    return render(request,"Administracao/lista_turmas_nao_fechadas.html",{'turmas':lista})
