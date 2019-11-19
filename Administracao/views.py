@@ -674,6 +674,8 @@ def ConfirmarInformacoesAlunoPrevisto(request,aluno_id,turma_id):
             return HttpResponseRedirect(reverse('administracao:area_admin'))
         else:
             print(form.errors)
+            messages.error(request, 'Informar NIS correto. Provavelmente está duplicado.')
+
 
     form=CadForm(initial={'cidade':aluno.bairro.cidade,'cpf':aluno.cpf}, instance=aluno)
 
