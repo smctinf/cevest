@@ -11,6 +11,7 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
+        
         migrations.CreateModel(
             name='Programa',
             fields=[
@@ -28,4 +29,5 @@ class Migration(migrations.Migration):
             name='programa',
             field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.PROTECT, to='cevest.Programa'),
         ),
+        
     ]
