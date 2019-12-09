@@ -25,7 +25,7 @@ def resultado(request):
 
 # Página Cursos
 def cursos(request):
-    lista_curso = Curso.objects.filter(ativo=True, exibir=True).order_by('nome')
+    lista_curso = Curso.objects.filter(ativo=True, exibir=True, programa=1).order_by('nome')
     return render(request, 'cevest/cursos.html', { 'lista_curso': lista_curso })
 
 # Página Detalhes de um Curso
