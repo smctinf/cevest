@@ -150,3 +150,6 @@ class Aluno_TurmaAdmin(admin.ModelAdmin):
     search_fields = ['aluno__nome']
 
 admin.site.register(Aluno_Turma, Aluno_TurmaAdmin)
+
+from .models import Programa
+admin.site.register(Programa)

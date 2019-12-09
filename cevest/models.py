@@ -42,6 +42,19 @@ class Curriculo(models.Model):
     dt_fim = models.DateField('Data Fim', blank=True, null=True)
     dt_inclusao = models.DateTimeField(auto_now_add=True)
 
+
+class Programa(models.Model):
+    def __str__(self):
+        return self.nome
+
+    class Meta:
+        ordering = ['nome']
+
+    nome = models.CharField(max_length=50)
+    ativo = models.BooleanField(default=True)
+    dt_inclusao = models.DateTimeField(auto_now_add=True)
+
+
 class Curso(models.Model):
     def __str__(self):
         return self.nome
@@ -51,6 +64,7 @@ class Curso(models.Model):
 
     nome = models.CharField(max_length=60)
     descricao = models.TextField(max_length=2000)
+    programa = models.ForeignKey(Programa, on_delete=models.PROTECT, default = 1)
     duracao = models.PositiveSmallIntegerField(default = 0)
     idade_minima = models.PositiveSmallIntegerField(default = 0)
     escolaridade_minima = models.ForeignKey(Escolaridade, on_delete=models.PROTECT, default = 1)
