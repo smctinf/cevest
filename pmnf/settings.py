@@ -90,7 +90,8 @@ DATABASES = {
 
         'USER': 'pmnf',
         'PASSWORD': '1w6l4x9zx2cb',
-        'HOST': '35.225.36.72',
+        'HOST': '127.0.0.1',
+#        'HOST': '35.225.36.72',
 
 #         'USER': 'root',
 #         'PASSWORD': 's3nh4d3sql',
