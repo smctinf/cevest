@@ -19,8 +19,8 @@ admin.site.register(Curriculo)
 from .models import Curso
 class CursoAdmin(admin.ModelAdmin):
     # ...
-    list_display = ('nome',)
-    list_filter = ['nome']
+    list_display = ['nome', 'programa', 'duracao', 'dt_inclusao', 'exibir', 'ativo']
+    list_filter = ['programa']
     search_fields = ['nome']
 
 admin.site.register(Curso, CursoAdmin)
