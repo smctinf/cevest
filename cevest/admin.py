@@ -75,6 +75,9 @@ admin.site.register(Turno)
 from .models import Situacao_Turma
 admin.site.register(Situacao_Turma)
 
+from .models import Situacao_Turma_Definitiva
+admin.site.register(Situacao_Turma_Definitiva)
+
 from .models import Situacao
 admin.site.register(Situacao)
 

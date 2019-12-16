@@ -62,7 +62,7 @@ class Curso(models.Model):
     class Meta:
         ordering = ('nome',)
 
-    nome = models.CharField(max_length=60)
+    nome = models.CharField(max_length=80)
     descricao = models.TextField(max_length=2000)
     programa = models.ForeignKey(Programa, on_delete=models.PROTECT, default = 1)
     duracao = models.PositiveSmallIntegerField(default = 0)
@@ -218,13 +218,23 @@ class Horario(models.Model):
 
 class Situacao_Turma(models.Model):
     class Meta:
-        verbose_name = "Situação de turma"
-        verbose_name_plural = "Situações de turma"
+        verbose_name = "Situação de turma prevista"
+        verbose_name_plural = "Situações de turma prevista"
 
     def __str__(self):
         return self.descricao
 
     descricao = models.CharField(max_length=10, unique = True, null = True)
+
+class Situacao_Turma_Definitiva(models.Model):
+    class Meta:
+        verbose_name = "Situação de turma definitiva"
+        verbose_name_plural = "Situações de turma definitiva"
+
+    def __str__(self):
+        return self.descricao
+
+    descricao = models.CharField(max_length=20, unique = True)
 
 class Turma_Prevista(models.Model):
     class Meta:
@@ -245,7 +255,7 @@ class Turma_Prevista(models.Model):
     quant_alunos = models.PositiveSmallIntegerField(default=0)
     dt_inclusao = models.DateTimeField(auto_now_add=True)
     exibir = models.BooleanField(default=True)
-    situacao = models.ForeignKey(Situacao_Turma, on_delete=models.PROTECT, blank=True, null=True) # default = 1
+    situacao = models.ForeignKey(Situacao_Turma, on_delete=models.PROTECT, default=1)
 
 class Turma(models.Model):
     class Meta:
@@ -259,9 +269,10 @@ class Turma(models.Model):
     curriculo = models.ForeignKey(Curriculo, on_delete=models.PROTECT)
     instrutor = models.ForeignKey(Instrutor, on_delete=models.PROTECT, blank=True, null=True)
     dt_inicio = models.DateField('Data Início')
-    dt_fim = models.DateField('Data Fim', blank=True, null=True)
+    dt_fim = models.DateField('Data Fim')
     horario = models.ManyToManyField(Horario)
     quant_alunos = models.PositiveSmallIntegerField(default=0)
+    dt_fechamento = models.DateTimeField('Data Fechamento', blank=True, null=True)
     dt_inclusao = models.DateTimeField(auto_now_add=True)
 
 class Situacao(models.Model):
