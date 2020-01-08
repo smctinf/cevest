@@ -842,6 +842,8 @@ def quantidade_situacao_aluno_turma_prevista(request):
             lista_tmp.append(turma_prevista.curso.nome)
             lista_tmp.append(turma_prevista.nome)
 
+            lista_tmp.append(turma_prevista.quant_alunos)
+
 
             for status in status_aluno_turma_prevista:
 
@@ -857,14 +859,16 @@ def quantidade_situacao_aluno_turma_prevista(request):
         tot3 = 0
         tot4 = 0
         tot5 = 0
+        tot6 = 0
 
         for l in lista:
             tot2 += l[2]
             tot3 += l[3]
             tot4 += l[4]
             tot5 += l[5]
+            tot6 += l[6]
 
-        total = [tot2, tot3, tot4, tot5]
+        total = [tot2, tot3, tot4, tot5, tot6]
 
         #    lista = sorted(lista, key = lambda i: (-i[2]))
 

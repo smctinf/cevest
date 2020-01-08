@@ -18,6 +18,7 @@ table, th, td {
         <th>#</th>
         <th>Curso</th>
         <th>Turma</th>
+        <th>Qt.Vagas</th>
 
         {% for s in status %}
             <th>{{s}}</th>
@@ -32,6 +33,7 @@ table, th, td {
             <td>{{item.3}}</td>
             <td>{{item.4}}</td>
             <td>{{item.5}}</td>
+            <td>{{item.6}}</td>
         </tr>
     {% endfor %}
 
@@ -43,6 +45,7 @@ table, th, td {
         <td>{{total.1}}</td>
         <td>{{total.2}}</td>
         <td>{{total.3}}</td>
+        <td>{{total.4}}</td>
     </tr>
 
     </table>
