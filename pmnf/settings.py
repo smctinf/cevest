@@ -26,7 +26,7 @@ SECRET_KEY = '++wlc1(z793vjl0u3q4&u!q#f!^pjo=7m!*wcj#4@xbx=jx5(j'
 DEBUG = True
 
 # ALLOWED_HOSTS = []
-ALLOWED_HOSTS = ["cevest.jlb.net.br", "127.0.0.1", "localhost"]
+ALLOWED_HOSTS = ["cevest.pmnf.rj.gov.br", "cevest.jlb.net.br", "127.0.0.1", "localhost"]
 
 
 
@@ -88,8 +88,8 @@ DATABASES = {
         'NAME': 'pmnf',
         'PORT': '',
 
-#        'USER': 'pmnf',
-#        'PASSWORD': '1w6l4x9zx2cb',
+        'USER': 'pmnf',
+        'PASSWORD': '1w6l4x9zx2cb',
         'HOST': '127.0.0.1',
 #        'HOST': '35.225.36.72',
 
@@ -97,8 +97,8 @@ DATABASES = {
 #         'PASSWORD': 's3nh4d3sql',
 #         'HOST': '127.0.0.1',
 
-        'USER': 'root',
-        'PASSWORD': 'x1pfrhlo',
+#        'USER': 'root',
+#        'PASSWORD': 'x1pfrhlo',
 #        'HOST': '127.0.0.1',
     }
 }
