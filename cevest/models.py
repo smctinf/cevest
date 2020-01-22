@@ -17,7 +17,7 @@ class Pre_requisito(models.Model):
 #        verbose_name_plural = "Matrizes"
         ordering = ('descricao',)
 
-    descricao = models.CharField(max_length=100)
+    descricao = models.CharField(unique=True, max_length=100)
 #    atende = models.BooleanField(default=False)
 
 class Escolaridade(models.Model):
@@ -27,7 +27,7 @@ class Escolaridade(models.Model):
     class Meta:
         ordering = ('descricao',)
 
-    descricao = models.CharField(max_length=50)
+    descricao = models.CharField(unique=True, max_length=50)
     dt_inclusao = models.DateTimeField(auto_now_add=True)
 
 class Curriculo(models.Model):
@@ -50,7 +50,7 @@ class Programa(models.Model):
     class Meta:
         ordering = ['nome']
 
-    nome = models.CharField(max_length=50)
+    nome = models.CharField(unique=True, max_length=50)
     ativo = models.BooleanField(default=True)
     dt_inclusao = models.DateTimeField(auto_now_add=True)
 
@@ -118,7 +118,7 @@ class Cidade(models.Model):
     class Meta:
         ordering = ('nome',)
 
-    nome = models.CharField(max_length=30)
+    nome = models.CharField(unique=True, max_length=30)
     dt_inclusao = models.DateTimeField(auto_now_add=True)
 
 class Bairro(models.Model):
@@ -129,7 +129,7 @@ class Bairro(models.Model):
         ordering = ('cidade', 'nome',)
 
     cidade = models.ForeignKey(Cidade, on_delete=models.PROTECT)
-    nome = models.CharField(max_length=30)
+    nome = models.CharField(unique=True, max_length=30)
     dt_inclusao = models.DateTimeField(auto_now_add=True)
 
 class Turno(models.Model):
