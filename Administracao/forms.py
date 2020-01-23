@@ -18,14 +18,15 @@ class EscolherTurma(forms.Form):
 class EscolherTurmaEncerramento(forms.Form):
     def __init__(self, administrador, INSTRUTOR, *args,**kwargs):
         super (EscolherTurmaEncerramento,self).__init__(*args, **kwargs)
-#        turma = forms.ModelChoiceField(queryset=Turma.objects.all())
-    #    self.fields['turma'] = forms.ModelChoiceField(queryset=Turma.objects.all())
-#        self.fields['turma'].queryset = forms.ModelChoiceField(queryset=Turma.objects.filter(instrutor=INSTRUTOR))
+
+        from datetime import date
+
+        hoje = date.today()
 
         if administrador == 's':
-            self.fields['turma'] = forms.ModelChoiceField(queryset=Turma.objects.filter(dt_fechamento=None))
+            self.fields['turma'] = forms.ModelChoiceField(queryset=Turma.objects.filter(dt_fechamento=None).filter(dt_fim__lte=hoje))
         else:
-            self.fields['turma'] = forms.ModelChoiceField(queryset=Turma.objects.filter(instrutor=INSTRUTOR).filter(dt_fechamento=None))
+            self.fields['turma'] = forms.ModelChoiceField(queryset=Turma.objects.filter(instrutor=INSTRUTOR).filter(dt_fechamento=None).filter(dt_fim__lte=hoje))
 
 class EscolherTurmaCertificado(forms.Form):
     def __init__(self, administrador, INSTRUTOR, *args,**kwargs):
