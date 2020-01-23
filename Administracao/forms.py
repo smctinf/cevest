@@ -11,9 +11,21 @@ class EscolherTurma(forms.Form):
 #        self.fields['turma'].queryset = forms.ModelChoiceField(queryset=Turma.objects.filter(instrutor=INSTRUTOR))
 
         if administrador == 's':
-            self.fields['turma'] = forms.ModelChoiceField(queryset=Turma.objects.all())
+            self.fields['turma'] = forms.ModelChoiceField(queryset=Turma.objects.filter(dt_fechamento=None))
         else:
-            self.fields['turma'] = forms.ModelChoiceField(queryset=Turma.objects.filter(instrutor=INSTRUTOR))
+            self.fields['turma'] = forms.ModelChoiceField(queryset=Turma.objects.filter(instrutor=INSTRUTOR).filter(dt_fechamento=None))
+
+class EscolherTurmaEncerramento(forms.Form):
+    def __init__(self, administrador, INSTRUTOR, *args,**kwargs):
+        super (EscolherTurmaEncerramento,self).__init__(*args, **kwargs)
+#        turma = forms.ModelChoiceField(queryset=Turma.objects.all())
+    #    self.fields['turma'] = forms.ModelChoiceField(queryset=Turma.objects.all())
+#        self.fields['turma'].queryset = forms.ModelChoiceField(queryset=Turma.objects.filter(instrutor=INSTRUTOR))
+
+        if administrador == 's':
+            self.fields['turma'] = forms.ModelChoiceField(queryset=Turma.objects.filter(dt_fechamento=None))
+        else:
+            self.fields['turma'] = forms.ModelChoiceField(queryset=Turma.objects.filter(instrutor=INSTRUTOR).filter(dt_fechamento=None))
 
 class EscolherTurmaCertificado(forms.Form):
     def __init__(self, administrador, INSTRUTOR, *args,**kwargs):
@@ -23,9 +35,9 @@ class EscolherTurmaCertificado(forms.Form):
 #        self.fields['turma'].queryset = forms.ModelChoiceField(queryset=Turma.objects.filter(instrutor=INSTRUTOR))
 
         if administrador == 's':
-            self.fields['turma'] = forms.ModelChoiceField(queryset=Turma.objects.all())
+            self.fields['turma'] = forms.ModelChoiceField(queryset=Turma.objects.exclude(dt_fechamento=None))
         else:
-            self.fields['turma'] = forms.ModelChoiceField(queryset=Turma.objects.filter(instrutor=INSTRUTOR))
+            self.fields['turma'] = forms.ModelChoiceField(queryset=Turma.objects.filter(instrutor=INSTRUTOR).exclude(dt_fechamento=None))
         self.fields['cpf'] = forms.CharField(label='CPF:',max_length=11, required=False)
 
 class EscolherAlunoDeclaracao(forms.Form):

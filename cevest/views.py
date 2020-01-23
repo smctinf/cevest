@@ -56,7 +56,7 @@ def recibo_ind2(request, pk):
 
 def pauta(request):
 
-    turmas = Turma.objects.all()
+    turmas = Turma.objects.filter(dt_fechamento=None)
 
     return render(request,"cevest/pauta.html",{'turmas':turmas,})
 

@@ -1128,3 +1128,44 @@ def lista_turmas_nao_fechadas(request):
             lista.append(turma)
 
     return render(request,"Administracao/lista_turmas_nao_fechadas.html",{'turmas':lista})
+
+
+
+# Apresenta turmas para encerramento
+@login_required
+def encerrar_turma(request):
+    if request.method == 'POST':
+#        form = EscolherTurma(request.POST)
+
+#        if form.is_valid():
+#            turma_id = form.cleaned_data['nome']
+
+        turma_id = request.POST.get("turma")
+        turma = Turma.objects.get(pk=turma_id)
+
+        alunos_turmas = Aluno_Turma.objects.filter(turma=turma_id).filter(situacao='1')
+
+        if len(alunos_turmas) > 0:
+            # Ainda tem aluno cursando. Nao pode encerrar turma
+            print()
+            msg = 'Turma não pode ser encerrada. Ainda há aluno com status CURSANDO'
+        else:
+            # encerra turma
+            from datetime import date
+
+            turma.dt_fechamento = date.today()
+            turma.save()
+            msg = 'Turma encerrada.'
+
+        return render(request,"Administracao/turma_encerrada.html",{'turma':turma, 'msg':msg})
+
+    usuario = User.objects.get(username=request.user.username)
+    if request.user.is_superuser:
+        administrador = 's'
+        INSTRUTOR = ''
+    else:
+        administrador = 'n'
+        INSTRUTOR = Instrutor.objects.get(user=usuario)
+
+    form = EscolherTurmaEncerramento(administrador, INSTRUTOR)
+    return render(request,"Administracao/escolher_turma_para_encerramento.html",{'form':form})
