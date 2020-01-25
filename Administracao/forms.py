@@ -99,6 +99,7 @@ class EscolherTurmaPrevista(forms.Form):
         super().__init__(*args,**kwargs)
         self.fields['turma'].queryset = QUERYSET
 
+
 class Controle_Presenca(forms.Form):
     nome = forms.CharField(label='Aluno:',disabled = True, max_length=100, required=False)
     dias = forms.MultipleChoiceField(widget=HorizontalCheckbox(), required = False)
@@ -106,6 +107,7 @@ class Controle_Presenca(forms.Form):
     def __init__(self, *args, CHOICES,**kwargs):
         super().__init__(*args,**kwargs)
         self.fields['dias'].choices = CHOICES
+
 
 class Confirmar_Turma(forms.Form):
     nome = forms.CharField(label = 'Turma:', disabled = True, required = False)
@@ -117,3 +119,8 @@ class EscolherData(forms.Form):
     dt_inicio_f = forms.DateField(label='Data:',required=False, widget=forms.SelectDateWidget(years=range(2019, 2025)))
     dt_fim_i = forms.DateField(label='Data:',required=False, widget=forms.SelectDateWidget(years=range(2019, 2025)))
     dt_fim_f = forms.DateField(label='Data:',required=False, widget=forms.SelectDateWidget(years=range(2019, 2025)))
+
+
+class EscolherDataCad(forms.Form):
+    dt_inicio = forms.DateField(label='Data Início:',required=False, widget=forms.SelectDateWidget(years=range(2019, 2025)))
+    dt_fim = forms.DateField(label='Data Fim:',required=False, widget=forms.SelectDateWidget(years=range(2019, 2025)))

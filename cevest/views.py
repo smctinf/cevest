@@ -397,6 +397,8 @@ def getTotalConcluidosPorCurso():
     situacao_aprovado = Situacao.objects.get(descricao = "Aprovado")
     cursos = Curso.objects.all()
 
+    temp_total_geral = 0
+
     for curso in cursos:    
         turmas = Turma.objects.filter(curso = curso)
         lista_temp = []
@@ -407,11 +409,15 @@ def getTotalConcluidosPorCurso():
         lista_temp.append(curso.nome)
         lista_temp.append(temp_total)
         lista.append(lista_temp)
+        temp_total_geral += temp_total
 
     lista = sorted(lista, key = lambda i: (-i[1]))
 
+    #mostra total geral (depois do sort para o total ficar no final)
+    lista.append(['Total Geral', temp_total_geral])
+
     #returna um dicionário com lista sendo uma lista de listas(matriz) com as linhas/colunas da tabela, o título e uma lista de strings para serem os headers da tabela
-    return {'lista': lista, 'titulo': 'Concluidos por turma', 'table_headers':['Turma','Total'] }
+    return {'lista': lista, 'titulo': 'Concluídos por turma', 'table_headers':['Turma','Total'] }
 
 def getInteresseTotalPorCursoETurno():
     lista = []

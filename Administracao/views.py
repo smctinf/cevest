@@ -1169,3 +1169,31 @@ def encerrar_turma(request):
 
     form = EscolherTurmaEncerramento(administrador, INSTRUTOR)
     return render(request,"Administracao/escolher_turma_para_encerramento.html",{'form':form})
+
+
+@login_required
+def total_cadastrados_em_dado_periodo(request):
+    
+    if request.method == 'POST':
+
+        form = EscolherDataCad(request.POST)
+        if form.is_valid():
+
+            dt_inicio = form.cleaned_data['dt_inicio']
+            dt_fim = form.cleaned_data["dt_fim"]
+
+        if dt_inicio == None:
+            dt_inicio = '2019-01-01'
+
+        if dt_fim == None:
+            dt_fim = '2030-12-31'
+
+        print (dt_inicio)
+
+        total = Aluno.objects.filter(dt_inclusao__gte=dt_inicio).filter(dt_inclusao__lte=dt_fim).count()
+
+        return render(request, "Administracao/total_cadastrados_em_dado_periodo.html",{"dt_inicio":dt_inicio, "dt_fim":dt_fim, "total":total})
+
+    else:
+        form = EscolherDataCad()
+        return render(request,"Administracao/escolher_data.html",{'form':form})

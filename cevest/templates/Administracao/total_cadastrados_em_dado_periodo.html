@@ -1,0 +1,13 @@
+<html>
+
+{% extends "cevest/base_adm.html" %}
+
+{% block content %}
+<center>
+<h3>Total de cadastrados em um dado período:</h3>
+<br>
+<h4>Entre a data {{ dt_inicio | date:"d/m/Y" }} e {{ dt_fim | date:"d/m/Y" }} ocorreram {{ total }} cadastros</h4>
+    <br>
+</center>
+{% endblock %}
+</html>

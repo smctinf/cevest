@@ -38,6 +38,9 @@ urlpatterns = [
     path('lista_celular_por_turma',views.lista_celular_por_turma, name = "lista_celular_por_turma"),
     path('lista_turmas_nao_fechadas',views.lista_turmas_nao_fechadas, name = "lista_turmas_nao_fechadas"),
     path('encerrar_turma',views.encerrar_turma, name = "encerrar_turma"),
+    path('total_cadastrados_em_dado_periodo',views.total_cadastrados_em_dado_periodo, name = "total_cadastrados_em_dado_periodo"),
+
+
     # Emitir Certificado
     path('selecionar_aluno_para_declaracao', views.SelecionarAlunoParaDeclaracao, name='selecionar_aluno_para_declaracao'),
     path('gerar_declaracao', views.GerarDeclaracao, name='gerar_declaracao'),

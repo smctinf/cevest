@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-{% load staticfiles %}
+{% load static %}
 <html lang="pt-br">
   <head>
     <!-- Meta tags Obrigatórias -->
@@ -47,8 +47,9 @@
 
       <!--
       <a href="/alocados" class="btn btn-primary" role="button">Alocados</a>
-      -->
       <a href="http://x.jlb.net.br/indicadores.php" class="btn btn-primary" role="button">Indicadores</a>
+      -->
+      <a href="/indicadores" class="btn btn-primary" role="button">Indicadores</a>
 
       {% if user.is_superuser %}
         <a href="http://x.jlb.net.br/altcevest.php" class="btn btn-primary" role="button">Alterar Cadastro</a>
