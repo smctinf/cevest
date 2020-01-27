@@ -1,4 +1,4 @@
 
 {% for lista in listas %}
-    {{ lista.aluno.nome }}; {{ lista.aluno.celular }}; {{ lista.turma_prevista.nome }}<br>
+    {{ lista.aluno.nome }}; {{ lista.aluno.celular }}; {{ lista.turma_prevista.curso.nome }} - {{ lista.turma_prevista.nome }}<br>
 {% endfor %}
