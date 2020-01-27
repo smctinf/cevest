@@ -796,6 +796,17 @@ def lista_alocados_telefone(request):
     lista_turmas = getLista_Alocados()
     return render(request, "cevest/lista_alocados_telefone.html",{"listas":lista_turmas})
 
+
+@login_required
+@permission_required('cevest.acesso_admin', raise_exception=True)
+def lista_alocados_telefone_zap(request):
+    
+#    lista_turmas = Aluno_Turma_Prevista.objects.filter(turma_prevista__dt_inicio__gte='2020-01-01')
+    lista_turmas = Aluno_Turma_Prevista.objects.filter(status_aluno_turma_prevista_id='1')
+    print ('Tamanho:', len(lista_turmas))
+    return render(request, "Administracao/lista_alocados_telefone_zap.html",{"listas":lista_turmas})
+
+
 @login_required
 @permission_required('cevest.acesso_admin', raise_exception=True)
 def lista_alfabetica(request):
