@@ -477,9 +477,19 @@ def Alocacao(request):
         alunos_compativeis = alunos_compativeis.exclude(id = aluno_turma.aluno.id)
 
     for aluno in alunos_compativeis:
+
+        # Verifica se aluno já foi selecionado para este curso. Caso positivo, exclui
+
+        alunos_temp = Aluno_Turma_Prevista.objects.filter(aluno = aluno)
+
+        for aluno_temp in alunos_temp:
+            if aluno_temp.turma_prevista.curso == turma_prevista.curso:
+                alunos_compativeis = alunos_compativeis.exclude(id = aluno.id)
+                continue
+
+
         aluno_turma = Aluno_Turma.objects.filter(aluno = aluno)
         for turma_aluno in aluno_turma:
-
 
             # Verifica se aluno já cursou este curso. Caso positivo, exclui
 
@@ -529,19 +539,30 @@ def Alocacao(request):
 
         # Verifica se já foi selecionado para algum curso
 
-        if ja_fez_curso == 1:
-            ja_foi_selecionado = 1
-        else:
-            aluno_turma_prevista_temp = Aluno_Turma_Prevista.objects.filter(aluno = aluno)
-            if len(aluno_turma_prevista_temp) == 0:
-                ja_foi_selecionado = 0
+        # 0: Nunca foi selecionado para curso nenhum
+        # 1: já fez curso, consequentemente já esteve matriculado em uma turma prevista
+        # 2: Não compareceu
+        # 3: Está como candidato
+
+        aluno_turma_prevista_temp = Aluno_Turma_Prevista.objects.filter(aluno = aluno)
+        if len(aluno_turma_prevista_temp) == 0:
+            if ja_fez_curso == 1:
+                ja_foi_selecionado = 1
             else:
-                ja_foi_selecionado = 2
+                ja_foi_selecionado = 0
+
+        else:
+            ja_foi_selecionado = 2
+            for x in aluno_turma_prevista_temp:
+                if x.status_aluno_turma_prevista_id == 1:
+                    ja_foi_selecionado = 3
+                    break
+
+            if ja_foi_selecionado == 2:
                 for x in aluno_turma_prevista_temp:
                     if x.status_aluno_turma_prevista_id == 2 or x.status_aluno_turma_prevista_id == 4:
                         ja_foi_selecionado = 1
                         break
-
 
     
 
@@ -579,8 +600,10 @@ def Alocacao(request):
         p += 1
         if aluno.ordem_judicial:
             temp_pontuacao += 2**p
-
-        # TODO: Incluir campo dizendo se já fez algum curso do CEVEST. E no sort abaixo, se Nova Friburgo Criativa, dá prioridade, senaõ, dá menor prioridade
+        # Se já foi selecionado para algum curso, e está como candidato, tem prioridade mínima
+        p += 1
+        if ja_foi_selecionado != 3:
+            temp_pontuacao += 2**p
 
         temp_dict = {"aluno":aluno,"pontuação":temp_pontuacao,"dt_nasc":aluno.dt_nascimento,'dt_inclusao':aluno.dt_inclusao,'situacao':Status_Aluno_Turma_Prevista.objects.none()}
         lista_final.append(temp_dict)
