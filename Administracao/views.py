@@ -447,13 +447,20 @@ def Alocacao(request):
 
     alunos_compativeis = Aluno.objects.filter(cursos = turma_prevista.curso)
 
+
     lista_final = []
     
     turma_prevista_alunos = Aluno_Turma_Prevista.objects.filter(turma_prevista = turma_prevista)
 
+    #Exclui de alunos compativeis os alunos q já estão na lista ta turma
+    for tmp_turma_prevista_alunos in turma_prevista_alunos:
+        alunos_compativeis = alunos_compativeis.exclude(id = tmp_turma_prevista_alunos.aluno_id)
+
+
     status_candidato = Status_Aluno_Turma_Prevista.objects.get(descricao = "Candidato")
     status_matriculado = Status_Aluno_Turma_Prevista.objects.get(descricao = "Matriculado")
     
+    #exclui alunos já matriculados ou já selecionados
 
     turma_prevista_alunos = turma_prevista_alunos.exclude(status_aluno_turma_prevista = status_matriculado).exclude(status_aluno_turma_prevista = status_candidato)
 
@@ -506,6 +513,38 @@ def Alocacao(request):
     #prioridade menor que as seguintes.
 
     for aluno in alunos_compativeis:
+
+        # Verifica se já fez outro curso
+        aluno_turma_temp = Aluno_Turma.objects.filter(aluno = aluno)
+
+        if len(aluno_turma_temp) == 0:
+            ja_fez_curso = 0
+        else:
+            ja_fez_curso = 2
+            for x in aluno_turma_temp:
+                if x.situacao_id == 2 or x.situacao_id == 6:
+                    ja_fez_curso = 1
+                    break
+
+
+        # Verifica se já foi selecionado para algum curso
+
+        if ja_fez_curso == 1:
+            ja_foi_selecionado = 1
+        else:
+            aluno_turma_prevista_temp = Aluno_Turma_Prevista.objects.filter(aluno = aluno)
+            if len(aluno_turma_prevista_temp) == 0:
+                ja_foi_selecionado = 0
+            else:
+                ja_foi_selecionado = 2
+                for x in aluno_turma_prevista_temp:
+                    if x.status_aluno_turma_prevista_id == 2 or x.status_aluno_turma_prevista_id == 4:
+                        ja_foi_selecionado = 1
+                        break
+
+
+    
+
         temp_pontuacao = 0
         p = 0
         if aluno.quant_filhos > 0:
@@ -519,6 +558,21 @@ def Alocacao(request):
         p += 1
         if aluno.bolsa_familia:
             temp_pontuacao += 2**p
+
+        # Se curso tradicional, entre os que já fizeram curso, maior prioridade para quem concluiu ou justificou
+        if turma_prevista.curso.programa_id == 1:
+            p += 1
+            if ja_fez_curso == 1:
+                temp_pontuacao += 2**p
+
+        # Dependendo do programa a q o curso pertence, terá prioridade diferenciada
+        p += 1
+        if ja_fez_curso == 1 and turma_prevista.curso.programa_id == 2:
+            temp_pontuacao += 2**p
+        else:
+            if ja_foi_selecionado == 0 and turma_prevista.curso.programa_id == 1:
+                temp_pontuacao += 2**p
+        #
         p += 1
         if aluno.portador_necessidades_especiais:
             temp_pontuacao += 2**p
@@ -526,21 +580,29 @@ def Alocacao(request):
         if aluno.ordem_judicial:
             temp_pontuacao += 2**p
 
+        # TODO: Incluir campo dizendo se já fez algum curso do CEVEST. E no sort abaixo, se Nova Friburgo Criativa, dá prioridade, senaõ, dá menor prioridade
+
         temp_dict = {"aluno":aluno,"pontuação":temp_pontuacao,"dt_nasc":aluno.dt_nascimento,'dt_inclusao':aluno.dt_inclusao,'situacao':Status_Aluno_Turma_Prevista.objects.none()}
         lista_final.append(temp_dict)
 
         if aluno.dt_nascimento == '' or aluno.dt_inclusao == '':
             print ('Aluno: ', aluno.id, aluno.nome)
             exit
-        else:
-            print ('Aluno ok: ', aluno.nome)
+        # else:
+        #    print ('Aluno ok: ', aluno.nome)
 
-    lista_final = sorted(lista_final, key = lambda i: (-i['pontuação'],i['dt_nasc'],i['dt_inclusao']))
+    lista_final = sorted(lista_final, key = lambda i: (-i['pontuação'],i['dt_inclusao'],i['dt_nasc']))
 
-    i = 0
+    
+    quant_na_turma = Aluno_Turma_Prevista.objects.filter(turma_prevista=turma_prevista).filter(status_aluno_turma_prevista=status_candidato).count()
+    quant_na_turma += Aluno_Turma_Prevista.objects.filter(turma_prevista=turma_prevista).filter(status_aluno_turma_prevista=status_matriculado).count()
+
+    i = quant_na_turma
+
     for aluno_pontuacao in lista_final:
         if(i >= turma_prevista.quant_alunos):
             break
+
         temp_aluno_turma_prevista,created = Aluno_Turma_Prevista.objects.get_or_create(
             aluno = aluno_pontuacao['aluno'],
             turma_prevista = turma_prevista,
@@ -548,7 +610,12 @@ def Alocacao(request):
         aluno_pontuacao['situacao'] = temp_aluno_turma_prevista.status_aluno_turma_prevista
         i+=1
 
-    return render(request,"Administracao/alocacao.html",{'nome_turma':turma_prevista,'alocados':lista_final[0:i],"nao_alocados":lista_final[i:],"nao_considerados":turma_prevista_alunos})
+    i = turma_prevista.quant_alunos - quant_na_turma
+
+    lista_selecionados = lista_final[0:i]
+    lista_nao_selecionados = lista_final[i:]
+
+    return render(request,"Administracao/alocacao.html",{'nome_turma':turma_prevista,'alocados':lista_selecionados,"nao_alocados":lista_nao_selecionados,"nao_considerados":turma_prevista_alunos})
 
 @login_required
 #@permission_required('cevest.acesso_admin', raise_exception=True)

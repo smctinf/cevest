@@ -3,9 +3,14 @@
 {% block content %}
 
 <div class="container" align="center">
-    <h4 align="center">Confira o resultado das alocações no botão abaixo:</h4>
     <p>
-        <a href="lista_alocados" class="btn btn-danger" role="button" target="_blank">Listagem de Classificação</a>
+        {% if 1 == 2 %}
+            <h4 align="center">Confira o resultado das alocações no botão abaixo:</h4>
+            <a href="lista_alocados" class="btn btn-danger" role="button" target="_blank">Listagem de Classificação</a>
+        {% else %}
+            <h4>Aguarde liberação do resultado</h4>
+        {% endif %}
+
     </p>
 
     <div class="card">
@@ -32,7 +37,7 @@ dos seguintes critérios, estabelecidos na Portaria no 1.222 de 13 de dezembro d
     </div>
     <div class="col-5">
 <p>
-Os selecionados serão convocados através de listas disponibilizadas no mesmo link de cadastro e terão do dia 10 ao dia 14 de abril para concluírem a inscrição e garantir a vaga!
+Os selecionados serão convocados através de listas disponibilizadas no mesmo link de cadastro e terão do dia 27 ao dia 31 de janeiro para concluírem a inscrição e garantir a vaga!
 </p>
 O não comparecimento ao CEVEST para entrega da documentação na data prevista e confirmação da
 inscrição implicará na perda da vaga e no seu imediato preenchimento pelos próximos alunos classificados.
