@@ -59,6 +59,7 @@ class CadFormBase(forms.ModelForm):
         def __init__(self, *args, **kwargs):
             super().__init__(*args, **kwargs)
             self.fields['nis'].required = False
+            self.fields['email'].required = False
             self.fields['bairro'].queryset = Bairro.objects.none()
             if 'cidade' in self.data:
                 print("teste1")

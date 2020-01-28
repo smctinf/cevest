@@ -764,15 +764,15 @@ def ConfirmarInformacoesAlunoPrevisto(request,aluno_id,turma_id):
             return HttpResponseRedirect(reverse('administracao:area_admin'))
         else:
             print('Erro: ', form.errors)
-            erro = str(form.errors)
-            erro = erro.replace('<ul class="errorlist">', '')
-            erro = erro.replace('</li>', '')
-            erro = erro.replace('<ul>', '')
-            erro = erro.replace('</ul>', '')
+            erro_tmp = str(form.errors)
+            erro_tmp = erro_tmp.replace('<ul class="errorlist">', '')
+            erro_tmp = erro_tmp.replace('</li>', '')
+            erro_tmp = erro_tmp.replace('<ul>', '')
+            erro_tmp = erro_tmp.replace('</ul>', '')
 
-            erro = erro.split('<li>')
+            erro_tmp = erro_tmp.split('<li>')
 
-            messages.error(request, erro[1] + ': ' + erro[2])
+            messages.error(request, erro_tmp[1] + ': ' + erro_tmp[2])
 
 
 
