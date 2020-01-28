@@ -84,8 +84,12 @@ class CadFormBase(forms.ModelForm):
             telefone = telefone.replace(")",'')
             telefone = telefone.replace("-",'')
             telefone = telefone.replace(" ",'')
-            if len(telefone) != 11:
-                raise ValidationError('Insira um número válido ')
+            if len(telefone) == 10:
+                if telefone[2:3] != '2':
+                    raise ValidationError('Insira um número válido ')
+            else:
+                if len(telefone) != 11:
+                    raise ValidationError('Insira um número válido ')
             return telefone
         
         def clean_fixo_residencia(self):
