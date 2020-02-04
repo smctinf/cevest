@@ -466,12 +466,15 @@ def Alocacao(request):
 
     #pega os alunos com horários disponíveis compatíveis com o curso.
 
-    if len(turma_prevista.horario.filter(hora_inicio = datetime.time(hour = 7 ))) > 0:
+    if len(turma_prevista.horario.filter(hora_inicio = datetime.time(hour = 7, minute = 30 ))) > 0:
         alunos_compativeis = alunos_compativeis.filter(disponibilidade = horario_manha)
+
     if len(turma_prevista.horario.filter(hora_inicio = datetime.time(hour = 13))) > 0:
         alunos_compativeis = alunos_compativeis.filter(disponibilidade = horario_tarde)
+
     if len(turma_prevista.horario.filter(hora_inicio = datetime.time(hour = 18))) > 0:
         alunos_compativeis = alunos_compativeis.filter(disponibilidade = horario_noite)
+
 
     for aluno_turma in turma_prevista_alunos:
         alunos_compativeis = alunos_compativeis.exclude(id = aluno_turma.aluno.id)
