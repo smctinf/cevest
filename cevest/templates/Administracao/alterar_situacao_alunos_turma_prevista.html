@@ -15,6 +15,10 @@
             {% for form in formset_candidatos %}
                 <tr>
                     <td>
+                        {{ forloop.counter }}: 
+                    </td> 
+
+                    <td>
                         <a href="confirmar_informacoes_aluno_previsto/{{nome_turma.id}}/{{form.aluno_id.value}}">
                              {{ form.nome.value }}</a>
                     </td> 
@@ -33,6 +37,9 @@
             {% for form in formset_matriculados %}
                 <tr>
                     <td>
+                        {{ forloop.counter }}: 
+                    </td> 
+                    <td>
                         {{ form.nome.value }}
                     </td> 
                     <td>
@@ -50,8 +57,13 @@
             {% for form in formset_nao_matriculados %}
                 <tr>
                     <td>
-                        {{ form.nome.value }}
+                        {{ forloop.counter }}: 
                     </td> 
+
+                    <td>
+                        {{ form.nome.value }}
+                    </td>
+                    
                     <td>
                         {{form.situacao}}
                     </td>

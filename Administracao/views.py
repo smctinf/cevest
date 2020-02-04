@@ -761,7 +761,8 @@ def ConfirmarInformacoesAlunoPrevisto(request,aluno_id,turma_id):
                             return HttpResponseRedirect(reverse('administracao:area_admin'))
                 #####
                 ConfirmarAluno(request,aluno_id,turma_id)
-            return HttpResponseRedirect(reverse('administracao:area_admin'))
+#            return HttpResponseRedirect(reverse('administracao:area_admin'))
+            return HttpResponseRedirect(reverse('administracao:alterar_situacao_turma_prevista'))
         else:
             print('Erro: ', form.errors)
             erro_tmp = str(form.errors)
@@ -812,7 +813,6 @@ def lista_alocados_telefone_zap(request):
     
 #    lista_turmas = Aluno_Turma_Prevista.objects.filter(turma_prevista__dt_inicio__gte='2020-01-01')
     lista_turmas = Aluno_Turma_Prevista.objects.filter(status_aluno_turma_prevista_id='1')
-    print ('Tamanho:', len(lista_turmas))
     return render(request, "Administracao/lista_alocados_telefone_zap.html",{"listas":lista_turmas})
 
 
@@ -839,7 +839,6 @@ def lista_nao_alocados(request):
 @permission_required('cevest.acesso_admin', raise_exception=True)
 def lista_todos_por_curso_e_turno(request, curso_id, turno_id):
     alunos = Aluno.objects.filter(cursos=curso_id, disponibilidade=turno_id)
-    print(alunos)
     return render(request, "Administracao/lista_todos_por_curso_e_turno.html",{"alunos":alunos}) 
 
 
