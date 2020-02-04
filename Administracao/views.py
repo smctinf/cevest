@@ -761,7 +761,8 @@ def ConfirmarInformacoesAlunoPrevisto(request,aluno_id,turma_id):
                             return HttpResponseRedirect(reverse('administracao:area_admin'))
                 #####
                 ConfirmarAluno(request,aluno_id,turma_id)
-            return HttpResponseRedirect(reverse('administracao:area_admin'))
+        #    return HttpResponseRedirect(reverse('administracao:area_admin'))
+            return HttpResponseRedirect(reverse('administracao:alterar_situacao_turma_prevista'))
         else:
             print('Erro: ', form.errors)
             erro_tmp = str(form.errors)
