@@ -814,8 +814,9 @@ def lista_alocados_telefone(request):
 @permission_required('cevest.acesso_admin', raise_exception=True)
 def lista_alocados_telefone_zap(request):
     
-#    lista_turmas = Aluno_Turma_Prevista.objects.filter(turma_prevista__dt_inicio__gte='2020-01-01')
-    lista_turmas = Aluno_Turma_Prevista.objects.filter(status_aluno_turma_prevista_id='1')
+#    lista_turmas = Aluno_Turma_Prevista.objects.filter(status_aluno_turma_prevista_id='1')
+    # Alterado para gerar para todos os alunos
+    lista_turmas = Aluno.objects.filter(ativo=True)
     return render(request, "Administracao/lista_alocados_telefone_zap.html",{"listas":lista_turmas})
 
 
