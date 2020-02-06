@@ -41,6 +41,9 @@ urlpatterns = [
     path('encerrar_turma',views.encerrar_turma, name = "encerrar_turma"),
     path('total_cadastrados_em_dado_periodo',views.total_cadastrados_em_dado_periodo, name = "total_cadastrados_em_dado_periodo"),
 
+    ### Apagar
+    path('apaga_costurareta',views.apaga_costurareta, name = "apaga_costurareta"),
+
 
     # Emitir Certificado
     path('selecionar_aluno_para_declaracao', views.SelecionarAlunoParaDeclaracao, name='selecionar_aluno_para_declaracao'),
