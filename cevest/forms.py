@@ -24,7 +24,7 @@ class CadFormBase(forms.ModelForm):
                 ('F', 'Feminino',),
                 ('M', 'Masculino',),
         )
-        cursos = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple(attrs={'class' : "custom-control-input"}),queryset=Curso.objects.all())
+        cursos = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple(attrs={'class' : "custom-control-input"}),queryset=Curso.objects.all().order_by('id'))
         nome = forms.CharField(label = "Nome", max_length=60, widget = forms.TextInput(attrs={'class': 'form-control'}) )
         email = forms.EmailField(label='E-Mail',max_length=254,  widget = forms.TextInput(attrs={'class': 'form-control', 'placeholder':'fulano@exemplo.com.br'}))
         nis = forms.IntegerField(label='NIS', required=False, widget = forms.TextInput(attrs={'class': 'form-control', 'maxlength':'11'}))

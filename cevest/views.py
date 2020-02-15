@@ -78,7 +78,7 @@ def pauta2(request, turma_id):
 
 # Página Cadastro
 def cadastro(request):
-    temp_cursos = Curso.objects.all().order_by('nome')
+    temp_cursos = Curso.objects.all()
     if request.method == 'POST':
         form = CadForm(request.POST)
         if form.is_valid():
