@@ -445,8 +445,9 @@ def Alocacao(request):
     horario_tarde = Turno.objects.get(descricao = "Tarde")
     horario_noite = Turno.objects.get(descricao = "Noite")
 
-    alunos_compativeis = Aluno.objects.filter(cursos = turma_prevista.curso)
+    alunos_compativeis = Aluno.objects.filter(cursos = turma_prevista.curso).filter(ativo=True)
 
+    print('Tam: ', len(alunos_compativeis))
 
     lista_final = []
     
@@ -456,11 +457,13 @@ def Alocacao(request):
     for tmp_turma_prevista_alunos in turma_prevista_alunos:
         alunos_compativeis = alunos_compativeis.exclude(id = tmp_turma_prevista_alunos.aluno_id)
 
+    print('Tam2: ', len(alunos_compativeis))
+
 
     status_candidato = Status_Aluno_Turma_Prevista.objects.get(descricao = "Candidato")
     status_matriculado = Status_Aluno_Turma_Prevista.objects.get(descricao = "Matriculado")
     
-    #exclui alunos já matriculados ou já selecionados
+    #exclui alunos já matriculados ou já selecionados, sobrando os que desistiram da vaga ou não compareceram
 
     turma_prevista_alunos = turma_prevista_alunos.exclude(status_aluno_turma_prevista = status_matriculado).exclude(status_aluno_turma_prevista = status_candidato)
 
@@ -475,6 +478,9 @@ def Alocacao(request):
     if len(turma_prevista.horario.filter(hora_inicio = datetime.time(hour = 18))) > 0:
         alunos_compativeis = alunos_compativeis.filter(disponibilidade = horario_noite)
 
+    print('Tam:3 ', len(alunos_compativeis))
+
+    # Exclui de alunos_compativeis os alunos que desistiram da vaga ou não compareceram
 
     for aluno_turma in turma_prevista_alunos:
         alunos_compativeis = alunos_compativeis.exclude(id = aluno_turma.aluno.id)
@@ -514,6 +520,10 @@ def Alocacao(request):
                 if horario in turma_prevista.horario.all():
                     print("aluno removido da lista por conflito de horário:" + str(aluno))
                     alunos_compativeis = alunos_compativeis.exclude(id = aluno.id)
+
+
+    print('Tam4: ', len(alunos_compativeis))
+
 
     #O sistema de pontos é definido de modo que a pessoa que tem uma prioridade maior que outra sempre receba
     #mais pontos. Por exemplo, portadores de necessidade especiais recebem 16 pontos no mínimo, e pessoas com
@@ -624,6 +634,8 @@ def Alocacao(request):
     quant_na_turma += Aluno_Turma_Prevista.objects.filter(turma_prevista=turma_prevista).filter(status_aluno_turma_prevista=status_matriculado).count()
 
     i = quant_na_turma
+
+    print ('i: ', i)
 
     for aluno_pontuacao in lista_final:
         if(i >= turma_prevista.quant_alunos):
@@ -1310,3 +1322,27 @@ def total_cadastrados_em_dado_periodo(request):
     else:
         form = EscolherDataCad()
         return render(request,"Administracao/escolher_data.html",{'form':form})
+
+###########################
+### Apagar isso após rodar
+
+@login_required
+def apaga_costurareta(request):
+    curso_3 = Curso.objects.get(id=3)
+    curso_21 = Curso.objects.get(id=21)
+
+    alunos = Aluno.objects.filter(cursos=curso_3)
+    for aluno in alunos:
+        tem_reta = Aluno.objects.filter(id=aluno.id).filter(cursos=curso_21)
+        if tem_reta:
+            print('tem os dois:', aluno.nome)
+            res = aluno.cursos.remove(curso_3)
+#            res = Aluno.objects.filter(id=aluno.id).filter(cursos=curso_3).delete()
+            print('res: ', res)
+        else:
+            print('só um:', aluno.nome)
+            res = aluno.cursos.add(curso_21)
+            res = aluno.cursos.remove(curso_3)
+            print('res: ', res)
+
+
