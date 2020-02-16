@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, Http404, QueryDict
 from django.forms.models import model_to_dict
 from .forms import *
-from cevest.models import Curso, Aluno, Cidade, Bairro, Profissao, Escolaridade, Matriz, Turma_Prevista, Aluno_Turma, Turma, Situacao, Disciplina, Presenca, Feriado, Situacao_Turma, Turma_Prevista_Turma_Definitiva, Aluno_Turma_Prevista, Status_Aluno_Turma_Prevista, Horario, Turno, Instrutor, User
+from cevest.models import Curso, Aluno, Cidade, Bairro, Profissao, Escolaridade, Matriz, Turma_Prevista, Aluno_Turma, Turma, Situacao, Disciplina, Presenca, Feriado, Situacao_Turma, Turma_Prevista_Turma_Definitiva, Aluno_Turma_Prevista, Status_Aluno_Turma_Prevista, Horario, Turno, Instrutor, User, Programa
 from cevest.forms import CadForm
 from cevest.views import getLista_Alocados, getLista_Candidatos, getLista_NaoAlocados
 import datetime
@@ -791,10 +791,19 @@ def ConfirmarInformacoesAlunoPrevisto(request,aluno_id,turma_id):
             messages.error(request, erro_tmp[1] + ': ' + erro_tmp[2])
 
 
+    # Lista cursos separados por programas
+    programas = Programa.objects.all().order_by('-nome')
+
+    cursos = []
+
+    for programa in programas:
+        cursos_pgm = Curso.objects.filter(programa=programa).filter(exibir=True).filter(ativo=True)
+        cursos.append({'programa': programa, 'cursos': cursos_pgm})
+
 
     form=CadForm(initial={'cidade':aluno.bairro.cidade,'cpf':aluno.cpf}, instance=aluno)
 
-    return render(request,"Administracao/corrigir_cadastro.html",{'form':form, 'checked_curso_ids':checked_curso_ids})
+    return render(request,"Administracao/corrigir_cadastro.html",{'form':form, 'checked_curso_ids':checked_curso_ids, 'cursos':cursos})
 
 def ConfirmarAluno(request,aluno_id,turma_id):
     turma_prevista = Turma_Prevista.objects.get(id = turma_id)

@@ -78,16 +78,38 @@ def pauta2(request, turma_id):
 
 # Página Cadastro
 def cadastro(request):
-    temp_cursos = Curso.objects.all()
+
+    programas = Programa.objects.all().order_by('-nome')
+
+    cursos = []
+
+    for programa in programas:
+        cursos_pgm = Curso.objects.filter(programa=programa).filter(exibir=True).filter(ativo=True)
+        cursos.append({'programa': programa, 'cursos': cursos_pgm})
+
     if request.method == 'POST':
         form = CadForm(request.POST)
         if form.is_valid():
             form.save()
             messages.info(request,'Cadastro Salvo')
             return HttpResponseRedirect(reverse('index'))
+
+        # Se teve erro:
+        print('Erro: ', form.errors)
+        erro_tmp = str(form.errors)
+        erro_tmp = erro_tmp.replace('<ul class="errorlist">', '')
+        erro_tmp = erro_tmp.replace('</li>', '')
+        erro_tmp = erro_tmp.replace('<ul>', '')
+        erro_tmp = erro_tmp.replace('</ul>', '')
+
+        erro_tmp = erro_tmp.split('<li>')
+
+        messages.error(request, erro_tmp[1] + ': ' + erro_tmp[2])
+
+        
     else:
         form = CadForm()
-    return render(request,"cevest/cadastro2.html",{'form':form})
+    return render(request,"cevest/cadastro2.html",{'form':form, 'cursos':cursos})
 
 # Teste detalhe
 def detalhe(request):
@@ -178,13 +200,22 @@ def bairro_serializer(bairro):
 # /////////////////////////////////
 
 def altera_cpf(request):
-    #Atualiza a página em caso de dados não serem válidos ao invés de mostrar qual o erro
+
     if request.method == 'POST':
         altera_form = Altera_cpf(request.POST)
         if altera_form.is_valid():
             cpf_temp = altera_form.cleaned_data['cpf']
             nasc_temp = altera_form.cleaned_data['dt_nascimento']
-            aluno_temp = Aluno.objects.get(cpf=cpf_temp, dt_nascimento = nasc_temp)
+
+            try:
+                aluno_temp = Aluno.objects.get(cpf=cpf_temp, dt_nascimento = nasc_temp)
+            except Aluno.DoesNotExist:
+                aluno_temp = None
+                messages.info(request,'Cadastro inexistente')
+
+                form = Altera_cpf()
+                return render(request,"cevest/altera.html",{'form':form})
+
             request.session["aluno_id"] = aluno_temp.id
             return HttpResponseRedirect(reverse(AlterarCadastro))
     form = Altera_cpf()
@@ -203,8 +234,33 @@ def AlterarCadastro(request):
             form.save(aluno_temp)
             messages.info(request,'Cadastro Salvo')
             return HttpResponseRedirect(reverse('index'))
+
+        else:
+            print('Erro: ', form.errors)
+            erro_tmp = str(form.errors)
+            erro_tmp = erro_tmp.replace('<ul class="errorlist">', '')
+            erro_tmp = erro_tmp.replace('</li>', '')
+            erro_tmp = erro_tmp.replace('<ul>', '')
+            erro_tmp = erro_tmp.replace('</ul>', '')
+
+            erro_tmp = erro_tmp.split('<li>')
+
+            messages.error(request, erro_tmp[1] + ': ' + erro_tmp[2])
+
+
+    # Carrega cursos separado por programas
+    programas = Programa.objects.all().order_by('-nome')
+
+    cursos = []
+
+    for programa in programas:
+        cursos_pgm = Curso.objects.filter(programa=programa).filter(exibir=True).filter(ativo=True)
+        cursos.append({'programa': programa, 'cursos': cursos_pgm})
+
+
+    # 
     form=CadFormBase(initial={'cidade':aluno_temp.bairro.cidade}, instance=aluno_temp)
-    return render(request,"cevest/altera_cadastro.html",{'form':form, 'checked_curso_ids':checked_curso_ids})
+    return render(request,"cevest/altera_cadastro.html",{'form':form, 'cursos':cursos, 'checked_curso_ids':checked_curso_ids})
 
 
 #???

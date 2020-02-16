@@ -24,13 +24,13 @@ class CadFormBase(forms.ModelForm):
                 ('F', 'Feminino',),
                 ('M', 'Masculino',),
         )
-        cursos = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple(attrs={'class' : "custom-control-input"}),queryset=Curso.objects.all().order_by('id'))
+        cursos = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple(attrs={'class' : "custom-control-input"}),queryset=Curso.objects.filter(exibir=True).filter(ativo=True).order_by('-programa').order_by('nome'))
         nome = forms.CharField(label = "Nome", max_length=60, widget = forms.TextInput(attrs={'class': 'form-control'}) )
         email = forms.EmailField(label='E-Mail',max_length=254,  widget = forms.TextInput(attrs={'class': 'form-control', 'placeholder':'fulano@exemplo.com.br'}))
         nis = forms.IntegerField(label='NIS', required=False, widget = forms.TextInput(attrs={'class': 'form-control', 'maxlength':'11'}))
         sexo = forms.ChoiceField(widget=forms.RadioSelect(attrs={'class' : "custom-control-input"}), choices=SEX_CHOICES)
-        quant_filhos = forms.IntegerField(label='Quantidade de filhos', widget = forms.TextInput(attrs={'class': 'form-control'}))
-        dt_nascimento = forms.DateField(label='Data de Nascimento:', widget = forms.DateInput(attrs={'class': 'form-control', 'placeholder':'06/21/1990', 'onkeydown':'mascara(this,data)', 'onload' : 'mascara(this,data)', 'maxlength':'10'}))
+        quant_filhos = forms.IntegerField(label='Quantidade de filhos', initial=0, widget = forms.TextInput(attrs={'class': 'form-control'}))
+        dt_nascimento = forms.DateField(label='Data de Nascimento:', widget = forms.DateInput(attrs={'class': 'form-control', 'placeholder':'DD/MM/AAAA', 'onkeydown':'mascara(this,data)', 'onload' : 'mascara(this,data)', 'maxlength':'10'}))
         bolsa_familia = forms.BooleanField(label = 'Cadastrado no Bolsa Família.',required=False, widget=forms.CheckboxInput(attrs={'class' : "custom-control-input"}))
         portador_necessidades_especiais = forms.BooleanField(label = 'Portador de Necessidades Especiais.',required=False,widget=forms.CheckboxInput(attrs={'class' : "custom-control-input"}))
         disponibilidade = forms.ModelMultipleChoiceField(label = 'Disponibilidade', widget=forms.CheckboxSelectMultiple(attrs={'class' : "custom-control-input"}),queryset=Turno.objects.all())
@@ -62,7 +62,6 @@ class CadFormBase(forms.ModelForm):
             self.fields['email'].required = False
             self.fields['bairro'].queryset = Bairro.objects.none()
             if 'cidade' in self.data:
-                print("teste1")
                 try:
                     cidade_id = int(self.data.get('cidade'))
                     self.fields['bairro'].queryset = Bairro.objects.filter(cidade = cidade_id).order_by('nome')
@@ -74,10 +73,16 @@ class CadFormBase(forms.ModelForm):
                 self.fields['bairro'].initial = temp_bairro
 
         def clean_nome(self):
-            nome = self.cleaned_data["nome"]
-            nome = nome.lower()
-            nome = nome.title()
-            return nome
+            nome = self.cleaned_data["nome"].strip()
+
+            print('nome: ', nome, nome.find(' '))
+
+            if nome.find(' ') == -1:
+                raise ValidationError('Insira seu nome completo')
+            else:
+                nome = nome.lower()
+                nome = nome.title()
+                return nome
 
         def clean_celular(self):
             telefone = self.cleaned_data["celular"]
@@ -135,7 +140,7 @@ class CadFormBase(forms.ModelForm):
 
         def clean_dt_nascimento(self):
             dt_nasc = self.cleaned_data["dt_nascimento"]
-            print(dt_nasc)
+
             deltatime = dt_nasc - datetime.date.today()
             if datetime.timedelta(days = -14*365) < deltatime or deltatime < datetime.timedelta(days = -120*365):
                 raise ValidationError('Insira uma data válida')
@@ -153,8 +158,8 @@ class CadForm(CadFormBase):
             return cpf
 
 class Altera_cpf(forms.Form):
-        cpf = forms.CharField(label='CPF', max_length=14, widget = forms.TextInput(attrs={'class': 'form-control','onkeydown':"mascara(this,icpf)"}))
-        dt_nascimento = forms.DateField(label='Data de Nascimento:', widget = forms.TextInput(attrs={'class': 'form-control', 'placeholder':'06/21/1990', 'onkeydown':'mascara(this,data)', 'maxlength':'10'}))
+        cpf = forms.CharField(label='CPF:', max_length=14, widget = forms.TextInput(attrs={'class': 'form-control','onkeydown':"mascara(this,icpf)"}))
+        dt_nascimento = forms.DateField(label='Data de Nascimento:', widget = forms.TextInput(attrs={'class': 'form-control', 'placeholder':'DD/MM/AAAA', 'onkeydown':'mascara(this,data)', 'maxlength':'10'}))
 
         def clean_cpf(self):
             cpf = validate_CPF(self.cleaned_data["cpf"])
