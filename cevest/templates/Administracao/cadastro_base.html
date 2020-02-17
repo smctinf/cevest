@@ -27,8 +27,8 @@
                         <div>
                           <h6 class="my-0">
                 <div class="custom-control custom-checkbox">
-                    <input type = "checkbox" name = "cursos" value = "{{curso.id}}" class="custom-control-input" id="id_cursos_{{forloop.counter0}}" {% if curso.id in checked_curso_ids %} checked {% endif %}>
-                    <label class="custom-control-label" for="id_cursos_{{forloop.counter0}}">
+                    <input type = "checkbox" name = "cursos" value = "{{curso.id}}" class="custom-control-input" id="id_cursos_{{curso.id}}" {% if curso.id in checked_curso_ids %} checked {% endif %}>
+                    <label class="custom-control-label" for="id_cursos_{{curso.id}}">
                         <a href = "#" onclick="return open_popup('curso/{{curso.id}}')">{{curso.nome}}</a>
                     </label>
                 </div>

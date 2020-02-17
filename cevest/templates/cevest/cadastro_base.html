@@ -74,10 +74,14 @@
           </div>
 
           <div class="row">
-            <div class="col-md-6 mb-3">
-                <label>{{form.nis.label}}</label>
-                    {{form.nis.errors}}
-                    {{form.nis}}
+            <div class="col-md-5 mb-3">
+                <label>{{form.dt_nascimento.label}}</label>
+                {{form.dt_nascimento.errors}}
+                <div class = "form-inline">
+                    {% for i in form.dt_nascimento %}
+                        {{i}}
+                    {% endfor %}
+                </div>
             </div>
 
             <div class="col-md-3 mb-3">
@@ -112,15 +116,13 @@
           </div>
 
           <div class="row">
-            <div class="col-md-10 mb-3">
-                <label>{{form.dt_nascimento.label}}</label>
-                {{form.dt_nascimento.errors}}
-                <div class = "form-inline">
-                    {% for i in form.dt_nascimento %}
-                        {{i}}
-                    {% endfor %}
-                </div>
+
+            <div class="col-md-6 mb-3">
+                <label>{{form.nis.label}}</label>
+                {{form.nis.errors}}
+                {{form.nis}}
             </div>
+
           </div>
 
           <hr class="mb-4">

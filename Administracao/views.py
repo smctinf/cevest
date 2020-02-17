@@ -1050,13 +1050,28 @@ def lista_celular_por_turma(request):
         alunos_turmas = Aluno_Turma.objects.filter(turma=turma_id)
         return render(request,"Administracao/lista_celular_por_turma.html",{'alunos_turmas':alunos_turmas, 'turma':turma})
 
+
+    # TODO: Colocar aqui para imprimir quem também tiver permissão de ver todas as turmas
     usuario = User.objects.get(username=request.user.username)
+
+    if request.user.has_perm('Administracao.pode_emitir_certificado'):
+        print ('Tem permissão')
+        administrador = 's'
+        INSTRUTOR = ''
+    else:
+        print ('Não Tem permissão')
+
     if request.user.is_superuser:
         administrador = 's'
         INSTRUTOR = ''
     else:
-        administrador = 'n'
-        INSTRUTOR = Instrutor.objects.get(user=usuario)
+
+        if request.user.has_perm('Administracao.pode_emitir_certificado'):
+            administrador = 's'
+            INSTRUTOR = ''
+        else:
+            administrador = 'n'
+            INSTRUTOR = Instrutor.objects.get(user=usuario)
 
     form = EscolherTurma(administrador, INSTRUTOR)
     return render(request,"Administracao/escolher_lista_celular_por_turma.html",{'form':form})

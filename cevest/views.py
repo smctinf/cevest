@@ -56,7 +56,12 @@ def recibo_ind2(request, pk):
 
 def pauta(request):
 
-    turmas = Turma.objects.filter(dt_fechamento=None)
+    if request.user.is_superuser or request.user.has_perm('Administracao.pode_emitir_certificado'):
+        turmas = Turma.objects.filter(dt_fechamento=None)
+    else:
+        user = User.objects.get(username=request.user.username)
+        instrutor = Instrutor.objects.get(user=user)
+        turmas = Turma.objects.filter(instrutor=instrutor).filter(dt_fechamento=None)
 
     return render(request,"cevest/pauta.html",{'turmas':turmas,})
 
