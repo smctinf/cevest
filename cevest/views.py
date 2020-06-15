@@ -72,7 +72,7 @@ def pauta2(request, turma_id):
 
 #select_related
 
-    alunos = Aluno_Turma.objects.order_by('aluno').filter(turma=turma_id)
+    alunos = Aluno_Turma.objects.order_by('aluno').filter(turma=turma_id).filter(situacao=1)
 #    turma = Turma.objects.prefetch_related('horario__hora_inicio',).get(pk=turma_id)
     turma = Turma.objects.get(pk=turma_id)
     dias = range(20)
