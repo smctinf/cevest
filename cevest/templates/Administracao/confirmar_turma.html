@@ -23,8 +23,8 @@ table, th, td {
             <th>Confirma:</th>
         {% for form in formset %}
             <tr>
-                <td>{{ form.nome.value }}</td>
                 <td>{{ form.confirma }}</td>
+                <td>{{ form.nome.value }}</td>
             </tr>
         {% empty %}
         <p>Não há turmas previstas</p>

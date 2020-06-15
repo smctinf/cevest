@@ -162,7 +162,7 @@ def SelecionarTurmaParaSituacao(request):
         INSTRUTOR = Instrutor.objects.get(user=usuario)
     # turma = EscolherTurma(request.POST)   
 
-    form = EscolherTurma(administrador, INSTRUTOR)
+    form = EscolherTurma('s', administrador, INSTRUTOR)
     return render(request,"Administracao/escolher_turma.html",{'form':form})
 
 @login_required
@@ -247,7 +247,7 @@ def SelecionarTurmaParaControle(request):
         INSTRUTOR = Instrutor.objects.get(user=usuario)
 
 
-    form = EscolherTurma(administrador, INSTRUTOR)
+    form = EscolherTurma('s', administrador, INSTRUTOR)
     return render(request,"Administracao/escolher_turma.html",{'form':form})
 
 @login_required
@@ -1037,12 +1037,8 @@ def ajuda_atualizacoes(request):
 
 # Lista alunos com seus celulares por turma
 @login_required
-def lista_celular_por_turma(request):
+def lista_celular_por_turma(request, turma_aberta):
     if request.method == 'POST':
-#        form = EscolherTurma(request.POST)
-
-#        if form.is_valid():
-#            turma_id = form.cleaned_data['nome']
 
         turma_id = request.POST.get("turma")
         turma = Turma.objects.get(pk=turma_id)
@@ -1073,7 +1069,8 @@ def lista_celular_por_turma(request):
             administrador = 'n'
             INSTRUTOR = Instrutor.objects.get(user=usuario)
 
-    form = EscolherTurma(administrador, INSTRUTOR)
+
+    form = EscolherTurma(turma_aberta, administrador, INSTRUTOR)
     return render(request,"Administracao/escolher_lista_celular_por_turma.html",{'form':form})
 
 
@@ -1166,7 +1163,7 @@ def GerarDeclaracao(request):
             else:
                 dia = 'Sábado'
 
-            temp_horario.append(dia + ' de ' + str(horario.hora_inicio)[:5] + ' a ' + str(horario.hora_fim)[:5])
+            temp_horario.append(dia + ' de ' + str(horario.hora_inicio)[:5] + ' às ' + str(horario.hora_fim)[:5])
 
         context = {
             'aluno' : aluno,

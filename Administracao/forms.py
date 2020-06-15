@@ -4,16 +4,23 @@ from cevest.models import Turma, Situacao,Turma_Prevista, Status_Aluno_Turma_Pre
 from django.utils.safestring import mark_safe
 
 class EscolherTurma(forms.Form):
-    def __init__(self, administrador, INSTRUTOR, *args,**kwargs):
+    def __init__(self, turma_aberta, administrador, INSTRUTOR, *args,**kwargs):
         super (EscolherTurma,self).__init__(*args, **kwargs)
 #        turma = forms.ModelChoiceField(queryset=Turma.objects.all())
     #    self.fields['turma'] = forms.ModelChoiceField(queryset=Turma.objects.all())
 #        self.fields['turma'].queryset = forms.ModelChoiceField(queryset=Turma.objects.filter(instrutor=INSTRUTOR))
 
-        if administrador == 's':
-            self.fields['turma'] = forms.ModelChoiceField(queryset=Turma.objects.filter(dt_fechamento=None))
+        if turma_aberta == 's':
+            if administrador == 's':
+                self.fields['turma'] = forms.ModelChoiceField(queryset=Turma.objects.filter(dt_fechamento=None))
+            else:
+                self.fields['turma'] = forms.ModelChoiceField(queryset=Turma.objects.filter(instrutor=INSTRUTOR).filter(dt_fechamento=None))
         else:
-            self.fields['turma'] = forms.ModelChoiceField(queryset=Turma.objects.filter(instrutor=INSTRUTOR).filter(dt_fechamento=None))
+            if administrador == 's':
+                self.fields['turma'] = forms.ModelChoiceField(queryset=Turma.objects.exclude(dt_fechamento=None))
+            else:
+                self.fields['turma'] = forms.ModelChoiceField(queryset=Turma.objects.filter(instrutor=INSTRUTOR).exclude(dt_fechamento=None))
+
 
 class EscolherTurmaEncerramento(forms.Form):
     def __init__(self, administrador, INSTRUTOR, *args,**kwargs):

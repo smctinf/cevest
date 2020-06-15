@@ -18,7 +18,8 @@
 {% endif %}
 
 {% if perms.Administracao.eh_professor or perms.Administracao.pode_emitir_certificado %}
-    <li><a href="{% url 'administracao:lista_celular_por_turma' %}">Relação de Alunos por Turma com Celular</a></li>
+    <li><a href="{% url 'administracao:lista_celular_por_turma' 's' %}">Relação de Alunos por Turma com Celular (turmas abertas)</a></li>
+    <li><a href="{% url 'administracao:lista_celular_por_turma' 'n' %}">Relação de Alunos por Turma com Celular (turmas fechadas)</a></li>
 {% endif %}
 
 {% if perms.Administracao.eh_professor %}
