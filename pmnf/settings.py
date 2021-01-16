@@ -23,10 +23,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '++wlc1(z793vjl0u3q4&u!q#f!^pjo=7m!*wcj#4@xbx=jx5(j'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 # ALLOWED_HOSTS = []
-ALLOWED_HOSTS = ["cevest.pmnf.rj.gov.br", "cevest.jlb.net.br", "127.0.0.1", "localhost"]
+ALLOWED_HOSTS = ["cevest.pmnf.rj.gov.br", "127.0.0.1", "localhost", '192.168.4.167', '187.95.40.73']
 
 
 
