@@ -310,7 +310,7 @@ class Feriado(models.Model):
         verbose_name_plural = "Feriados"
     nome = models.CharField(max_length = 50, unique = False)
     data = models.DateField()
-    fixo = models.NullBooleanField('Feriado fixo', blank = True, null = True, default=True)
+    fixo = models.BooleanField('Feriado fixo', blank = True, null = True, default=True)
 
 class Status_Aluno_Turma_Prevista(models.Model):
     class Meta:
