@@ -38,34 +38,18 @@
     </div>
     <br>
     <center>
-      <a href="/index" class="btn btn-primary" role="button">Início</a>
-      <a href="/cursos/1" class="btn btn-primary" role="button">Cursos Tradicionais</a>
-      <a href="/cursos/2" class="btn btn-primary" role="button">Nova Friburgo Criativa</a>
+      <a href="{% url 'index' %}" class="btn btn-primary" role="button">Início</a>
+      <a href="{% url 'cursos' 1 %}" class="btn btn-primary" role="button">Cursos Tradicionais</a>
 
-      <a href="/cadastro" class="btn btn-primary" role="button">Pré-Matrícula</a>
-      <a href="/altera_cpf" class="btn btn-primary" role="button">Alterar Cadastro</a>
-<!--
-      <a href="cadastro" class="btn btn-primary" role="button">Realizar Cadastro</a>
-      <a href="altera_cpf" class="btn btn-primary" role="button">Alterar Cadastro</a>
--->
-      <a href="/resultado" class="btn btn-danger" role="button">Resultado</a>
-<!--
-      <a href="cadastro" class="btn btn-primary" role="button">Realizar Cadastro</a>
-      <a href="altera_cpf" class="btn btn-primary" role="button">Alterar Cadastro</a>
--->
-<!--      <a href="resultado" class="btn btn-danger" role="button">Resultado</a> -->
+      <a href="{% url 'cadastro' %}" class="btn btn-primary" role="button">Pré-Matrícula</a>
+      <a href="{% url 'altera_cpf' %}" class="btn btn-primary" role="button">Alterar Cadastro</a>
+      <a href="{% url 'resultado' %}" class="btn btn-danger" role="button">Resultado</a>
 
     </center>
 
     <br>
     
 {% block content %}{% endblock %}
-
-<!--
-    <div class="footer"><br>
-      <p align="center">(22) 2525-9145</p>
-    </div>
-  -->
 
 <!-- JavaScript (Opcional) -->
     <!-- jQuery primeiro, depois Popper.js, depois Bootstrap JS -->

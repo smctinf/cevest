@@ -12,23 +12,41 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import os
 
+from pathlib import Path
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '++wlc1(z793vjl0u3q4&u!q#f!^pjo=7m!*wcj#4@xbx=jx5(j'
+#SECRET_KEY = '++wlc1(z793vjl0u3q4&u!q#f!^pjo=7m!*wcj#4@xbx=jx5(j'
+
+print(BASE_DIR)
+env_vars = open(str(BASE_DIR.parent) + "/.envvar", "r")
+
+env = []
+for linha in env_vars:
+    env.append(linha.rstrip())
+
+db_name = env[0]
+db_user = env[1]
+db_passwd = env[2]
+SECRET_KEY = env[3]
+debug = env[4]
+email_user = env[5]
+email_pass = env[6]
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = eval(debug)
+
+
 
 # ALLOWED_HOSTS = []
 ALLOWED_HOSTS = ["cevest.pmnf.rj.gov.br", "127.0.0.1", "localhost", '192.168.4.167', '187.95.40.73']
-
-
 
 # Application definition
 
@@ -83,16 +101,13 @@ WSGI_APPLICATION = 'pmnf.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-#        'ENGINE': 'mysql.connector.django',
 
-        'NAME': 'pmnf',
+        'NAME': db_name,
         'PORT': '',
 
-        'USER': 'pmnf',
-        'PASSWORD': '1w6l4x9zx2cb',
+        'USER': db_user,
+        'PASSWORD': db_passwd,
         'HOST': '127.0.0.1',
-#        'HOST': '35.225.36.72',
-
     }
 }
 
@@ -136,6 +151,11 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = '/home/cevest/public_html/pmnf/cevest/static'
+
+# Default primary key field type
+# https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # JLB para SSL
 

@@ -84,7 +84,7 @@ def pauta2(request, turma_id):
 # Página Cadastro
 def cadastro(request):
 
-    programas = Programa.objects.all().order_by('-nome')
+    programas = Programa.objects.filter(ativo=True).order_by('-nome')
 
     cursos = []
 

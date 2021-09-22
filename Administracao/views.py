@@ -1120,13 +1120,16 @@ def GerarDeclaracao(request):
 #        request.session["cpf"] = cpf
 
 #        print ('aluno_turma: ', aluno_turma)
+
+        if not aluno_turma:
+            messages.info(request,'Aluno não consta em nenhum curso.')
+            form = EscolherAlunoDeclaracao()
+            return render(request,"Administracao/escolher_aluno_nova_aba.html",{'form':form})
+
+
         aluno_turma = get_object_or_404(Aluno_Turma,id=aluno_turma)
 
         aluno = get_object_or_404(Aluno,id=aluno_turma.aluno_id)
-
-        # Verifica status
-#        print ('Aprovado:', aluno_turma.situacao)
-#        print ('Aluno---:', aluno_turma)
 
         aprovado = Situacao.objects.get(descricao = "Aprovado")
         cursando = Situacao.objects.get(descricao = "Cursando")
@@ -1198,6 +1201,12 @@ def GerarDeclaracao(request):
                 aluno_turma = Aluno_Turma.objects.filter(aluno = aluno)
             except Exception as e:
                 print (e)
+
+            if not aluno_turma.exists():
+                messages.info(request,'Aluno não consta em nenhum curso.')
+                form = EscolherAlunoDeclaracao()
+                return render(request,"Administracao/escolher_aluno_nova_aba.html",{'form':form})
+
 
             # desvia para tela de escolha de turma, pois um aluno pode fazer mais de um curso
 
