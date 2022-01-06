@@ -273,6 +273,8 @@ class Turma(models.Model):
     horario = models.ManyToManyField(Horario)
     quant_alunos = models.PositiveSmallIntegerField(default=0)
     dt_fechamento = models.DateTimeField('Data Fechamento', blank=True, null=True)
+    exibir = models.BooleanField(default=True)
+    situacao = models.ForeignKey(Situacao_Turma, on_delete=models.PROTECT, default=1)
     dt_inclusao = models.DateTimeField(auto_now_add=True)
 
 class Situacao(models.Model):
