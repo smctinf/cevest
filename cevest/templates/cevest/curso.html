@@ -1,17 +1,19 @@
-<html>
-<body>
+<html lang="pt-br">
+  <head>
+    <title>CEVEST</title>
+  </head>
+    <body>
 
+    <h3 align=center>{{ curso.nome }}</h3>
 
-<h3 align=center>{{ curso.nome }}</h3>
+    <p>{{ curso.descricao }}</p>
+    <p>Duração: {{ curso.duracao }} Horas</p>
+    <p>Idade mínima: {{ curso.idade_minima }} anos</p>
+    <p>Escolaridade mínima: {{ curso.escolaridade_minima }}</p>
 
-<p>{{ curso.descricao }}</p>
-<p>Duração: {{ curso.duracao }} Horas</p>
-<p>Idade mínima: {{ curso.idade_minima }} anos</p>
-<p>Escolaridade mínima: {{ curso.escolaridade_minima }}</p>
+    {% if curso.pre_requisito.exist %}
+        <p>Pré-requisito: {{ curso.pre_requisito }}</p>
+    {% endif %}
 
-{% if curso.pre_requisito.exist %}
-    <p>Pré-requisito: {{ curso.pre_requisito }}</p>
-{% endif %}
-
-</body>
+    </body>
 </html>

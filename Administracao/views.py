@@ -47,6 +47,13 @@ def logout_view(request):
     logout(request)
     return HttpResponseRedirect("/administracao")
 
+
+@login_required
+# @permission_required('cevest.acesso_admin', raise_exception=True)
+def tabelas(request):
+    return render(request,"Administracao/tabelas.html")
+
+
 class temp_disciplina:
     nome = None
     numero_aulas = None
@@ -1352,6 +1359,93 @@ def total_cadastrados_em_dado_periodo(request):
     else:
         form = EscolherDataCad()
         return render(request,"Administracao/escolher_data.html",{'form':form})
+
+#########################
+
+@login_required
+@permission_required('cevest.acesso_admin', raise_exception=True)
+def cursos(request):
+
+    cursos = Curso.objects.all()
+
+    return render(request, "Administracao/cursos.html",{"cursos":cursos})
+
+
+@login_required
+@permission_required('cevest.acesso_admin', raise_exception=True)
+def curso_inclui(request):
+
+    if request.method == 'POST':
+        form = CursoForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+
+            form = CursoForm()
+
+        else:
+            # Se teve erro:
+            print('Erro: ', form.errors)
+            erro_tmp = str(form.errors)
+            erro_tmp = erro_tmp.replace('<ul class="errorlist">', '')
+            erro_tmp = erro_tmp.replace('</li>', '')
+            erro_tmp = erro_tmp.replace('<ul>', '')
+            erro_tmp = erro_tmp.replace('</ul>', '')
+            erro_tmp = erro_tmp.split('<li>')
+
+            messages.error(request, erro_tmp[2])
+
+    else:
+        form = CursoForm()
+
+    return render(request, 'Administracao/curso_altera_inclui.html', { 'form': form, 'operacao': 'Inclusão' })
+
+
+@login_required
+@permission_required('cevest.acesso_admin', raise_exception=True)
+def curso_altera(request, id):
+    curso = get_object_or_404(Curso, pk=id)
+
+    if request.method == 'POST':
+        form = CursoForm(request.POST, instance=curso)
+
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.save()
+
+            return render(request, 'Administracao/curso.html', { 'curso': obj })
+        else:
+            # Se teve erro:
+            print('Erro: ', form.errors)
+            erro_tmp = str(form.errors)
+            erro_tmp = erro_tmp.replace('<ul class="errorlist">', '')
+            erro_tmp = erro_tmp.replace('</li>', '')
+            erro_tmp = erro_tmp.replace('<ul>', '')
+            erro_tmp = erro_tmp.replace('</ul>', '')
+            erro_tmp = erro_tmp.split('<li>')
+
+            messages.error(request, erro_tmp[1] + ': ' + erro_tmp[2])
+    else:
+        form = CursoForm(instance=curso)
+
+    return render(request, 'Administracao/curso_altera_inclui.html', { 'form': form, 'operacao': 'Alteração', 'id': curso.id })
+
+
+@login_required
+@permission_required('cevest.acesso_admin', raise_exception=True)
+def curso_exclui(request, id):
+    curso = Curso.objects.get(id=id)
+
+    return render(request, 'Administracao/curso.html', { 'curso': curso })
+
+
+@login_required
+@permission_required('cevest.acesso_admin', raise_exception=True)
+def curso(request, id):
+    curso = Curso.objects.get(id=id)
+
+    return render(request, 'Administracao/curso.html', { 'curso': curso })
+
 
 ###########################
 ### Apagar isso após rodar

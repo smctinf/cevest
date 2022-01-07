@@ -9,7 +9,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
-    <link href="../../static/cevest/css/jlb.css" rel="stylesheet" type="text/css">
+    <link href="{% static 'cevest/css/jlb.css' %}" rel="stylesheet" type="text/css">
 
     <title>Adm CEVEST</title>
 
@@ -39,25 +39,21 @@
     </div>
     <br>
     <center>
-      <a href="/administracao" class="btn btn-primary" role="button">Início</a>
+      <a href="{% url 'administracao:area_admin' %}" class="btn btn-primary" role="button">Início</a>
 
       {% if user.is_superuser %}
-        <a href="/admin" class="btn btn-primary" role="button" target="_blank">Tabelas</a>
+        <a href="{% url 'administracao:tabelas' %}" class="btn btn-primary" role="button">Tabelas</a>
       {% endif %}
 
-      <!--
-      <a href="/alocados" class="btn btn-primary" role="button">Alocados</a>
-      <a href="http://x.jlb.net.br/indicadores.php" class="btn btn-primary" role="button">Indicadores</a>
-      -->
-      <a href="/indicadores" class="btn btn-primary" role="button">Indicadores</a>
+      <a href="{% url 'indicadores' %}" class="btn btn-primary" role="button">Indicadores</a>
 
       {% if user.is_superuser %}
-        <a href="http://x.jlb.net.br/altcevest.php" class="btn btn-primary" role="button">Alterar Cadastro</a>
+        <a href="{% url 'altera_cpf' %}" class="btn btn-primary" role="button">Alterar Cadastro</a>
       {% endif %}
 
-      <a href="ajuda" class="btn btn-primary" role="button">Ajuda</a>
+      <a href="{% url 'administracao:ajuda' %}" class="btn btn-primary" role="button">Ajuda</a>
 
-      <a href="logout" class="btn btn-primary" role="button">Sair</a>
+      <a href="{% url 'administracao:logout' %}" class="btn btn-primary" role="button">Sair</a>
     </center>
 
     <br>

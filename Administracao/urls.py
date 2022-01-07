@@ -40,6 +40,13 @@ urlpatterns = [
     path('lista_turmas_nao_fechadas',views.lista_turmas_nao_fechadas, name = "lista_turmas_nao_fechadas"),
     path('encerrar_turma',views.encerrar_turma, name = "encerrar_turma"),
     path('total_cadastrados_em_dado_periodo',views.total_cadastrados_em_dado_periodo, name = "total_cadastrados_em_dado_periodo"),
+    #
+    path('tabelas',views.tabelas, name = "tabelas"),
+    path('cursos',views.cursos, name = "cursos"),
+    path('curso_inclui',views.curso_inclui, name = "curso_inclui"),
+    path('curso_altera/<int:id>',views.curso_altera, name = "curso_altera"),
+    path('curso_exclui/<int:id>',views.curso_exclui, name = "curso_exclui"),
+    path('curso/<int:id>',views.curso, name = "curso"),
 
     ### Apagar
     path('apaga_costurareta',views.apaga_costurareta, name = "apaga_costurareta"),

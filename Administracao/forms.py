@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm, BaseFormSet
-from cevest.models import Turma, Situacao,Turma_Prevista, Status_Aluno_Turma_Prevista, Aluno, Aluno_Turma
+from cevest.models import *
 from django.utils.safestring import mark_safe
 
 class EscolherTurma(forms.Form):
@@ -131,3 +131,10 @@ class EscolherData(forms.Form):
 class EscolherDataCad(forms.Form):
     dt_inicio = forms.DateField(label='Data Início:',required=False, widget=forms.SelectDateWidget(years=range(2019, 2025)))
     dt_fim = forms.DateField(label='Data Fim:',required=False, widget=forms.SelectDateWidget(years=range(2019, 2025)))
+
+
+class CursoForm(ModelForm):
+
+    class Meta:
+        model = Curso
+        exclude = ['dt_inclusao']
