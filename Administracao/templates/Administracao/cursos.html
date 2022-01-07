@@ -31,6 +31,10 @@
                 <th>#</th>
                 <th>ID</th>
                 <th>Nome</th>
+                <th>Duração</th>
+                <th>Exibir</th>
+                <th>Ativo</th>
+                <th>Dt.Inclusão</th>
             </tr>
         </thead>
 
@@ -41,6 +45,10 @@
                     <td>{{ forloop.counter }}</td>
                     <td>{{ curso.id }}</td>
                     <td><a href="{% url 'administracao:curso' curso.id %}">{{ curso.nome }}</a></td>
+                    <td>{{ curso.duracao }} horas</td>
+                    <td>{% if curso.exibir %}Sim{% else %}Não{% endif %}</td>
+                    <td>{% if curso.ativo %}Sim{% else %}Não{% endif %}</td>
+                    <td>{{ curso.dt_inclusao | date:"SHORT_DATETIME_FORMAT" }}</td>
                 </tr>
             {% endfor %}
 
