@@ -11,14 +11,13 @@ import re
 
 from django.core.validators import EMPTY_VALUES
 from django.forms import ValidationError
-#from django.utils.translation import ugettext_lazy as _
-"""
+from django.utils.translation import gettext_lazy as _
+
 error_messages = {
     'invalid': _("Número de CPF inválido."),
     'digits_only': _("Este campo requer somente números."),
     'max_digits': _("Este campo requer 11 dígitos."),
 }
-"""
 
 def DV_maker(v):
     if v >= 2:

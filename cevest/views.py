@@ -207,8 +207,11 @@ def bairro_serializer(bairro):
 def altera_cpf(request):
 
     if request.method == 'POST':
+
         altera_form = Altera_cpf(request.POST)
+
         if altera_form.is_valid():
+
             cpf_temp = altera_form.cleaned_data['cpf']
             nasc_temp = altera_form.cleaned_data['dt_nascimento']
 
@@ -218,12 +221,27 @@ def altera_cpf(request):
                 aluno_temp = None
                 messages.info(request,'Cadastro inexistente')
 
-                form = Altera_cpf()
+                form = altera_form
                 return render(request,"cevest/altera.html",{'form':form})
 
             request.session["aluno_id"] = aluno_temp.id
             return HttpResponseRedirect(reverse(AlterarCadastro))
-    form = Altera_cpf()
+        else:
+            # Se teve erro:
+            print('Erro: ', altera_form.errors)
+            erro_tmp = str(altera_form.errors)
+            erro_tmp = erro_tmp.replace('<ul class="errorlist">', '')
+            erro_tmp = erro_tmp.replace('</li>', '')
+            erro_tmp = erro_tmp.replace('<ul>', '')
+            erro_tmp = erro_tmp.replace('</ul>', '')
+            erro_tmp = erro_tmp.split('<li>')
+
+            messages.error(request, erro_tmp[2])
+
+            form = altera_form
+    else:
+        form = Altera_cpf()
+
     return render(request,"cevest/altera.html",{'form':form})
 
 
