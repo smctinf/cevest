@@ -452,7 +452,9 @@ def Alocacao(request):
     horario_tarde = Turno.objects.get(descricao = "Tarde")
     horario_noite = Turno.objects.get(descricao = "Noite")
 
-    alunos_compativeis = Aluno.objects.filter(cursos = turma_prevista.curso).filter(ativo=True)
+    # ============== ALTERACAO PARA PEGAR Só A PARTIR DE NOVEMBRO
+
+    alunos_compativeis = Aluno.objects.filter(cursos = turma_prevista.curso).filter(ativo=True).filter(dt_inclusao__gt='2022-02-08').filter(dt_inclusao__lt='2022-02-09')
 
     print('Tam: ', len(alunos_compativeis))
 

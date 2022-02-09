@@ -103,17 +103,17 @@ class BairroAdmin(admin.ModelAdmin):
     search_fields = ['nome']
 
 admin.site.register(Bairro, BairroAdmin)
-"""
+
 from .models import Turma_Prevista
 class Turma_PrevistaAdmin(admin.ModelAdmin):
     # ...
-    list_display = ('curso', 'nome', 'curriculo', 'instrutor', 'dt_inicio', 'dt_fim', 'situacao')
+    list_display = ('id', 'curso', 'nome', 'curriculo', 'instrutor', 'dt_inicio', 'dt_fim', 'situacao')
     list_filter = ['curso']
     filter_horizontal = ('horario',)
     search_fields = ['curso__nome', 'instrutor__nome']
 
 admin.site.register(Turma_Prevista, Turma_PrevistaAdmin)
-"""
+
 from .models import Aluno_Turma_Prevista
 class Aluno_Turma_PrevistaAdmin(admin.ModelAdmin):
     # ...
