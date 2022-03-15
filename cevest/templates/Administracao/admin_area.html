@@ -66,7 +66,8 @@
         <li><a href="{% url 'administracao:selecionar_turma_para_certificado' %}">Emitir certificado</a></li>
     </ul>
 {% endif %}
-{% if perms.Administracao.pode_emitir_certificado %}
+
+{% if perms.Administracao.pode_fazer_alocacao %}
     Alocação:
     <ul>
         <li><a href="{% url 'administracao:escolher_turma_prevista_para_alterar_situacao' %}">Confirmar Inscrição (Alterar Situação dos Alunos: turma prevista)</a></li>

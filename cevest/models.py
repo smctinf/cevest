@@ -329,6 +329,7 @@ class Aluno_Turma_Prevista(models.Model):
     class Meta:
         verbose_name_plural = "Relação de Alunos por Turma - Previsão"
         ordering = ('turma_prevista', 'aluno',)
+        unique_together = ['turma_prevista', 'aluno']
 
     def __str__(self):
         return '%s - %s' % (self.turma_prevista, self.aluno)
