@@ -100,7 +100,6 @@ def GerarCertificados(request):
     aprovado = Situacao.objects.get(descricao = "aprovado")
 
     cpf = request.session["cpf"]
-    print('CPF:',cpf)
 
     if (cpf):
         try:
@@ -417,7 +416,7 @@ def ConfirmarTurma(request):
     return render(request, "Administracao/confirmar_turma.html",{"formset" : formset})
 
 @login_required
-@permission_required('cevest.acesso_admin', raise_exception=True)
+@permission_required('cevest.pode_fazer_alocacao', raise_exception=True)
 def EscolherTurmaPrevistaParaAlocacao(request):
     situacao_cancelada = Situacao_Turma.objects.get(descricao = "Cancelada")
     turmas_previstas = Turma_Prevista.objects.exclude(situacao = situacao_cancelada)
@@ -433,7 +432,7 @@ def EscolherTurmaPrevistaParaAlocacao(request):
     return render(request,"Administracao/escolher_turma.html",{'form':form})
 
 @login_required
-@permission_required('cevest.acesso_admin', raise_exception=True)
+@permission_required('cevest.pode_fazer_alocacao', raise_exception=True)
 def Alocacao(request):
     #Ordem de prioridade:
     #1-Ordem judicial
@@ -456,8 +455,6 @@ def Alocacao(request):
 
     alunos_compativeis = Aluno.objects.filter(cursos = turma_prevista.curso).filter(ativo=True).filter(dt_inclusao__gt='2022-02-08').filter(dt_inclusao__lt='2022-02-09')
 
-    print('Tam: ', len(alunos_compativeis))
-
     lista_final = []
     
     turma_prevista_alunos = Aluno_Turma_Prevista.objects.filter(turma_prevista = turma_prevista)
@@ -465,8 +462,6 @@ def Alocacao(request):
     #Exclui de alunos compativeis os alunos q já estão na lista ta turma
     for tmp_turma_prevista_alunos in turma_prevista_alunos:
         alunos_compativeis = alunos_compativeis.exclude(id = tmp_turma_prevista_alunos.aluno_id)
-
-    print('Tam2: ', len(alunos_compativeis))
 
 
     status_candidato = Status_Aluno_Turma_Prevista.objects.get(descricao = "Candidato")
@@ -486,8 +481,6 @@ def Alocacao(request):
 
     if len(turma_prevista.horario.filter(hora_inicio = datetime.time(hour = 18))) > 0:
         alunos_compativeis = alunos_compativeis.filter(disponibilidade = horario_noite)
-
-    print('Tam:3 ', len(alunos_compativeis))
 
     # Exclui de alunos_compativeis os alunos que desistiram da vaga ou não compareceram
 
@@ -530,8 +523,6 @@ def Alocacao(request):
                     print("aluno removido da lista por conflito de horário:" + str(aluno))
                     alunos_compativeis = alunos_compativeis.exclude(id = aluno.id)
 
-
-    print('Tam4: ', len(alunos_compativeis))
 
 
     #O sistema de pontos é definido de modo que a pessoa que tem uma prioridade maior que outra sempre receba
@@ -631,7 +622,6 @@ def Alocacao(request):
         lista_final.append(temp_dict)
 
         if aluno.dt_nascimento == '' or aluno.dt_inclusao == '':
-            print ('Aluno: ', aluno.id, aluno.nome)
             exit
         # else:
         #    print ('Aluno ok: ', aluno.nome)
@@ -644,8 +634,6 @@ def Alocacao(request):
 
     i = quant_na_turma
 
-    print ('i: ', i)
-
     for aluno_pontuacao in lista_final:
         if(i >= turma_prevista.quant_alunos):
             break
@@ -655,6 +643,7 @@ def Alocacao(request):
             turma_prevista = turma_prevista,
         )
         aluno_pontuacao['situacao'] = temp_aluno_turma_prevista.status_aluno_turma_prevista
+
         i+=1
 
     i = turma_prevista.quant_alunos - quant_na_turma
@@ -834,14 +823,14 @@ def ConfirmarAluno(request,aluno_id,turma_id):
 
 
 @login_required
-@permission_required('cevest.acesso_admin', raise_exception=True)
+@permission_required('cevest.pode_fazer_alocacao', raise_exception=True)
 def lista_alocados_telefone(request):
     lista_turmas = getLista_Alocados()
     return render(request, "cevest/lista_alocados_telefone.html",{"listas":lista_turmas})
 
 
 @login_required
-@permission_required('cevest.acesso_admin', raise_exception=True)
+@permission_required('cevest.pode_fazer_alocacao', raise_exception=True)
 def lista_alocados_telefone_zap(request):
     
 #    lista_turmas = Aluno_Turma_Prevista.objects.filter(status_aluno_turma_prevista_id='1')
@@ -851,7 +840,7 @@ def lista_alocados_telefone_zap(request):
 
 
 @login_required
-@permission_required('cevest.acesso_admin', raise_exception=True)
+@permission_required('cevest.pode_fazer_alocacao', raise_exception=True)
 def lista_alfabetica(request):
     lista_alfabetica = getLista_Candidatos()
     return render(request, "Administracao/lista_alfabetica.html",{"listas":lista_alfabetica}) 
@@ -878,7 +867,7 @@ def lista_todos_por_curso_e_turno(request, curso_id, turno_id):
 
 # Mostra quantidade de alunos que abandonaram ou cancelaram a matrícula em uma turma definitiva
 @login_required
-@permission_required('cevest.acesso_admin', raise_exception=True)
+@permission_required('cevest.pode_fazer_alocacao', raise_exception=True)
 def quantidade_situacao_aluno_turma(request):
 
     if request.method == 'POST':
@@ -1060,11 +1049,8 @@ def lista_celular_por_turma(request, turma_aberta):
     usuario = User.objects.get(username=request.user.username)
 
     if request.user.has_perm('Administracao.pode_emitir_certificado'):
-        print ('Tem permissão')
         administrador = 's'
         INSTRUTOR = ''
-    else:
-        print ('Não Tem permissão')
 
     if request.user.is_superuser:
         administrador = 's'
@@ -1286,7 +1272,6 @@ def lista_turmas_nao_fechadas(request):
     lista = []
 
     for turma in turmas:
-        print(turma)
         quant = Aluno_Turma.objects.filter(turma=turma, situacao='1').count()
         if quant > 0:
             lista.append(turma)
@@ -1311,7 +1296,6 @@ def encerrar_turma(request):
 
         if len(alunos_turmas) > 0:
             # Ainda tem aluno cursando. Nao pode encerrar turma
-            print()
             msg = 'Turma não pode ser encerrada. Ainda há aluno com status CURSANDO'
         else:
             # encerra turma
@@ -1351,8 +1335,6 @@ def total_cadastrados_em_dado_periodo(request):
 
         if dt_fim == None:
             dt_fim = '2030-12-31'
-
-        print (dt_inicio)
 
         total = Aluno.objects.filter(dt_inclusao__gte=dt_inicio).filter(dt_inclusao__lte=dt_fim).count()
 
@@ -1461,14 +1443,10 @@ def apaga_costurareta(request):
     for aluno in alunos:
         tem_reta = Aluno.objects.filter(id=aluno.id).filter(cursos=curso_21)
         if tem_reta:
-            print('tem os dois:', aluno.nome)
             res = aluno.cursos.remove(curso_3)
 #            res = Aluno.objects.filter(id=aluno.id).filter(cursos=curso_3).delete()
-            print('res: ', res)
         else:
-            print('só um:', aluno.nome)
             res = aluno.cursos.add(curso_21)
             res = aluno.cursos.remove(curso_3)
-            print('res: ', res)
 
 
