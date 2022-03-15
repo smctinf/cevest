@@ -454,7 +454,8 @@ def Alocacao(request):
 
     # ============== ALTERACAO PARA PEGAR Só A PARTIR DE NOVEMBRO
 
-    alunos_compativeis = Aluno.objects.filter(cursos = turma_prevista.curso).filter(ativo=True).filter(dt_inclusao__gt='2022-02-08').filter(dt_inclusao__lt='2022-02-09')
+#    alunos_compativeis = Aluno.objects.filter(cursos = turma_prevista.curso).filter(ativo=True).filter(dt_inclusao__gt='2022-02-08').filter(dt_inclusao__lt='2022-02-09')
+    alunos_compativeis = Aluno.objects.filter(cursos = turma_prevista.curso).filter(ativo=True)
 
     print('Tam: ', len(alunos_compativeis))
 
@@ -478,7 +479,7 @@ def Alocacao(request):
 
     #pega os alunos com horários disponíveis compatíveis com o curso.
 
-    if len(turma_prevista.horario.filter(hora_inicio = datetime.time(hour = 7, minute = 30 ))) > 0:
+    if len(turma_prevista.horario.filter(hora_inicio = datetime.time(hour = 8, minute = 00 ))) > 0:
         alunos_compativeis = alunos_compativeis.filter(disponibilidade = horario_manha)
 
     if len(turma_prevista.horario.filter(hora_inicio = datetime.time(hour = 13))) > 0:
@@ -834,14 +835,14 @@ def ConfirmarAluno(request,aluno_id,turma_id):
 
 
 @login_required
-@permission_required('cevest.acesso_admin', raise_exception=True)
+@permission_required('Administracao.pode_emitir_certificado', raise_exception=True)
 def lista_alocados_telefone(request):
     lista_turmas = getLista_Alocados()
     return render(request, "cevest/lista_alocados_telefone.html",{"listas":lista_turmas})
 
 
 @login_required
-@permission_required('cevest.acesso_admin', raise_exception=True)
+@permission_required('Administracao.pode_emitir_certificado', raise_exception=True)
 def lista_alocados_telefone_zap(request):
     
 #    lista_turmas = Aluno_Turma_Prevista.objects.filter(status_aluno_turma_prevista_id='1')
