@@ -824,22 +824,16 @@ def ConfirmarAluno(request,aluno_id,turma_id):
 
 
 @login_required
-<<<<<<< HEAD
-@permission_required('Administracao.pode_emitir_certificado', raise_exception=True)
-=======
+# @permission_required('Administracao.pode_emitir_certificado', raise_exception=True)
 @permission_required('cevest.pode_fazer_alocacao', raise_exception=True)
->>>>>>> 762c1452bef7a882f5137df4c6b3f43a74407429
 def lista_alocados_telefone(request):
     lista_turmas = getLista_Alocados()
     return render(request, "cevest/lista_alocados_telefone.html",{"listas":lista_turmas})
 
 
 @login_required
-<<<<<<< HEAD
-@permission_required('Administracao.pode_emitir_certificado', raise_exception=True)
-=======
+# @permission_required('Administracao.pode_emitir_certificado', raise_exception=True)
 @permission_required('cevest.pode_fazer_alocacao', raise_exception=True)
->>>>>>> 762c1452bef7a882f5137df4c6b3f43a74407429
 def lista_alocados_telefone_zap(request):
     
 #    lista_turmas = Aluno_Turma_Prevista.objects.filter(status_aluno_turma_prevista_id='1')
