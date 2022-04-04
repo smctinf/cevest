@@ -337,19 +337,22 @@ def getLista_Alocados():
     turmas_previstas = Turma_Prevista.objects.exclude(situacao = situacao_cancelada)
     turmas_previstas = turmas_previstas.exclude(dt_fim__lt = datetime.date.today())
 
+    desistiu_da_vaga = Status_Aluno_Turma_Prevista.objects.get(descricao = 'Desistiu da Vaga')
+    nao_compareceu = Status_Aluno_Turma_Prevista.objects.get(descricao = 'Não Compareceu')
+
     lista_turmas = []
 
     for turma in turmas_previstas:
         temp_lista_alunos = []
         temp_lista_horarios = []
-        temp_turma_aluno = Aluno_Turma_Prevista.objects.filter(turma_prevista = turma)
+        temp_turma_aluno = Aluno_Turma_Prevista.objects.filter(turma_prevista = turma).exclude(status_aluno_turma_prevista = desistiu_da_vaga).exclude(status_aluno_turma_prevista = nao_compareceu)
         for aluno_turma in temp_turma_aluno:
             temp_lista_alunos.append(aluno_turma.aluno)
-        print ('hora:')
+
         for horario in turma.horario.all():
-            print (horario)
+
             temp_lista_horarios.append(horario)
-        print (temp_lista_horarios)
+
         lista_turmas.append({"turma":turma,"alunos":temp_lista_alunos,"horarios":temp_lista_horarios})
     return lista_turmas
 

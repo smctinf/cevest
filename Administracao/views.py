@@ -464,7 +464,6 @@ def Alocacao(request):
     for tmp_turma_prevista_alunos in turma_prevista_alunos:
         alunos_compativeis = alunos_compativeis.exclude(id = tmp_turma_prevista_alunos.aluno_id)
 
-
     status_candidato = Status_Aluno_Turma_Prevista.objects.get(descricao = "Candidato")
     status_matriculado = Status_Aluno_Turma_Prevista.objects.get(descricao = "Matriculado")
     
@@ -482,6 +481,7 @@ def Alocacao(request):
 
     if len(turma_prevista.horario.filter(hora_inicio = datetime.time(hour = 18))) > 0:
         alunos_compativeis = alunos_compativeis.filter(disponibilidade = horario_noite)
+
 
     # Exclui de alunos_compativeis os alunos que desistiram da vaga ou não compareceram
 
@@ -523,7 +523,6 @@ def Alocacao(request):
                 if horario in turma_prevista.horario.all():
                     print("aluno removido da lista por conflito de horário:" + str(aluno))
                     alunos_compativeis = alunos_compativeis.exclude(id = aluno.id)
-
 
 
     #O sistema de pontos é definido de modo que a pessoa que tem uma prioridade maior que outra sempre receba
