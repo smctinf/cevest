@@ -119,7 +119,7 @@ def GerarCertificados(request):
     for ta in turma_aluno:
         alunos.append(ta.aluno)
     curso_turma = turma.curso
-    data_inicio = turma.dt_inicio.strftime("%d/%m")
+    data_inicio = turma.dt_inicio.strftime("%d/%m/%Y")
     data_fim = turma.dt_fim.strftime("%d/%m/%Y")
     data_atual = datetime.date.today()
     instrutor = turma.instrutor
