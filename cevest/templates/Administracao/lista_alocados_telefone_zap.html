@@ -1,5 +1,3 @@
 Name,Given Name,Additional Name,Family Name,Yomi Name,Given Name Yomi,Additional Name Yomi,Family Name Yomi,Name Prefix,Name Suffix,Initials,Nickname,Short Name,Maiden Name,Birthday,Gender,Location,Billing Information,Directory Server,Mileage,Occupation,Hobby,Sensitivity,Priority,Subject,Notes,Language,Photo,Group Membership,Phone 1 - Type,Phone 1 - Value
-<br>
-{% for lista in listas %}
-    {{ lista.nome }} - Cevest2020,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Mobile,{{ lista.celular }}<br>
+{% for lista in listas %}{{ lista.nome }} - {{ lista.cpf }} - Cevest {% now "SHORT_DATE_FORMAT" %},,,,,,,,,,,,,,,,,,,,,,,,,,,,,Mobile,{{ lista.celular }}
 {% endfor %}
