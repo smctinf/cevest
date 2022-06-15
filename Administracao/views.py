@@ -454,7 +454,8 @@ def Alocacao(request):
     # ============== ALTERACAO PARA PEGAR Só A PARTIR DE NOVEMBRO
 
 #    alunos_compativeis = Aluno.objects.filter(cursos = turma_prevista.curso).filter(ativo=True).filter(dt_inclusao__gt='2022-02-08').filter(dt_inclusao__lt='2022-02-09')
-    alunos_compativeis = Aluno.objects.filter(cursos = turma_prevista.curso).filter(ativo=True)
+    alunos_compativeis = Aluno.objects.filter(cursos = turma_prevista.curso).filter(ativo=True).filter(dt_inclusao__gt='2021-11-01')
+#    alunos_compativeis = Aluno.objects.filter(cursos = turma_prevista.curso).filter(ativo=True)
 
     lista_final = []
     
