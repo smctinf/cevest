@@ -838,7 +838,7 @@ def lista_alocados_telefone_zap(request):
     
 #    lista_turmas = Aluno_Turma_Prevista.objects.filter(status_aluno_turma_prevista_id='1')
     # Alterado para gerar para todos os alunos
-    lista_turmas = Aluno.objects.filter(ativo=True).order_by('-id')[:1500]
+    lista_turmas = Aluno.objects.filter(ativo=True).order_by('-id')[:2200]
     return render(request, "Administracao/lista_alocados_telefone_zap.html",{"listas":lista_turmas})
 
 
