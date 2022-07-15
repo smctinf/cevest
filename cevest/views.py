@@ -144,10 +144,10 @@ def matriz(request, idcurso):
 
 # Página Turma Prevista de um Curso
 def turma_prevista(request, idcurso):
-    turmas = Turma.objects.filter(curso=idcurso, exibir=True, dt_fim__gt = datetime.date.today())
+    turmas_previstas = Turma_Prevista.objects.filter(curso=idcurso, exibir=True, dt_fim__gt = datetime.date.today())
     curso = Curso.objects.get(pk=idcurso)
 
-    return render(request,"cevest/turma_prevista.html", {'turmas':turmas, 'curso': curso})
+    return render(request,"cevest/turma_prevista.html", {'turmas':turmas_previstas, 'curso': curso})
 
 # Página Turma Prevista de um Curso
 def portador(request):
