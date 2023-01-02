@@ -2,18 +2,13 @@
 from __future__ import unicode_literals
 
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse, HttpResponseRedirect, Http404, QueryDict, JsonResponse
-from django.forms.models import model_to_dict
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from .forms import *
 from .models import *
 from django.urls import reverse
 from django.contrib import messages
 import datetime
-from django.db.models import Count, Q, Sum, Avg
-
-# Página index
-def aguarde(request):
-    return render(request, 'cevest/aguarde.html')
+from django.db.models import Count
 
 # Página index
 def index(request):
@@ -25,14 +20,21 @@ def resultado(request):
 
 # Página Cursos
 def cursos(request, pk):
-    lista_curso = Curso.objects.filter(ativo=True, exibir=True, programa=pk).order_by('nome')
-    return render(request, 'cevest/cursos.html', { 'lista_curso': lista_curso })
+
+    context = {
+        'lista_curso': Curso.objects.filter(ativo=True, exibir=True, programa=pk).order_by('nome')
+    }
+
+    return render(request, 'cevest/cursos.html', context)
 
 # Página Detalhes de um Curso
 def curso(request, pk):
-    curso = get_object_or_404(Curso, pk=pk)
 
-    return render(request,"cevest/curso.html", {'curso':curso})
+    context = {
+        'curso': get_object_or_404(Curso, pk=pk)
+    }
+
+    return render(request,"cevest/curso.html", context)
 
 def recibo_ind(request):
     if request.method == 'POST':
@@ -49,10 +51,6 @@ def recibo_ind2(request, pk):
     aluno = Aluno.objects.get(cpf='05334010700', dt_nascimento='1978-11-02')
 
     return render(request,"cevest/recibo_ind.html",{'aluno':aluno,})
-
-#//////////////////
-#// Imprime pauta
-#//////////////////
 
 def pauta(request):
 
