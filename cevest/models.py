@@ -13,7 +13,7 @@ class Pre_requisito(models.Model):
     descricao = models.CharField(unique=True, max_length=100)
 
     def __str__(self):
-        return self.description
+        return self.descricao
 
     class Meta:
         verbose_name = "Pré-requisito"
@@ -26,7 +26,7 @@ class Escolaridade(models.Model):
     descricao = models.CharField(unique=True, max_length=50)
 
     def __str__(self):
-        return self.description
+        return self.descricao
 
     class Meta:
         ordering = ('descricao',)
@@ -253,7 +253,9 @@ class Aluno(models.Model):
 
 class Horario(models.Model):
 
+    # descobri pq tem esse, aparentemente o python considera 0 como segunda. Enfim, o loyola tem uma função no app Administração para fazer ess conversão
     DIA = (
+        ('0', ''),
         ('1', 'Domingo'),
         ('2', 'Segunda'),
         ('3', 'Terça'),
@@ -325,7 +327,7 @@ class Turma_Prevista(models.Model):
     dt_inicio = models.DateField('Data Início')
     dt_fim = models.DateField('Data Fim', blank=True, null=True)
     horario = models.ManyToManyField(Horario)
-    num_alunos = models.PositiveSmallIntegerField(default=0)
+    quant_alunos = models.PositiveSmallIntegerField(default=0)
     dt_inclusao = models.DateTimeField(auto_now_add=True)
     exibir = models.BooleanField(default=True)
     situacao = models.ForeignKey(
@@ -350,7 +352,7 @@ class Turma(models.Model):
     dt_fim = models.DateField('Data Fim')
     turno = models.ForeignKey(Turno, on_delete=models.PROTECT)
     horario = models.ManyToManyField(Horario)
-    num_alunos = models.PositiveSmallIntegerField(default=0)
+    quant_alunos = models.PositiveSmallIntegerField(default=0)
     dt_fechamento = models.DateTimeField(
         'Data Fechamento', blank=True, null=True)
     exibir = models.BooleanField(default=True)

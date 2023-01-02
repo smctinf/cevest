@@ -164,7 +164,7 @@ MIDDLEWARE_CLASSES = (
     # ...
 )
 
-LOGIN_REDIRECT_URL = '/cevest/inicio'
+LOGIN_REDIRECT_URL = '/administracao'
 
 # E-mail
 

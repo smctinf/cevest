@@ -2,13 +2,20 @@ import datetime
 from cevest.models import Feriado
 
 def get_proper_casing(name):
-    temp_name = name
-    temp_name = temp_name.lower()
-    temp_name = temp_name.title()
-    return temp_name
+    name = name.lower()
+    name_parts = name.split()
+    proper_cased_name = []
+    for name_part in name_parts:
+        if '-' in name_part:
+            hyphenated_parts = name_part.split('-')
+            hyphenated_parts = [part.title() for part in hyphenated_parts]
+            proper_cased_name.append('-'.join(hyphenated_parts))
+        else:
+            proper_cased_name.append(name_part.title())
+    return ' '.join(proper_cased_name)
 
-#Python usa dias da semana como 0(segunda) até 6 (domingo)
-#essa função vê se um dia da semana começando com domingo como 0 é o mesmo dia em python
+# O Python usa dias da semana como 0(segunda) até 6 (domingo)
+# essa função vê se um dia da semana começando com domingo como 0 é o mesmo dia em python
 def compare_brazilian_to_python_weekday(br_day,py_day):
     converted_py_day = (py_day+1) % 7
     if br_day-1 == converted_py_day:
@@ -16,6 +23,14 @@ def compare_brazilian_to_python_weekday(br_day,py_day):
     return False
 
 def convert_date_to_tuple(data):
+
+    if isinstance(data, (tuple, list)):
+        # Data is already in tuple form, so return it as is
+        return data
+    elif isinstance(data, datetime):
+        # Data is a datetime object, so return a tuple representation
+        return (data.year, data.month, data.day)
+
     tuple_return = []
     for tuple_data in data:
         tuple_return.append((tuple_data.year,tuple_data.month, tuple_data.day))

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
 from django.shortcuts import render, redirect, get_object_or_404
@@ -37,18 +36,20 @@ def curso(request, pk):
     return render(request,"cevest/curso.html", context)
 
 def recibo_ind(request):
+    form = Recibo_IndForm()
+
     if request.method == 'POST':
         form = Recibo_IndForm(request.POST)
         if form.is_valid():
             codigo = form.cleaned_data['codigo']
             return HttpResponseRedirect('/recibo_ind/'+codigo)
-    else:
-        form = Recibo_IndForm()
-        return render(request,"cevest/altera.html",{'form':form,})
+
+    context = {'form':form}
+
+    return render(request,"cevest/busca_recibo_ind.html",context)
 
 def recibo_ind2(request, pk):
-#    aluno = Aluno.objects.get(pk=pk)
-    aluno = Aluno.objects.get(cpf='05334010700', dt_nascimento='1978-11-02')
+    aluno = Aluno.objects.get(pk=pk)
 
     return render(request,"cevest/recibo_ind.html",{'aluno':aluno,})
 
@@ -146,7 +147,7 @@ def matriz(request, idcurso):
 # Página Turma Prevista de um Curso
 def turma_prevista(request, idcurso):
     turmas_previstas = Turma_Prevista.objects.filter(curso=idcurso, exibir=True, dt_fim__gt = datetime.date.today())
-    curso = Curso.objects.get(pk=idcurso)
+    curso = Curso.objects.get_object_or_404(pk=idcurso)
 
     return render(request,"cevest/turma_prevista.html", {'turmas':turmas_previstas, 'curso': curso})
 
@@ -154,7 +155,6 @@ def turma_prevista(request, idcurso):
 def portador(request):
     if request.user.is_authenticated:
         portador = Aluno.objects.filter(portador_necessidades_especiais=True).order_by('nome')
-#        alocados = Aluno_Turma_Prevista.objects.filter(portador_necessidades_especiais=True).order_by('nome')
         return render(request,"cevest/portador.html", {'portador':portador})
     else:
         return HttpResponseRedirect('/accounts/login')
@@ -288,14 +288,6 @@ def AlterarCadastro(request):
 
 
 #???
-def inicio(request):
-    if request.user.is_authenticated:
-        return render(request, 'cevest/inicio.html')
-    else:
-#        return render(request, 'accounts/login.html')
-        return redirect('/accounts/login')
-
-#???
 def sair(request):
     if request.user.is_authenticated:
         return redirect('/accounts/logout')
@@ -313,7 +305,7 @@ def alocados(request):
     else:
         return redirect('/accounts/login')
 
-def confirmaturma(request):
+def confirmar_turma(request):
     form = ConfirmaTurmaForm()
     return render(request, "accounts/confirmaturma.html", {'form': form})
 
@@ -380,7 +372,7 @@ def getLista_TurmaConfirmada():
             lista_turmas.append({"turma":turma,"alunos":temp_lista_alunos,"horarios":temp_lista_horarios})
     return lista_turmas
 
-def lista_turma(request):
+def listar_turmas(request):
     lista_turmas = getLista_TurmaConfirmada()
     return render(request, "cevest/lista_alocados.html",{"listas":lista_turmas})
 
