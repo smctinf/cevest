@@ -67,7 +67,6 @@ urlpatterns = [
     # Tabelas com indicadores. Abre surpreendentemente rápido. Mas precisa de gráficos!
     path('indicadores',views.indicadores, name = "indicadores"),
 
- # Teste
     # já comentei sobre essa rota. Meio mistério ainda se elas funcionam ou não, precisa de mais investigação
     path('altera_cpf', views.altera_cpf, name='altera_cpf'),
     # O nome é meio ruim, ele na realidade é a *pré-matricula*

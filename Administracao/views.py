@@ -359,7 +359,7 @@ def ArrumarSituacaoTurmaBacalhau(request):
         turma.turma_prevista.situacao = situacao_confirmada
         turma.turma_prevista.save()
     messages.info(request,'Situação de todas as turmas previstas mudada para confirmada')
-    return HttpResponseRedirect(reverse('administracao:index'))
+    return redirect('/administracao')
 
 @login_required
 @permission_required('cevest.acesso_admin', raise_exception=True)
