@@ -39,22 +39,37 @@ urlpatterns = [
 
     #Usuário
     path('', views.index, name='index'),
+    # Esse retorna todos os cursos de determinado programa (no caso, o <id> é o id do programa). Acho que não precisa mexer nesse
+    # aqui nem tão cedo. Tá bem bonitinho
     path('cursos/<int:pk>', views.cursos, name='cursos'),
+    # Esse aqui retorna a descrição do curso, carga horária e idade mínima do curso com id informado.
+    # Mas a página tá precisando de refatoração
     path('curso/<int:pk>', views.curso, name='curso'),
+    # Esse aqui é meio estranho, vc informa o id e ele retorna o cpf e data de nascimento para ser alterado?
+    # Não entendi muito bem como funciona. De qualquer forma é uma falha de segurança, pq vc pode informar um id e receber de
+    # cara o cpf e data de nascimento da pessoa
     path('altera/<int:pk>', views.altera, name='altera'),
+    # Essa rota aqui usa um request.session, nem sabia que o django tinha essa propriedade. Eu assumo que
+    # é um cookie de sessão que é atribuido ao aluno, só n sei quando...
     path('altera_cadastro',views.AlterarCadastro, name='altera_cadastro'),
+    # Outra daquelas páginas com o altera_cpf, n sei se funciona
     path('detalhe', views.detalhe, name='detalhe'),
+    # Mostra todas as matrizes de um determinado curso. As matrizes são as "diciplinas" de cada curso
     path('matriz/<int:idcurso>', views.matriz, name='matriz'),
 
+    # bem auto explicativo esse kkkkkkkk, mas seria interessante jogar esse aqui para uma rota específica para uma api interna
     path('get_bairro/<int:cidade_id>', views.get_bairro, name='get_bairro'),
+    # Uma telinha antes de ir para a rota "lista_alocados", tem uma explicação de como os alunos são selecionados pelo sistema
     path('resultado', views.resultado, name='resultado'),
+    # Tem alguma lógica sendo executada na função getListaAlocados() mas aparentemente não há nenhum dado para ser coletado
+    # ou possível algum erro, precisa de maior investigação
     path('lista_alocados',views.lista_alocados, name = "lista_alocados"),
+    # Tabelas com indicadores. Abre surpreendentemente rápido. Mas precisa de gráficos!
     path('indicadores',views.indicadores, name = "indicadores"),
 
  # Teste
+    # já comentei sobre essa rota. Meio mistério ainda se elas funcionam ou não, precisa de mais investigação
     path('altera_cpf', views.altera_cpf, name='altera_cpf'),
-    #path('altera/<int:cpf>/<int:dt_nascimento>/', views.altera, name='altera'),
+    # O nome é meio ruim, ele na realidade é a *pré-matricula*
     path('cadastro', views.cadastro, name='cadastro'),
-    path('teste', views.teste_ajax, name='teste'),
-    path('ajax/load_bairros/', views.load_bairros, name = 'ajax_load_bairros'),
 ]

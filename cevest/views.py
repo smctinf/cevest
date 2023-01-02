@@ -8,6 +8,7 @@ from django.urls import reverse
 from django.contrib import messages
 import datetime
 from django.db.models import Count
+import json
 
 # Página index
 def index(request):
@@ -162,18 +163,19 @@ def portador(request):
 def altera(request, pk):
     aluno = get_object_or_404(Aluno, pk=pk)
     if request.method == 'POST':
-        form = CadastroForm(request.POST, instance=aluno)
+        form = CadForm(request.POST, instance=aluno)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect('/cevest/')
 
     else:
-        form = CadastroForm(instance=aluno)
+        form = CadForm(instance=aluno)
 
     return render(request,"cevest/altera.html",{'form':form})
 
 # /// Teste ajax
 
+# Uma função para testar a parada de pegar o bairro pela cidade
 def teste_ajax(request):
     if request.method == 'POST':
         form = TesteForm(request.POST)
@@ -185,12 +187,6 @@ def teste_ajax(request):
         form = TesteForm()
     return render(request,"cevest/teste.html",{'form':form})
 
-def load_bairros(request):
-    cidade_id = request.GET.get('id')
-    bairros = Bairro.objects.filter(cidade = cidade_id).order_by('nome')
-    return render(request, 'cevest/teste_options.html', {'bairros' : bairros})
-
-import json
 def get_bairro(request, cidade_id):
     if request.is_ajax():
         bairros = Bairro.objects.filter(cidade_id=cidade_id).order_by('nome')

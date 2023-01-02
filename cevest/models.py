@@ -290,7 +290,6 @@ class Situacao_Turma(models.Model):
         return self.descricao
 
     descricao = models.CharField(max_length=32, unique=True)
-    dt_inclusao = models.DateTimeField(auto_now_add=True)
 
 
 class Situacao_Turma_Definitiva(models.Model):
