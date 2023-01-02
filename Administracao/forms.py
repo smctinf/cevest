@@ -134,6 +134,12 @@ class EscolherDataCad(forms.Form):
 
 
 class CursoForm(ModelForm):
+    turnos = forms.ModelMultipleChoiceField(
+        queryset=Turno.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=False,
+        label="Turnos:"
+    )
 
     class Meta:
         model = Curso

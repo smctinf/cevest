@@ -5,7 +5,7 @@
 
 {% block preform %}{% endblock %}
 
-<form method="post" id="teste2" data-bairros-url="{% url 'ajax_load_bairros' %}" novalidate>
+<form method="post" id="teste2" enctype="multipart/form-data" data-bairros-url="{% url 'ajax_load_bairros' %}" novalidate>
         {% csrf_token %}
       <div class="row">
         <div class="col-md-4 order-md-2 mb-4">
@@ -244,6 +244,24 @@
               {{form.outra_profissao.errors}}
               {{form.outra_profissao}}
             </div>
+
+              <div class="mb-3" style="display: block;">
+                <label class="form-label" for="id_file_termo_para_vagas_reservadas">{{form.comprovante_residencia_file.label}}</label>
+                <br>
+                {{form.comprovante_residencia_file}}
+              </div>
+
+              <div class="mb-3" style="display: block;">
+                <label class="form-label" for="id_file_termo_para_vagas_reservadas">{{form.identidade_file.label}}</label>
+                <br>
+                {{form.identidade_file}}
+              </div>
+
+              <div class="mb-3" style="display: block;">
+                <label class="form-label" for="id_file_termo_para_vagas_reservadas">{{form.cpf_file.label}}</label>
+                <br>
+                {{form.cpf_file}}
+              </div>
 
 {% block endingform %}{% endblock %}
             </div>

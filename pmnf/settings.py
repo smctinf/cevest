@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 import os
 
 from pathlib import Path
+from . import envvars
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 # BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -25,25 +26,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 #SECRET_KEY = '++wlc1(z793vjl0u3q4&u!q#f!^pjo=7m!*wcj#4@xbx=jx5(j'
 
-print(BASE_DIR)
-env_vars = open(str(BASE_DIR.parent) + "/.envvar", "r")
 
-env = []
-for linha in env_vars:
-    env.append(linha.rstrip())
+env_vars = envvars.load_envvars(BASE_DIR)
 
-db_name = env[0]
-db_user = env[1]
-db_passwd = env[2]
-SECRET_KEY = env[3]
-debug = env[4]
-email_user = env[5]
-email_pass = env[6]
+db_name = env_vars['db_name']
+db_user = env_vars['db_user']
+db_host = env_vars['db_host']
+db_passwd = env_vars['db_pw']
+email_user = env_vars['email_sistema']
+email_pass = env_vars['email_pw']
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = eval(debug)
-
-
+DEBUG = env_vars['debug_mode']
+SECRET_KEY = env_vars['django_secret_key']
 
 # ALLOWED_HOSTS = []
 ALLOWED_HOSTS = ["cevest.pmnf.rj.gov.br", "127.0.0.1", "localhost", '192.168.4.167', '187.95.40.73']
@@ -107,7 +101,7 @@ DATABASES = {
 
         'USER': db_user,
         'PASSWORD': db_passwd,
-        'HOST': '127.0.0.1',
+        'HOST': db_host,
     }
 }
 
@@ -151,6 +145,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = '/home/cevest/public_html/pmnf/cevest/static'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'pmnf/media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

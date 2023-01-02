@@ -42,7 +42,13 @@ class Curriculo(models.Model):
     dt_fim = models.DateField('Data Fim', blank=True, null=True)
     dt_inclusao = models.DateTimeField(auto_now_add=True)
 
+class Turno(models.Model):
+    def __str__(self):
+        return self.descricao
 
+    descricao = models.CharField(max_length=50)
+    dt_inclusao = models.DateTimeField(auto_now_add=True)
+    
 class Programa(models.Model):
     def __str__(self):
         return self.nome
@@ -70,6 +76,9 @@ class Curso(models.Model):
     escolaridade_minima = models.ForeignKey(Escolaridade, on_delete=models.PROTECT, default = 1)
     pre_requisito = models.ManyToManyField(Pre_requisito, blank=True)
     quant_alunos = models.PositiveSmallIntegerField(default=0)
+    # DEFINITIVAMENTE não é uma boa ideia declarar os turnos no curso. A responsabilidade de acumular os turnos disponíveis deveria ser exclusivamente
+    # da turma, mas para facilitar a exibição (que já está pronta e depende do curso), tanto a turma quanto o curso irão guardar seus turnos
+    turnos = models.ManyToManyField(Turno)
     dt_inclusao = models.DateTimeField(auto_now_add=True)
     exibir = models.BooleanField(default=True)
     ativo = models.BooleanField(default=True)
@@ -132,13 +141,6 @@ class Bairro(models.Model):
     nome = models.CharField(unique=True, max_length=30)
     dt_inclusao = models.DateTimeField(auto_now_add=True)
 
-class Turno(models.Model):
-    def __str__(self):
-        return self.descricao
-
-    descricao = models.CharField(max_length=50)
-    dt_inclusao = models.DateTimeField(auto_now_add=True)
-
 class Profissao(models.Model):
     class Meta:
         verbose_name_plural = "Profissões"
@@ -163,14 +165,15 @@ class Aluno(models.Model):
         ordering = ('nome',)
 
     nome = models.CharField(max_length=60)
+    sexo = models.CharField(max_length=1, choices=SEXO)
+    dt_nascimento = models.DateField('Data Nascimento')
+    escolaridade = models.ForeignKey(Escolaridade, on_delete=models.PROTECT)
+    profissao = models.ForeignKey(Profissao, on_delete=models.PROTECT)
+    outra_profissao = models.CharField(max_length=50, blank=True, null=True)
+    desempregado = models.BooleanField(default=False)
+
     email = models.EmailField(max_length=254, blank=True, null=True)
     cpf = models.CharField(unique=True, max_length=11, validators=[validate_CPF])
-    nis = models.CharField(unique=True, max_length=11, blank = True, null=True)
-    bolsa_familia = models.BooleanField(default=False)
-    quant_filhos = models.PositiveSmallIntegerField(default=0)
-    sexo = models.CharField(max_length=1, choices=SEXO)
-    portador_necessidades_especiais = models.BooleanField(default=False)
-    dt_nascimento = models.DateField('Data Nascimento')
     celular = models.CharField(max_length=11)
     fixo_residencia = models.CharField(max_length=10, blank=True, null=True)
     fixo_trabalho = models.CharField(max_length=10, blank=True, null=True)
@@ -178,14 +181,23 @@ class Aluno(models.Model):
     complemento = models.CharField(max_length=120, blank=True, null=True)
     bairro = models.ForeignKey(Bairro, on_delete=models.PROTECT)
     cep = models.CharField(max_length=8, blank=True, null=True)
-    escolaridade = models.ForeignKey(Escolaridade, on_delete=models.PROTECT)
-    profissao = models.ForeignKey(Profissao, on_delete=models.PROTECT)
-    outra_profissao = models.CharField(max_length=50, blank=True, null=True)
-    desempregado = models.BooleanField(default=False)
+
+    nis = models.CharField(unique=True, max_length=11, blank = True, null=True)
+    bolsa_familia = models.BooleanField(default=False)
+    quant_filhos = models.PositiveSmallIntegerField(default=0)
+    portador_necessidades_especiais = models.BooleanField(default=False)
+
     disponibilidade = models.ManyToManyField(Turno)
     dt_inclusao = models.DateTimeField(auto_now_add=True)
     ordem_judicial = models.BooleanField(default=False)
     ativo = models.BooleanField(default=True)
+
+    cpf_file=models.FileField(upload_to='cpf_file', verbose_name='CPF')
+    identidade_file=models.FileField(upload_to='identidade_file', verbose_name='Identidade')
+    comprovante_residencia_file=models.FileField(upload_to='comprovante_residencia_file', verbose_name='Comproante de residência')
+
+
+
     cursos = models.ManyToManyField(Curso)
 
 class Horario(models.Model):
@@ -270,6 +282,7 @@ class Turma(models.Model):
     instrutor = models.ForeignKey(Instrutor, on_delete=models.PROTECT, blank=True, null=True)
     dt_inicio = models.DateField('Data Início')
     dt_fim = models.DateField('Data Fim')
+    turno = models.ForeignKey(Turno, on_delete=models.PROTECT)
     horario = models.ManyToManyField(Horario)
     quant_alunos = models.PositiveSmallIntegerField(default=0)
     dt_fechamento = models.DateTimeField('Data Fechamento', blank=True, null=True)

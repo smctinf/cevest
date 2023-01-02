@@ -1,0 +1,16 @@
+db_name: "pmnf" # Este projeto foi pensando para suportar MySql ou MariaDB
+db_user: "root" # Usuário do banco com todas as permissões para a base de dados
+db_host: "localhost" # Onde o banco de dados está localizado
+db_pw: "302933" # A senha do respectivo usuário do banco
+django_secret_key: ++wlc1(z793vjl0u3q4&u!q#f!^pjo=7m!*wcj#4@xbx=jx5(j # Insira sua django secret key
+debug_mode: True # Use True para DEBUG or False para PRODUCTION
+email_sistema: ifast@jlb.net.br # E-mail utilizado para recuperação de senha
+email_pw: senha_email # Senha do email acima
+
+# pmnf
+# pmnf
+# 1w6l4x9zx2cb
+# ++wlc1(z793vjl0u3q4&u!q#f!^pjo=7m!*wcj#4@xbx=jx5(j
+# False
+# ifast@jlb.net.br
+# senha_email

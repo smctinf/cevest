@@ -30,17 +30,17 @@ class CadFormBase(forms.ModelForm):
         nis = forms.IntegerField(label='NIS', required=False, widget = forms.TextInput(attrs={'class': 'form-control', 'maxlength':'11'}))
         sexo = forms.ChoiceField(widget=forms.RadioSelect(attrs={'class' : "custom-control-input"}), choices=SEX_CHOICES)
         quant_filhos = forms.IntegerField(label='Quantidade de filhos', initial=0, widget = forms.TextInput(attrs={'class': 'form-control'}))
-        dt_nascimento = forms.DateField(label='Data de Nascimento:', widget = forms.DateInput(attrs={'class': 'form-control', 'placeholder':'DD/MM/AAAA', 'onkeydown':'mascara(this,data)', 'onload' : 'mascara(this,data)', 'maxlength':'10'}))
+        dt_nascimento = forms.DateField(label='Data de Nascimento:', widget = forms.DateInput(attrs={'class': 'form-control', 'placeholder':'DD/MM/AAAA', 'oninput':'mascara(this,data)', 'onload' : 'mascara(this,data)', 'maxlength':'10'}))
         bolsa_familia = forms.BooleanField(label = 'Cadastrado no Bolsa Família.',required=False, widget=forms.CheckboxInput(attrs={'class' : "custom-control-input"}))
         portador_necessidades_especiais = forms.BooleanField(label = 'Portador de Necessidades Especiais.',required=False,widget=forms.CheckboxInput(attrs={'class' : "custom-control-input"}))
         disponibilidade = forms.ModelMultipleChoiceField(label = 'Disponibilidade', widget=forms.CheckboxSelectMultiple(attrs={'class' : "custom-control-input"}),queryset=Turno.objects.all())
 
-        celular = forms.CharField(label= "Celular", max_length=15, widget = forms.TextInput(attrs={'class': 'form-control','onkeydown':"mascara(this,icelular)", 'onload' : 'mascara(this,icelular)'}))
-        fixo_residencia = forms.CharField(label = "Tel. Residência",required=False, max_length=14, widget = forms.TextInput(attrs={'class': 'form-control','onkeydown':"mascara(this,telefone)", 'onload' : 'mascara(this,telefone)'}))
-        fixo_trabalho = forms.CharField(label = "Tel. Trabalho",required=False,max_length=14, widget = forms.TextInput(attrs={'class': 'form-control','onkeydown':"mascara(this,telefone)", 'onload' : 'mascara(this,telefone)'}))
+        celular = forms.CharField(label= "Celular", max_length=15, widget = forms.TextInput(attrs={'class': 'form-control','oninput':"mascara(this,icelular)", 'onload' : 'mascara(this,icelular)'}))
+        fixo_residencia = forms.CharField(label = "Tel. Residência",required=False, max_length=14, widget = forms.TextInput(attrs={'class': 'form-control','oninput':"mascara(this,telefone)", 'onload' : 'mascara(this,telefone)'}))
+        fixo_trabalho = forms.CharField(label = "Tel. Trabalho",required=False,max_length=14, widget = forms.TextInput(attrs={'class': 'form-control','oninput':"mascara(this,telefone)", 'onload' : 'mascara(this,telefone)'}))
         cidade = forms.ModelChoiceField(queryset=Cidade.objects.all(), widget = forms.Select(attrs={'class': "custom-select d-block w-100 cidades teste"}))
         bairro = forms.ModelChoiceField(queryset=Bairro.objects.all(), widget = forms.Select(attrs={'class': 'form-control'}))
-        cep = forms.CharField(label = 'CEP', max_length= 9, widget = forms.TextInput(attrs={'class': 'form-control','onkeydown':"mascara(this,icep)", 'onload' : 'mascara(this,icep)'}))
+        cep = forms.CharField(label = 'CEP', max_length= 9, widget = forms.TextInput(attrs={'class': 'form-control','oninput':"mascara(this,icep)", 'onload' : 'mascara(this,icep)'}))
         endereco = forms.CharField(label='Endereço',max_length=120, widget = forms.TextInput(attrs={'class': 'form-control'}))
         complemento = forms.CharField(label='Complemento',required=False,max_length=120, widget = forms.TextInput(attrs={'class': 'form-control'}))
 
@@ -148,18 +148,22 @@ class CadFormBase(forms.ModelForm):
                 return dt_nasc
 
 class CadForm(CadFormBase):
-        cpf = forms.CharField(label='CPF', max_length=14, widget = forms.TextInput(attrs={'class': 'form-control','onkeydown':"mascara(this,icpf)"}))
+        cpf = forms.CharField(label='CPF', max_length=14, widget = forms.TextInput(attrs={'class': 'form-control','oninput':"mascara(this,icpf)"}))
+        cpf_file = forms.FileField(label='Anexo em PDF do que possua seu CPF', widget=forms.FileInput(attrs={'class': 'form-control', 'accept':'application/pdf', 'enctype': "multipart/form-data"}))
+        identidade_file = forms.FileField(label='Anexo em PDF do documento de identidade', widget=forms.FileInput(attrs={'class': 'form-control', 'accept':'application/pdf', 'enctype': "multipart/form-data"}))
+        comprovante_residencia_file = forms.FileField(label='Anexo em PDF do comprovante de residência', widget=forms.FileInput(attrs={'class': 'form-control', 'accept':'application/pdf', 'enctype': "multipart/form-data"}))
+
         class Meta(CadFormBase.Meta):
             fields = ['cursos', 'nome','cpf', 'email','nis','sexo','quant_filhos','dt_nascimento', 'bolsa_familia',
             'portador_necessidades_especiais', 'disponibilidade', 'celular','fixo_residencia','fixo_trabalho',
-            'cidade','bairro','cep','endereco','complemento','profissao','escolaridade','desempregado','outra_profissao']
+            'cidade','bairro','cep','endereco','complemento','profissao','escolaridade','desempregado','outra_profissao', 'cpf_file', 'identidade_file', 'comprovante_residencia_file']
         def clean_cpf(self):
             cpf = validate_CPF(self.cleaned_data["cpf"])
             return cpf
 
 class Altera_cpf(forms.Form):
-        cpf = forms.CharField(label='CPF:', max_length=14, widget = forms.TextInput(attrs={'class': 'form-control','onkeydown':"mascara(this,icpf)"}))
-        dt_nascimento = forms.DateField(label='Data de Nascimento:', widget = forms.TextInput(attrs={'class': 'form-control', 'placeholder':'DD/MM/AAAA', 'onkeydown':'mascara(this,data)', 'maxlength':'10'}))
+        cpf = forms.CharField(label='CPF:', max_length=14, widget = forms.TextInput(attrs={'class': 'form-control','oninput':"mascara(this,icpf)"}))
+        dt_nascimento = forms.DateField(label='Data de Nascimento:', widget = forms.TextInput(attrs={'class': 'form-control', 'placeholder':'DD/MM/AAAA', 'oninput':'mascara(this,data)', 'maxlength':'10'}))
 
         def clean_cpf(self):
             cpf = validate_CPF(self.cleaned_data["cpf"])

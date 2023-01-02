@@ -1,10 +1,8 @@
-from django.urls import path,include
-from django.contrib.auth import views as auth_views
+from django.urls import path
 from . import views
 
 urlpatterns = [
     #Administrativo
-    path('administracao/',include('Administracao.urls')),
     path('inicio', views.inicio, name='inicio'),
     path('confirmaturma', views.confirmaturma, name='confirmaturma'),
     path('alocados', views.alocados, name='alocados'),

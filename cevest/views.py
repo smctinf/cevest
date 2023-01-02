@@ -93,7 +93,10 @@ def cadastro(request):
         cursos.append({'programa': programa, 'cursos': cursos_pgm})
 
     if request.method == 'POST':
-        form = CadForm(request.POST)
+        print(request.FILES)
+        print(request.POST)
+
+        form = CadForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             messages.info(request,'Cadastro Salvo')
