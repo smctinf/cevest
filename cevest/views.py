@@ -187,6 +187,12 @@ def teste_ajax(request):
         form = TesteForm()
     return render(request,"cevest/teste.html",{'form':form})
 
+
+def load_bairros(request):
+    cidade_id = request.GET.get('id')
+    bairros = Bairro.objects.filter(cidade = cidade_id).order_by('nome')
+    return render(request, 'cevest/teste_options.html', {'bairros' : bairros})
+    
 def get_bairro(request, cidade_id):
     if request.is_ajax():
         bairros = Bairro.objects.filter(cidade_id=cidade_id).order_by('nome')

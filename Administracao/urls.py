@@ -5,6 +5,17 @@ from . import views
 app_name = 'administracao'
 urlpatterns = [
 
+    # CREATE
+    path('curso/criar', views.criar_curso, name='criar_curso'),
+    # READ
+    path('cursos', views.listar_cursos, name='listar_cursos'),
+    path('curso/<int:pk>', views.exibir_curso, name='exibir_curso'),
+    # UPDATE
+    path('curso/<int:pk>/editar', views.editar_curso, name='editar_curso'),
+    # DELETE
+    path('curso/<int:pk>/excluir', views.excluir_curso, name='excluir_curso'),
+
+
     # Você escolhe a turma e o cpf do aluno para vc emitir o certificado, mas não há indicação nenhuma se
     # o cpf inserido não fazer parte da turma
     path('selecionar_turma_para_certificado', views.SelecionarTurmaParaCertificado, name='selecionar_turma_para_certificado'),
@@ -78,15 +89,6 @@ urlpatterns = [
     # Um hubzinho para escolher a tabela que vc deseja ver, no momento só tem cursos e um redirect para o django admin
     path('tabelas',views.tabelas, name = "tabelas"),
 
-    # CRUD completinho de cursos
-    path('cursos',views.cursos, name = "cursos"),
-    path('curso_inclui',views.curso_inclui, name = "curso_inclui"),
-    path('curso_altera/<int:id>',views.curso_altera, name = "curso_altera"),
-    path('curso_exclui/<int:id>',views.curso_exclui, name = "curso_exclui"),
-    path('curso/<int:id>',views.curso, name = "curso"),
-
-    ### Apagar
-    path('apaga_costurareta',views.apaga_costurareta, name = "apaga_costurareta"),
 
     # Emitir declaração
     # Aparentemene é para gerar uma declaração que a pessoa está inscrita

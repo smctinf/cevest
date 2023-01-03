@@ -82,20 +82,17 @@ class Curso(models.Model):
         ordering = ('nome',)
 
     nome = models.CharField(max_length=80)
-    descricao = models.TextField(max_length=2000)
+    descricao = models.TextField(max_length=2000, verbose_name="Descrição")
     programa = models.ForeignKey(Programa, on_delete=models.PROTECT)
-    duracao = models.PositiveSmallIntegerField(default=0)
-    idade_minima = models.PositiveSmallIntegerField(default=0)
-
+    duracao = models.PositiveSmallIntegerField(default=0, verbose_name="Duração")
+    idade_minima = models.PositiveSmallIntegerField(default=0, verbose_name="Idade mínima")
+    turnos = models.ManyToManyField(Turno)
     # Sim, escolaridade nesse caso é algo quantitatvo, ainda não explorei a views onde o curso é salvo mas aparentemente
     # utilizam o id para descobrir o valor da escolaridade (1 por exemplo pode ser "ensino fundamental incompleto" e 5 "ensino superior completo")
     escolaridade_minima = models.ForeignKey(
-        Escolaridade, on_delete=models.PROTECT, default=1)
-    pre_requisitos = models.ManyToManyField(Pre_requisito, blank=True)
-    quant_alunos = models.PositiveSmallIntegerField(default=0)
-    # DEFINITIVAMENTE não é uma boa ideia declarar os turnos no curso. A responsabilidade de acumular os turnos disponíveis deveria ser exclusivamente
-    # da turma, mas para facilitar a exibição (que já está pronta e depende do curso), tanto a turma quanto o curso irão guardar seus turnos
-    turnos = models.ManyToManyField(Turno)
+        Escolaridade, on_delete=models.PROTECT, default=1, verbose_name="Escolaridade mínima")
+    pre_requisitos = models.ManyToManyField(Pre_requisito, blank=True, verbose_name="Pré-requisitos")
+    quant_alunos = models.PositiveSmallIntegerField(default=0, verbose_name="Quantidade máxima de alunos")
     dt_inclusao = models.DateTimeField(auto_now_add=True)
     exibir = models.BooleanField(default=True)
     ativo = models.BooleanField(default=True)
@@ -328,6 +325,7 @@ class Turma_Prevista(models.Model):
     horario = models.ManyToManyField(Horario)
     quant_alunos = models.PositiveSmallIntegerField(default=0)
     dt_inclusao = models.DateTimeField(auto_now_add=True)
+    turno = models.ForeignKey(Turno, on_delete=models.PROTECT)
     exibir = models.BooleanField(default=True)
     situacao = models.ForeignKey(
         Situacao_Turma, on_delete=models.PROTECT, default=1)
