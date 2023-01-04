@@ -117,6 +117,7 @@ def cadastro(request):
         
     else:
         form = CadForm()
+        print(form)
     return render(request,"cevest/cadastro2.html",{'form':form, 'cursos':cursos})
 
 # Teste detalhe
@@ -189,8 +190,10 @@ def teste_ajax(request):
 
 
 def load_bairros(request):
-    cidade_id = request.GET.get('id')
-    bairros = Bairro.objects.filter(cidade = cidade_id).order_by('nome')
+    data = json.loads(request.body.decode("utf-8"))
+    print(data['id'])
+    bairros = Bairro.objects.filter(cidade = data['id']).order_by('nome')
+    print(bairros)
     return render(request, 'cevest/teste_options.html', {'bairros' : bairros})
     
 def get_bairro(request, cidade_id):
