@@ -325,7 +325,7 @@ class Turma_Prevista(models.Model):
     horario = models.ManyToManyField(Horario)
     quant_alunos = models.PositiveSmallIntegerField(default=0)
     dt_inclusao = models.DateTimeField(auto_now_add=True)
-    turno = models.ForeignKey(Turno, on_delete=models.PROTECT, null=True)
+    turno = models.ForeignKey(Turno, on_delete=models.PROTECT, null=True, blank=True)
     exibir = models.BooleanField(default=True)
     situacao = models.ForeignKey(
         Situacao_Turma, on_delete=models.PROTECT, default=1)
@@ -347,7 +347,7 @@ class Turma(models.Model):
         Instrutor, on_delete=models.PROTECT, null=True, blank=True)
     dt_inicio = models.DateField('Data Início')
     dt_fim = models.DateField('Data Fim')
-    turno = models.ForeignKey(Turno, on_delete=models.PROTECT, null=True)
+    turno = models.ForeignKey(Turno, on_delete=models.PROTECT, null=True, blank=True)
     horario = models.ManyToManyField(Horario)
     quant_alunos = models.PositiveSmallIntegerField(default=0)
     dt_fechamento = models.DateTimeField(
