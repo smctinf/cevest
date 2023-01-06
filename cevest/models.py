@@ -81,7 +81,7 @@ class Curso(models.Model):
     class Meta:
         ordering = ('nome',)
 
-    nome = models.CharField(max_length=80)
+    nome = models.CharField(max_length=80, null=True)
     descricao = models.TextField(max_length=2000, verbose_name="Descrição")
     programa = models.ForeignKey(Programa, on_delete=models.PROTECT)
     duracao = models.PositiveSmallIntegerField(default=0, verbose_name="Duração")
@@ -340,7 +340,7 @@ class Turma(models.Model):
     def __str__(self):
         return '%s - %s - %s' % (self.curso, self.nome, self.curriculo)
 
-    nome = models.CharField(max_length=20, unique=True)
+    nome = models.CharField(max_length=20, unique=True, null=True)
     curso = models.ForeignKey(Curso, on_delete=models.PROTECT)
     curriculo = models.ForeignKey(Curriculo, on_delete=models.PROTECT)
     instrutor = models.ForeignKey(
