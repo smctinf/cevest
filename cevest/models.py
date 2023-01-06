@@ -344,7 +344,7 @@ class Turma(models.Model):
     curso = models.ForeignKey(Curso, on_delete=models.PROTECT)
     curriculo = models.ForeignKey(Curriculo, on_delete=models.PROTECT)
     instrutor = models.ForeignKey(
-        Instrutor, on_delete=models.PROTECT)
+        Instrutor, on_delete=models.PROTECT, null=True, blank=True)
     dt_inicio = models.DateField('Data Início')
     dt_fim = models.DateField('Data Fim')
     turno = models.ForeignKey(Turno, on_delete=models.PROTECT, null=True)
