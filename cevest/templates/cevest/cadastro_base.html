@@ -390,17 +390,10 @@ function buscaEndereco(cep){
   })
 }
 // Pra identificar os bairros e cidades que estão com ? onde era pra ser char especial
-function removeAccents(string) {
-  return string.replace(/[ÀÁÂÃÄÅàáâã]/g, "?")
-    .replace(/[ÈÉÊËÈèé]/g, "?")
-    .replace(/[ÌÍÎÏìíî]/g, "?")
-    .replace(/[ÒÓÔÕÖóòõ]/g, "?")
-    .replace(/[ÙÚÛÜùúû]/g, "?")
-    .replace(/[Çç]/g, "?")
-}
+
 async function autoComplete(end){
   cp_endereco.value = end.logradouro;
-  let localidade = removeAccents(end.localidade)
+  let localidade = end.localidade
   console.log(localidade)
   for(let i=1; i<cp_cidade.options.length; i++){
     if(cp_cidade.options.item(i).innerText == localidade){
@@ -412,7 +405,7 @@ async function autoComplete(end){
 
   await getBairros()
   const cp_bairro = document.getElementById('id_bairro')
-  let bairro = removeAccents(end.bairro)
+  let bairro = end.bairro
   for(let i=1; i<cp_bairro.options.length; i++){
     if(cp_bairro.options.item(i).innerText == bairro){
       let opvalue = cp_bairro.options.item(i).value
