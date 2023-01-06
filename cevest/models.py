@@ -236,11 +236,11 @@ class Aluno(models.Model):
     ordem_judicial = models.BooleanField(default=False)
     ativo = models.BooleanField(default=True)
 
-    cpf_file = models.FileField(upload_to='cpf_file', verbose_name='CPF')
+    cpf_file = models.FileField(upload_to='cpf_file', verbose_name='CPF', null=True)
     identidade_file = models.FileField(
-        upload_to='identidade_file', verbose_name='Identidade')
+        upload_to='identidade_file', verbose_name='Identidade', null=True)
     comprovante_residencia_file = models.FileField(
-        upload_to='comprovante_residencia_file', verbose_name='Comproante de residência')
+        upload_to='comprovante_residencia_file', verbose_name='Comproante de residência', null=True)
 
 
     # Essa aqui também parece ser uma péssima ideia. Como o curso não é algo que a pessoa está necessariamente (O aluno faz parte de uma turma para ser mais exato),
@@ -325,7 +325,7 @@ class Turma_Prevista(models.Model):
     horario = models.ManyToManyField(Horario)
     quant_alunos = models.PositiveSmallIntegerField(default=0)
     dt_inclusao = models.DateTimeField(auto_now_add=True)
-    turno = models.ForeignKey(Turno, on_delete=models.PROTECT)
+    turno = models.ForeignKey(Turno, on_delete=models.PROTECT, null=True)
     exibir = models.BooleanField(default=True)
     situacao = models.ForeignKey(
         Situacao_Turma, on_delete=models.PROTECT, default=1)
@@ -347,7 +347,7 @@ class Turma(models.Model):
         Instrutor, on_delete=models.PROTECT)
     dt_inicio = models.DateField('Data Início')
     dt_fim = models.DateField('Data Fim')
-    turno = models.ForeignKey(Turno, on_delete=models.PROTECT)
+    turno = models.ForeignKey(Turno, on_delete=models.PROTECT, null=True)
     horario = models.ManyToManyField(Horario)
     quant_alunos = models.PositiveSmallIntegerField(default=0)
     dt_fechamento = models.DateTimeField(
