@@ -58,7 +58,7 @@ class CadFormBase(forms.ModelForm):
     bairro = forms.ModelChoiceField(queryset=Bairro.objects.all(
     ), widget=forms.Select(attrs={'class': 'form-control'}))
     cep = forms.CharField(label='CEP', max_length=9, widget=forms.TextInput(attrs={
-                          'class': 'form-control', 'oninput': "mascara(this,icep)", 'onload': 'mascara(this,icep)'}))
+                          'class': 'form-control', 'oninput': "mascara(this,icep) getCEP(this.value)", 'onload': 'mascara(this,icep)'}))
     endereco = forms.CharField(label='Endereço', max_length=120, widget=forms.TextInput(
         attrs={'class': 'form-control'}))
     complemento = forms.CharField(label='Complemento', required=False,
