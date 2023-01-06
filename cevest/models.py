@@ -24,6 +24,7 @@ class Pre_requisito(models.Model):
 class Escolaridade(models.Model):
 
     descricao = models.CharField(unique=True, max_length=50)
+    dt_inclusao = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.descricao
@@ -57,7 +58,6 @@ class Turno(models.Model):
 
     descricao = models.CharField(max_length=50)
     dt_inclusao = models.DateTimeField(auto_now_add=True)
-
 
 # Esse programa é meio que um wrapper para os cursos, ou seja, o tema
 # Esse programa aqui é uma foreign key da model Curso, facilitando a filtragem e relacionamento
