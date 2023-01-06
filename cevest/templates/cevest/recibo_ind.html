@@ -68,7 +68,11 @@ Centro de Formação Profissional e Transferência de Tecnologia José Pereira d
     CEP: {{ aluno.cep }}
     Bairro: {{ aluno.bairro }}
     <br><br>
-    Disponibilidade:<b>{{ aluno.disponibilidade }}
+    {% if aluno.disponibilidade %}
+        Disponibilidade:<b>{{aluno.disponibilidade}}
+        {% else %}
+        Disponibilidade não informada
+        {% endif %}
     </b><br><br><hr>
     {{ aluno.turma_prevista }}
     

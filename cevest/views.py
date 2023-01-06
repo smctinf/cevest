@@ -1,19 +1,14 @@
-# -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse, HttpResponseRedirect, Http404, QueryDict, JsonResponse
-from django.forms.models import model_to_dict
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from .forms import *
 from .models import *
 from django.urls import reverse
 from django.contrib import messages
 import datetime
-from django.db.models import Count, Q, Sum, Avg
-
-# Página index
-def aguarde(request):
-    return render(request, 'cevest/aguarde.html')
+from django.db.models import Count
+import json
 
 # Página index
 def index(request):
@@ -25,34 +20,39 @@ def resultado(request):
 
 # Página Cursos
 def cursos(request, pk):
-    lista_curso = Curso.objects.filter(ativo=True, exibir=True, programa=pk).order_by('nome')
-    return render(request, 'cevest/cursos.html', { 'lista_curso': lista_curso })
+
+    context = {
+        'lista_curso': Curso.objects.filter(ativo=True, exibir=True, programa=pk).order_by('nome')
+    }
+
+    return render(request, 'cevest/cursos.html', context)
 
 # Página Detalhes de um Curso
 def curso(request, pk):
-    curso = get_object_or_404(Curso, pk=pk)
 
-    return render(request,"cevest/curso.html", {'curso':curso})
+    context = {
+        'curso': get_object_or_404(Curso, pk=pk)
+    }
+
+    return render(request,"cevest/curso.html", context)
 
 def recibo_ind(request):
+    form = Recibo_IndForm()
+
     if request.method == 'POST':
         form = Recibo_IndForm(request.POST)
         if form.is_valid():
             codigo = form.cleaned_data['codigo']
             return HttpResponseRedirect('/recibo_ind/'+codigo)
-    else:
-        form = Recibo_IndForm()
-        return render(request,"cevest/altera.html",{'form':form,})
+
+    context = {'form':form}
+
+    return render(request,"cevest/busca_recibo_ind.html",context)
 
 def recibo_ind2(request, pk):
-#    aluno = Aluno.objects.get(pk=pk)
-    aluno = Aluno.objects.get(cpf='05334010700', dt_nascimento='1978-11-02')
+    aluno = Aluno.objects.get(pk=pk)
 
     return render(request,"cevest/recibo_ind.html",{'aluno':aluno,})
-
-#//////////////////
-#// Imprime pauta
-#//////////////////
 
 def pauta(request):
 
@@ -117,6 +117,7 @@ def cadastro(request):
         
     else:
         form = CadForm()
+        print(form)
     return render(request,"cevest/cadastro2.html",{'form':form, 'cursos':cursos})
 
 # Teste detalhe
@@ -148,7 +149,7 @@ def matriz(request, idcurso):
 # Página Turma Prevista de um Curso
 def turma_prevista(request, idcurso):
     turmas_previstas = Turma_Prevista.objects.filter(curso=idcurso, exibir=True, dt_fim__gt = datetime.date.today())
-    curso = Curso.objects.get(pk=idcurso)
+    curso = Curso.objects.get_object_or_404(pk=idcurso)
 
     return render(request,"cevest/turma_prevista.html", {'turmas':turmas_previstas, 'curso': curso})
 
@@ -156,7 +157,6 @@ def turma_prevista(request, idcurso):
 def portador(request):
     if request.user.is_authenticated:
         portador = Aluno.objects.filter(portador_necessidades_especiais=True).order_by('nome')
-#        alocados = Aluno_Turma_Prevista.objects.filter(portador_necessidades_especiais=True).order_by('nome')
         return render(request,"cevest/portador.html", {'portador':portador})
     else:
         return HttpResponseRedirect('/accounts/login')
@@ -164,18 +164,19 @@ def portador(request):
 def altera(request, pk):
     aluno = get_object_or_404(Aluno, pk=pk)
     if request.method == 'POST':
-        form = CadastroForm(request.POST, instance=aluno)
+        form = CadForm(request.POST, instance=aluno)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect('/cevest/')
 
     else:
-        form = CadastroForm(instance=aluno)
+        form = CadForm(instance=aluno)
 
     return render(request,"cevest/altera.html",{'form':form})
 
 # /// Teste ajax
 
+# Uma função para testar a parada de pegar o bairro pela cidade
 def teste_ajax(request):
     if request.method == 'POST':
         form = TesteForm(request.POST)
@@ -187,12 +188,14 @@ def teste_ajax(request):
         form = TesteForm()
     return render(request,"cevest/teste.html",{'form':form})
 
-def load_bairros(request):
-    cidade_id = request.GET.get('id')
-    bairros = Bairro.objects.filter(cidade = cidade_id).order_by('nome')
-    return render(request, 'cevest/teste_options.html', {'bairros' : bairros})
 
-import json
+def load_bairros(request):
+    data = json.loads(request.body.decode("utf-8"))
+    print(data['id'])
+    bairros = Bairro.objects.filter(cidade = data['id']).order_by('nome')
+    print(bairros)
+    return render(request, 'cevest/teste_options.html', {'bairros' : bairros})
+    
 def get_bairro(request, cidade_id):
     if request.is_ajax():
         bairros = Bairro.objects.filter(cidade_id=cidade_id).order_by('nome')
@@ -290,14 +293,6 @@ def AlterarCadastro(request):
 
 
 #???
-def inicio(request):
-    if request.user.is_authenticated:
-        return render(request, 'cevest/inicio.html')
-    else:
-#        return render(request, 'accounts/login.html')
-        return redirect('/accounts/login')
-
-#???
 def sair(request):
     if request.user.is_authenticated:
         return redirect('/accounts/logout')
@@ -315,7 +310,7 @@ def alocados(request):
     else:
         return redirect('/accounts/login')
 
-def confirmaturma(request):
+def confirmar_turma(request):
     form = ConfirmaTurmaForm()
     return render(request, "accounts/confirmaturma.html", {'form': form})
 
@@ -382,7 +377,7 @@ def getLista_TurmaConfirmada():
             lista_turmas.append({"turma":turma,"alunos":temp_lista_alunos,"horarios":temp_lista_horarios})
     return lista_turmas
 
-def lista_turma(request):
+def listar_turmas(request):
     lista_turmas = getLista_TurmaConfirmada()
     return render(request, "cevest/lista_alocados.html",{"listas":lista_turmas})
 

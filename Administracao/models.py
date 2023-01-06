@@ -1,5 +1,6 @@
 from django.db import models
 
+# O DJANGO já possui permissões, a gente tem que dar uma olhada boa nisso pq é desnecessário
 class Permissao(models.Model):
     class Meta:
         permissions = (

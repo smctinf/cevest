@@ -259,6 +259,7 @@
     <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 
     <SCRIPT LANGUAGE="JavaScript">
         function leech(v){
@@ -321,27 +322,90 @@ function execmascara(){
 	v_obj.value=v_fun(v_obj.value)
 }
 
-mostra_bairro(form.cidade.value)
+
+
+
 
     </script>
 
   </body>
 </html>
 
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script>
-    $('.teste').change(function () {
-        var url = $("#teste2").attr("data-bairros-url");  // get the url of the `load_cities` view
-        var cidadeId = $(this).val();
-            $.ajax({ 
-                url: url,
-                data: {
-                    'id':cidadeId,
-                },
-                success: function(data)
-                {
-                    $("#id_bairro").html(data);
-                }
-                });
+    async function getBairros() {
+        let url = document.querySelector("#teste2").dataset.bairrosUrl
+        let cidadeId = document.querySelector(".teste").value
+        dados = {
+          'id':cidadeId
+        }
+        const response = await fetch(url, {
+          method : 'POST',
+          headers: {
+            'X-CSRFToken': '{{csrf_token}}',
+            'Content-Type': 'aplication/json'
+          },
+          body : JSON.stringify(dados)
+        })
+        if(response.ok){
+          let dataend = await response.text()
+          document.getElementById('id_bairro').innerHTML = dataend
+        }
+    }
+    document.querySelector(".teste").addEventListener('change', ()=>{
+      getBairros()
     })
+
+const cp_cidade = document.getElementById('id_cidade')
+const cp_endereco = document.getElementById('id_endereco')
+
+function getCEP(v){
+  if(v.length == 9){
+    let cep = v.replace("-","")
+    buscaEndereco(cep);
+    
+}
+}
+function buscaEndereco(cep){
+  let url = "https://viacep.com.br/ws/"+cep+"/json/";
+  fetch(url)
+  .then((response)=>{
+      response.json()
+      .then((data)=>{
+        autoComplete(data)
+      })
+  })
+}
+// Pra identificar os bairros e cidades que estão com ? onde era pra ser char especial
+function removeAccents(string) {
+  return string.replace(/[ÀÁÂÃÄÅàáâã]/g, "?")
+    .replace(/[ÈÉÊËÈèé]/g, "?")
+    .replace(/[ÌÍÎÏìíî]/g, "?")
+    .replace(/[ÒÓÔÕÖóòõ]/g, "?")
+    .replace(/[ÙÚÛÜùúû]/g, "?")
+    .replace(/[Çç]/g, "?")
+}
+async function autoComplete(end){
+  cp_endereco.value = end.logradouro;
+  let localidade = removeAccents(end.localidade)
+  console.log(localidade)
+  for(let i=1; i<cp_cidade.options.length; i++){
+    if(cp_cidade.options.item(i).innerText == localidade){
+      let opvalue = cp_cidade.options.item(i).value
+      cp_cidade.value = opvalue
+      break
+    }
+  }
+
+  await getBairros()
+  const cp_bairro = document.getElementById('id_bairro')
+  let bairro = removeAccents(end.bairro)
+  for(let i=1; i<cp_bairro.options.length; i++){
+    if(cp_bairro.options.item(i).innerText == bairro){
+      let opvalue = cp_bairro.options.item(i).value
+      cp_bairro.value = opvalue
+      break
+    }
+  }
+
+}
 </script>{% endblock %}
