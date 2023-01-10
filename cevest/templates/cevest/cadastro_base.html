@@ -30,7 +30,6 @@
                         <a href = "#" onclick="return open_popup('curso/{{curso.id}}')">{{curso.nome}}</a>
                     </label>
                     <div>
-                      Turnos: 
                         {% for turno in curso.turnos.all %}
                         <span class="mr-2">{{turno}}</span>
                         {% endfor %}
