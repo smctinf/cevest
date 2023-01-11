@@ -71,3 +71,59 @@ def create_select_choices(datas):
         choices.append((i,dia.strftime("%d/%m")))
         i+=1
     return choices
+
+
+def gerar_grafico_anual():
+    try:        
+        import matplotlib.pyplot as plt
+        import numpy as np
+        labels = ['Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
+        bar_colors = ['tab:slategrey', 'tab:lightsteelblue', 'tab:cornflowerblue', 'tab:royalblue', 'tab:ghostwhite', 'tab:lavender', 'tab:midnightblue', 'tab:navy', 'tab:darkblue', 'tab:mediumblue', 'tab:blue']
+        alunos = [21, 139, 7, 80, 24, 84, 138, 38, 34, 67, 30]
+        matriculas = [22, 154, 7, 86, 24, 87, 147, 38, 34, 72, 34]
+        colors=['tab:slategrey', 'tab:lightsteelblue']
+        x = np.arange(len(labels))  # the label locations
+        width = 0.30  # the width of the bars
+
+        fig, ax = plt.subplots()
+        rects1 = ax.bar(x - width/2, alunos, width, label='Alunos')
+        rects2 = ax.bar(x + width/2, matriculas, width, label='Matrículas')
+
+        # Add some text for labels, title and custom x-axis tick labels, etc.
+        ax.set_ylabel('Quantidade')
+        ax.set_title('Alunos e matrículas ao longo do ano')
+        ax.set_xticks(x, labels)
+        ax.legend()
+
+        ax.bar_label(rects1, padding=3)
+        ax.bar_label(rects2, padding=3)
+
+        fig.tight_layout()      
+        fig.set_size_inches(15, 8)       
+        plt.savefig('./cevest/static/cevest/images/alunos-e-matriculas-anual.jpg', dpi=100)
+        plt.close()
+        plt.cla()
+        plt.clf()
+                
+        return True
+    except:
+        return False
+    
+def gerar_grafico_total():
+    try:        
+        import matplotlib.pyplot as plt
+        import numpy as np
+        height = [526, 705]
+        bars = ('Total de Alunos', 'Total de Matrículas')
+        x_pos = np.arange(len(bars))
+        plt.bar(x_pos, height, color=['blue', 'blue'], width=0.7)        
+        plt.xticks(x_pos, bars)         
+        plt.title('Totais até o momento')        
+        plt.savefig('./cevest/static/cevest/images/alunos-e-matriculas-total.jpg', dpi=100)
+        plt.close()
+        plt.cla()
+        plt.clf()
+        return True
+    except:
+        return False
+    

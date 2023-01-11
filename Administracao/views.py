@@ -7,7 +7,7 @@ from cevest.models import Curso, Aluno, Cidade, Bairro, Profissao, Escolaridade,
 from cevest.forms import CadForm
 from cevest.views import getLista_Alocados, getLista_Candidatos, getLista_NaoAlocados
 import datetime
-from .functions import get_proper_casing, compare_brazilian_to_python_weekday, convert_date_to_tuple, convert_tuple_to_data, create_select_choices, is_date_holiday, create_not_fixed_holidays_in_db
+from .functions import get_proper_casing, compare_brazilian_to_python_weekday, convert_date_to_tuple, convert_tuple_to_data, create_select_choices, is_date_holiday, create_not_fixed_holidays_in_db, gerar_grafico_anual, gerar_grafico_total
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
@@ -18,7 +18,6 @@ from django.contrib import messages
 
 # JLB
 from django.db.models import Count, Q, Sum, Avg
-
 
 @login_required
 @permission_required('cevest.acesso_admin', raise_exception=True)
@@ -1441,7 +1440,7 @@ def criar_curso(request):
             form = CursoForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('listar_cursos')
+            return redirect('administracao:listar_cursos')
     else:
         form = CursoForm()
 
@@ -1500,3 +1499,17 @@ def excluir_curso(request, pk):
     messages.success(f"curso {curso} excluido com sucesso!")
 
     return render('listar_cursos')
+
+#DADOS ABERTOS / KPI
+
+@login_required
+@permission_required('cevest.acesso_admin', raise_exception=True)
+def dados_interno(request):    
+    return render(request,'Administracao/KPI/dados_interno.html')
+
+@login_required
+@permission_required('cevest.acesso_admin', raise_exception=True)
+def atualizar_dados(request):
+    gerar_grafico_total()
+    gerar_grafico_anual()    
+    return redirect('administracao:dados_interno')

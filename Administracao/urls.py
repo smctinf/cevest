@@ -95,6 +95,8 @@ urlpatterns = [
     path('selecionar_aluno_para_declaracao', views.SelecionarAlunoParaDeclaracao, name='selecionar_aluno_para_declaracao'),
     path('gerar_declaracao', views.GerarDeclaracao, name='gerar_declaracao'),
 
+    path('dados-internos', views.dados_interno, name='dados_interno'),
+    path('dados-atualizar', views.atualizar_dados, name='atualizar_dados'),
     # Autenticação
     path('login', auth_views.LoginView.as_view(template_name='cevest/login.html')),
     path('logout',views.logout_view,name="logout"),
