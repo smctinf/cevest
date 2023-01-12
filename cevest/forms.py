@@ -178,7 +178,7 @@ class CadForm(CadFormBase):
     cpf = forms.CharField(label='CPF', max_length=14, widget=forms.TextInput(
         attrs={'class': 'form-control', 'oninput': "mascara(this,icpf)"}))
     cpf_file = forms.FileField(label='Anexo em PDF do que possua seu CPF', widget=forms.FileInput(
-        attrs={'class': 'form-control', 'accept': 'application/pdf', 'enctype': "multipart/form-data"}))
+        attrs={'class': 'form-control', 'required': False,'accept': 'application/pdf', 'enctype': "multipart/form-data"}))
     identidade_file = forms.FileField(label='Anexo em PDF do documento de identidade', widget=forms.FileInput(
         attrs={'class': 'form-control', 'accept': 'application/pdf', 'enctype': "multipart/form-data"}))
     comprovante_residencia_file = forms.FileField(label='Anexo em PDF do comprovante de residência', widget=forms.FileInput(
@@ -193,6 +193,11 @@ class CadForm(CadFormBase):
         cpf = validate_CPF(self.cleaned_data["cpf"])
         return cpf
 
+    def __init__(self, *args, **kwargs):
+        super(CadForm, self).__init__(*args, **kwargs)
+        self.fields['cpf_file'].required = False
+        self.fields['identidade_file'].required = False
+        self.fields['comprovante_residencia_file'].required = False        
 
 class Altera_cpf(forms.Form):
     cpf = forms.CharField(label='CPF:', max_length=14, widget=forms.TextInput(
