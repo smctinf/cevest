@@ -1,3 +1,4 @@
+
 {% extends 'cevest/base.html' %}
 
 {% block content %}
@@ -30,8 +31,13 @@
                         <a href = "#" onclick="return open_popup('curso/{{curso.id}}')">{{curso.nome}}</a>
                     </label>
                     <div>
+                      <span>Turnos:</span>
                         {% for turno in curso.turnos.all %}
-                        <span class="mr-2">{{turno}}</span>
+                        {% if forloop.last %} 
+                        <span>{{turno}}</span>
+                        {% else %}
+                        <span>{{turno}} -</span>
+                        {% endif %}
                         {% endfor %}
                     </div>
                 </div>

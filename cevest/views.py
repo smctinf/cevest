@@ -93,8 +93,6 @@ def cadastro(request):
         cursos.append({'programa': programa, 'cursos': cursos_pgm})
 
     if request.method == 'POST':
-        print(request.FILES)
-        print(request.POST)
 
         form = CadForm(request.POST, request.FILES)
         if form.is_valid():
@@ -117,7 +115,7 @@ def cadastro(request):
         
     else:
         form = CadForm()
-        print(form)
+
     return render(request,"cevest/cadastro2.html",{'form':form, 'cursos':cursos})
 
 # Teste detalhe
