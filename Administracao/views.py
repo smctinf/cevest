@@ -1436,11 +1436,11 @@ def quantidade_por_curso(request):
 
         for turma_definitiva in turmas_definitivas:
             total_alunos_definitivos += Aluno_Turma.objects.filter(
-                turma=turma_definitiva).count()
+                turma=turma_definitiva, situacao__descricao = 'Confirmada').count()
 
         for turma_prevista in turmas_previstas:
             total_alunos_previstos += Aluno_Turma_Prevista.objects.filter(
-                turma_prevista=turma_prevista).count()
+                turma_prevista=turma_prevista, situacao__descricao = 'Aguardando').count()
 
         totais.append({'curso': curso, 'alunos_definitivos': total_alunos_definitivos,
                       'alunos_previstos': total_alunos_previstos, 'alunos': total_alunos_previstos + total_alunos_definitivos})
