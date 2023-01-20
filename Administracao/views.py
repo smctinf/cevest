@@ -1439,7 +1439,7 @@ def quantidade_por_curso(request):
                 turma=turma_definitiva).count()
 
         for turma_prevista in turmas_previstas:
-            total_alunos_previstos += Aluno_Turma.objects.filter(
+            total_alunos_previstos += Aluno_Turma_Prevista.objects.filter(
                 turma=turma_prevista).count()
 
         totais.append({'curso': curso, 'alunos_definitivos': total_alunos_definitivos,
@@ -1450,7 +1450,7 @@ def quantidade_por_curso(request):
     }
 
     return render(request, 'cevest/quantidade_por_curso.html', context)
-    
+
 ######## Cursos CRUD ########
 
 
