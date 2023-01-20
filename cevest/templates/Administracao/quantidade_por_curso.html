@@ -7,6 +7,7 @@
 <table class="table table-bordered col-xl-5">
     <tr>
         <th>Curso</th>
+        <th>Alunos interessados</th>
         <th>Alunos em turmas definitivas</th>
         <th>Alunos em turmas previstas</th>
         <th>Total de alunos</th>
@@ -15,6 +16,7 @@
     {% for total in totais %}
         <tr>
             <td>{{total.curso}}</td>
+            <td>{{total.alunos_interessados}}</td>
             <td>{{total.alunos_definitivos}}</td>
             <td>{{total.alunos_previstos}}</td>
             <td>{{total.alunos}}</td>
