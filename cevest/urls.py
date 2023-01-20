@@ -72,7 +72,5 @@ urlpatterns = [
     # O nome é meio ruim, ele na realidade é a *pré-matricula*
     path('cadastro', views.cadastro, name='cadastro'),
 
-
-
     path('ajax/load_bairros/', views.load_bairros, name = 'ajax_load_bairros'),
 ]

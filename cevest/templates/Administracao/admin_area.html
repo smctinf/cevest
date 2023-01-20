@@ -44,6 +44,13 @@
     </ul>
 {% endif %}
 
+{% if user.is_superuser %}
+    Cursos:
+    <ul>
+        <li><a href="{% url 'administracao:quantidade_por_curso' %}">Listar número de alunos por curso</a></li>
+    </ul>
+{% endif %}
+
 {% if perms.Administracao.pode_emitir_certificado or perms.Administracao.eh_professor %}
     Organização das turmas:
     <ul>
