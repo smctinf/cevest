@@ -16,6 +16,9 @@ urlpatterns = [
     path('curso/<int:pk>/excluir', views.excluir_curso, name='excluir_curso'),
 
 
+    # Cursos
+    path('quantidade_por_curso', views.quantidade_por_curso, name='quantidade_por_curso'),
+
     # Você escolhe a turma e o cpf do aluno para vc emitir o certificado, mas não há indicação nenhuma se
     # o cpf inserido não fazer parte da turma
     path('selecionar_turma_para_certificado', views.SelecionarTurmaParaCertificado, name='selecionar_turma_para_certificado'),

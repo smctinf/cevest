@@ -1423,6 +1423,34 @@ def total_cadastrados_em_dado_periodo(request):
         return render(request, "Administracao/escolher_data.html", {'form': form})
 
 
+@login_required
+def quantidade_por_curso(request):
+    cursos = Curso.objects.all()
+    totais = []
+    for curso in cursos:
+        turmas_definitivas = Turma.objects.filter(curso=curso)
+        turmas_previstas = Turma_Prevista.objects.filter(curso=curso)
+
+        total_alunos_definitivos = 0
+        total_alunos_previstos = 0
+
+        for turma_definitiva in turmas_definitivas:
+            total_alunos_definitivos += Aluno_Turma.objects.filter(
+                turma=turma_definitiva).count()
+
+        for turma_prevista in turmas_previstas:
+            total_alunos_previstos += Aluno_Turma.objects.filter(
+                turma=turma_prevista).count()
+
+        totais.append({'curso': curso, 'alunos_definitivos': total_alunos_definitivos,
+                      'alunos_previstos': total_alunos_previstos, 'alunos': total_alunos_previstos + total_alunos_definitivos})
+
+    context = {
+        'totais': totais
+    }
+
+    return render(request, 'cevest/quantidade_por_curso.html', context)
+    
 ######## Cursos CRUD ########
 
 

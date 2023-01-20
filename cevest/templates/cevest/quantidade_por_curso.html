@@ -1,0 +1,27 @@
+
+{% extends 'cevest/base.html' %}
+
+{% block content %}
+
+<div class="row d-flex align-center justify-content-center mt-5">
+<table class="table table-bordered col-xl-5">
+    <tr>
+        <th>Curso</th>
+        <th>Alunos em turmas definitivas</th>
+        <th>Alunos em turmas previstas</th>
+        <th>Total de alunos</th>
+    </tr>
+
+    {% for total in totais %}
+        <tr>
+            <td>{{total.curso}}</td>
+            <td>{{total.alunos_definitivos}}</td>
+            <td>{{total.alunos_previstos}}</td>
+            <td>{{total.alunos}}</td>
+        </tr>
+    {% endfor %}
+
+</table>    
+</div>
+
+{% endblock %}
