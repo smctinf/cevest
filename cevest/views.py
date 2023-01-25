@@ -444,6 +444,7 @@ def getLista_NaoAlocados():
 def getTotalPorSexo():
     feminino = Aluno.objects.filter(sexo='F').count()
     masculino = Aluno.objects.filter(sexo='M').count()
+    
     lista = []
     lista_temp = []
     lista_temp.append("F")
