@@ -26,12 +26,12 @@ class CadFormBase(forms.ModelForm):
         ('M', 'Masculino',),
     )
 
-    # cpf_file = forms.FileField(label='Anexo em PDF do que possua seu CPF', widget=forms.FileInput(
-    #     attrs={'class': 'form-control', 'required': False,'accept': 'application/pdf', 'enctype': "multipart/form-data"}))
-    # identidade_file = forms.FileField(label='Anexo em PDF do documento de identidade', widget=forms.FileInput(
-    #     attrs={'class': 'form-control', 'accept': 'application/pdf', 'enctype': "multipart/form-data"}))
-    # comprovante_residencia_file = forms.FileField(label='Anexo em PDF do comprovante de residência', widget=forms.FileInput(
-    #     attrs={'class': 'form-control', 'accept': 'application/pdf', 'enctype': "multipart/form-data"}))
+    cpf_file = forms.FileField(label='Anexo em PDF do que possua seu CPF', widget=forms.FileInput(
+        attrs={'class': 'form-control', 'required': False,'accept': 'application/pdf', 'enctype': "multipart/form-data"}))
+    identidade_file = forms.FileField(label='Anexo em PDF do documento de identidade', widget=forms.FileInput(
+        attrs={'class': 'form-control', 'accept': 'application/pdf', 'enctype': "multipart/form-data"}))
+    comprovante_residencia_file = forms.FileField(label='Anexo em PDF do comprovante de residência', widget=forms.FileInput(
+        attrs={'class': 'form-control', 'accept': 'application/pdf', 'enctype': "multipart/form-data"}))
     cursos = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple(
         attrs={'class': "custom-control-input"}), queryset=Curso.objects.filter(exibir=True).filter(ativo=True).order_by('-programa').order_by('nome'))
     nome = forms.CharField(label="Nome", max_length=60, widget=forms.TextInput(
