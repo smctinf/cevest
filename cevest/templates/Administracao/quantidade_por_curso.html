@@ -6,17 +6,27 @@
 <div class="row d-flex align-center justify-content-center mt-5">
 <table class="table table-bordered col-xl-5">
     <tr>
-        <th>Curso</th>
-        <th>Alunos interessados</th>
-        <th>Alunos em turmas definitivas</th>
-        <th>Alunos em turmas previstas</th>
-        <th>Total de alunos</th>
+        <th class=>Curso</th>
+        <th>Total interessados</th>
+
+        <th>Interessados: Manhã</th>
+        <th>Interessados: Tarde</th>
+        <th>Interessados: Noite</th>
+
+        <th>Total em turmas definitivas</th>
+        <th>Total em turmas previstas</th>
+        <th>Total</th>
     </tr>
 
     {% for total in totais %}
         <tr>
             <td>{{total.curso}}</td>
             <td>{{total.alunos_interessados}}</td>
+
+            <td>{{total.alunos_interessados_manha}}</td>
+            <td>{{total.alunos_interessados_tarde}}</td>
+            <td>{{total.alunos_interessados_noite}}</td>
+
             <td>{{total.alunos_definitivos}}</td>
             <td>{{total.alunos_previstos}}</td>
             <td>{{total.alunos}}</td>
