@@ -19,6 +19,7 @@ from django.contrib import messages
 # JLB
 from django.db.models import Count, Q, Sum, Avg
 
+
 @login_required
 @permission_required('cevest.acesso_admin', raise_exception=True)
 def capitalizar_nomes(request):
@@ -480,10 +481,10 @@ def Alocacao(request):
     turma_prevista_id = request.session['turma_prevista_id']
     turma_prevista = Turma_Prevista.objects.get(id=turma_prevista_id)
 
-
     # ============== ALTERACAO PARA PEGAR SÓ A PARTIR DE NOVEMBRO
 
-    alunos_compativeis = Aluno.objects.filter(cursos=turma_prevista.curso).filter(ativo=True).filter(dt_inclusao__gt='2021-11-01')
+    alunos_compativeis = Aluno.objects.filter(cursos=turma_prevista.curso).filter(
+        ativo=True).filter(dt_inclusao__gt='2021-11-01')
 
     lista_final = []
 
@@ -506,10 +507,10 @@ def Alocacao(request):
         status_aluno_turma_prevista=status_matriculado).exclude(status_aluno_turma_prevista=status_candidato)
 
     # pega os alunos com horários disponíveis compatíveis com o curso.
-    
+
     for aluno in alunos_compativeis:
         if aluno.disponibilidade.all().count() > 0 and turma_prevista.turno not in aluno.disponibilidade.all():
-            alunos_compativeis = alunos_compativeis.exclude(id = aluno.id)
+            alunos_compativeis = alunos_compativeis.exclude(id=aluno.id)
 
     # Exclui de alunos_compativeis os alunos que desistiram da vaga ou não compareceram
 
@@ -1434,18 +1435,35 @@ def quantidade_por_curso(request):
         total_alunos_definitivos = 0
         total_alunos_previstos = 0
 
-        interesados = Aluno.objects.filter(cursos=curso).count()
+        interesados = Aluno.objects.filter(cursos=curso)
+
+        interesados_manha = interesados.filter(
+            disponibilidade__descricao='Manhã').count()
+        interesados_tarde = interesados.filter(
+            disponibilidade__descricao='Tarde').count()
+        interesados_noite = interesados.filter(
+            disponibilidade__descricao='Noite').count()
+        interesados_total = interesados.count()
 
         for turma_definitiva in turmas_definitivas:
             total_alunos_definitivos += Aluno_Turma.objects.filter(
-                turma=turma_definitiva, turma__situacao__descricao = 'Confirmada').count()
+                turma=turma_definitiva, turma__situacao__descricao='Confirmada').count()
 
         for turma_prevista in turmas_previstas:
             total_alunos_previstos += Aluno_Turma_Prevista.objects.filter(
-                turma_prevista=turma_prevista, turma_prevista__situacao__descricao = 'Aguardando').count()
+                turma_prevista=turma_prevista, turma_prevista__situacao__descricao='Aguardando').count()
 
-        totais.append({'curso': curso, 'alunos_interessados': interesados, 'alunos_definitivos': total_alunos_definitivos,
-                      'alunos_previstos': total_alunos_previstos, 'alunos': total_alunos_previstos + total_alunos_definitivos})
+        totais.append({'curso': curso, 
+                        'alunos_interessados': interesados_total,
+                        'alunos_interessados_manha': interesados_manha, 
+                        'alunos_interessados_tarde': interesados_tarde, 
+                        'alunos_interessados_noite': interesados_noite,
+
+                        'alunos_definitivos': total_alunos_definitivos,
+                        'alunos_previstos': total_alunos_previstos, 
+                        'alunos': total_alunos_previstos + total_alunos_definitivos, 
+
+                    })
 
     context = {
         'totais': totais
@@ -1530,16 +1548,18 @@ def excluir_curso(request, pk):
 
     return render('listar_cursos')
 
-#DADOS ABERTOS / KPI
+# DADOS ABERTOS / KPI
+
 
 @login_required
 @permission_required('cevest.acesso_admin', raise_exception=True)
-def dados_interno(request):    
-    return render(request,'Administracao/KPI/dados_interno.html')
+def dados_interno(request):
+    return render(request, 'Administracao/KPI/dados_interno.html')
+
 
 @login_required
 @permission_required('cevest.acesso_admin', raise_exception=True)
 def atualizar_dados(request):
     gerar_grafico_total()
-    gerar_grafico_anual()    
+    gerar_grafico_anual()
     return redirect('administracao:dados_interno')
