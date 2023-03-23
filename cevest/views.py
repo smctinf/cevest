@@ -291,7 +291,7 @@ def AlterarCadastro(request):
     for curso in aluno_temp.cursos.all():
         checked_curso_ids.append(curso.id)
     if request.method == 'POST':
-        form = CadFormBase(request.POST, instance=aluno_temp)
+        form = CadFormBase(request.POST, request.FILES, instance=aluno_temp)
         if form.is_valid():
             form.save(aluno_temp)
             messages.info(request, 'Cadastro Salvo')
