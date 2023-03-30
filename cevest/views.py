@@ -293,7 +293,7 @@ def AlterarCadastro(request):
     if request.method == 'POST':
         form = CadFormBase(request.POST, request.FILES, instance=aluno_temp)
         if form.is_valid():
-            form.save(aluno_temp)
+            form.save()
             messages.info(request, 'Cadastro Salvo')
             return HttpResponseRedirect(reverse('index'))
 

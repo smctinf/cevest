@@ -236,11 +236,11 @@ class Aluno(models.Model):
     ordem_judicial = models.BooleanField(default=False)
     ativo = models.BooleanField(default=True)
 
+    # ARQUIVOS
+
     cpf_file = models.FileField(upload_to='cpf_file', verbose_name='CPF', blank=True ,null=True)
-    identidade_file = models.FileField(
-        upload_to='identidade_file', verbose_name='Identidade', blank=True, null=True)
-    comprovante_residencia_file = models.FileField(
-        upload_to='comprovante_residencia_file', verbose_name='Comproante de residência', blank=True, null=True)
+    identidade_file = models.FileField(upload_to='identidade_file', verbose_name='Identidade', blank=True, null=True)
+    comprovante_residencia_file = models.FileField(upload_to='comprovante_residencia_file', verbose_name='Comproante de residência', blank=True, null=True)
 
 
     # Essa aqui também parece ser uma péssima ideia. Como o curso não é algo que a pessoa está necessariamente (O aluno faz parte de uma turma para ser mais exato),

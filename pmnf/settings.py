@@ -151,6 +151,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = '/home/cevest/public_html/pmnf/cevest/static'
 
+# ARQUIVOS DE MEDIA
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'pmnf/media')
 
