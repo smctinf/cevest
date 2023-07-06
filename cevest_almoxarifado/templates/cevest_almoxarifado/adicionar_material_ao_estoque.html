@@ -1,0 +1,133 @@
+{% extends 'template.html' %}
+{% load bootstrap5 %}
+{% load static%}
+{% block nav %}
+{% include 'nav_cevest_os.html' %}
+{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/almoxarifado.css' %}">
+
+{% endblock %}
+{% block administrativo %}fw-bold{% endblock %}
+{% block main %}
+<div class="row">
+    <div class="col d-flex"> 
+        <div class="row w-100">
+            <div class="col-10 pb-4 m-auto bg-white">                  
+                <div class="row">
+                    <div class="col px-4 d-flex">
+                        <a class="ms-auto" href="{% url 'cevest_almoxarifado:index' %}">
+                          <i class="fa-solid fa-rotate-left me-2"></i>Voltar
+                        </a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col px-4">
+                        <form method="POST">
+                          <h3>Formulário para adicionar material ao estoque</h3>                          
+                          {% csrf_token %}
+                          
+                          <div class="mb-3">
+                            <label class="form-label" for="id_tipo">Tipo</label>
+                            <select onchange="getMaterial(this)" name="tipo" class="form-select" title="" required id="id_tipo">
+                              <option value="" selected>---------</option>                          
+                              {% for tipo in tipos %}
+                              <option value="{{tipo.id}}">{{tipo.nome}}</option>
+                              {% endfor %}
+                            </select>
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label" for="id_material">Material</label>
+                            <select name="material" class="form-select" title="" required id="id_material">
+                              <option value="" selected>---------</option>                         
+                            </select>
+                          </div>
+                          <input type="hidden" name="tipo_movimentacao" value="E" id="id_tipo_movimentacao">
+                          <div class="mb-3">
+                            <label class="form-label" for="id_add_quantidade">Quantidade movimentada</label>
+                            <input type="number" name="add_quantidade" class="form-control" placeholder="Quantidade movimentada" title="" required id="id_add_quantidade">
+                          </div>
+
+                          <button type="submit" class="btn btn-primary">
+                            Adicionar
+                          </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>    
+    </div>
+</div>
+<script>
+  function getMaterial(e){
+    const tipoId = e.value;
+    const materialSelect = document.getElementById('id_material');
+    
+    // Faz uma requisição fetch para a URL da view Django, passando o tipoId como parâmetro
+    fetch(`/almoxarifado/getMaterial/${tipoId}/`)
+      .then(response => response.json())
+      .then(data => {
+        // Limpa as opções do select de Material
+        materialSelect.innerHTML = '';
+        
+        // Adiciona as novas opções ao select de Material
+        data.forEach(material => {
+          const option = document.createElement('option');
+          option.value = material.id;
+          option.text = material.nome;
+          materialSelect.appendChild(option);
+        });
+      })
+      .catch(error => console.error(error));
+  }
+  
+</script>
+{% if messages %}              
+<!-- MODAL -->
+<div class="modal fade" id="resposta" aria-hidden="true" aria-labelledby="respostaLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        {% for message in messages %}
+        <div class="modal-header {% if message.tags %}{{message.tags}}{% endif %} border-0">
+          <h5 class="modal-title text-dark text-center" id="exampleModalToggleLabel"></h5>
+          <button type="button" onclick="myModal.hide();" class="btn-close"></button>
+        </div>
+        <div class="modal-body px-5 {% if message.tags %}{{message.tags}}{% endif %}">   
+           
+          <p class="px-4 py-3 text-center">
+            {{ message|escape }}
+          </p>
+          
+          
+        </div>
+        <div class="modal-footer {% if message.tags %}{{message.tags}}{% endif %} border-0">
+          
+        </div>
+        {% endfor %}
+      </div>
+
+    </div>
+  </div>   
+  <script>
+   var myModal = new bootstrap.Modal(document.getElementById('resposta'))
+   myModal.toggle()
+  </script>
+  <style>
+    .error{
+      background-color: rgb(238, 171, 171);
+      color: darkred;
+      font-weight: 600;
+    }
+    .success{
+      background-color: rgb(182, 238, 171);
+      color: rgb(0, 139, 19);
+      font-weight: 600
+    }
+    .warning{
+      background-color: rgb(238, 226, 171);
+      color: rgb(139, 107, 0);
+      font-weight: 600
+    }
+  </style>
+{% endif %}
+{% endblock %}

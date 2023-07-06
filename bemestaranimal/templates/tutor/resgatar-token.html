@@ -1,0 +1,26 @@
+{% extends 'template.html' %}
+{% block title %}SSUBEA{% endblock %}
+{% block css %}{% endblock %}
+{% block nav %}
+{% include 'nav_bemestaranimal.html' %}
+{% endblock %}
+{% block main %}
+{% load bootstrap5 %}
+<div class="container pb-5">
+    <div class="row d-flex justify-content-center">
+        <div class="col-4">
+            <h2>Código: {{cupom.token}}</h2>
+            <ul>Orientações:
+                <li>1. </li>
+                <li>2. </li>
+                <li>3. </li>
+                <li>4. </li>
+            </ul>
+            
+        </div>
+    </div>
+</div>
+<script>
+document.getElementById('tutor').classList.add('s-nav-active');
+</script>
+{% endblock %}

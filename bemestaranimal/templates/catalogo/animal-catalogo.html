@@ -1,0 +1,57 @@
+{% extends 'template.html' %}
+{% block title %}SSUBEA{% endblock %}
+{% block css %}{% endblock %}
+{% block nav %}
+{% include 'nav_bemestaranimal.html' %}
+{% endblock %}
+{% block main %}
+{% load bootstrap5 %}
+<div class="container pb-5">
+<div class="row">
+    <div class="col pb-5">
+        <h2>Animais para adoção</h2>
+    </div>
+</div>
+    <div class="row mx-auto">
+        <div class="d-flex flex-wrap">
+    {% for adocao in catalogo %}
+    <div class="item mx-2 mb-3 d-flex flex-column">
+        <div class="d-img mx-auto my-3">
+          <img src="{{adocao.animal.animal_image.url}}" class="img-fluid rounded-circle">
+        </div>
+        <div class="c-text mx-2 d-flex flex-column py-1">
+          <h5>{% if adocao.animal.nome %}{{adocao.animal.nome}}{% else %}{{adocao.raca}}{% endif %}</h5>
+          <p class="card-text">{% if adocao.animal.sexo == 'o' %}Macho{% else %}Fêmea{% endif %},
+             {{adocao.animal.idade}} {% if adocao.animal.idade == 1 %}ano.{% else %}anos.{% endif %}
+
+            </p>
+            <a href="{% url 'bemestaranimal:entrevista_adocao' adocao.id %}" class="btn btn-outline-primary rounded-1 btn-details py-1  my-3 mx-auto" id="esp-2">Ver detalhes</a>
+        </div>
+      </div>
+    {% endfor %}
+    </div>
+    </div>
+    </div>
+    {% for message in messages %}
+    <div class="modal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title"></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>{{message}}</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor%}
+<script>
+  document.getElementById('adote').classList.add('s-nav-active');
+</script>
+{% endblock %}

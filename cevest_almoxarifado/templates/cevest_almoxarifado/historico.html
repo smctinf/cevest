@@ -1,0 +1,103 @@
+{% extends 'template.html' %} {% load bootstrap5 %} {% load static%} 
+{% block nav %}
+{% include 'nav_cevest_os.html' %}
+{% endblock %}
+{% block title %}Listar tipo materiais{% endblock %} {% block css %}
+<link rel="stylesheet" href="{% static 'css/almoxarifado.css' %}" />
+
+{% endblock %} {% block administrativo %}fw-bold{% endblock %} {% block main %}
+<div class="row">
+  <div class="col d-flex">
+    <div class="row w-100">
+      <div class="col-10 pb-4 m-auto bg-white">
+       
+        <div class="row">
+          <div class="col px-4">
+            <div class="px-2 d-flex">
+  
+              <a class="ms-4" href="{% url 'cevest_almoxarifado:index' %}">
+                <i class="fa-solid fa-rotate-left me-2"></i>Voltar
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col px-4 pt-4">
+            <div class="px-2">
+              <h4>Tipos de Materiais</h4>
+              <table class="table table-striped table-hover">
+                <tbody>
+                  {% for log in logs %}
+                  <tr class="{% if log.tipo_movimentacao == 'S' %}bg-vermelho{% else %}bg-verde{% endif %}">
+                    <td class="d-flex align-items-center">
+                      <span>{{log.material}}</span>
+                    </td>
+                    <td class="text-end">
+                      {{log.qnt_em_estoque}}
+                    </td>
+                    <td class="text-end">
+                      {% if log.tipo_movimentacao == 'S' %}-{% endif %} {{log.add_quantidade}}
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+         
+        </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+{% if messages %}              
+<!-- MODAL -->
+<div class="modal fade" id="resposta" aria-hidden="true" aria-labelledby="respostaLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        {% for message in messages %}
+        <div class="modal-header {% if message.tags %}{{message.tags}}{% endif %} border-0">
+          <h5 class="modal-title text-dark text-center" id="exampleModalToggleLabel"></h5>
+          <button type="button" onclick="myModal.hide();" class="btn-close"></button>
+        </div>
+        <div class="modal-body px-5 {% if message.tags %}{{message.tags}}{% endif %}">   
+           
+          <p class="px-4 py-3 text-center">
+            {{ message|escape }}
+          </p>
+          
+          
+        </div>
+        <div class="modal-footer {% if message.tags %}{{message.tags}}{% endif %} border-0">
+          
+        </div>
+        {% endfor %}
+      </div>
+
+    </div>
+  </div>   
+  <script>
+   var myModal = new bootstrap.Modal(document.getElementById('resposta'))
+   myModal.toggle()
+  </script>
+  <style>
+    .error{
+      background-color: rgb(238, 171, 171);
+      color: darkred;
+      font-weight: 600;
+    }
+    .success{
+      background-color: rgb(182, 238, 171);
+      color: rgb(0, 139, 19);
+      font-weight: 600
+    }
+    .warning{
+      background-color: rgb(238, 226, 171);
+      color: rgb(139, 107, 0);
+      font-weight: 600
+    }
+  </style>
+{% endif %}
+
+{% endblock %}

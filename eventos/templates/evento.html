@@ -1,0 +1,219 @@
+{% extends 'template.html' %} {% load static %} {% block nav %}
+<link rel="stylesheet" href="/static/css/owl.carousel.min.css" />
+<link rel="stylesheet" href="/static/css/carousel_desenvolve.css" />
+<link rel="stylesheet" href="/static/css/eventos.css" />
+<style>
+  .item {
+    box-shadow: none !important;
+    background-color: none !important;
+  }
+</style>
+<!-- <div id="main-carousel" class="row">
+  <div class="col px-0 pt-5 mt-5">
+    <div class="owl-carousel">
+      {% for item in carousel %}
+      <div class="item w-100">
+        {% if item.url %}<a href="{{item.url}}"
+          >{% endif %}
+          <img
+            src="{{item.image.url}}"
+            class="d-block w-100"
+            alt="{{item.nome}}"
+          />
+          {% if item.url %}</a
+        >{% endif %}
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div> -->
+<!-- <script
+  src="https://code.jquery.com/jquery-3.6.3.min.js"
+  integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU="
+  crossorigin="anonymous"
+></script>
+<script src="/static/js/owl.carousel.min.js"></script>
+<script>
+  $(".owl-carousel").owlCarousel({
+    center: true,
+    items: 2,
+    loop: true,
+    margin: 10,
+    autoWidth: true,
+    autoplay: true,
+    nav: true,
+    responsive: {
+      0: {
+        items: 1,
+      },
+      600: {
+        items: 3,
+      },
+      1000: {
+        items: 5,
+      },
+    },
+  });
+</script> -->
+{% endblock %} {% block css %}
+<link rel="stylesheet" href="/static/css/index.css" />
+<link rel="stylesheet" href="/static/css/carrossel.css" />
+<script src="/static/js/carrossel.js"></script>
+<style>
+  .item {
+    box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.341);
+    background-color: #ffffff00;
+  }
+</style>
+
+{% endblock %} {% block main %}
+<div class="container pt-5">
+  <div class="row mx-auto mt-5 bg-destaque ps-4 pb-2 pt-1">
+    <!-- <div class="row">
+    <h2 class="ms-4 py-1">Destaque</h2>
+  </div>
+  <div class="row ">
+    <div class="d-flex bg-white img-txt">
+      <div class="img-destaque">
+        <img src="{% static 'images/animais.jpg' %}" class="img-fluid">
+      </div>
+      <div class="text-destaque pt-4 pb-0 px-4 d-flex flex-column" style="max-width: 450px;">
+        <h5 class="mb-1">Bem-Estar Animal Nova Friburgo</h5>
+        <p class="local"><a href="{{evento_destaque.google_maps}}"><i class="fa-solid fa-location-dot mb-3 me-2"></i>ARP - Nova Friburgo - Rio de Janeiro.</a></p>    
+        <p class="time mb-4 text-center">03/02/2023 - 28/02/2023 - 17:00 - 21:00</p>        
+        <h7 class="mb-1">
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, deleniti reprehenderit. Et similique impedit esse.
+        </h7>
+        
+        <p class="inf text-secondary mt-2">Com transmissão online</p>
+        <button class="btn btn-outline-primary btn-details me-auto" id="esp">Detalhes</button>
+      </div>
+    </div>
+  </div> -->
+    <div class="row">
+      <!-- <h2 class="ms-2 py-1">Destaque</h2> -->
+    </div>
+    <div class="row">
+      <div class="col pb-3">
+        <div
+          class="d-flex evento_teste"
+          style="font-size: 25pt; font-weight: 600"
+        >
+          <h1>Todos os eventos</h1>
+          <!-- <div class="dropdown ms-auto">
+            <a
+              class="ps-2"
+              type="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+              style="text-decoration: none; color: black; font-size: 18pt"
+            >
+              Todos
+              <span style="font-size: 15pt">
+                <i class="ps-2 fa-solid fa-chevron-down"></i>
+              </span>
+            </a>
+            <ul
+              class="dropdown-menu dropend"
+              aria-labelledby="dropdownMenuButton1"
+            >
+              <li>
+                <a class="dropdown-item" href="#"
+                  ><i class="fa-solid fa-filter me-2"></i>CECIERJ</a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" href="#"
+                  ><i class="fa-solid fa-filter me-2"></i>UERJ</a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" href="#"
+                  ><i class="fa-solid fa-filter me-2"></i>CEFET</a
+                >
+              </li>
+            </ul>
+          </div> -->
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col d-flex flex-wrap evento_teste2">
+        {% for evento in eventos %}
+        <div
+          class="banner_destaque d-flex flex-column flex-xl-column bg-white img-txt"
+          style="width: 35vw; margin: auto; box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);"
+        >
+          <div class="img-destaque" style="width: 100%">
+            <img class="img-fluid" src="{{evento.banner_img.url}}" />
+          </div>
+          <div class="text-destaque pt-4 pb-0 px-4 d-flex flex-column">
+            <h5 class="mb-1">{{evento.titulo}}</h5>
+            <h6 style="color: gray;">
+              {{evento.data_inicio|date:'d/m/y'}}{% if evento.data_fim %} -
+              {{evento.data_fim|date:'d/m/y'}}{% endif %}
+            </h6>
+            <h6 class="mb-1" style="font-weight: 400">{{evento.subtitulo}}</h6>
+            
+            <p class="local mt-3">
+              <a href="{{evento.google_maps}}"
+                ><i class="fa-solid fa-location-dot mb-3 me-2"></i
+                >{{evento.local}}</a
+              >
+            </p>            
+            <!-- <p class="inf text-secondary mt-2">Com transmissão online</p> -->
+            <a href="{% url 'eventos:detalhe' evento.id %}"
+              class="mt-2 w-100 btn btn-outline-primary btn-details me-auto"
+              id="esp"
+            >
+              Detalhes
+          </a>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  <style>
+    .item {
+      padding-top: 15px;
+    }
+  </style>
+
+  <div class="row mx-auto px-5" style="height: 100px">
+    <script>
+      document.getElementById("index").classList.add("s-nav-active");
+    </script>
+  </div>
+</div>
+{% endblock %} {% block footer %}
+<section id="newsletter" class="pb-5" style="background-color: #fff">
+  <div class="row border-top">
+    <div class="col d-flex d-flex px-5 pt-5">
+      <div class="mx-auto d-flex">
+        <img
+          src="/static/images/blue-envelope.jpg"
+          style="width: 100px; transform: rotate(-0.265rad)"
+          alt=""
+        />
+        <span
+          class="display-5 my-auto ms-4"
+          style="font-family: 'Inter', sans-serif"
+          >Receba nossas novidades!</span
+        >
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col d-flex pt-3">
+      <div class="m-auto d-flex flex-column">
+        <p class="text-center">
+          Fique por dentro dos nossos principais assuntos, basta socilitar
+          abaixo esse serviço!
+        </p>
+        <button class="mx-auto btn btn-primary mt-4 px-5">Solicitar</button>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

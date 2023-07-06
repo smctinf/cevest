@@ -1,0 +1,77 @@
+{% extends 'template.html' %}
+{% load static %}
+{% block nav %}
+{% include 'nav_bemestaranimal.html' %}
+{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="/static/css/index.css">
+<link rel="stylesheet" href="/static/css/carrossel.css">
+<script src="/static/js/carrossel.js"></script>
+{% endblock %}
+{% block main %}
+<div class="container">
+<div class="row mx-auto bg-destaque ps-4 pb-2 pt-1">
+  <div class="container">
+    <div class="row mx-auto ps-4 pb-5 pt-1">
+      <div class="row">
+        <h2 class="ms-2 py-1">Destaque</h2>
+      </div>
+      {% include 'slide.html' %}
+    </div>      
+
+      <!-- <div class="row">
+    <h2 class="ms-4 py-1">Destaque</h2>
+  </div> -->
+  <!-- <div class="row ">
+    <div class="d-flex bg-white img-txt">
+      <div class="img-destaque">
+        <img src="{% static 'images/animais.jpg' %}" class="img-fluid">
+      </div>
+      <div class="text-destaque pt-4 pb-0 px-4 d-flex flex-column" style="max-width: 450px;">
+        <h5 class="mb-1">Bem-Estar Animal Nova Friburgo</h5>
+        <p class="local"><a href="{{evento_destaque.google_maps}}"><i class="fa-solid fa-location-dot mb-3 me-2"></i>ARP - Nova Friburgo - Rio de Janeiro.</a></p>    
+        <p class="time mb-4 text-center">03/02/2023 - 28/02/2023 - 17:00 - 21:00</p>        
+        <h7 class="mb-1">
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, deleniti reprehenderit. Et similique impedit esse.
+        </h7>
+        
+        <p class="inf text-secondary mt-2">Com transmissão online</p>
+        <button class="btn btn-outline-primary btn-details me-auto" id="esp">Detalhes</button>
+      </div>
+    </div>
+  </div> -->
+</div>
+<div class="row">
+  <h2 class="ms-5 pt-5 pb-4">Adote um Amigo!</h2>
+</div>
+<style>
+  .item{
+  padding-top: 15px;
+}
+
+</style>
+<div class="row mx-auto px-5">
+  <div class="d-flex justify-content-evenly carosel">
+    {% for adocao in catalogo %}
+    <div class="item carosel-item">
+      <div class="c-img px-3">
+        <img src="{{adocao.animal.animal_image.url}}" class="img-fluid rounded-circle">
+      </div>
+      <div class="c-text mx-2 d-flex flex-column py-1 px-4 pt-3">
+        <h5>{% if adocao.animal.nome %}{{adocao.animal.nome}}{% endif %}</h5>
+        <p class="time text-secondary">{% if adocao.animal.raca %}{{adocao.animal.raca}} - {% endif %}{{adocao.animal.idade}} {% if adocao.animal.idade == 1 %}ano.{% else %}anos.{% endif %}</p>        
+        <a href="{% url 'bemestaranimal:entrevista_adocao' adocao.id %}" class="btn btn-outline-primary rounded-1 btn-details py-1  my-3 mx-auto" id="esp-2">Ver detalhes</a>
+      </div>
+    </div>
+    {% endfor %}
+    
+  </div>
+</div>
+<div class="row mx-auto px-5" style="height: 100px;">
+  <script>
+    document.getElementById('index').classList.add('s-nav-active');
+  </script>
+</div>
+</div>
+</div>
+{% endblock %}

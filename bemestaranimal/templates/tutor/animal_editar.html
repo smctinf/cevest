@@ -1,0 +1,108 @@
+{% extends 'template.html' %}
+{% block title %}SSUBEA{% endblock %}
+{% block css %}{% endblock %}
+{% block nav %}
+{% include 'nav_bemestaranimal.html' %}
+{% endblock %}
+{% block main %}
+{% load bootstrap5 %}
+<div class="container">
+<div class="row d-flex">
+    <div class="col">
+        <h2 class="m-0">Editar animal</h2>
+    </div>
+    <div class="col d-flex flex-row-reverse">
+        <!-- <a class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#excluir"><i class="fa-solid fa-trash-can"></i>  Deletar</a> -->
+        <a href="{% url 'bemestaranimal:cadastrar_animal' %}" class="btn btn-outline-primary mx-2"><i class="fa-solid fa-rotate-left"></i>  Voltar</a>
+    </div>
+</div>
+<form method="POST" enctype="multipart/form-data">
+{% csrf_token %}
+{% bootstrap_form animal_form %}
+{% bootstrap_form especie_form %} 
+
+<button type="submit" class="btn btn-primary w-100 mb-3">Editar</button>
+</form>
+<div class="modal fade" id="excluir" aria-hidden="true" aria-labelledby="excluirLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-danger border-0">
+          <h5 class="modal-title text-light text-center" id="excluirLabel">ATENÇÃO!</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-dark border-0 pt-5">            
+            <p class="text-center"><b>Tem certeza que deseja excluir este registro?</b></p>
+        </div>
+        <div class="modal-footer border-0">
+          <a href="{% url 'bemestaranimal:deletar_animal' animal.id %}" class="btn btn-danger">Sim, tenho certeza.</a>
+        </div>
+      </div>
+    </div>
+  </div> 
+</div>
+<script>
+    const anilha = document.getElementById("id_anilha");
+    const especie = document.getElementById('id_nome_especie')
+    ave = document.getElementById('id_tipo_0')
+    if(ave.checked){
+        document.querySelector(".radio-success").parentNode.style.display = "none"
+        anilha.parentNode.style.display = "block";
+        
+    }
+    else{
+        anilha.parentNode.style.display = "none";
+    }
+    if(especie.value != ""){
+        setRequired(especie)
+    }
+    // function teste(v){
+    //     if(v==1 || v==6){
+    //         anilha.parentNode.style.display = "block";
+    //     }
+    //     else{   
+    //         anilha.parentNode.style.display = "none";
+    //         anilha.value = "";
+    //     }
+    // }
+    function setRequired(...elements){
+        elements.forEach(e => {
+            console.log(e)
+            e.setAttribute('required', '');
+        })
+    }
+
+    function removeRequired(...elements){
+        elements.forEach(e => {
+            
+            e.removeAttribute('required');
+        })
+    }
+
+    function yes_or_no_check(e){
+        if(e.target.value == 1 ){
+            anilha.parentNode.style.display = "block";
+            setRequired(anilha)
+            setRequired(especie)
+        }else if(e.target.value == 6){
+            anilha.parentNode.style.display = "none";
+            setRequired(especie)
+            removeRequired(anilha)
+            anilha.value = "";
+
+        }else{
+            anilha.parentNode.style.display = "none";
+            removeRequired(anilha)
+            removeRequired(especie)
+            anilha.value = "";
+
+        }
+    }
+    ave.addEventListener('change', yes_or_no_check)
+    document.getElementById('id_tipo_1').addEventListener('change', yes_or_no_check)
+    document.getElementById('id_tipo_2').addEventListener('change', yes_or_no_check)
+    document.getElementById('id_tipo_3').addEventListener('change', yes_or_no_check)
+    document.getElementById('id_tipo_4').addEventListener('change', yes_or_no_check)
+
+    document.getElementById('tutor').classList.add('s-nav-active');
+</script>
+{% endblock %}

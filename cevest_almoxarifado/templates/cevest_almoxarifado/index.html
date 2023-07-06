@@ -1,0 +1,129 @@
+{% extends 'template.html' %}
+{% load bootstrap5 %}
+{% load static%}
+{% block nav %}
+{% include 'nav_cevest_os.html' %}
+{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/almoxarifado.css' %}">
+
+{% endblock %}
+{% block administrativo %}fw-bold{% endblock %}
+{% block main %}
+<div class="row">
+  <div class="col d-flex"> 
+        <div class="row w-100">
+            <div class="col-10 pb-4 m-auto bg-white">                           
+                <div class="row">
+                    <div class="col px-4">                        
+                        <div class="bg-light py-1 px-2 d-flex">
+                            <a class="ms-auto" href="{% url 'cevest_almoxarifado:alm_adicionar_material_ao_estoque' %}">
+                              <i class="fa-solid fa-plus me-2"></i>Adicionar material
+                            </a>
+                            <a class="ms-4" href="{% url 'cevest_almoxarifado:alm_listar_tipos'%}">
+                              <i class="fa-solid fa-gear me-2"></i>Materiais
+                            </a>                                           
+                        </div>
+                        <div class="pt-4 px-2">
+                          <h2>Estoque</h2>
+                          <table class="table">
+                            <thead class="border-0">
+                              <tr>
+                                <th>Tipo de material</th>
+                                <th>Nome do material</th>
+                                <th class="text-end">Unidades de em estoque</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {% for materia in materiais %}                            
+                              <tr>
+                                <td>{{materia.tipo.nome}}</td>
+                                <td>{{materia.nome}}</td>
+                                <td class="text-end">{{materia.qnt_em_estoque}}</td>
+                              </tr>
+                            {% endfor %}
+                            </tbody>
+                          </table>
+                          
+                        
+                        </div>
+                    </div>
+                </div>
+
+                <nav aria-label="Page navigation example">
+                  <ul class="pagination justify-content-center">
+              
+                  {% if materiais.has_previous %}
+                  {% comment %} <li class="page-item"><a class="page-link" href="?page=1">&laquo; first</a></li> {% endcomment %}
+                    <li class="page-item"><a class="page-link" href="?page={{ materiais.previous_page_number }}">&laquo; anterior</a></li>
+                  {% endif %}
+              
+                  {% for x in materiais.page_range %}
+                    <li class="page-item {% if x == materiais.number  %} disabled {% endif %}"><a class="page-link" href="?page={{ x }}">{{x}}</a></li>
+                  {% endfor %}
+              
+                    {% if materiais.has_next %}
+                    <li class="page-item"><a class="page-link" href="?page={{ materiais.next_page_number }}">próximo &raquo;</a></li>
+                      {% comment %} <li class="page-item"><a class="page-link" href="?page={{ materiais.paginator.num_pages }}">last &raquo;</a></li> {% endcomment %}
+                  {% endif %}
+                    </li>
+                  </ul>
+                  </nav>
+
+            </div>
+        </div>    
+  </div>
+</div>
+<!-- MODAL -->
+{% if messages %}              
+<!-- MODAL -->
+<div class="modal fade" id="resposta" aria-hidden="true" aria-labelledby="respostaLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        {% for message in messages %}
+        <div class="modal-header {% if message.tags %}{{message.tags}}{% endif %} border-0">
+          <h5 class="modal-title text-dark text-center" id="exampleModalToggleLabel"></h5>
+          <button type="button" onclick="myModal.hide();" class="btn-close"></button>
+        </div>
+        <div class="modal-body px-5 {% if message.tags %}{{message.tags}}{% endif %}">   
+           
+          <p class="px-4 py-3 text-center">
+            {{ message|escape }}
+          </p>
+          
+          
+        </div>
+        <div class="modal-footer {% if message.tags %}{{message.tags}}{% endif %} border-0">
+          
+        </div>
+        {% endfor %}
+      </div>
+
+    </div>
+  </div>   
+  <script>
+   var myModal = new bootstrap.Modal(document.getElementById('resposta'))
+   myModal.toggle()
+  </script>
+  <style>
+    .error{
+      background-color: rgb(238, 171, 171);
+      color: darkred;
+      font-weight: 600;
+    }
+    .success{
+      background-color: rgb(182, 238, 171);
+      color: rgb(0, 139, 19);
+      font-weight: 600
+    }
+    .warning{
+      background-color: rgb(238, 226, 171);
+      color: rgb(139, 107, 0);
+      font-weight: 600
+    }
+  </style>
+{% endif %}   
+  <script>
+   
+  </script>
+{% endblock %}

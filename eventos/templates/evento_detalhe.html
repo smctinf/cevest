@@ -1,0 +1,124 @@
+{% extends 'template.html' %}
+{% load bootstrap5 %}
+{% load static%}
+{% block css %}
+<script src="{% static 'js/cursos.js' %}"></script>
+{% endblock %}
+{% block main %}
+<div class="row">
+    <div class="col d-flex py-5"> 
+        <div class="row w-100 mt-3 pt-5">
+            <div class="col-10 pb-4 m-auto bg-white px-5" style="border-radius: 30px;">                                
+                <div class="row">
+                    <div class="col d-flex flex-column">
+                        <div class="row">
+                            <div class="col d-flex py-4">                                
+                                <h1 class="my-auto">
+                                    {{evento.titulo}}
+                                </h1>   
+                                <a href="{% url 'eventos:index' %}" class="btn btn-primary ms-auto my-auto">Voltar</a>
+                            </div>
+                        </div>
+                        <img class="w-100 mx-auto" src="{{evento.banner_img.url}}" alt="" style="border-radius: 30px;">
+                    </div>
+                </div>   
+                <div class="row">
+                    <div class="col p-5 d-flex flex-column">
+                        <h2>{{evento.subtitulo}}</h2>
+                        <b>Origem</b>
+                        <p>{{categoria}}</p>
+                        <b>Descrição:</b>
+                        <p>{{evento.descricao}}</p>                           
+                                                                                           
+                                                                       
+                    </div>
+                    <div class="col-5 p-5 d-flex justify-content-between">
+                        <div class="row w-100">
+                           <div class="col d-flex flex-column">
+                            <p class="">
+                                <b>
+                                  <i class="fa-solid fa-calendar me-3"></i>Data:
+                                </b> 
+                                
+                            </p>    
+                            <p class="mb-4 text-center mt-2">{{evento.data_inicio}}{% if data_fim %} até {{data_fim}}{% endif %}</p>
+                            <p><b><i class="fa-solid fa-location-dot me-3"></i> Local:</b></p>                                                                                    
+                            <p class="mb-4 text-center mt-2"><a href="{{evento.google_maps}}">{{evento.local}}</a></p>
+                            {% if evento.idade_minima %}
+                            <p><b><i class="fa-solid fa-child-reaching me-3"></i>Faixa Etária</b></p>
+                            <p class="mb-4 text-center mt-2">   
+                              {% if evento.idade_maxima %}                            
+                              {{evento.idade_minima}} anos até {{evento.idade_maxima}} anos
+                              {% else %}
+                              {{evento.idade_minima}}+
+                              {% endif %}                              
+                            </p> 
+                            {% else %}
+                              {% if evento.idade_maxima %}                              
+                              <p><b><i class="fa-solid fa-child-reaching me-3"></i>Faixa Etária</b></p>
+                              <p class="mb-4 text-center mt-2">                              
+                                até {{evento.idade_maxima}} anos
+                              </p> 
+                              {% endif %}
+                            {% endif %}
+                           </div>   
+                        </div>
+                        
+                        
+                        
+                    </div>
+                </div>                  
+           
+            </div>
+        </div>
+    </div>
+</div>
+{% if messages %}              
+<!-- MODAL -->
+<div class="modal fade" id="resposta" aria-hidden="true" aria-labelledby="respostaLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        {% for message in messages %}
+        <div class="modal-header {% if message.tags %}{{message.tags}}{% endif %} border-0">
+          <h5 class="modal-title text-dark text-center" id="exampleModalToggleLabel"></h5>
+          <button type="button" onclick="myModal.hide();" class="btn-close"></button>
+        </div>
+        <div class="modal-body px-5 {% if message.tags %}{{message.tags}}{% endif %}">   
+           
+          <p class="px-4 py-3 text-center">
+            {{ message|escape }}
+          </p>
+          
+          
+        </div>
+        <div class="modal-footer {% if message.tags %}{{message.tags}}{% endif %} border-0">
+          
+        </div>
+        {% endfor %}
+      </div>
+
+    </div>
+  </div>   
+  <script>
+   var myModal = new bootstrap.Modal(document.getElementById('resposta'))
+   myModal.toggle()
+  </script>
+  <style>
+    .error{
+      background-color: rgb(238, 171, 171);
+      color: darkred;
+      font-weight: 600;
+    }
+    .success{
+      background-color: rgb(182, 238, 171);
+      color: rgb(0, 139, 19);
+      font-weight: 600
+    }
+    .warning{
+      background-color: rgb(238, 226, 171);
+      color: rgb(139, 107, 0);
+      font-weight: 600
+    }
+  </style>
+{% endif %} 
+{% endblock %}

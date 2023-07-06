@@ -1,0 +1,55 @@
+{% extends 'template.html' %}
+{% block title %}SSUBEA{% endblock %}
+{% block nav %}
+{% include 'nav_bemestaranimal.html' %}
+{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="/static/css/administrativo.css">
+{% endblock %}
+{% load bootstrap5 %}
+{% block main %}
+{% if messages %}
+{% for message in messages %}
+{% if message.tags == "success" %}
+<div class="alert alert-success" role="alert">
+{% else %}
+<div class="alert alert-danger" role="alert">
+{% endif %}
+    <b>{{message}}</b>
+  </div>
+{% endfor %}
+{% endif %}
+<div class="row container mx-auto">
+    <div class="col d-flex pb-5"> 
+        <div class="row w-100">
+            <div class="col pb-4 m-auto bg-white">            
+                <div class="row">
+                    <div class="col text-dark">
+                        <h2 class="">
+                          Área do tutor
+                        </h2>
+                        <div class="row pt-2 d-flex">
+                            <div class="col painel py-4">                                
+                                <a href="{% url 'bemestaranimal:cadastrar_animal' %}"><i class="fa-solid fa-paw me-3"></i>Animais cadastrados</a>
+                                <a href="{% url 'bemestaranimal:resgatar_cupom' %}"><i class="fa-solid fa-ticket me-3"></i>Resgatar Cupom</a>                                                            
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>    
+    </div>
+
+</div>
+<style>
+    .painel a{
+        border-radius: 15px;
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+</style>
+<script>
+    document.getElementById('tutor').classList.add('s-nav-active');
+</script>
+{% endblock %}

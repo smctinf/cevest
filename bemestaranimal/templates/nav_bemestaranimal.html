@@ -1,0 +1,67 @@
+<div id="navegacao" class="container">
+    <div class="row">
+      <div class="col  d-flex">
+        <a href="{% url 'bemestaranimal:index' %}"  class="me-3">
+          <div class="d-flex flex-column align-items-center">
+            <div id="index" class="s-nav rounded-circle "></div>
+            <p class="text-dark">Início</p>
+          </div>
+        </a>
+        <a href="{% url 'bemestaranimal:area_tutor' %}" class="me-3">
+          <div class="d-flex flex-column align-items-center">
+            <div id="tutor" class="s-nav rounded-circle "></div>
+            <p class="text-dark text-center">Área do Tutor</p>
+          </div>
+        </a>
+        <a href="{% url 'bemestaranimal:catalogo' %}" class="me-3">
+          <div class="d-flex flex-column align-items-center">
+            <div id="adote" class="s-nav rounded-circle"></div>
+            <p class="text-dark">Adoção</p>
+          </div>
+        </a>
+        {% if user_belongs_to_group or request.user.is_superuser%}
+        <a href="{% url 'descontar_token' %}" class="me-3">
+          <div class="d-flex flex-column align-items-center">
+            <div id="loja" class="s-nav rounded-circle destaque"></div>
+            <p class="text-dark">Loja</p>
+          </div>
+        </a>
+        {% endif %}
+        {% if request.user.is_staff %}
+        <a href="{% url 'administrativo' %}" class="me-3">
+          <div class="d-flex flex-column align-items-center">
+            <div id="admin" class="s-nav rounded-circle destaque"></div>
+            <p class="text-dark">Admin</p>
+          </div>
+        </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <style>
+    #index{      
+      background-color: white !important;
+      background-image: url(/static/images/icones/bemestaranimal_inicio.png);
+      background-size: contain;
+    }
+    #tutor{
+      background-color: white !important;
+      background-image: url(/static/images/icones/bemestaranimal_tutor.png);
+      background-size: contain;
+    }
+    #adote{
+      background-color: white !important;
+      background-image: url(/static/images/icones/bemestaranimal_adote.png);
+      background-size: contain;
+    }
+    #loja{
+      background-color: white !important;
+      background-image: url(/static/images/icones/bemestaranimal_loja.png);
+      background-size: contain;
+    }
+    #admin{
+      background-color: white !important;
+      background-image: url(/static/images/icones/bemestaranimal_admin.png);
+      background-size: contain;
+    }
+  </style>

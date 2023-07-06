@@ -1,0 +1,102 @@
+{% extends 'template.html' %}
+{% block title %}SSUBEA{% endblock %}
+{% block css %}{% endblock %}
+{% block nav %}
+{% include 'nav_bemestaranimal.html' %}
+{% endblock %}
+{% block main %}
+{% load bootstrap5 %}
+<div class="container">
+{% for message in messages %}
+{% if message.tags == "success" %}
+<div class="alert alert-success" role="alert">
+{% else %}
+<div class="alert alert-danger" role="alert">
+{% endif %}
+    <b>{{message}}</b>
+  </div>
+{% endfor %}
+<div class="row">
+    <div class="col">
+        <h2>Cadastrar animal para adoção</h2>
+        <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% bootstrap_form animal_form %}
+        {% bootstrap_form especie_form %}
+        {% bootstrap_form animal_catalogo_form %} 
+ 
+        <button type="submit" class="btn btn-primary w-100 mb-3" id="send">Cadastrar</button>
+        </form>
+    </div>
+</div>
+<script>
+    // teste = document.getElementById("id_tipo_0")
+    // console.log(teste)
+    // teste.addEventListener('change',()=>{
+    //     if(teste.checked){
+    //         console.log('oi')
+    //     }
+    // })
+    const anilha = document.getElementById("id_anilha");
+    const especie = document.getElementById('id_nome_especie')
+    const raca = document.getElementById('id_raca')
+    hide_parent(anilha, especie)
+    anilha.value = "";
+    especie.value = "";
+
+    function show_parent(...elements){
+        elements.forEach(e =>{
+            e.parentNode.style.display = "block";
+        })
+    }
+    function hide_parent(...elements){
+        elements.forEach(e =>{
+            e.parentNode.style.display = "none";
+        })
+    }
+
+    function setRequired(...elements){
+        elements.forEach(e => {
+            e.setAttribute('required', '');
+        })
+    }
+
+    function removeRequired(...elements){
+        elements.forEach(e => {
+            
+            e.removeAttribute('required');
+        })
+    }
+
+    function yes_or_no_check(e){
+        if(e.target.value == 1 ){
+            show_parent(anilha, especie);
+            setRequired(anilha, especie);
+            hide_parent(raca)
+        }else if(e.target.value == 5){
+            hide_parent(anilha, raca);
+            show_parent(especie);
+            setRequired(especie);
+            removeRequired(anilha);
+            anilha.value = "";
+
+        }else if(e.target.value > 1 && e.target.value < 5){
+            show_parent(raca)
+            hide_parent(anilha, especie)
+            removeRequired(anilha, especie);
+            anilha.value = "";
+            especie.value = ""
+
+        }
+    }
+
+    hide_parent(document.getElementById('id_tipo_0'))
+    document.getElementById('id_tipo_1').addEventListener('change', yes_or_no_check)
+    document.getElementById('id_tipo_2').addEventListener('change', yes_or_no_check)
+    document.getElementById('id_tipo_3').addEventListener('change', yes_or_no_check)
+    hide_parent(document.getElementById('id_tipo_4'))
+
+    document.getElementById('adote').classList.add('s-nav-active');
+
+</script>
+{% endblock %}

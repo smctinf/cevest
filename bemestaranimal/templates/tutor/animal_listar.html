@@ -1,0 +1,128 @@
+{% extends 'template.html' %}
+{% block title %}SSUBEA{% endblock %}
+{% block css %}{% endblock %}
+{% block main %}
+{% load bootstrap5 %}
+<div class="container">
+<div class="row pb-5">
+    <div class="col">
+        <h2>Meus animais cadastrados</h2>        
+        <table class=" pt-5 table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Nome/apelido</th>
+                    <th>Tipo</th>
+                    <th>Sexo</th>
+                    <th>Castrado</th>
+                    <th>Espécie</th>
+                    <th>Anilha</th>
+                    <th class="text-center">Visualizar imagem</th>
+                </tr>
+            </thead>
+            {% for animal in animais %}
+                <tr>
+                    {% if animal.nome %}
+                    <td>{{animal.nome}}</td>
+                    {% else %}
+                    <td>-</td>
+                    {% endif %}
+                    <td>{{animal.tipo}}</td>
+                    {% if animal.sexo == 'm' %}
+                    <td>Macho</td>
+                    {% else %}
+                    <td>Fêmea</td>
+                    {% endif %}
+                    {% if animal.castrado == 0 %}
+                    <td>NÃO</td>
+                    {% else %}
+                    <td>SIM</td>
+                    {% endif %}
+                    {% if animal.especie.nome_especie %}
+                    <td>{{animal.especie|title}}</td>
+                    {% else %}
+                    <td>-</td>
+                    {% endif %}
+                    {% if animal.tipo.id == 1 %}    
+                    <td>{{animal.anilha}}</td>
+                    {% else %}
+                    <td>-</td>
+                    {% endif %}
+                    <td class="text-center"><a href="{{animal.animal_image.url}}"><i class="fa-solid fa-image"></i></a></td>
+
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+</div>
+<script>
+    // teste = document.getElementById("id_tipo_0")
+    // console.log(teste)
+    // teste.addEventListener('change',()=>{
+    //     if(teste.checked){
+    //         console.log('oi')
+    //     }
+    // })
+    const anilha = document.getElementById("id_anilha");
+    const especie = document.getElementById('id_nome_especie')
+    const raca = document.getElementById('id_raca')
+    hide_parent(anilha, especie, raca)
+    anilha.value = "";
+    especie.value = "";
+
+    function show_parent(...elements){
+        elements.forEach(e =>{
+            e.parentNode.style.display = "block";
+        })
+    }
+    function hide_parent(...elements){
+        elements.forEach(e =>{
+            e.parentNode.style.display = "none";
+        })
+    }
+
+    function setRequired(...elements){
+        elements.forEach(e => {
+            e.setAttribute('required', '');
+        })
+    }
+
+    function removeRequired(...elements){
+        elements.forEach(e => {
+            
+            e.removeAttribute('required');
+        })
+    }
+
+    function yes_or_no_check(e){
+        if(e.target.value == 1 ){
+            show_parent(anilha, especie);
+            setRequired(anilha, especie);
+            hide_parent(raca)
+        }else if(e.target.value == 5){
+            hide_parent(anilha, raca);
+            show_parent(especie);
+            setRequired(especie);
+            removeRequired(anilha);
+            anilha.value = "";
+
+        }else if(e.target.value > 1 && e.target.value < 5){
+            show_parent(raca)
+            hide_parent(anilha, especie)
+            removeRequired(anilha, especie);
+            anilha.value = "";
+            especie.value = ""
+
+        }
+    }
+
+    document.getElementById('id_tipo_0').addEventListener('change', yes_or_no_check)
+    document.getElementById('id_tipo_1').addEventListener('change', yes_or_no_check)
+    document.getElementById('id_tipo_2').addEventListener('change', yes_or_no_check)
+    document.getElementById('id_tipo_3').addEventListener('change', yes_or_no_check)
+    document.getElementById('id_tipo_4').addEventListener('change', yes_or_no_check)
+
+
+    document.getElementById('tutor').classList.add('s-nav-active');
+</script>
+{% endblock %}

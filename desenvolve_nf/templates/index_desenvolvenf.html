@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  {% load static %}
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
+  <title>
+    {% block title %}{{titulo}}{% endblock %}
+  </title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&family=Roboto:wght@400;700&display=swap"
+    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wghtt@100;200;400;500;600;700  &display=swap"
+    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+  <!-- BOOTSTRAP 5 -->
+  <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+    integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" rel="stylesheet">
+  <script crossorigin="anonymous" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- FONTAWESOME -->
+  <link href="{% static 'fontawesomefree/css/fontawesome.css' %}" rel="stylesheet" type="text/css">
+  <link href="{% static 'fontawesomefree/css/brands.css' %}" rel="stylesheet" type="text/css">
+  <link href="{% static 'fontawesomefree/css/solid.css' %}" rel="stylesheet" type="text/css">
+  <!-- CUSTOM CSS -->
+  <link rel="stylesheet" href="/static/css/template_desenvolve_home.css">
+  <link rel="stylesheet" href="/static/css/carousel_desenvolve.css">
+  <link rel="stylesheet" href="/static/css/button_tremedera.css">
+
+  <link rel="stylesheet" href="/static/css/owl.carousel.min.css">
+  <link rel="stylesheet" href="/static/css/owl.theme.default.min.css">
+
+
+</head>
+
+<body class="container-fluid">
+  <header class="row">
+    <div class="col" style="border-bottom: 1px solid rgb(255, 255, 255);">
+      <div class="row" id="nav-superior">
+        <div class="col d-flex text-light">
+          <div class="logo-nf nv-sp">
+            <img src="{% static 'images/brasao-nf.png' %}" class="img-fluid logo-1">
+            <span class="barrinha">|</span>
+            <img src="{% static 'images/logo_desenvolvenf.png' %}" class="img-fluid logo-2">
+          </div>
+          <div class="my-auto mx-auto">
+            <ul class="d-flex nav-a ">
+              <li><a class="mx-2 navegacaoMobile" href="{% url 'cursos:home' %}">Capacitação Profissional</a></li>
+              <li><a class="mx-2 navegacaoMobile" href="{% url 'cidade_inteligente' %}">Cidade Inteligente</a></li>              
+              <li><a class="mx-2 navegacaoMobile" href="{% url 'eventos:index' %}">Eventos</a></li>
+              <li><a class="mx-2 navegacaoMobile" href="{% url 'financas:index' %}">Finanças</a></li>
+              <li><div class="dropdown mx-2 ">
+                <a class="dropdown-toggle navegacaoMobile" href="#" role="button" id="dropdownMenuNav" data-bs-toggle="dropdown" aria-expanded="false">
+                  Outros sistemas
+                </a>                                  
+                <ul id="menu-nav" class="dropdown-menu" aria-labelledby="dropdownMenuNav">
+                  <li class="mt-1"><b>Sistemas:</b></li>
+                  <li><a class="dropdown-item" href="{% url 'bemestaranimal:index' %}"><i class="fa-solid fa-paw me-2"></i>Bem Estar Animal</a></li>
+                  <li><a class="dropdown-item" href="https://casadotrabalhador.pmnf.rj.gov.br"><i class="fa-solid fa-landmark me-2"></i>Casa do Trabalhador</a></li>
+                  <li><a class="dropdown-item" href="{% url 'iluminacao:os_index' %}"><i class="fa-solid fa-lightbulb me-2"></i>Iluminação Pública</a></li>                                        
+                  <li><a class="dropdown-item" href="https://senhas.novafriburgo.rj.gov.br"><i class="fa-solid fa-cart-flatbed-suitcase me-2"></i>Senhas de Turismo</a></li>
+                  <li><a class="dropdown-item" href="https://culturanf.novafriburgo.rj.gov.br"><i class="fa-solid fa-map-location-dot me-2"></i>Mapeamento Cultural</a></li>
+                </ul> 
+              </div></li>
+              <li class="menuMobile"><a href="#offcanvasExample" data-bs-target="#offcanvasExample" data-bs-toggle="offcanvas" role="button" aria-controls="offcanvasExample">&#9776;</a></li>           
+            </ul>
+          </div>
+          <div class="my-auto mx-auto offcanvas offcanvas-start" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+            <ul class="nav-a offcanvas-body navMob">
+              <li><a href="{% url 'cursos:home' %}">Capacitação Profissional</a></li>
+              <li><a href="{% url 'cidade_inteligente' %}">Cidade Inteligente</a></li>              
+              <li><a href="{% url 'eventos:index' %}">Eventos</a></li>
+              <li><a href="{% url 'financas:index' %}">Finanças</a></li>
+              <li><div class="dropdown">
+                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuNav" data-bs-toggle="dropdown" aria-expanded="false">
+                  Outros sistemas
+                </a>                                  
+                <ul id="menu-nav" class="dropdown-menu" aria-labelledby="dropdownMenuNav">
+                  <li class="mt-1"><b>Sistemas:</b></li>
+                  <li><a class="dropdown-item" href="{% url 'bemestaranimal:index' %}"><i class="fa-solid fa-paw me-2"></i>Bem Estar Animal</a></li>
+                  <li><a class="dropdown-item" href="https://casadotrabalhador.pmnf.rj.gov.br"><i class="fa-solid fa-landmark me-2"></i>Casa do Trabalhador</a></li>
+                  <li><a class="dropdown-item" href="{% url 'iluminacao:os_index' %}"><i class="fa-solid fa-person-military-pointing me-2"></i>Iluminação Pública</a></li>                                        
+                  <li><a class="dropdown-item" href="https://senhas.novafriburgo.rj.gov.br"><i class="fa-solid fa-cart-flatbed-suitcase me-2"></i>Senhas de Turismo</a></li>
+                  <li><a class="dropdown-item" href="https://culturanf.novafriburgo.rj.gov.br"><i class="fa-solid fa-map-location-dot me-2"></i>Mapeamento Cultural</a></li>
+                </ul>
+              </div></li>
+              <div class="nv-login ms-3 mt-2 my-auto">
+                {% if not request.user.is_authenticated %}
+                <a href="{% url 'autenticacao:login' %}" class="pe-2 btn btn-acesso btLogin" type="submit">
+                  <i class="fa-solid fa-user-check me-2"></i>
+                  Acessar</a>
+                {% else %}
+                <div class="dropdown">
+                  <button class="btn btn-acesso" type="button" id="dropdownMenuPerfil" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    <i class="fa-solid fa-user-check me-2"></i>
+                    {{ request.user.first_name }}
+                  </button>
+                  <ul id="menu-perfil" class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
+                    {% if request.user.is_superuser %}
+                    <li><a class="dropdown-item py-2 text-center" href="/admin/">Administração</a></li>
+                    {% endif %}
+                    <li>
+                      <a class="dropdown-item text-center py-2" href="{% url 'autenticacao:logout' %}">
+                        <i class="fa-solid fa-arrow-right-from-bracket me-2"></i></i> Logout
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+                {% endif %}
+              </div>
+            </ul>
+            <div class="nv-social ms-auto d-flex">
+              <div class="d-flex my-auto">
+                <div class="rounded-circle d-social d-flex mx-2"><a href="https://www.instagram.com/desenvolvenf/" class="a-social m-auto MobileSocial"><i
+                      class="fa-brands fa-instagram"></i></a></div>
+                <div class="rounded-circle d-social d-flex"><a href="https://www.facebook.com/desenvolvenf/" class="a-social m-auto MobileSocial"><i
+                      class="fa-brands fa-facebook-f"></i></a>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="nv-social ms-auto d-flex navegacaoMobile">
+            <div class="d-flex my-auto navegacaoMobile">
+              <div class="rounded-circle d-social d-flex mx-2 navegacaoMobile"><a href="https://www.instagram.com/desenvolvenf/" class="a-social m-auto navegacaoMobile"><i
+                    class="fa-brands fa-instagram"></i></a></div>
+              <div class="rounded-circle d-social d-flex navegacaoMobile"><a href="https://www.facebook.com/desenvolvenf/" class="a-social m-auto navegacaoMobile"><i
+                    class="fa-brands fa-facebook-f"></i></a>
+              </div>
+            </div>
+          </div>
+          <div class="nv-login ms-5 my-auto navegacaoMobile">
+            {% if not request.user.is_authenticated %}
+            <a href="{% url 'autenticacao:login' %}" class="pe-3 btn btn-acesso btLogin" type="submit">
+              <!-- <i class="fa-regular fa-user me-2"></i> -->
+              <i class="fa-solid fa-user-check me-2"></i>
+              Acessar</a>
+            {% else %}
+            <div class="dropdown">
+              <button class="btn btn-acesso" type="button" id="dropdownMenuPerfil" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                <i class="fa-solid fa-user-check me-2"></i>
+                {{ request.user.first_name }}
+              </button>
+              <ul id="menu-perfil" class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
+                {% if request.user.is_superuser %}
+                <li><a class="dropdown-item py-2 text-center" href="/admin/">Administração</a></li>
+                {% endif %}
+                <!-- <li><a class="dropdown-item py-2 text-center" href="#">Meu perfil</a></li> -->
+                <!-- <li><a class="dropdown-item py-2" href="#">Meu perfil</a></li> -->
+                <li>
+                  <a class="dropdown-item text-center py-2" href="{% url 'autenticacao:logout' %}">
+                    <i class="fa-solid fa-arrow-right-from-bracket me-2"></i></i> Logout
+                  </a>
+                </li>
+              </ul>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  <!-- <div class="row">
+            <div class="col" id="aviso">
+                <div class="titulo d-flex">
+                    <h1 class="my-auto">ESTAMOS EM CONSTRUÇÃO</h1>
+                    <svg class="my-auto ms-auto" width="30" height="30" viewBox="0 0 30 30" fill="none"
+                        xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <rect width="30" height="30" fill="url(#pattern0)" />
+                        <defs>
+                            <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
+                                <use xlink:href="#image0_238_10" transform="scale(0.0044843)" />
+                            </pattern>
+                            <image id="image0_238_10" width="223" height="223"
+                                xlink:href="data:image/png;base64,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" />
+                        </defs>
+                    </svg>
+                </div>
+                <div class="corpo-do-aviso">
+                    <p>Gostaríamos de informar que, embora nossa plataforma esteja funcionando, ainda estamos
+                        trabalhando na sua construção e aprimoramento para oferecer a melhor experiência possível aos
+                        nossos visitantes. Pedimos desculpas por qualquer inconveniente que possa ocorrer durante este
+                        processo. Fiquem à vontade para explorar o conteúdo já disponível e não deixem de voltar em
+                        breve para conferir as novidades! Agradecemos pela sua paciência e compreensão.</p>
+                </div>
+            </div>
+        </div> -->
+  <div id="main-carousel" class="row">
+    <div class="col px-0">
+      <div class="owl-carousel owl-theme">
+        {% for item in carousel %}
+        <div class="item">
+          {% if item.url %}<a href="{{item.url}}">{% endif %}
+            <img src="{{item.image.url}}" class="d-block w-100" alt="{{item.nome}}">
+            {% if item.url %}</a>{% endif %}
+        </div>
+        {% endfor %}
+      </div>
+
+
+    </div>
+  </div>
+  <div id="navegacao" class="container">
+    <div class="row">
+      <div class="col">
+        <!-- <h2 class="text-center text-uppercase" style="font-weight: bolder;">Sistemas</h2> -->
+      </div>
+    </div>
+    <div class="row">
+      <div class="col d-flex flex-wrap justify-content-center pt-4">
+        <a href="{% url 'bemestaranimal:index' %}" class="me-3">
+          <div class="d-flex flex-column align-items-center btn-tremura">
+            <div id="bemestaranimal" class="s-nav rounded-circle"></div>
+            <p class="text-dark text-center">Bem Estar<br>Animal</p>
+          </div>
+        </a>        
+        <a href="{% url 'cursos:home' %}" class="me-3">
+          <div class="d-flex flex-column align-items-center btn-tremura">
+            <div id="capacita" class="s-nav rounded-circle"></div>
+            <p class="text-dark text-center">Capacitação<br>Profissional</p>
+          </div>
+        </a>
+        <a href="https://casadotrabalhador.pmnf.rj.gov.br" class="me-3">
+          <div class="d-flex flex-column align-items-center btn-tremura">
+            <div id="casadotrabalhador" class="s-nav rounded-circle"></div>
+            <p class="text-dark text-center">Casa do <br>Trabalhador</p>
+          </div>
+        </a>
+        <a href="https://casadotrabalhador.pmnf.rj.gov.br" class="me-3">
+          <div class="d-flex flex-column align-items-center btn-tremura">
+            <div id="cidadeinteligente" class="s-nav rounded-circle"></div>
+            <p class="text-dark text-center">Cidade<br>Inteligente</p>
+          </div>
+        </a>
+        <!-- <a href="#" class="me-3">
+          <div class="d-flex flex-column align-items-center btn-tremura">
+            <div id="adote" class="s-nav rounded-circle"></div>
+            <p class="text-dark text-center">Cidade <br>Limpa</p>
+          </div>
+        </a> -->
+        <a href="{% url 'eventos:index' %}" class="me-3">
+          <div class="d-flex flex-column align-items-center btn-tremura">
+            <div id="eventos" class="s-nav rounded-circle"></div>
+            <p class="text-dark text-center">Eventos</p>
+          </div>
+        </a>
+        <a href="{% url 'estagio:index' %}" class="me-3">
+          <div class="d-flex flex-column align-items-center btn-tremura">
+            <div id="estagio" class="s-nav rounded-circle"></div>
+            <p class="text-dark text-center">Estágio</p>
+          </div>
+        </a>
+        <a href="{% url 'financas:index' %}" class="me-3">
+          <div class="d-flex flex-column align-items-center btn-tremura">
+            <div id="financas" class="s-nav rounded-circle"></div>
+            <p class="text-dark text-center">Finanças</p>
+          </div>
+        </a>
+        <a href="{% url 'iluminacao:os_index' %}" class="me-3">
+          <div class="d-flex flex-column align-items-center btn-tremura">
+            <div id="iluminacaopublica" class="s-nav rounded-circle"></div>
+            <p class="text-dark text-center">Iluminação<br>Pública</p>
+          </div>
+        </a>
+        <a href="https://www.pmnf.rj.gov.br/licitacao/" class="me-3">
+          <div class="d-flex flex-column align-items-center btn-tremura">
+            <div id="licitacao" class="s-nav rounded-circle"></div>
+            <p class="text-dark text-center">Licitações</p>
+          </div>
+        </a>        
+        <a href="https://senhas.novafriburgo.rj.gov.br" class="me-3">
+          <div class="d-flex flex-column align-items-center btn-tremura">
+            <div id="senhas" class="s-nav rounded-circle"></div>
+            <p class="text-dark text-center">Senhas de<br>Turismo</p>
+          </div>
+        </a>
+        <a href="https://culturanf.novafriburgo.rj.gov.br/" class="me-3">
+          <div class="d-flex flex-column align-items-center btn-tremura">
+            <div id="mapeamento" class="s-nav rounded-circle"></div>
+            <p class="text-dark text-center">Mapeamento<br>Cultural</p>
+          </div>
+        </a>
+        {% if request.user.is_staff %}
+        <a href="{% url 'administrativo' %}" class="me-3">
+          <div class="d-flex flex-column align-items-center btn-tremura">
+            <div id="admin" class="s-nav-admin rounded-circle destaque"></div>
+            <p class="text-dark">Admin</p>
+          </div>
+        </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <style>
+    #bemestaranimal {
+      background-color: rgb(255, 255, 255) !important;
+      background-image: url(/static/images/icones/home_bemestaranimal.png);
+      background-size: contain;
+    }
+
+    #casadotrabalhador {
+      background-color: rgb(255, 255, 255) !important;
+      background-image: url(/static/images/icones/home_casadotrabalhador.png);
+      background-size: contain;
+    }
+    #iluminacaopublica {
+      background-color: rgb(255, 255, 255) !important;
+      background-image: url(/static/images/icones/home_iluminacao2.png);
+      background-size: contain;
+    }
+     #cidadeinteligente {
+      background-color: rgb(255, 255, 255) !important;
+      background-image: url(/static/images/icones/home_cidade.png);
+      background-size: contain;
+    }
+    #senhas {
+      background-color: rgb(255, 255, 255) !important;
+      background-image: url(/static/images/icones/home_senhas2.png);
+      background-size: contain;
+    }
+
+    #mapeamento {
+      background-color: white !important;
+      background-image: url(/static/images/icones/home_mapeamento.png);
+      background-size: contain;
+    }
+
+    #capacita {
+      background-color: white !important;
+      background-image: url(/static/images/icones/home_capacita.png);
+      background-size: contain;
+    }
+
+    #eventos {
+      background-color: white !important;
+      background-image: url(/static/images/icones/home_eventos.png);
+      background-size: contain;
+    }
+    #estagio {
+      background-color: white !important;
+      background-image: url(/static/images/icones/home_estagio.png);
+      background-size: contain;
+    }
+
+    #financas {
+      background-color: white !important;
+      background-image: url(/static/images/icones/home_financas.png);
+      background-size: contain;
+    }
+    #licitacao {
+      background-color: white !important;
+      background-image: url(/static/images/icones/home_licitacao.png);
+      background-size: contain;
+    }
+    #admin {
+      background-color: white !important;
+      background-image: url(/static/images/icones/admin.png);
+      background-size: contain;
+    }
+
+    .text-justify {
+      text-indent: 40px;
+    }
+ 
+  </style>
+  <main class="container-fluid px-0">
+    <!-- <div class="row">
+        <div class="col">
+          <img src="/static/images/all.png" alt="" class="img-fluid">
+        </div>
+      </div> -->
+    <!-- <div class="row"
+      style="background-image: url(/static/images/friburgo-bg.jpg); background-size:cover; background-position: center;">
+      <div class="col" style="background-color: #242525;">
+        <div class="row py-5 border">
+          <div class="col d-flex">
+            <div class="m-auto py-5" style="max-width: 500px;  color: #fff;">
+              <h1 class="mb-4" style="color: #FFAD00; font-weight: bolder;">ID Friburguense Digital</h1>
+              <p class="text-justify">Em vez de ter um novo cadastro, login e senha em cada lugar, sua ID Friburguense
+                Digital é o login único que está sendo gradualmente integrado a cada serviço digital da Prefeitura de
+                Nova Friburgo.</p>
+              <p class="mt-4 text-justify">Você se cadastra apenas uma vez e navega de maneira transparente entre
+                diferentes serviços da Prefeitura. O mesmo login servirá para todos os serviços que estejam integrados
+                ao ID Friburguense Digital.</p>
+              <p class="mt-4 text-justify">Além disso, queremos que seus dados informados anteriormente à Prefeitura não
+                sejam pedidos novamente em outros serviços integrados. Tudo com respeito à sua privacidade e segurança.
+                Para você não precisar informar os seus dados repetidamente em lugares diferentes.</p>
+              <p class="mt-4 text-justify">Afinal, você é único. A sua identidade é friburguense.</p>
+            </div>
+          </div>
+          <div class="col py-5 d-flex flex-column justify-content-center me-5" style="border-radius: 30px;">
+            
+            <div class="m-auto" style="width: 500px; height: 333px; border-radius: 30px; border: 1px dashed white;"
+              src="/static/images/teste2.jpg" alt="">
+            </div>
+            <button class="btn btn-outline-primary btn-details mx-auto mt-5 px-5"
+              style="background-color: #FFAD00; color: white !important; font-weight: bolder;" id="esp3">ATUALIZE O SEU
+              CADASTRO</button>
+          </div>
+        </div>
+      </div>
+    </div> -->
+    <div class="row container mx-auto py-5 px-5 mb-5">
+      <h1 class="text-center"><strong>Bem vindo a nossa plataforma!</strong></h1>
+      <div class="col d-flex pt-4">
+        <div class="mx-auto" style="max-width: 800px;">
+          <p class="text-justify">Bem-vindo ao site da Secretaria Municipal de Ciência, Tecnologia, Inovação e Educação Profissionalizante e Superior: Desenvolve NF! Aqui você encontrará uma ampla gama de recursos e informações destinados a ajudar a promover o crescimento econômico e o desenvolvimento social em nossa cidade. Oferecemos serviços e programas para ajudar indivíduos e empresas a se manterem atualizados em relação às últimas tecnologias e inovações, bem como a aprimorar suas habilidades e oportunidades de carreira por meio de cursos, palestras e capacitações profissionais.</p>
+          <img class="img-fluid m-auto" style="border-radius: 30px;" src="/static/images/laptop.png" alt="Desenvolve Nova Friburgo">
+          <p class="text-justify mt-3">Confira as várias abas de recursos da nossa secretaria e prefeitura navegando pelo nosso site, para descobrir como podemos ajudá-lo e se manter atualizado em relação à ciência, tecnologia, desenvolvimento inovador, além de fornecer informações sobre a cidade inteligente e as oportunidades de emprego e de carreira disponíveis na Casa do Trabalhador. E não se esqueça de conferir a seção de eventos, que contém informações sobre as próximas capacitações, palestras e cursos oferecidos pela nossa secretaria.</p>
+          <div class="row container mx-auto pt-5 px-5 mb-5">      
+            <h2 class="text-center"><strong>Faça seu cadastro!</strong></h2>
+            <div class="col d-flex pt-4">
+              <div class="mx-auto" style="max-width: 800px;">
+               <div class="row">
+                <div class="col p-0">
+                  <a href="{% url 'autenticacao:cadastrar_usuario' %}" class="h-100 2-100 btn btn-primary px-5 py-3" style="background: linear-gradient(0deg, rgb(241, 176, 55) 0%, rgba(223,146,0,1) 100%); border: none; color: black; border-radius: 10px !important; font-family: 'Inter'; font-style: normal; font-weight: 600;">
+                    <h4 class="py-0 my-0">Cadastrar-se</h4>
+                  </a>
+                </div>                
+               </div>
+              </div>
+            </div>          
+          </div>
+          <p class="text-justify mt-3">Entre em contato conosco para saber mais sobre como podemos trabalhar juntos para construir um futuro melhor e mais próspero para nossa cidade. 
+        </div>
+      </div>      
+    </div>  
+      
+    <div class="row pb-5" style="background-color: #2F2F2F;">
+      <div class="col px-0 py-4 d-flex justify-content-evenly flex-wrap">
+        <div class="owl-carousel owl-theme">
+          <div class="item d-flex">
+            <div class=" d-flex flex-column ps-5 pe-3">
+              <img class="me-auto mt-auto" src="/static/images/desenvolve_economia.png" alt=""
+                style="width: 336px;">
+              <img style="border-radius: 30px;" src="/static/images/c.png" class="img-fluid " alt="">
+            </div>            
+          </div>
+          <div class="item d-flex">
+            <div class=" d-flex flex-column ps-5 pe-3">
+              <img class="me-auto mt-auto" src="/static/images/desenvolve_tecnologia.png" alt=""
+                style="max-width: 336px;">
+              <img style="border-radius: 30px;" src="/static/images/c.png" class="img-fluid " alt="">
+            </div>            
+          </div>
+          <div class="item d-flex">
+            <div class=" d-flex flex-column ps-5 pe-3">
+              <img class="me-auto mt-auto" src="/static/images/desenvolve_turismo.png" alt=""
+                style="max-width: 336px;">
+              <img style="border-radius: 30px;" src="/static/images/c.png" class="img-fluid " alt="">
+            </div>            
+          </div>
+          <div class="item d-flex">
+            <div class=" d-flex flex-column ps-5 pe-3">
+              <img class="me-auto mt-auto" src="/static/images/desenvolve_financas.png" alt=""
+                style="max-width: 336px;">
+              <img style="border-radius: 30px;" src="/static/images/c.png" class="img-fluid " alt="">
+            </div>            
+          </div>
+
+        </div>
+
+        <div class="d-flex flex-column">
+
+        </div>
+        <div class="d-flex flex-column">
+
+        </div>
+      </div>
+    </div>
+    <!-- <div class="row container mx-auto py-5 px-5 mt-5">
+      <h1 class="text-center"><b>Lorem, ipsum dolor sit amet</b></h1>
+      <div class="col d-flex pt-5">
+        <div class="mx-auto pe-5" style="max-width: 800px;">
+          <p class="text-justify">Bem-vindo ao site da Secretaria Municipal de Ciência, Tecnologia, Inovação e Educação Profissionalizante e Superior - Desenvolvenf! Aqui você encontrará uma ampla gama de recursos e informações destinados a ajudar a promover o crescimento econômico e o desenvolvimento social em nossa cidade. Oferecemos serviços e programas para ajudar indivíduos e empresas a se manterem atualizados em relação às últimas tecnologias e inovações, bem como a aprimorar suas habilidades e oportunidades de carreira por meio de cursos, palestras e capacitações profissionais.</p>
+          <p class="text-justify mt-3">Confira as várias abas de recursos da nossa secretaria e prefeitura navegando pelo nosso site, para descobrir como podemos ajudá-lo e se manter atualizado em relação à ciência, tecnologia, desenvolvimento inovador, além de fornecer informações sobre a cidade inteligente e as oportunidades de emprego e de carreira disponíveis na Casa do Trabalhador. E não se esqueça de conferir a seção de eventos, que contém informações sobre as próximas capacitações, palestras e cursos oferecidos pela nossa secretaria.</p>
+        </div>
+      </div>
+      <div class="col d-flex pt-5">
+        <div class="mx-auto ps-5" style="max-width: 800px;">
+          <img class="img-fluid" style="border-radius: 30px;" src="/static/images/img_1.png" alt="Desenvolve Nova Friburgo">
+        </div>
+      </div> -->
+    </div>    
+    
+
+    <section class="px-0">
+      <div class="row px  ">
+        <div class="col px-0 py-5 mt-4" id="particles">
+          <div class="empregados_destaque d-flex justify-content-evenly">
+            <div class="wrapper-1">
+              <div class="item d-flex flex-column p-5">
+                <img style="width: 200px; height: 200px;" class="rounded-circle m-auto s-avatar" src="/static/images/pessoas/jony.jfif" alt="">
+                <h2 class="text-center mt-3 mb-2">Johnny Maycon</h2>
+                <h6 class="text-center mb-4"><b class="mx-auto">Prefeito de Nova Friburgo</b></h6>
+                <img style="width: 40px;" class="mx-auto brasao" src="/static/images/brasao.jpeg" alt="">
+              </div>
+              <div class="item d-flex flex-column p-5">
+                <img style="width: 200px; height: 200px;" class="rounded-circle m-auto s-avatar" src="/static/images/pessoas/sergio.jfif" alt="">
+                <h2 class="text-center mt-3 mb-2">Sergio Sobrenome</h2>
+                <h6 class="text-center mb-4"><b class="mx-auto">Vice-Prefeito de Nova Friburgo</b></h6>
+                <img style="width: 40px;" class=" mx-auto brasao" src="/static/images/brasao.jpeg" alt="">
+              </div>
+            </div>
+            <div class="wrapper-2">
+              <div class="item d-flex flex-column p-5">
+                <img style="width: 200px; height: 200px;" class="rounded-circle m-auto s-avatar" src="/static/images/pessoas/andre.jfif" alt="">
+                <h2 class="text-center mt-3 mb-2">Andre Montechiari</h2>
+                <h6 class="text-center mb-4"><b class="mx-auto">Secretario de Ciência e Tecnologia</b></h6>
+                <img style="width: 40px;" class="mx-auto brasao" src="/static/images/brasao.jpeg" alt="">
+              </div>
+              <div class="item d-flex flex-column p-5">
+                <img style="width: 200px; height: 200px;" class="rounded-circle m-auto s-avatar" src="/static/images/pessoas/rodrigo.png" alt="">
+                <h2 class="text-center mt-3 mb-2">Rodrigo França</h2>
+                <h6 class="text-center mb-4"><b class="mx-auto">Secretario de Finanças</b></h6>
+                <img style="width: 40px;" class=" mx-auto brasao" src="/static/images/brasao.jpeg" alt="">
+              </div>
+            </div>
+          </div>
+        </div>        
+        <!-- <div class="row py-5 my-5">
+                        <div class="col d-flex flex-column">                            
+                          
+                              <img style="width: 180px; height: 180px;" class="rounded-circle m-auto" src="/static/images/pessoas/prefeito.png" alt="">
+                              <h4 class="text-center mt-3 mb-2">Johnny Maycon</h4>
+                              <b class="mx-auto mb-3">Subsecretario</b>
+                              <img style="height: 40px;" class="img-fluid mx-auto" src="/static/images/brasao.jpeg" alt="">                            
+                        </div>    
+                                             
+                        <div class="col d-flex flex-column">                            
+                          
+                          <img style="width: 180px; height: 180px;" class="rounded-circle m-auto" src="/static/images/pessoas/prefeito.png" alt="">
+                          <h4 class="text-center mt-3 mb-2">Johnny Maycon</h4>
+                          <b class="mx-auto mb-3">Subsecretario</b>
+                          <img style="height: 40px;" class="img-fluid mx-auto" src="/static/images/brasao.jpeg" alt="">
+                        
+                        </div> 
+                        <div class="col d-flex flex-column">                            
+                              
+                          <img style="width: 180px; height: 180px;" class="rounded-circle m-auto" src="/static/images/pessoas/prefeito.png" alt="">
+                          <h4 class="text-center mt-3 mb-2">Johnny Maycon</h4>
+                          <b class="mx-auto mb-3">Subsecretario</b>
+                          <img style="height: 40px;" class="img-fluid mx-auto" src="/static/images/brasao.jpeg" alt="">
+                        
+                        </div> 
+                        <div class="col d-flex flex-column">                            
+                                  
+                          <img style="width: 180px; height: 180px;" class="rounded-circle m-auto" src="/static/images/pessoas/prefeito.png" alt="">
+                          <h4 class="text-center mt-3 mb-2">Johnny Maycon</h4>
+                          <b class="mx-auto mb-3">Subsecretario</b>
+                          <img style="height: 40px;" class="img-fluid mx-auto" src="/static/images/brasao.jpeg" alt="">
+                        
+                        </div>                        
+                    </div> -->
+
+        <!-- <div class="row">
+                        <div class="col grade">
+                            <div class="row">
+                                <div class="col">
+                                    <h2>Capacitação Profissional</h2>
+                                    <img src="/static/images/animais.jpg" alt="">
+                                    <p> A plataforma "Capacitação Profissional" centraliza informações sobre cursos e
+                                        oportunidades de capacitação disponíveis no município, promovendo o
+                                        desenvolvimento profissional e pessoal da população local. Oferece acesso fácil
+                                        a informações atualizadas sobre os cursos, bem como depoimentos de usuários e
+                                        avaliações. Instituições e organizações podem cadastrar seus cursos na
+                                        plataforma. A plataforma ajuda as pessoas a se qualificarem para o mercado de
+                                        trabalho e a terem sucesso em suas carreiras e na vida.</p>
+                                    <button class="btn btn-primary mx-auto">Acessar</button>
+                                </div>
+                                <div class="col">
+                                    <h2>Cidade Inteligente</h2>
+                                    <img src="/static/images/animais.jpg" alt="">
+                                    <p> A plataforma "Capacitação Profissional" centraliza informações sobre cursos e
+                                        oportunidades de capacitação disponíveis no município, promovendo o
+                                        desenvolvimento profissional e pessoal da população local. Oferece acesso fácil
+                                        a informações atualizadas sobre os cursos, bem como depoimentos de usuários e
+                                        avaliações. Instituições e organizações podem cadastrar seus cursos na
+                                        plataforma. A plataforma ajuda as pessoas a se qualificarem para o mercado de
+                                        trabalho e a terem sucesso em suas carreiras e na vida.</p>
+                                    <button class="btn btn-primary mx-auto">Acessar</button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <h2>Eventos</h2>
+                                    <img src="/static/images/animais.jpg" alt="">
+                                    <p> A plataforma "Capacitação Profissional" centraliza informações sobre cursos e
+                                        oportunidades de capacitação disponíveis no município, promovendo o
+                                        desenvolvimento profissional e pessoal da população local. Oferece acesso fácil
+                                        a informações atualizadas sobre os cursos, bem como depoimentos de usuários e
+                                        avaliações. Instituições e organizações podem cadastrar seus cursos na
+                                        plataforma. A plataforma ajuda as pessoas a se qualificarem para o mercado de
+                                        trabalho e a terem sucesso em suas carreiras e na vida.</p>
+                                    <button class="btn btn-primary mx-auto">Acessar</button>
+                                </div>
+                                <div class="col">
+                                    <h2>Finanças</h2>
+                                    <img src="/static/images/animais.jpg" alt="">
+                                    <p> A plataforma "Capacitação Profissional" centraliza informações sobre cursos e
+                                        oportunidades de capacitação disponíveis no município, promovendo o
+                                        desenvolvimento profissional e pessoal da população local. Oferece acesso fácil
+                                        a informações atualizadas sobre os cursos, bem como depoimentos de usuários e
+                                        avaliações. Instituições e organizações podem cadastrar seus cursos na
+                                        plataforma. A plataforma ajuda as pessoas a se qualificarem para o mercado de
+                                        trabalho e a terem sucesso em suas carreiras e na vida.</p>
+                                    <button class="btn btn-primary mx-auto">Acessar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
+      </div>
+      </div>
+    </section>
+    <section id="newsletter" class="pb-5" style="background-color: #fff;">
+      <div class="row border-top">
+        <div class="col d-flex d-flex px-5 pt-5">
+          <div class="mx-auto d-flex">
+            <img src="/static/images/blue-envelope.jpg" style="width: 100px; transform: rotate(-0.265rad);" alt="">
+            <span class="display-5 my-auto ms-4" style="font-family: 'Inter', sans-serif;">Receba nossas
+              novidades!</span>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col d-flex pt-3">
+          <div class="m-auto d-flex flex-column">
+            <p class="text-center">Fique por dentro dos nossos principais assuntos, basta socilitar abaixo esse serviço!
+            </p>
+            <button class="mx-auto btn btn-primary mt-4 px-5">Solicitar</button>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </main>
+  {% include 'instagram_desenvolve.html' %}
+  <footer class="row f-principal" style="border-top: 1px solid rgb(184, 184, 184);">
+    <div class="col">
+      <div class="row  pt-5 pb-4 mobile-flex-column footer-sup text-light">
+        <div class="col d-flex flex-column justify-content-center">
+          <img class="img-fluid logo m-auto" src="/static/images/logo_desenvolve_2.png" alt="">
+          <p class="mx-auto mt-4 text-f">SECRETARIA MUNICIPAL DE CULTURA DE NOVA FRIBURGO
+            R. Farinha Filho, 50 - Centro, Nova Friburgo - RJ, 28610-175 <br>
+            09:00 às 17:00 de Seg. à Sex. <br>
+            (22) 2521-1558</p>
+          <p class="mx-auto mt-4 text-light">
+            <a class="text-light" target="_blank" href="https://www.facebook.com/desenvolvenf//">
+              <i class="fa-brands fa-facebook me-4 mb-2"></i>
+            </a>
+            <a class="text-light" target="_blank" href="https://www.instagram.com/desenvolvenf//">
+              <i class="fa-brands fa-instagram me-4 mb-2"></i>
+            </a>
+          </p>
+        </div>
+        <div class="col d-flex justify-content-center">
+          <div class="me-5 my-auto">
+            <p class="text-light pb-3 text-center">Plataformas</p>
+            <ul>
+              <li><a href="https://pmnf.rj.gov.br/site/">Prefeitura Municipal</a></li>
+              <li><a href="{% url 'cursos:home' %}">Capacitação Profissional</a></li>
+              <li><a href="{% url 'cidade_inteligente' %}">Cidade Inteligente</a></li>
+              <li><a href="{% url 'eventos:index' %}">Eventos</a></li>
+              <li><a href="{% url 'financas:index' %}">Finanças</a></li>
+            </ul>
+          </div>
+          <div class="my-auto">
+            <p class="text-light pb-3 text-center">Sistemas</p>
+            <ul>
+              <li><a href="{% url 'bemestaranimal:index' %}">Bem Estar Animal</a></li>
+              <li><a href="https://casadotrabalhador.pmnf.rj.gov.br/">Casa do Trabalhador</a></li>
+              <li><a href="{% url 'iluminacao:os_index' %}">Iluminação Pública</a></li>
+              <li><a href="https://senhas.novafriburgo.rj.gov.br/login/?next=/">Senhas de Turismo</a></li>              
+              <li><a href="https://culturanf.novafriburgo.rj.gov.br/">Mapeamento Cultural</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col text-center py-2 bg-f">
+          <a href="#">
+            &copy SECRETARIA DE CIÊNCIA, TECNOLOGIA, INOVAÇÃO E EDUCAÇÃO PROFISSIONALIZANTE E SUPERIOR.
+          </a>
+          <a class="ms-4" href="">
+            Política de Privacidade
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!-- Cidade Inteligente - Lado Esquerdo -->
+  <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="offcanvasExampleLabel">Cidade Inteligente</h5>
+      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body  d-flex flex-column">
+      <div>
+        <img class="img-fluid" src="/static/images/Screenshot_2.png" alt="">
+      </div>
+      <div>
+        <b>Status:</b>
+        <button class="btn btn-danger w-100">ALERTA</button>
+      </div>
+      <div class="mt-3" style="text-align: justify; text-indent: 30px;">
+        Some text as placeholder. In real life you can have the elements you have chosen. Like, text, images, lists,
+        etc.
+      </div>
+      <div class="mt-5">
+        <img class="img-fluid" src="/static/images/alerta_cheia.png" alt="">
+      </div>
+      <button class="btn btn-primary px-5 m-auto">Acessar site</button>
+    </div>
+  </div>
+
+
+
+  <!-- <script>
+        window.onload = () => {
+          document.getElementById('body').style.overflow = 'auto'
+          document.getElementById('preloading').style.display = 'none'
+        }
+    </script> -->
+  <script src="https://code.jquery.com/jquery-3.6.3.min.js"
+    integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+  <script src="/static/js/owl.carousel.min.js"></script>
+  <script>
+    $('.owl-carousel').owlCarousel({
+      center: true,
+      items: 2,
+      loop: true,
+      margin: 10,
+      autoWidth: true,
+      autoplay: true,
+      nav: true,
+      responsive: {
+        0: {
+          items: 1
+        },
+        600: {
+          items: 3
+        },
+        1000: {
+          items: 5
+        }
+      }
+    });
+    $('.loop').owlCarousel({
+      center: true,
+      items: 2,
+      loop: true,
+      margin: 5,
+      responsive: {
+        600: {
+          items: 4
+        }
+      }
+    });
+  
+  </script>
+</body>
+
+</html>
