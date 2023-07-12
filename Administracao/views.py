@@ -401,6 +401,26 @@ def adm_professores_excluir(request, id):
     instrutor.delete()
     return redirect('adm_professores')
 
+@staff_member_required
+def gerar_certificados(request, id):
+    data_atual = datetime.date.today()
+    turma = get_object_or_404(Turma, id=id)
+    matriculas=Matricula.objects.filter(turma_id=id)
+    disciplinas = Disciplinas.objects.filter(curso_id=turma.curso.id)
+    aux=[0,0]
+    for d in disciplinas:
+        aux[0]+=int(d.n_aulas)
+        aux[1]+=int(d.carga_horaria)
+    context={
+        'turma': turma,
+        'matriculas': matriculas,
+        'data_atual': data_atual,
+        'instrutor': turma.instrutores.all()[0],
+        'disciplinas': disciplinas,
+        'total_aulas': aux[0],
+        'total_horas': aux[1]
+    }
+    return render(request, 'certificados.html', context)
 
 @staff_member_required
 def adm_turmas_visualizar(request, id):

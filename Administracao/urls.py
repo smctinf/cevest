@@ -48,6 +48,7 @@ urlpatterns = [
     path('turma/<id>/editar', views.visualizar_turma_editar, name="adm_turma_editar"),
     path('turma/<id>/excluir', views.excluir_turma, name="adm_turma_excluir"),
     path('turma/<id>/realocar', views.adm_realocar, name="adm_turma_realocar"),
+    path('turma/<id>/gerar-certificados', views.gerar_certificados, name="gerar_certificados"),
 
     path('turma/<id>/turno/cadastrar', views.adm_turno_cadastrar, name="adm_turno_cadastrar"),
     # MISSING VISUALIZAR, EDITAR, LISTAR E EXCLUIR

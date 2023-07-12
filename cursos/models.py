@@ -135,6 +135,7 @@ class Instrutor(models.Model):
 
     nome = models.CharField(
         max_length=150, verbose_name='Nome completo do Instrutor')
+    matricula=models.CharField(max_length=150, verbose_name='Mátricula PMNF', blank=True)
     celular = models.CharField(max_length=15, verbose_name='Celular')
     email = models.EmailField(verbose_name='Email', blank=True)
     endereco = models.CharField(
@@ -421,3 +422,14 @@ class Alertar_Aluno_Sobre_Nova_Turma(models.Model):
     curso=models.ForeignKey(Curso, on_delete=models.CASCADE, related_name='curso_de_interesse')
     alertado=models.BooleanField(default=False)
     dt_inclusao = models.DateTimeField(auto_now_add=True)
+
+class Disciplinas(models.Model):
+    class Meta:
+        verbose_name = 'Disciplina'
+        verbose_name_plural = "Disciplinas"
+        ordering = ['nome']
+    
+    curso = models.ForeignKey(Curso, on_delete=models.CASCADE)
+    nome = models.CharField(max_length=150, blank=False)
+    n_aulas=models.CharField(max_length=5, blank=False)
+    carga_horaria=models.CharField(max_length=5, blank=False)
