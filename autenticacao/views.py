@@ -110,12 +110,12 @@ def cadastro_user(request):
                 if is_user or len(request.POST['password']) >= 8:
                     try:
                         user = ''
-
+                        print(request.POST['password'])
                         if is_user:
                             user = User.objects.get(id=request.user.id)
                             user.email = request.POST['email']
                             user.save()
-                        else:
+                        else:                            
                             user = User.objects.create_user(
                                 username=request.POST['email'], email=request.POST['email'], password=request.POST['password'])
                             user.first_name = request.POST['nome']
