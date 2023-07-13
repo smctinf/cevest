@@ -392,13 +392,15 @@ def curriculo_vitae(request):
     return render(request, 'cursos/curriculo_vitae.html', context)
 
 def area_do_estudante(request):
-    matriculas=Matricula.objects.filter(aluno__pessoa__user=request.user)
-    print(matriculas)
+    pessoa=Pessoa.objects.get(user=request.user)
+    aluno=Aluno.objects.get(pessoa=pessoa)
+    matriculas=Matricula.objects.filter(aluno=aluno)
+    alertas=Alertar_Aluno_Sobre_Nova_Turma.objects.filter(aluno=aluno)
     context={
-        'matriculas': matriculas
+        'matriculas': matriculas,
+        'alertas': alertas
     }
     return render(request, 'cursos/area_do_estudante.html', context)
-
 
 def editar_cadastro(request):    
     pessoa=Pessoa.objects.get(user=request.user)
