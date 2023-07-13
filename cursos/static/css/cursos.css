@@ -33,4 +33,10 @@ p{
     background: #EEE; 
     pointer-events: none;
     touch-action: none;
-  }
+}
+.div_cursos{
+    width: 60vw !important;
+}
+.div_cursos img{
+    width: 60vw !important;
+}

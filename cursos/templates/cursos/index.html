@@ -13,7 +13,7 @@
 </div>
 <div class="row">
   <div class="col d-flex pe-4">
-    <h2 class="ms-5 pt-5 pb-4">Cursos </h2>
+    <h2 class="ms-5 pt-5 pb-4">Cursos</h2>
     <a class="ms-auto mt-auto mb-5 me-5" href="{% url 'cursos:cursos' tipo='cursos' %}">
       <small>Ver mais</small>
     </a>
@@ -23,12 +23,9 @@
 <div class="row mx-auto px-5">
   <div class="d-flex flex-wrap">
     {% for curso in cursos %}
-    <div class="item me-2 ">
+    <div class="item me-2 div_cursos">
       <div class="c-img" style="position: relative;">
-        <img class="banner-img w-100" src="{{curso.banner.url}}" >
-        <span class="badge_item" style="background-color: {{curso.categoria.cor}}; position: absolute; top:0; right: 0; margin: 5px; padding: 0px 4px; border-radius: 6px; font-size: 10pt; color: white;">
-          {{curso.categoria.nome}}          
-        </span>
+        <img class="banner-img" src="{{curso.banner.url}}" >
       </div>
       <div class="curso-text mx-2 d-flex flex-column py-1">
         <h6 class="mt-2">{{curso.nome}}</h6>
@@ -167,12 +164,8 @@
    var myModal = new bootstrap.Modal(document.getElementById('resposta'))
    myModal.toggle()
 
-   
-
 </script>
   <style>
-
-
 
     .error{
       background-color: rgb(238, 171, 171);

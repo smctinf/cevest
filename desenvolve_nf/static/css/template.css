@@ -600,6 +600,15 @@ h4 {
 }
 
 @media (max-width: 480px) {
+  body{
+    width: 100vw !important;
+  }
+  header{
+    width: 100vw !important;
+  }
+  footer{
+    width: 100vw !important;
+  }
   .menuMobile {
     display: flex;
     margin: 0;
@@ -662,7 +671,7 @@ h4 {
     padding: 0px !important;
   }
   .banner_destaque{
-    width: 100vw !important;
+    width: 80vw !important;
   }
   .banner_img_destaque{
     width: 80vw !important;
