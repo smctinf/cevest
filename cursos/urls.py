@@ -5,6 +5,8 @@ from . import views
 app_name='cursos'
 urlpatterns = [
     path('', views.index, name='home'),
+    path('area-do-estudante/', views.area_do_estudante, name='area_do_estudante'),
+    path('editar-cadastro/', views.editar_cadastro, name='editar_cadastro'),
     path('atividade/<tipo>', views.cursos, name="cursos"),            
     path('atividade/<tipo>/<filtro>', views.cursos_filtrado, name="filtrar"),            
     path('atividade/<tipo>/<id>/detalhe', views.curso_detalhe, name="curso_detalhe"),            

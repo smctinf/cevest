@@ -22,12 +22,14 @@
           <p class="text-dark">Palestras</p>
         </div>
       </a>  
-      <a href="{% url 'cursos:cursos' tipo='palestras' %}" class="mx-2">
+      {% if request.user.is_authenticated %}
+      <a href="{% url 'cursos:area_do_estudante' %}" class="mx-2">
         <div class="d-flex flex-column align-items-center">
           <div id="s-estudante" class="s-nav rounded-circle"></div>
           <p class="text-dark text-center">Área do<br>estudante</p>
         </div>
       </a>  
+      {% endif %}
       <a href="https://casadotrabalhador.pmnf.rj.gov.br/" class="ms-auto me-2">
         <div class="d-flex flex-column align-items-center">
           <div id="s-vaga" class="s-nav rounded-circle"></div>

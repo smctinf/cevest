@@ -11,7 +11,7 @@ from datetime import date, datetime
 
 from .models import *
 from .forms import *
-
+from autenticacao.forms import Form_Pessoa
 from eventos.models import Evento
 from django.apps import apps
 from random import shuffle
@@ -390,3 +390,24 @@ def curriculo_vitae(request):
         'titulo': 'Capacitação Profissional'
     }
     return render(request, 'cursos/curriculo_vitae.html', context)
+
+def area_do_estudante(request):
+    matriculas=Matricula.objects.filter(aluno__pessoa__user=request.user)
+    print(matriculas)
+    context={
+        'matriculas': matriculas
+    }
+    return render(request, 'cursos/area_do_estudante.html', context)
+
+
+def editar_cadastro(request):    
+    pessoa=Pessoa.objects.get(user=request.user)
+    form_pessoa=Form_Pessoa(instance=pessoa)    
+    if request.method == 'POST':
+        form_pessoa=Form_Pessoa(request.POST, instance=pessoa)
+        if form_pessoa.is_valid:
+            form_pessoa.save()
+    context={        
+        'form_pessoa': form_pessoa
+    }
+    return render(request, 'cursos/editar_cadastro.html', context)

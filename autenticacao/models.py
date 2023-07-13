@@ -21,7 +21,22 @@ class Pessoa(models.Model):
     cep = models.CharField(max_length=9, verbose_name='CEP', null=True)
     dt_inclusao=models.DateField(auto_now_add=True, verbose_name='Data de inclusão')
 
+    __original_email = None
+    __original_nome = None
 
+    def save(self, force_insert=False, force_update=False, *args, **kwargs):
+        if self.user is not None:
+            if self.email != self.__original_email:
+                self.user.username = self.email
+                self.user.email = self.email
+                self.user.save()
+            if self.nome != self.__original_nome:
+                self.user.first_name = self.nome
+                self.user.save()
+
+        super().save(force_insert, force_update, *args, **kwargs)
+        self.__original_email = self.email
+        self.__original_nome = self.nome
 # class Contribuinte(models.Model):
 #     cnpj
 #     nome_da_empresa
