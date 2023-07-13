@@ -1,7 +1,7 @@
 <div id="navegacao" class="container">
   <div class="row">
     <div class="col d-flex flex-wrap justify-content-center">
-      <a href="{% url 'cursos:home' %}" class="ms-5">
+      <a href="{% url 'cursos:home' %}" class="ms-5 me-2">
         <div class="d-flex flex-column align-items-center">
           <div
             id="s-index"
@@ -10,26 +10,32 @@
           <p class="text-dark">Início</p>
         </div>
       </a>
-      <a href="{% url 'cursos:cursos' tipo='cursos' %}" class=" mx-2">
+      <a href="{% url 'cursos:cursos' tipo='cursos' %}" class="mx-2">
         <div class="d-flex flex-column align-items-center">
           <div id="s-cursos" class="s-nav rounded-circle"></div>
           <p class="text-dark text-center">Cursos</p>
         </div>
       </a>
-      <a href="{% url 'cursos:cursos' tipo='palestras' %}" class=" me-5">
+      <a href="{% url 'cursos:cursos' tipo='palestras' %}" class=" mx-2">
         <div class="d-flex flex-column align-items-center">
           <div id="s-palestras" class="s-nav rounded-circle"></div>
           <p class="text-dark">Palestras</p>
         </div>
       </a>  
-      <a href="https://casadotrabalhador.pmnf.rj.gov.br/" class="ms-auto me-5">
+      <a href="{% url 'cursos:cursos' tipo='palestras' %}" class="mx-2">
+        <div class="d-flex flex-column align-items-center">
+          <div id="s-estudante" class="s-nav rounded-circle"></div>
+          <p class="text-dark text-center">Área do<br>estudante</p>
+        </div>
+      </a>  
+      <a href="https://casadotrabalhador.pmnf.rj.gov.br/" class="ms-auto me-2">
         <div class="d-flex flex-column align-items-center">
           <div id="s-vaga" class="s-nav rounded-circle"></div>
           <p class="text-dark text-center">Casa do<br />Trabalhador</p>
         </div>
       </a>
       {% if request.user.is_staff %}
-      <a href="{% url 'administrativo2' %}" class="">
+      <a href="{% url 'administrativo2' %}" class="mx-2">
         <div class="d-flex flex-column align-items-center">
           <div id="s-admin" class="s-nav rounded-circle destaque"></div>
           <p class="text-dark">Admin</p>
@@ -43,19 +49,25 @@
   #s-index {
     /* margin-right: 1rem !important; */
     background-color: white !important;
-    background-image: url(/static/images/icones/curso_home.png);
+    background-image: url(/static/images/icones/bordado.png);
     background-size: contain;
   }
   #s-cursos {
     /* margin-right: 1rem !important; */
     background-color: white !important;
-    background-image: url(/static/images/icones/curso_cursos.png);
+    background-image: url(/static/images/icones/cursos.png);
     background-size: contain;
   }
   #s-palestras {
     /* margin-right: 1rem !important; */
     background-color: white !important;
-    background-image: url(/static/images/icones/curso_palestras.png);
+    background-image: url(/static/images/icones/apresentacao.png);
+    background-size: contain;
+  }
+  #s-estudante {
+    /* margin-right: 1rem !important; */
+    background-color: white !important;
+    background-image: url(/static/images/icones/estudante.png);
     background-size: contain;
   }
   #s-vaga {
