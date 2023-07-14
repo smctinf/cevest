@@ -34,6 +34,12 @@
         </div>
       </a>
       {% if request.user.is_staff %}
+      <a href="{% url 'cevest_os:os_index' %}" class="me-3">
+        <div class="d-flex flex-column align-items-center">
+          <div id="os_index" class="s-nav rounded-circle"></div>
+          <p class="text-dark">Serviços</p>
+        </div>
+      </a>  
       <a href="{% url 'administrativo2' %}">
         <div class="d-flex flex-column align-items-center">
           <div id="s-admin" class="s-nav rounded-circle destaque"></div>
@@ -51,7 +57,12 @@
     background-image: url(/static/images/icones/bordado.png);
     background-size: contain;
   }
-
+  #os-index {
+    /* margin-right: 1rem !important; */
+    background-color: white !important;
+    background-image: url(/static/images/icones/de_costura.png);
+    background-size: contain;
+  }
   #s-cursos {
     /* margin-right: 1rem !important; */
     background-color: white !important;

@@ -116,7 +116,7 @@ def retirar_material_do_estoque(request, id):
                 messages.success(request, f"{log.add_quantidade} unidade foi removida do estoque. Total: {material.qnt_em_estoque}.")
             else: 
                 messages.success(request, f"{log.add_quantidade} unidades foram removidas do estoque. Total: {material.qnt_em_estoque}.")
-            return redirect('iluminacao:detalhes_os', id)
+            return redirect('cevest_os:detalhes_os', id)
     else:
         form = Log_estoque_Form(initial={'tipo_movimentacao': 'S'})
         form_tipo = Exibir_Tipo_Material_Form()
