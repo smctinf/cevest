@@ -3,10 +3,7 @@
     <div class="col d-flex flex-wrap">
       <a href="{% url 'cursos:home' %}">
         <div class="d-flex flex-column align-items-center">
-          <div
-            id="s-index"
-            class="s-nav rounded-circle {% block index %}{% endblock %}"
-          ></div>
+          <div id="s-index" class="s-nav rounded-circle {% block index %}{% endblock %}"></div>
           <p class="text-dark">Início</p>
         </div>
       </a>
@@ -21,14 +18,14 @@
           <div id="s-palestras" class="s-nav rounded-circle"></div>
           <p class="text-dark">Palestras</p>
         </div>
-      </a>  
+      </a>
       {% if request.user.is_authenticated %}
       <a href="{% url 'cursos:area_do_estudante' %}">
         <div class="d-flex flex-column align-items-center">
           <div id="s-estudante" class="s-nav rounded-circle"></div>
           <p class="text-dark text-center">Área do<br>estudante</p>
         </div>
-      </a>  
+      </a>
       {% endif %}
       <a href="https://casadotrabalhador.pmnf.rj.gov.br/">
         <div class="d-flex flex-column align-items-center">
@@ -54,50 +51,63 @@
     background-image: url(/static/images/icones/bordado.png);
     background-size: contain;
   }
+
   #s-cursos {
     /* margin-right: 1rem !important; */
     background-color: white !important;
     background-image: url(/static/images/icones/cursos.png);
     background-size: contain;
   }
+
   #s-palestras {
     /* margin-right: 1rem !important; */
     background-color: white !important;
     background-image: url(/static/images/icones/apresentacao.png);
     background-size: contain;
   }
+
   #s-estudante {
     /* margin-right: 1rem !important; */
     background-color: white !important;
     background-image: url(/static/images/icones/estudante.png);
     background-size: contain;
   }
+
   #s-vaga {
     /* margin-right: 1rem !important; */
     background-color: white !important;
     background-image: url(/static/images/icones/casa_do_trabalhador.png);
     background-size: contain;
   }
+
   #s-admin {
     margin-right: 1rem !important;
     background-color: white !important;
     background-image: url(/static/images/icones/curso_admin.png);
     background-size: contain;
   }
-  #navegacao p{
+
+  #navegacao p {
     margin-top: 4px;
   }
-  @media(max-width: 480px){
-    #navegacao p{
-    margin-top: 4px;
-    margin-left: 20px;
-  }
-    #s-index, #s-cursos, #s-palestras, #s-estudante, #s-vaga{
+
+  @media(max-width: 480px) {
+    #navegacao p {
+      margin-top: 4px;
+      margin-left: 20px;
+    }
+
+    #s-index,
+    #s-cursos,
+    #s-palestras,
+    #s-estudante,
+    #s-vaga {
       width: 15vw !important;
       height: 15vw !important;
       margin-left: 20px !important;
     }
-    #s-admin{
+
+    #s-admin {
       width: 15vw !important;
       height: 15vw !important;
     }
