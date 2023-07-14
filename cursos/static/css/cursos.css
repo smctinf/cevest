@@ -1,42 +1,71 @@
-.filtro{
+.filtro {
     align-items: center;
 }
-.btnacor{
+
+.btnacor {
     border-color: #104a74;
     background-color: #104a74;
     color: white;
 }
-.btnacor:hover{
+
+.btnacor:hover {
     background-color: #104a74d7;
     color: white;
 }
-.accordion-item:first-of-type .accordion-button{
-    border-radius: 0 !important; 
-}
-.accordion-item:first-of-type{
+
+.accordion-item:first-of-type .accordion-button {
     border-radius: 0 !important;
 }
-.accordion-item:first-of-type, .accordion-item:last-of-type{
+
+.accordion-item:first-of-type {
     border-radius: 0 !important;
 }
-ul, li{
+
+.accordion-item:first-of-type,
+.accordion-item:last-of-type {
+    border-radius: 0 !important;
+}
+
+ul,
+li {
     list-style: none !important;
 }
-li{    
+
+li {
     margin-bottom: 2px;
 }
-p{
+
+p {
     margin: 0;
 }
 
 #id_curso {
-    background: #EEE; 
+    background: #EEE;
     pointer-events: none;
     touch-action: none;
 }
-.div_cursos{
-    width: 60vw !important;
+.nome_lugar{
+    background-color: red;
+    position: absolute;
+    right: 0;
+    color: #fff;
+    border-radius: 4px;
 }
-.div_cursos img{
-    width: 60vw !important;
+@media(max-width: 480px) {
+    #div_cursos_listados{
+        display: block !important;
+    }
+    .curso_listado{
+        width: 60vw !important;
+        margin: auto !important;
+        margin-bottom: 20px !important;
+    }
+    .curso_listado img{
+        width: 60vw !important;
+        height: 20vw !important;
+    }
+    .nome_lugar{
+        position: absolute;
+        right: 55px;
+    }
 }

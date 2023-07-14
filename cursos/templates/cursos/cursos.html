@@ -5,7 +5,7 @@
 {% include 'nav_cursos.html' %}
 {% endblock %}
 {% block css %}
-<script src="{% static '/css/cursos.css' %}"></script>
+<link rel="stylesheet" href="/static/css/cursos.css">
 <script src="{% static 'js/cursos.js' %}"></script>
 {% endblock %}
 {% block main %}
@@ -45,8 +45,7 @@
                 </div>              -->
         <div class="row">
           <div class="col d-flex">
-            <h1 class="" style="display: inline;">
-              Cursos<!--<span class="text-secondary">{% if filtro %}({{filtro}}){% endif %}</span>--></h1>
+            <h1 class="" style="display: inline;">Cursos</h1>
             <!-- <div class="dropdown ms-auto">
         <span onclick="mostrarFiltros(this)" class="ps-2" type="button" style="text-decoration: none; color: black; font-size: 18pt;">            
           <i class="fa-solid fa-filter me-2"></i>Filtrar
@@ -60,88 +59,29 @@
             <p class="text-secondary"><i>Conheça nossos cursos livres ofertados!</i></p>
           </div>
         </div>
-        <div class="row">
-          <div id="filtros" class="col d-flex pb-5 visually-hidden">
-            {% for categoria in categorias %}
-            <a href="{% url 'cursos:filtrar' tipo categoria.nome %}" class="card-universidade btn btn-primary me-3">
-              <img class="{% if not categoria.nome == 'CEVEST' %}ms-auto{% else %}mx-auto{% endif %} my-auto"
-                style="height: 30px;" src="{{categoria.icone.url}}" alt="">
-              {% if not categoria.nome == 'CEVEST' %}
-              <span class="me-auto ms-1 pe-1 my-auto">{{categoria.nome}}</span>
-              {% endif %}
-            </a>
-            {% endfor %}
-            <a href="{% url 'cursos:cursos' tipo %}" class="card-universidade btn btn-primary me-3">
-              <span class="mx-auto my-auto">Todos</span>
-              <!-- <img class="me-auto my-auto" style="height: 30px;" src="" alt=""> -->
-            </a>
-            <style>
-              .card-universidade {
-                display: flex;
-                background-color: white;
-                width: 200px;
-                height: 70px;
-                border-radius: 30px;
-                color: rgb(59, 59, 59);
-                border-color: rgb(255, 255, 255);
-                box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
-                padding-top: 20px;
-                padding-bottom: 20px;
-              }
 
-              .card-universidade:hover {
-                color: gray;
-                background-color: white !important;
-                border-color: whitesmoke !important;
-              }
-
-              .card-universidade img {
-                max-height: 100px;
-
-              }
-            </style>
-          </div>
-        </div>
-        <script>
-          function mostrarFiltros(e) {
-            let filtros = document.getElementById('filtros');
-            filtros.classList.toggle('visually-hidden');
-            if (e.innerHTML != '<i class="fa-solid fa-filter-circle-xmark me-2"></i>Ocultar') {
-              e.innerHTML = '<i class="fa-solid fa-filter-circle-xmark me-2"></i>Ocultar'
-            } else {
-              e.innerHTML = '<i class="fa-solid fa-filter me-2"></i>Filtrar  '
-            }
-
-
-          }
-        </script>
-
-        <div class="row pb-3">
-          <div class="d-flex flex-wrap">
-            <!-- <h3 class="mt-4">{{cursos.categoria}}</h3> -->
-
-            {% for curso in cursos %}
-            <div class="item me-3">
-              <div class="c-img" style="position: relative;">
-                <img src="{{curso.banner.url}}" class="img-fluid rounded-3">
-                <span class="badge_item"
-                  style="background-color: {{curso.categoria.cor}}; position: absolute; top:0; right: 0; margin: 5px; padding: 0px 4px; border-radius: 6px; font-size: 10pt; z-index: 50; color: white;">
-                  {{curso.categoria.nome}}<br>
-                </span>
-              </div>
-              <div class="cursos-text mx-2 d-flex flex-column">
-                <h5 class="mb-1">{{curso.nome}}</h5>
-                <p class="time">{{curso.get_tipo_display}} - {{curso.carga_horaria}}
-                  {{curso.get_tipo_carga_horaria_display}}{% if curso.carga_horaria > 1 %}s{% endif %}</p>
-                <!-- <a href="{% url 'cursos:curso_detalhe' tipo curso.id %}"
-                  class="btn btn-outline-primary rounded-1 btn-details py-1  mt-auto" id="esp-2">Ver detalhes</a> -->
-              </div>
+      <div class="row pb-3">
+        <div class="d-flex flex-wrap" id="div_cursos_listados">
+          {% for curso in cursos %}
+          <div class="item me-3 curso_listado">
+            <div class="c-img" style="position: relative;">
+              <img src="{{curso.banner.url}}" class="img-fluid rounded-3">
+              <span class="badge_item nome_lugar">
+                {{curso.categoria.nome}}<br>
+              </span>
             </div>
-            {% endfor %}
-
+            <div class="cursos-text mx-2 d-flex flex-column">
+              <h5 class="mb-1">{{curso.nome}}</h5>
+              <p class="time">{{curso.get_tipo_display}} - {{curso.carga_horaria}}
+                {{curso.get_tipo_carga_horaria_display}}{% if curso.carga_horaria > 1 %}s{% endif %}</p>
+              <!-- <a href="{% url 'cursos:curso_detalhe' tipo curso.id %}"
+                  class="btn btn-outline-primary rounded-1 btn-details py-1  mt-auto" id="esp-2">Ver detalhes</a> -->
+            </div>
           </div>
+          {% endfor %}
         </div>
-        <!-- <div class="row">
+      </div>
+      <!-- <div class="row">
                     <div class="col px-4 text-dark">
                         {% for cursos in categorias %}
                         <h3 class="mt-4">{{cursos.categoria}}</h3>
@@ -190,9 +130,9 @@
                         </div>                         
                     </div>
                 </div> -->
-      </div>
     </div>
   </div>
+</div>
 </div>
 <!-- MODAL -->
 <div class="modal fade" id="formCandidato" aria-hidden="true" aria-labelledby="formCandidatoLabel" tabindex="-1">
