@@ -132,7 +132,7 @@
                                 <a class="btn btn-primary" href="{% url 'cevest_os:atribuir equipe' os.id %}">Equipe</a>
                                 {% endif %}
                                 
-                                <a class="btn btn-primary {% if not os.status == 'f' %}disabled{% endif %}" href="{% url 'almoxarifado:alm_remover_material_do_estoque' os.id %}">Equipamentos</a>
+                                <a class="btn btn-primary {% if not os.status == 'f' %}disabled{% endif %}" href="{% url 'cevest_almoxarifado:alm_remover_material_do_estoque' os.id %}">Equipamentos</a>
 
                               </div>                              
                             </div>
