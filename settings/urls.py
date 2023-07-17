@@ -8,8 +8,8 @@ urlpatterns = [
     path('', include('autenticacao.urls')),    
     path('', include('cursos.urls')),    
     path('eventos/', include('eventos.urls')),    
-    path('servicos/', include('cevest_os.urls')),
-    path('almoxarifado/', include('cevest_almoxarifado.urls')),    
+    path('almoxarifado/', include('cevest_os.urls')),
+    path('almoxarifado/a/', include('cevest_almoxarifado.urls')),    
     path('newsletter/', include('newsletter.urls')),
 
     path('administracao/', include('administracao.urls')),    
