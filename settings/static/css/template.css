@@ -529,7 +529,13 @@ h4 {
     font-size: 14px;
   }
 }
+.hiddenThis{
+  display: block;
+}
 @media (max-width: 792px) {
+  .hiddenThis{
+    display: none;
+  }
   li {
     font-size: 20px !important;
     list-style: none !important;
