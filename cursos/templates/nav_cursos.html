@@ -27,16 +27,16 @@
         </div>
       </a>
       {% endif %}
-      <a href="https://casadotrabalhador.pmnf.rj.gov.br/">
+      <a href="https://casadotrabalhador.pmnf.rj.gov.br/" class="ms-auto">
         <div class="d-flex flex-column align-items-center">
           <div id="s-vaga" class="s-nav rounded-circle"></div>
           <p class="text-dark text-center">Casa do<br />Trabalhador</p>
         </div>
       </a>
       {% if request.user.is_staff %}
-      <a href="{% url 'cevest_os:os_index' %}" class="me-3">
+      <a href="{% url 'cevest_os:os_index' %}">
         <div class="d-flex flex-column align-items-center">
-          <div id="os_index" class="s-nav rounded-circle"></div>
+          <div id="s-servicos" class="s-nav rounded-circle"></div>
           <p class="text-dark">Serviços</p>
         </div>
       </a>  
@@ -57,7 +57,7 @@
     background-image: url(/static/images/icones/bordado.png);
     background-size: contain;
   }
-  #os-index {
+  #s-servicos {
     /* margin-right: 1rem !important; */
     background-color: white !important;
     background-image: url(/static/images/icones/de_costura.png);
@@ -101,13 +101,21 @@
   #navegacao p {
     margin-top: 4px;
   }
-
-  @media(max-width: 480px) {
+  @media(max-width: 1115px) {
+    .banner_destaque{
+     padding: 0px !important; 
+    }
+    .banner_img_destaque{
+      margin: auto;
+      min-width: 100% !important;      
+    }
+  }
+  @media(max-width: 750px) {
     #navegacao p {
       margin-top: 4px;
       margin-left: 20px;
     }
-
+    #s-servicos,
     #s-index,
     #s-cursos,
     #s-palestras,
@@ -121,6 +129,22 @@
     #s-admin {
       width: 15vw !important;
       height: 15vw !important;
+      margin-left: 20px !important;
     }
+    .banner_destaque{
+     padding: 0px !important; 
+    }
+    .banner_img_destaque{
+      margin: auto;
+      min-width: 100% !important;      
+    }
+    #navegacao .ms-auto{
+      margin-left: 0px !important;
+    }
+  }
+  @media(max-width: 750px) {
+  .banner_destaque .px-5{
+    padding: 0px;
+  }
   }
 </style>

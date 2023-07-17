@@ -1,8 +1,7 @@
 /* onde tem aqui!! eu mudei */
 html,
 body {
-  min-height: 100vh;
-  min-width: 450px;
+  min-height: 100vh;  
 }
 :root {
   /* --main-color: #0D578E; */
