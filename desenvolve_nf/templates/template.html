@@ -63,9 +63,9 @@
             </a>
           </div>
           <p class="texto-nf my-auto ms-3">PREFEITURA DE NOVA FRIBURGO</p>
-          <div class="my-auto mx-auto">
+          <div class="my-auto mx-auto divNavSistemas">
             <ul class="d-flex nav-a">
-              <li><div class="dropdown mx-2">
+              <li><div class="dropdown mx-2" id="menuNav">
                 <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuNav" data-bs-toggle="dropdown" aria-expanded="false">
                   Outros sistemas
                 </a>                                  
@@ -132,7 +132,7 @@
               </div>
             </ul>
           </div>
-          <div class="linkLogin nv-login my-auto ms-auto">
+          <div class="linkLogin nv-login my-auto ms-auto" id="menuLogin">
             {% if not request.user.is_authenticated %}
             <a href="{% url 'autenticacao:login' %}" class="btn my-auto btn-acesso" type="submit">
               <i class="fa-solid fa-user-check me-2"></i> Login</a>
@@ -191,9 +191,7 @@
   <div id="mainBlock" class="main-content pt-5 pb-5 px-5 mx-4">
    {% block main %}{% endblock %}
   </div>
-  {% block footer %}
-  
-  {% endblock %}
+  {% block footer %}{% endblock %}
   {% include 'footer.html' %}
   <!-- CUSTOM JS -->
   <script>

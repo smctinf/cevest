@@ -13,7 +13,7 @@
           <p class="text-dark text-center">Cursos</p>
         </div>
       </a>
-      <a href="{% url 'cursos:cursos' tipo='palestras' %}" class="">
+      <a href="{% url 'cursos:cursos' tipo='palestras' %}">
         <div class="d-flex flex-column align-items-center">
           <div id="s-palestras" class="s-nav rounded-circle"></div>
           <p class="text-dark">Palestras</p>
@@ -27,10 +27,10 @@
         </div>
       </a>
       {% endif %}
-      <a href="https://casadotrabalhador.pmnf.rj.gov.br/" class="ms-auto">
+      <a href="https://casadotrabalhador.pmnf.rj.gov.br/">
         <div class="d-flex flex-column align-items-center">
           <div id="s-vaga" class="s-nav rounded-circle"></div>
-          <p class="text-dark text-center">Casa do<br />Trabalhador</p>
+          <p class="text-dark text-center">Casa do<br/>Trabalhador</p>
         </div>
       </a>
       {% if request.user.is_staff %}
@@ -50,101 +50,3 @@
     </div>
   </div>
 </div>
-<style>
-  #s-index {
-    /* margin-right: 1rem !important; */
-    background-color: white !important;
-    background-image: url(/static/images/icones/bordado.png);
-    background-size: contain;
-  }
-  #s-servicos {
-    /* margin-right: 1rem !important; */
-    background-color: white !important;
-    background-image: url(/static/images/icones/de-costura.png);
-    background-size: contain;
-  }
-  #s-cursos {
-    /* margin-right: 1rem !important; */
-    background-color: white !important;
-    background-image: url(/static/images/icones/cursos.png);
-    background-size: contain;
-  }
-
-  #s-palestras {
-    /* margin-right: 1rem !important; */
-    background-color: white !important;
-    background-image: url(/static/images/icones/apresentacao.png);
-    background-size: contain;
-  }
-
-  #s-estudante {
-    /* margin-right: 1rem !important; */
-    background-color: white !important;
-    background-image: url(/static/images/icones/estudante.png);
-    background-size: contain;
-  }
-
-  #s-vaga {
-    /* margin-right: 1rem !important; */
-    background-color: white !important;
-    background-image: url(/static/images/icones/casa_do_trabalhador.png);
-    background-size: contain;
-  }
-
-  #s-admin {
-    margin-right: 1rem !important;
-    background-color: white !important;
-    background-image: url(/static/images/icones/curso_admin.png);
-    background-size: contain;
-  }
-
-  #navegacao p {
-    margin-top: 4px;
-  }
-  @media(max-width: 1115px) {
-    .banner_destaque{
-     padding: 0px !important; 
-    }
-    .banner_img_destaque{
-      margin: auto;
-      min-width: 100% !important;      
-    }
-  }
-  @media(max-width: 750px) {
-    #navegacao p {
-      margin-top: 4px;
-      margin-left: 20px;
-    }
-    #s-servicos,
-    #s-index,
-    #s-cursos,
-    #s-palestras,
-    #s-estudante,
-    #s-vaga {
-      width: 15vw !important;
-      height: 15vw !important;
-      margin-left: 20px !important;
-    }
-
-    #s-admin {
-      width: 15vw !important;
-      height: 15vw !important;
-      margin-left: 20px !important;
-    }
-    .banner_destaque{
-     padding: 0px !important; 
-    }
-    .banner_img_destaque{
-      margin: auto;
-      min-width: 100% !important;      
-    }
-    #navegacao .ms-auto{
-      margin-left: 0px !important;
-    }
-  }
-  @media(max-width: 750px) {
-  .banner_destaque .px-5{
-    padding: 0px;
-  }
-  }
-</style>
