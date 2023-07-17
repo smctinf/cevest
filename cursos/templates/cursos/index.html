@@ -23,13 +23,13 @@
 <div class="row mx-auto px-5">
   <div class="d-flex flex-wrap">
     {% for curso in cursos %}
-    <div class="item me-2 div_cursos">
+    <div class="item d-flex flex-column me-2 div_cursos">
       <div class="c-img" style="position: relative;">
         <img class="banner-img" src="{{curso.banner.url}}" >
       </div>
-      <div class="curso-text mx-2 d-flex flex-column py-1">
+      <div class="curso-text h-100 mx-2 d-flex flex-column py-1">
         <h6 class="mt-2">{{curso.nome}}</h6>
-        <p class="time">{{curso.get_tipo_display}} - {{curso.carga_horaria}} {{curso.get_tipo_carga_horaria_display}}{% if curso.carga_horaria > 1 %}s{% endif %}</p>
+        <p class="time mt-auto">{{curso.get_tipo_display}} - {{curso.carga_horaria}} {{curso.get_tipo_carga_horaria_display}}{% if curso.carga_horaria > 1 %}s{% endif %}</p>
         <!-- <p class="mb-3 mt-2" style="padding: 0px 10px;">{{curso.descricao}}</p> -->
         <a href="{% url 'cursos:curso_detalhe' tipo=curso.get_tipo_display id=curso.id %}" class="btn btn-outline-primary rounded-1 btn-details py-1 mt-auto mb-3" id="esp-2">Ver detalhes</a>
       </div>
