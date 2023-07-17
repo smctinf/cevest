@@ -66,17 +66,15 @@ class CEVEST_OrdemDeServico(models.Model):
 
     dt_solicitacao = models.DateTimeField(auto_now_add=True, verbose_name='Data de solicitação', blank=True)
     atendente = models.ForeignKey(User, on_delete=models.PROTECT, blank=True, null=True)
-    
-    logradouro = models.CharField(max_length=150, verbose_name='Logradouro')
-    bairro = models.CharField(max_length=150, verbose_name='Bairro')
-    referencia = models.CharField(max_length=200, verbose_name='Referência', blank=True)
+        
+    bairro = models.CharField(max_length=150, verbose_name='local')    
 
-    nome_do_contribuinte = models.CharField(max_length=200, verbose_name='Nome do contribuinte', blank=True)
-    telefone_do_contribuinte = models.CharField(max_length=12, verbose_name='Telefone do contribuinte', blank=True)
+    nome_do_contribuinte = models.CharField(max_length=200, verbose_name='Nome do solicitante', blank=True)
+    telefone_do_contribuinte = models.CharField(max_length=12, verbose_name='Telefone do solicitante', blank=True)
 
     cadastrado_por = models.ForeignKey(Pessoa, on_delete=models.CASCADE, null=True)   
 
-    motivo_reclamacao = models.TextField(verbose_name='Motivo da reclamação')            
+    motivo_reclamacao = models.TextField(verbose_name='Motivo da solicitação')            
     
     status =models.CharField(max_length=1, verbose_name='Status', choices=STATUS_CHOICES, null=True, default='0')
     pontos_atendidos=models.PositiveIntegerField(default=0)
