@@ -74,8 +74,8 @@
               <h5 class="mb-1">{{curso.nome}}</h5>
               <p class="time">{{curso.get_tipo_display}} - {{curso.carga_horaria}}
                 {{curso.get_tipo_carga_horaria_display}}{% if curso.carga_horaria > 1 %}s{% endif %}</p>
-              <!-- <a href="{% url 'cursos:curso_detalhe' tipo curso.id %}"
-                  class="btn btn-outline-primary rounded-1 btn-details py-1  mt-auto" id="esp-2">Ver detalhes</a> -->
+              <a href="{% url 'cursos:curso_detalhe' tipo curso.id %}"
+                  class="btn btn-outline-primary rounded-1 btn-details py-1  mt-auto" id="esp-2">Ver detalhes</a>
             </div>
           </div>
           {% endfor %}
