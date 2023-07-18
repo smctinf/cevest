@@ -5,6 +5,7 @@
 {% include 'nav_cursos.html' %}
 {% endblock %}
 {% block css %}
+<link rel="stylesheet" href="/static/css/cursos.css">
 <script src="{% static 'js/cursos.js' %}"></script>
 {% endblock %}
 {% block main %}
@@ -81,7 +82,7 @@
                                 <li>Nenhum. </li>
                             </ul>
                             {% endif %}
-                            <a href="{% url 'cursos:matricula' tipo curso.id %}" class="btn btn-primary mt-4 rounded-pill w-100" style="font-size: 16pt; border-radius: 25px !important; background-color: #24364F; border-color: #24364F;">                                
+                            <a href="{% url 'cursos:matricula' tipo curso.id %}" class=" btn_matricula btn btn-primary mt-4 rounded-pill w-100" style="font-size: 16pt; border-radius: 25px !important; background-color: #24364F; border-color: #24364F;">                                
                                 Quero me matricular
                                 <i class="fa-solid fa-clipboard-check ms-2"></i>
                             </a> 

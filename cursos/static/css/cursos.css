@@ -51,7 +51,20 @@ p {
     color: #fff;
     border-radius: 4px;
 }
-@media(max-width: 480px) {
+@media(max-width: 1024px){
+
+}
+@media(max-width: 768px){
+    .btn_matricula{
+        padding: 10px;
+        width: 25vw !important;
+    }
+}
+@media(max-width: 425px){
+    .btn_matricula{
+        padding: 10px;
+        width: 40vw !important;
+    }
     #div_cursos_listados{
         display: block !important;
     }
@@ -67,5 +80,15 @@ p {
     .nome_lugar{
         position: absolute;
         right: 55px;
+    }
+}
+@media(max-width: 375px){
+
+}
+@media(max-width: 320px){
+    .btn_matricula{
+        padding: 5px;
+        font-size: 14pt !important;
+        width: 45vw !important;
     }
 }

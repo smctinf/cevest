@@ -476,12 +476,26 @@ h4 {
   background-image: url(/static/images/icones/curso_admin.png);
   background-size: contain;
 }
-
+#s-index, 
+#s-vaga,
+#s-servicos,
+#s-cursos,
+#s-palestras,
+#s-estudante,
+#s-admin{
+  width: 6vw;
+  height: 6vw;
+  margin-left: 50px;
+}
 #navegacao p {
   margin-top: 4px;
+  margin-left: 45px;
 }
 .menuMobile {
   display: none;
+}
+.texto-nf{
+  margin-right: 62vw;
 }
 @media(max-width: 1024px){
   header{
@@ -539,6 +553,9 @@ h4 {
   footer li a{
     color: #fff;
   }
+  #navegacao p {
+    margin-left: 40px !important;
+  }
 }
 @media(max-width: 768px){
   header{
@@ -546,6 +563,11 @@ h4 {
   }
   .texto-nf{
     margin-right: 150px;
+  }
+  .nav-a{
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+    padding-left: 0px !important;
   }
   .nav-a a{
     color: #fff;
@@ -595,6 +617,24 @@ h4 {
   }
   footer li a{
     color: #fff;
+  }
+  #navegacao p {
+    margin-left: 15px !important;
+  }
+  .divNavSistemas{
+    padding-left: 100px !important;
+    margin-left: 0px !important;
+    padding-right: 0px !important;
+    margin-right: 10px !important;
+  }
+  .nv-login{
+    padding-left: 0px !important;
+    margin-left: 0px !important;
+    padding-right: 0px !important;
+    margin-right: 0px !important;
+  }
+  footer{
+    width: 100vw !important;
   }
 }
 @media(max-width: 425px){
@@ -729,6 +769,9 @@ h4 {
 @media(max-width: 320px){
   header{
     font-size: 12px;
+  }
+  #navegacao p {
+    margin-left: 0px !important;
   }
   .texto-nf{
     margin-right: 0px;
