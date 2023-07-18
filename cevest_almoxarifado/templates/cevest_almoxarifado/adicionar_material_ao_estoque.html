@@ -64,7 +64,7 @@
     const materialSelect = document.getElementById('id_material');
     
     // Faz uma requisição fetch para a URL da view Django, passando o tipoId como parâmetro
-    fetch(`/almoxarifado/getMaterial/${tipoId}/`)
+    fetch(`/almoxarifado/a/getMaterial/${tipoId}/`)
       .then(response => response.json())
       .then(data => {
         // Limpa as opções do select de Material

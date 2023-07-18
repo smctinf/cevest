@@ -130,7 +130,7 @@
 {% endif %} 
 <script>
   async function listar_materiais(tipo) {
-    const response = await fetch(`/almoxarifado/listar-materiais/`,{
+    const response = await fetch(`/almoxarifado/a/listar-materiais/`,{
       method: 'POST', 
       headers: {
           'X-CSRFToken': '{{ csrf_token }}',
