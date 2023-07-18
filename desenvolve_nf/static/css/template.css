@@ -25,7 +25,7 @@ header {
   padding-bottom: 50px; */
 }
 #nav-superior {
-  height: 38px;
+  min-height: 38px;
   background-color: var(--main-color);
 }
 #nav-inferior {
