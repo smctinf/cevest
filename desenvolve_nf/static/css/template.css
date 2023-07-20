@@ -556,6 +556,20 @@ h4 {
   #navegacao p {
     margin-left: 40px !important;
   }
+  .listaEspera{
+    background-color: lightblue;
+    margin-bottom: 20px;
+  }
+  .listaEspera h1{
+    font-size: 12px;
+  }
+  .curso-estudante{
+    background-color: lightblue;
+    margin-bottom: 20px;
+  }
+  .curso-estudante h1{
+    font-size: 20px;
+  }
 }
 @media(max-width: 768px){
   header{
@@ -639,6 +653,20 @@ h4 {
   .divNavSistemas{
     margin-left:  30px !important;
     padding-left: 0px !important;
+  }  
+  .listaEspera{
+    background-color: lightblue;
+    margin-bottom: 20px;
+  }
+  .listaEspera h1{
+    font-size: 12px;
+  }
+  .curso-estudante{
+    background-color: lightblue;
+    margin-bottom: 20px;
+  }
+  .curso-estudante h1{
+    font-size: 20px;
   }
 }
 @media(max-width: 425px){
@@ -716,6 +744,20 @@ h4 {
   .btn-pre-inscricao{
     width: 40vw !important;
   }
+  .listaEspera{
+    background-color: lightblue;
+    margin-bottom: 20px;
+  }
+  .listaEspera h1{
+    font-size: 12px;
+  }
+  .curso-estudante{
+    background-color: lightblue;
+    margin-bottom: 20px;
+  }
+  .curso-estudante h1{
+    font-size: 20px;
+  }
 }
 @media(max-width: 375px){
   header{
@@ -789,6 +831,20 @@ h4 {
   }
   .btn-pre-inscricao{
     width: 40vw !important;
+  }
+  .listaEspera{
+    background-color: lightblue;
+    margin-bottom: 20px;
+  }
+  .listaEspera h1{
+    font-size: 12px;
+  }
+  .curso-estudante{
+    background-color: lightblue;
+    margin-bottom: 20px;
+  }
+  .curso-estudante h1{
+    font-size: 20px;
   }
 }
 @media(max-width: 320px){
@@ -868,8 +924,16 @@ h4 {
   }
   .listaEspera{
     background-color: lightblue;
+    margin-bottom: 20px;
+  }
+  .listaEspera h1{
+    font-size: 12px;
   }
   .curso-estudante{
     background-color: lightblue;
+    margin-bottom: 20px;
+  }
+  .curso-estudante h1{
+    font-size: 20px;
   }
 }
