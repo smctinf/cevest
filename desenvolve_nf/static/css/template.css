@@ -584,6 +584,9 @@ h4 {
   .img-logo img{
     width: 25vw;
   }
+  .img-logo{
+    margin-right: 500px !important;
+  }
   #s-index, 
   #s-vaga,
   #s-servicos,
@@ -660,6 +663,9 @@ h4 {
   .img-logo img{
     width: 25vw;
   }
+  .img-logo{
+    margin-right: 165px !important;
+  }
   #s-index, 
   #s-vaga,
   #s-servicos,
@@ -707,6 +713,9 @@ h4 {
     margin-left:  100px !important;
     padding-left: 0px !important;
   }
+  .btn-pre-inscricao{
+    width: 40vw !important;
+  }
 }
 @media(max-width: 375px){
   header{
@@ -733,6 +742,9 @@ h4 {
   }
   .img-logo img{
     width: 25vw;
+  }
+  .img-logo{
+    margin-right: 130px !important;
   }
   #s-index, 
   #s-vaga,
@@ -775,6 +787,9 @@ h4 {
     margin-left:  60px !important;
     padding-left: 0px !important;
   }
+  .btn-pre-inscricao{
+    width: 40vw !important;
+  }
 }
 @media(max-width: 320px){
   header{
@@ -787,13 +802,13 @@ h4 {
     margin-right: 0px;
   }
   li a{
-    color: #000;
+    color: #000 !important;
   }
   .menuMobile{
     display: block;
   }
   .menuMobile a{
-    color: #fff;
+    color: #fff !important;
   }
   #menuLogin, #menuNav{
     display: none;
@@ -803,6 +818,9 @@ h4 {
   }
   .img-logo img{
     width: 25vw;
+  }
+  .img-logo{
+    margin-right: 70px !important;
   }
   #s-index, 
   #s-vaga,
@@ -841,5 +859,17 @@ h4 {
   .divNavSistemas{
     margin-left:  50px !important;
     padding-left: 0px !important;
+  }
+  .div_info_candidato h1{
+    font-size: 20px;
+  }
+  .btn-pre-inscricao{
+    width: 40vw !important;
+  }
+  .listaEspera{
+    background-color: lightblue;
+  }
+  .curso-estudante{
+    background-color: lightblue;
   }
 }
