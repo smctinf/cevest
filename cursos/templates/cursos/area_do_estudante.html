@@ -79,31 +79,34 @@
                                 <div class="w-100 h-100 pt-3 py-3 px-3 curso-estudante">
                                     <h5 class="mb-3">CURSOS INSCRITOS</h5>
                                     <div>
-                                      <section>
-                                        {% for matricula in matriculas %}
-
-                                          <h1>Turma</h1>
-                                          <p>{{matricula.turma}}</p>
-                                          <h1>Curso</h1>
-                                          <p>{{matricula.turma.curso.nome}}</p>
-                                          <h1>Data Inicial</h1>
-                                          <p>{{matricula.turma.data_inicio|date:"d/m/Y"}}</p>
-                                          <h1>Data final</h1>
-                                          <p>{{matricula.turma.data_final|date:"d/m/Y"}}</p>
-                                          <h1>Status</h1>
-                                          {% if matricula.turma.status == 'pre' %}
-                                          <p>Pré-inscrição</p>
-                                          {% elif matricula.turma.status == 'ati' %}
-                                          <p>Ativa</p>
-                                          {% elif matricula.turma.status == 'agu' %}
-                                          <p>Aguardando</p>
-                                          {% elif matricula.turma.status == 'acc' %}
-                                          <p>Ativa</p>
-                                          {% elif matricula.turma.status == 'enc' %}
-                                          <p>Encerrada</p>
-                                          {% endif %}
+                                      {% for matricula in matriculas %}
+                                        <section class="curso-inscrito">
+                                            <h1>Turma</h1>
+                                            <p>{{matricula.turma}}</p>
+                                            {% for horario in horarios %}
+                                              <h1>Horário</h1>
+                                              <p>{{horario.turno}}</p>
+                                            {% endfor %}
+                                            <h1>Curso</h1>
+                                            <p>{{matricula.turma.curso.nome}}</p>
+                                            <h1>Data Inicial</h1>
+                                            <p>{{matricula.turma.data_inicio|date:"d/m/Y"}}</p>
+                                            <h1>Data final</h1>
+                                            <p>{{matricula.turma.data_final|date:"d/m/Y"}}</p>
+                                            <h1>Status</h1>
+                                            {% if matricula.turma.status == 'pre' %}
+                                            <p>Pré-inscrição</p>
+                                            {% elif matricula.turma.status == 'ati' %}
+                                            <p>Ativa</p>
+                                            {% elif matricula.turma.status == 'agu' %}
+                                            <p>Aguardando</p>
+                                            {% elif matricula.turma.status == 'acc' %}
+                                            <p>Ativa</p>
+                                            {% elif matricula.turma.status == 'enc' %}
+                                            <p>Encerrada</p>
+                                            {% endif %}
+                                          </section>
                                         {% endfor %}
-                                      </section>
                                     </div>
                                   <table class="table table-striped table-primary">
                                     <thead>

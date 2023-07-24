@@ -398,7 +398,7 @@ def area_do_estudante(request):
     alertas=Alertar_Aluno_Sobre_Nova_Turma.objects.filter(aluno=aluno)
     context={
         'matriculas': matriculas,
-        'alertas': alertas
+        'alertas': alertas,
     }
     return render(request, 'cursos/area_do_estudante.html', context)
 

@@ -497,6 +497,20 @@ h4 {
 .texto-nf{
   margin-right: 50vw;
 }
+.listaEspera{
+  background-color: lightblue;
+  margin-bottom: 20px;
+}
+.listaEspera h1{
+  font-size: 12px;
+}
+.curso-estudante{
+  background-color: lightblue;
+  margin-bottom: 20px;
+}
+.curso-estudante h1{
+  font-size: 20px;
+}
 @media(max-width: 1024px){
   header{
     font-size: 18px;
