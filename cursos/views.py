@@ -335,8 +335,7 @@ def matricular(request, tipo, id):
                         aluno=candidato,
                         curso=curso
                     )
-                    messages.success(
-                    request, 'Você será informado quando abrir o a inscrição de uma nova turma para este curso!')
+                    messages.success(request, 'Você será informado quando abrir o a inscrição de uma nova turma para este curso!')
                     return redirect(reverse('cursos:matricula', args=[tipo,id]))
             
 
