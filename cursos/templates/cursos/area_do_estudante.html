@@ -83,9 +83,9 @@
                                         <section class="curso-inscrito">
                                             <h1>Turma</h1>
                                             <p>{{matricula.turma}}</p>
-                                            {% for horario in horarios %}
-                                              <h1>Horário</h1>
-                                              <p>{{horario.turno}}</p>
+                                            <h1>Horário</h1>
+                                            {% for i in matricula.turma.turnos.all %}
+                                              <p>{{i}}</p>
                                             {% endfor %}
                                             <h1>Curso</h1>
                                             <p>{{matricula.turma.curso.nome}}</p>
