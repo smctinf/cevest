@@ -511,6 +511,9 @@ h4 {
 .curso-estudante h1{
   font-size: 20px;
 }
+.div-info-cursos-mobile{
+  display: none;
+}
 @media(max-width: 1024px){
   header{
     font-size: 18px;
@@ -582,6 +585,18 @@ h4 {
     margin-bottom: 20px;
   }
   .curso-estudante h1{
+    font-size: 20px;
+  }
+  .div-info-cursos{
+    display: none;
+  }
+  .div-info-cursos-mobile{
+    display: flex;
+  }
+  .div_info_candidato section{
+    gap: 5px;
+  }
+  .div_info_candidato h1{
     font-size: 20px;
   }
 }
@@ -929,9 +944,6 @@ h4 {
   .divNavSistemas{
     margin-left:  50px !important;
     padding-left: 0px !important;
-  }
-  .div_info_candidato h1{
-    font-size: 20px;
   }
   .btn-pre-inscricao{
     width: 40vw !important;
