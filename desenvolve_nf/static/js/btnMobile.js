@@ -1,5 +1,5 @@
 let btnMobile = document.querySelector('.menuMobile')
-let divMobile = document.querySelector('.munoMobile-div')
+let divMobile = document.querySelector('.menuMobile-div')
 let aberto = false
 const btnGira = () => {
   if(aberto == false){
