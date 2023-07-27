@@ -32,6 +32,7 @@
   <link href="{% static 'fontawesomefree/css/solid.css' %}" rel="stylesheet" type="text/css">
   <!-- CUSTOM CSS -->
   <link rel="stylesheet" href="/static/css/template.css">
+  <script src="/static/js/btnMobile.js" defer></script>
 
   {% block css %}{% endblock%}
 </head>
@@ -172,22 +173,6 @@
           </div>
           {% endif %}
         </div>
-        <script>
-          let btnMobile = document.querySelector('.menuMobile')
-          let divMobile = document.querySelector('.munoMobile-div')
-          let aberto = false
-          const btnGira = () => {
-            if(aberto == false){
-              divMobile.classList.add('divMobileAberta')
-              aberto = true
-            }
-            else{
-              divMobile.classList.remove('divMobileAberta')
-              aberto = false
-            }
-          }
-          btnMobile.addEventListener('click', btnGira)
-        </script>
       </div>
       <div class="row" id="nav-inferior">
         <div class="col d-flex">
