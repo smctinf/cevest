@@ -385,10 +385,10 @@ h4 {
 
 .nav-a .dropdown .dropdown-menu {
   border-radius: 0;
-  width: auto !important;
-  margin-top: 8px !important;
-  padding: 8px 10px !important;
-  border-color: rgb(223, 221, 221) !important;
+  width: auto ;
+  margin-top: 8px ;
+  padding: 8px 10px ;
+  border-color: rgb(223, 221, 221) ;
 }
 .nav-a .dropdown .dropdown-menu li a {
   margin: 0;
@@ -399,19 +399,19 @@ h4 {
   margin-top: 3px;
   margin-bottom: 3px;
   border: 1px solid #66c7ff81;
-  background-color: #0d578e !important;
-  color: #ffffff !important;
+  background-color: #0d578e ;
+  color: #ffffff ;
   width: 100%;
 }
 .nav-a .dropdown .dropdown-menu li a:hover {
   /* border: 1px solid #66c7ff81; */
   background-color: rgb(219, 238, 255);
-  color: #000000 !important;
+  color: #000000 ;
 }
 .nav-a .dropdown .dropdown-menu li .btn:hover {
   border: 1px solid #66c7ff81;
-  background-color: #0d578e !important;
-  color: #ffffff !important;
+  background-color: #0d578e ;
+  color: #ffffff ;
   width: 100%;
 }
 #dropdownMenuNav:focus {
@@ -514,6 +514,9 @@ h4 {
 .div-info-cursos-mobile{
   display: none;
 }
+.munoMobile-div{
+  display: none;
+}
 @media(max-width: 1024px){
   header{
     font-size: 18px;
@@ -583,6 +586,16 @@ h4 {
   .curso-estudante{
     background-color: lightblue;
     margin-bottom: 20px;
+    padding: 20px 20px 20px 20px !important;
+    height: auto !important;
+    border-radius: 10px;
+  }
+  .curso-inscrito{
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .curso-estudante p,h1{
+    width: 50%;
   }
   .curso-estudante h1{
     font-size: 20px;
@@ -591,7 +604,7 @@ h4 {
     display: none;
   }
   .div-info-cursos-mobile{
-    display: flex;
+    display: block;
   }
   .div_info_candidato section{
     gap: 5px;
@@ -699,6 +712,12 @@ h4 {
   }
 }
 @media(max-width: 425px){
+  .div-info-cursos{
+    display: none;
+  }
+  .div-info-cursos-mobile{
+    display: block;
+  }
   header{
     font-size: 15px;
   }
@@ -706,10 +725,29 @@ h4 {
     margin-right: 0px;
   }
   .menuMobile{
-    display: block;
-  }
-  .menuMobile a{
+    display: flex;
+    border: none;
+    background: none;
     color: #fff;
+  }
+  .divMobileAberta{
+    width: 100%;
+    height: 20px;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 0 5px 0; 
+  }
+  .divMobileAberta > .nav-a{
+    display: flex;
+  }
+  .nav-a a{
+    color: #000;
+    margin: 10px 10px 0 2%;
+  }
+  .nav-a a:hover{
+    color: #3d3434;
   }
   #menuLogin, #menuNav{
     display: none;
@@ -783,6 +821,7 @@ h4 {
   .curso-estudante{
     background-color: lightblue;
     margin-bottom: 20px;
+    padding: 0 !important;
   }
   .curso-estudante h1{
     font-size: 20px;
@@ -795,15 +834,9 @@ h4 {
   .texto-nf{
     margin-right: 0px;
   }
-  li a{
-    color: #000;
-  }
   .menuMobile{
     display: block;
     font-size: 15px;
-  }
-  .menuMobile a{
-    color: #fff;
   }
   #menuLogin, #menuNav{
     display: none;
@@ -871,6 +904,7 @@ h4 {
   .curso-estudante{
     background-color: lightblue;
     margin-bottom: 20px;
+    padding: 0 !important;
   }
   .curso-estudante h1{
     font-size: 20px;
@@ -885,15 +919,9 @@ h4 {
   }
   .texto-nf{
     margin-right: 0px;
-  }
-  li a{
-    color: #000 !important;
-  }
+  } 
   .menuMobile{
     display: block;
-  }
-  .menuMobile a{
-    color: #fff !important;
   }
   #menuLogin, #menuNav{
     display: none;
@@ -956,8 +984,10 @@ h4 {
     font-size: 12px;
   }
   .curso-estudante{
+    width: 100%;
     background-color: lightblue;
     margin-bottom: 20px;
+    padding: 0 !important;
   }
   .curso-estudante h1{
     font-size: 20px;

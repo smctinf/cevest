@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
   {% load static %}
   <meta charset="UTF-8">
@@ -46,7 +47,7 @@
     </div>
   </div>
   <style>
-    #preloading{
+    #preloading {
       position: fixed;
       top: 0;
       left: 0;
@@ -65,100 +66,128 @@
           <p class="texto-nf my-auto ms-3">PREFEITURA DE NOVA FRIBURGO</p>
           <div class="my-auto mx-auto divNavSistemas">
             <ul class="d-flex nav-a">
-              <li><div class="dropdown mx-2" id="menuNav">
-                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuNav" data-bs-toggle="dropdown" aria-expanded="false">
-                  Outros sistemas
-                </a>                                  
-                <ul id="menu-nav" class="dropdown-menu" aria-labelledby="dropdownMenuNav">
-                  <!-- <li><a class="btn btn-outline-primary" href="#">
-                    Acessar
-                  </a></li>
-                  <li><hr class="dropdown-divider"></li> -->
-                  <li class="mt-1"><b>Sistemas:</b></li>
-                  <li><a class="dropdown-item" href="https://casadotrabalhador.pmnf.rj.gov.br"><i class="fa-solid fa-landmark me-2"></i>Casa do Trabalhador</a></li>
-                  <li><a class="dropdown-item" href="https://senhas.novafriburgo.rj.gov.br"><i class="fa-solid fa-cart-flatbed-suitcase me-2"></i>Senhas de Turismo</a></li>
-                  <li><a class="dropdown-item" href="https://culturanf.novafriburgo.rj.gov.br"><i class="fa-solid fa-map-location-dot me-2"></i>Mapeamento Cultural</a></li>
-                  
-                </ul>
-              </div></li>
-              <li class="menuMobile"><a href="#offcanvasExample" data-bs-target="#offcanvasExample" data-bs-toggle="offcanvas" role="button" aria-controls="offcanvasExample">&#9776;</a></li>
-            </ul>
-          </div>
-          <div class="my-auto mx-auto offcanvas offcanvas-start" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
-            <ul class="nav-a offcanvas-body">
-              <li><a href="{% url 'cursos:home' %}">Início</a></li>
-              <li><a href="{% url 'eventos:index' %}">Eventos</a></li>
-              <li><div class="dropdown">
-                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuNav" data-bs-toggle="dropdown" aria-expanded="false">
-                  Outros sistemas
-                </a>                                  
-                <ul id="menu-nav" class="dropdown-menu" aria-labelledby="dropdownMenuNav">
-                  <!-- <li><a class="btn btn-outline-primary" href="#">
-                    Acessar
-                  </a></li>
-                  <li><hr class="dropdown-divider"></li> -->
-                  <li class="mt-1"><b>Sistemas:</b></li>
-                  <li><a class="dropdown-item" href="https://casadotrabalhador.pmnf.rj.gov.br"><i class="fa-solid fa-landmark me-2"></i>Casa do Trabalhador</a></li>
-                  <li><a class="dropdown-item" href="https://senhas.novafriburgo.rj.gov.br"><i class="fa-solid fa-cart-flatbed-suitcase me-2"></i>Senhas de Turismo</a></li>
-                  <li><a class="dropdown-item" href="https://culturanf.novafriburgo.rj.gov.br"><i class="fa-solid fa-map-location-dot me-2"></i>Mapeamento Cultural</a></li>
-                  
-                </ul>
-              </div></li>
-              <div class="nv-login my-auto ms-auto">
-                {% if not request.user.is_authenticated %}
-                <a href="{% url 'autenticacao:login' %}" class="btn my-auto btn-acesso" type="submit">
-                  <i class="fa-solid fa-user-check me-2"></i> Login</a>
-                {% else %}
-                <div class="dropdown">
-                  <button class="btn btn-acesso my-auto" type="button" id="dropdownMenuPerfil" data-bs-toggle="dropdown"
+              <li>
+                <div class="dropdown mx-2" id="menuNav">
+                  <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuNav" data-bs-toggle="dropdown"
                     aria-expanded="false">
-                    <i class="fa-solid fa-user-check me-2"></i>
-                    {{ request.user.first_name }}
-                  </button>
-                  <ul id="menu-perfil" class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
-                    {% if request.user.is_superuser %}
-                    <li><a class="dropdown-item py-2 text-center" href="/admin/">Administração</a></li>
-                    {% endif %}
-                    <!-- <li><a class="dropdown-item py-2 text-center" href="#">Meu perfil</a></li> -->
-                    <!-- <li><a class="dropdown-item py-2" href="#">Meu perfil</a></li> -->
-                    <li>
-                      <a class="dropdown-item text-center py-2" href="{% url 'autenticacao:logout' %}">
-                        <i class="fa-solid fa-arrow-right-from-bracket me-2"></i></i> Logout
-                      </a>
-                    </li>
+                    Outros sistemas
+                  </a>
+                  <ul id="menu-nav" class="dropdown-menu" aria-labelledby="dropdownMenuNav">
+                    <!-- <li><a class="btn btn-outline-primary" href="#">
+                    Acessar
+                  </a></li>
+                  <li><hr class="dropdown-divider"></li> -->
+                    <li class="mt-1"><b>Sistemas:</b></li>
+                    <li><a class="dropdown-item" href="https://casadotrabalhador.pmnf.rj.gov.br"><i
+                          class="fa-solid fa-landmark me-2"></i>Casa do Trabalhador</a></li>
+                    <li><a class="dropdown-item" href="https://senhas.novafriburgo.rj.gov.br"><i
+                          class="fa-solid fa-cart-flatbed-suitcase me-2"></i>Senhas de Turismo</a></li>
+                    <li><a class="dropdown-item" href="https://culturanf.novafriburgo.rj.gov.br"><i
+                          class="fa-solid fa-map-location-dot me-2"></i>Mapeamento Cultural</a></li>
+
                   </ul>
                 </div>
-                {% endif %}
-              </div>
+              </li>
+              <button class="menuMobile">&#9776;</button>
             </ul>
           </div>
-          <div class="linkLogin nv-login my-auto ms-auto" id="menuLogin">
-            {% if not request.user.is_authenticated %}
-            <a href="{% url 'autenticacao:login' %}" class="btn my-auto btn-acesso" type="submit">
-              <i class="fa-solid fa-user-check me-2"></i> Login</a>
-            {% else %}
-            <div class="dropdown">
-              <button class="btn btn-acesso my-auto" type="button" id="dropdownMenuPerfil" data-bs-toggle="dropdown"
-                aria-expanded="false">
-                <i class="fa-solid fa-user-check me-2"></i>
-                {{ request.user.first_name }}
-              </button>
-              <ul id="menu-perfil" class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
-                {% if request.user.is_superuser %}
-                <li><a class="dropdown-item py-2 text-center" href="/admin/">Administração</a></li>
-                {% endif %}
-                <!-- <li><a class="dropdown-item py-2 text-center" href="#">Meu perfil</a></li> -->
-                <!-- <li><a class="dropdown-item py-2" href="#">Meu perfil</a></li> -->
-                <li>
-                  <a class="dropdown-item text-center py-2" href="{% url 'autenticacao:logout' %}">
-                    <i class="fa-solid fa-arrow-right-from-bracket me-2"></i></i> Logout
-                  </a>
-                </li>
-              </ul>
-            </div>
-            {% endif %}
-          </div>
         </div>
+        <div class="munoMobile-div">
+          <ul class="nav-a">
+            <li><a href="{% url 'cursos:home' %}">Início</a></li>
+            <li><a href="{% url 'eventos:index' %}">Eventos</a></li>
+            <li>
+              <div class="dropdown">
+                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuNav" data-bs-toggle="dropdown"
+                  aria-expanded="false">
+                  Outros sistemas
+                </a>
+                <ul id="menu-nav" class="dropdown-menu" aria-labelledby="dropdownMenuNav">
+                  <!-- <li><a class="btn btn-outline-primary" href="#">
+                  Acessar
+                </a></li>
+                <li><hr class="dropdown-divider"></li> -->
+                  <li class="mt-1"><b>Sistemas:</b></li>
+                  <li><a class="dropdown-item" href="https://casadotrabalhador.pmnf.rj.gov.br"><i
+                        class="fa-solid fa-landmark me-2"></i>Casa do Trabalhador</a></li>
+                  <li><a class="dropdown-item" href="https://senhas.novafriburgo.rj.gov.br"><i
+                        class="fa-solid fa-cart-flatbed-suitcase me-2"></i>Senhas de Turismo</a></li>
+                  <li><a class="dropdown-item" href="https://culturanf.novafriburgo.rj.gov.br"><i
+                        class="fa-solid fa-map-location-dot me-2"></i>Mapeamento Cultural</a></li>
+
+                </ul>
+              </div>
+            </li>
+            <div class="nv-login my-auto ms-auto">
+              {% if not request.user.is_authenticated %}
+              <a href="{% url 'autenticacao:login' %}" class="btn my-auto btn-acesso" type="submit">
+                <i class="fa-solid fa-user-check me-2"></i> Login</a>
+              {% else %}
+              <div class="dropdown">
+                <button class="btn btn-acesso my-auto" type="button" id="dropdownMenuPerfil" data-bs-toggle="dropdown"
+                  aria-expanded="false">
+                  <i class="fa-solid fa-user-check me-2"></i>
+                  {{ request.user.first_name }}
+                </button>
+                <ul id="menu-perfil" class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
+                  {% if request.user.is_superuser %}
+                  <li><a class="dropdown-item py-2 text-center" href="/admin/">Administração</a></li>
+                  {% endif %}
+                  <!-- <li><a class="dropdown-item py-2 text-center" href="#">Meu perfil</a></li> -->
+                  <!-- <li><a class="dropdown-item py-2" href="#">Meu perfil</a></li> -->
+                  <li>
+                    <a class="dropdown-item text-center py-2" href="{% url 'autenticacao:logout' %}">
+                      <i class="fa-solid fa-arrow-right-from-bracket me-2"></i></i> Logout
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              {% endif %}
+            </div>
+          </ul>
+        </div>
+        <div class="linkLogin nv-login my-auto ms-auto" id="menuLogin">
+          {% if not request.user.is_authenticated %}
+          <a href="{% url 'autenticacao:login' %}" class="btn my-auto btn-acesso" type="submit">
+            <i class="fa-solid fa-user-check me-2"></i> Login</a>
+          {% else %}
+          <div class="dropdown">
+            <button class="btn btn-acesso my-auto" type="button" id="dropdownMenuPerfil" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              <i class="fa-solid fa-user-check me-2"></i>
+              {{ request.user.first_name }}
+            </button>
+            <ul id="menu-perfil" class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
+              {% if request.user.is_superuser %}
+              <li><a class="dropdown-item py-2 text-center" href="/admin/">Administração</a></li>
+              {% endif %}
+              <!-- <li><a class="dropdown-item py-2 text-center" href="#">Meu perfil</a></li> -->
+              <!-- <li><a class="dropdown-item py-2" href="#">Meu perfil</a></li> -->
+              <li>
+                <a class="dropdown-item text-center py-2" href="{% url 'autenticacao:logout' %}">
+                  <i class="fa-solid fa-arrow-right-from-bracket me-2"></i></i> Logout
+                </a>
+              </li>
+            </ul>
+          </div>
+          {% endif %}
+        </div>
+        <script>
+          let btnMobile = document.querySelector('.menuMobile')
+          let divMobile = document.querySelector('.munoMobile-div')
+          let aberto = false
+          const btnGira = () => {
+            if(aberto == false){
+              divMobile.classList.add('divMobileAberta')
+              aberto = true
+            }
+            else{
+              divMobile.classList.remove('divMobileAberta')
+              aberto = false
+            }
+          }
+          btnMobile.addEventListener('click', btnGira)
+        </script>
       </div>
       <div class="row" id="nav-inferior">
         <div class="col d-flex">
@@ -172,24 +201,25 @@
           </div>
           <div class="nv-social ms-auto d-flex">
             <div class="d-flex my-auto me-3">
-              
+
               <!-- <i class="fa-solid fa-magnifying-glass"></i> -->
             </div>
             <div class="d-flex my-auto">
-              <div class="d-social d-flex mx-2"><a href="https://www.instagram.com/desenvolvenf/" class="a-social m-auto"><i
-                    class="fa-brands fa-instagram"></i></a></div>
-              <div class="d-social d-flex me-4"><a href="https://www.facebook.com/desenvolvenf/" class="a-social m-auto"><i class="fa-brands fa-facebook-f"></i></a>
+              <div class="d-social d-flex mx-2"><a href="https://www.instagram.com/desenvolvenf/"
+                  class="a-social m-auto"><i class="fa-brands fa-instagram"></i></a></div>
+              <div class="d-social d-flex me-4"><a href="https://www.facebook.com/desenvolvenf/"
+                  class="a-social m-auto"><i class="fa-brands fa-facebook-f"></i></a>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </header>  
+  </header>
   {% block nav %}{% endblock %}
 
   <div id="mainBlock" class="main-content pt-5 pb-5 px-5 mx-4">
-   {% block main %}{% endblock %}
+    {% block main %}{% endblock %}
   </div>
   {% block footer %}{% endblock %}
   {% include 'footer.html' %}
@@ -200,49 +230,51 @@
       document.getElementById('preloading').style.display = 'none'
     }
   </script>
-    {% if messages %}           
-    <!-- MODAL -->
-    <div class="modal fade" id="resposta" aria-hidden="true" aria-labelledby="respostaLabel" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-          <div class="modal-content">
-            {% for message in messages %}
-            <div class="modal-header {% if message.tags %}{{message.tags}}{% endif %} border-0">
-              <h5 class="modal-title text-dark text-center" id="exampleModalToggleLabel"></h5>
-              <button type="button" onclick="myModal.hide(); window.location.reload()" class="btn-close"></button>
-            </div>
-            <div class="modal-body px-5 {% if message.tags %}{{message.tags}}{% endif %}">   
-              <p class="px-4 py-3 text-center">
-                {{ message|escape }}
-              </p>
-            </div>
-            <div class="modal-footer {% if message.tags %}{{message.tags}}{% endif %} border-0">
-            </div>
-            {% endfor %}
-          </div>
+  {% if messages %}
+  <!-- MODAL -->
+  <div class="modal fade" id="resposta" aria-hidden="true" aria-labelledby="respostaLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        {% for message in messages %}
+        <div class="modal-header {% if message.tags %}{{message.tags}}{% endif %} border-0">
+          <h5 class="modal-title text-dark text-center" id="exampleModalToggleLabel"></h5>
+          <button type="button" onclick="myModal.hide(); window.location.reload()" class="btn-close"></button>
         </div>
-      </div>   
-      <script>
-       let myModal = new bootstrap.Modal(document.getElementById('resposta'))
-       myModal.toggle()
-      </script>
-      <style>
-        .error{
-          background-color: rgb(238, 171, 171);
-          color: darkred;
-          font-weight: 600;
-        }
-        .success{
-          background-color: rgb(182, 238, 171);
-          color: rgb(0, 139, 19);
-          font-weight: 600
-        }
-        .warning{
-          background-color: rgb(238, 226, 171);
-          color: rgb(139, 107, 0);
-          font-weight: 600
-        }
-      </style>
-    {% endif %} 
+        <div class="modal-body px-5 {% if message.tags %}{{message.tags}}{% endif %}">
+          <p class="px-4 py-3 text-center">
+            {{ message|escape }}
+          </p>
+        </div>
+        <div class="modal-footer {% if message.tags %}{{message.tags}}{% endif %} border-0">
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  <script>
+    let myModal = new bootstrap.Modal(document.getElementById('resposta'))
+    myModal.toggle()
+  </script>
+  <style>
+    .error {
+      background-color: rgb(238, 171, 171);
+      color: darkred;
+      font-weight: 600;
+    }
+
+    .success {
+      background-color: rgb(182, 238, 171);
+      color: rgb(0, 139, 19);
+      font-weight: 600
+    }
+
+    .warning {
+      background-color: rgb(238, 226, 171);
+      color: rgb(139, 107, 0);
+      font-weight: 600
+    }
+  </style>
+  {% endif %}
 </body>
 
 </html>
