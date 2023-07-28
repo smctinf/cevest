@@ -520,6 +520,9 @@ h4 {
 #menuLogin-mobile{
   display: none;
 }
+.adm-pc{
+  margin-left: 80px !important;
+}
 @media(max-width: 1024px){
   header{
     font-size: 18px;
@@ -829,6 +832,9 @@ h4 {
   }
   .curso-estudante h1{
     font-size: 20px;
+  }
+  .adm-pc{
+    display: none;
   }
 }
 @media(max-width: 375px){
