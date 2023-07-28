@@ -65,6 +65,10 @@ li a:hover {
 #navegacao {
   margin-top: 166px;
 }
+.links-nav-container{
+  width: 60%;
+  margin: 0 auto;
+}
 .links-nav{
   display: grid;
   gap: 10px;
@@ -106,7 +110,7 @@ a {
 }
 .banner_img_destaque {
   height: 300px;
-  width: 800px;
+  width: 500px;
 }
 .text-destaque {
   flex-grow: 1;
@@ -564,7 +568,7 @@ h4 {
   align-items: center;
   justify-content: space-between;
 }
-@media(max-width: 1024px){
+@media(max-width: 1200px){
   .nav-a{
     align-items: flex-end;
   }
@@ -596,6 +600,7 @@ h4 {
     align-items: center;
   }
   .banner_img_destaque{
+    width: 700px;
     margin-top: 30px;
     margin-bottom: 30px;
   }
