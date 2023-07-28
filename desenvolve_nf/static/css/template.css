@@ -61,6 +61,11 @@ li a:hover {
 #navegacao {
   margin-top: 166px;
 }
+.links-nav{
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fill,minmax(80px,1fr));
+}
 .d-social {
   width: 30px;
   height: 30px;
@@ -471,7 +476,7 @@ h4 {
 }
 
 #s-admin {
-  margin-right: 1rem !important;
+    /* margin-right: 1rem !important; */
   background-color: white !important;
   background-image: url(/static/images/icones/curso_admin.png);
   background-size: contain;
@@ -483,19 +488,14 @@ h4 {
 #s-palestras,
 #s-estudante,
 #s-admin{
-  width: 4vw;
-  height: 4vw;
-  margin-left: 50px;
-}
-#navegacao p {
-  margin-top: 4px;
-  margin-left: 45px;
+  width: 60px;
+  height: 60px;
 }
 .menuMobile {
   display: none;
 }
 .texto-nf{
-  margin-right: 50vw;
+  margin-right: 0;
 }
 .listaEspera{
   background-color: lightblue;
@@ -523,12 +523,46 @@ h4 {
 .adm-pc{
   margin-left: 80px !important;
 }
+#nav-superior{
+  display: flex;
+  align-items: center;
+}
+.nav-superior-container{
+  justify-content: space-between;
+}
+.txt-logo{
+  display: flex;
+}
+.divNavSistemas{
+  padding: 0;
+  margin: 0 !important;
+}
+#nav-superior{
+  display: flex;
+  align-items: center;
+}
+.nav-superior-container{
+  justify-content: space-between;
+}
+.txt-logo{
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+.nav-a{
+  gap: 10px;
+}
+.texto-nf{
+  margin-right: 0;
+}
+.div-container-main{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 @media(max-width: 1024px){
-  header{
-    font-size: 18px;
-  }
-  .texto-nf{
-    margin-right: 40vw;
+  .nav-a{
+    align-items: flex-end;
   }
   .nav-a a{
     color: #fff;
@@ -545,16 +579,10 @@ h4 {
   .img-logo img{
     width: 25vw;
   }
-  #s-index, 
-  #s-vaga,
-  #s-servicos,
-  #s-cursos,
-  #s-palestras,
-  #s-estudante,
-  #s-admin{
-    width: 8vw;
-    height: 8vw;
-    margin-left: 44px;
+  .nav-inferior-container{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
   #mainBlock{
     padding: 0rem !important;
@@ -565,11 +593,10 @@ h4 {
     padding: 0px !important;
   }
   .banner_destaque{
-    width: 90vw !important;
+    display: flex;
+    align-items: center;
   }
   .banner_img_destaque{
-    width: 90vw !important;
-    height: 40vw !important;
     margin-top: 30px;
     margin-bottom: 30px;
   }
@@ -578,9 +605,6 @@ h4 {
   }
   footer li a{
     color: #fff;
-  }
-  #navegacao p {
-    margin-left: 40px !important;
   }
   .listaEspera{
     background-color: lightblue;
@@ -620,17 +644,18 @@ h4 {
   }
 }
 @media(max-width: 768px){
-  header{
-    font-size: 18px;
+  #nav-superior{
+    display: flex;
+    align-items: center;
+  }
+  .nav-superior-container{
+    justify-content: space-between;
+  }
+  .txt-logo{
+    display: flex;
   }
   .texto-nf{
-    margin-right: 5%;
-    font-size: 15px;
-  }
-  .nav-a{
-    margin-left: 0px !important;
-    margin-right: 0px !important;
-    padding-left: 0px !important;
+    margin-right: 0;
   }
   .nav-a a{
     color: #fff;
@@ -649,17 +674,6 @@ h4 {
   }
   .img-logo{
     margin-right: 50%;
-  }
-  #s-index, 
-  #s-vaga,
-  #s-servicos,
-  #s-cursos,
-  #s-palestras,
-  #s-estudante,
-  #s-admin{
-    width: 10vw;
-    height: 10vw;
-    margin-left: 20px;
   }
   #mainBlock{
     padding: 0rem !important;
@@ -684,25 +698,13 @@ h4 {
   footer li a{
     color: #fff;
   }
-  #navegacao p {
-    margin-left: 15px !important;
-  }
-  .divNavSistemas{
-    padding-left: 100px !important;
-    margin-left: 0px !important;
-    padding-right: 0px !important;
-    margin-right: 10px !important;
-  }
+
   .nv-login{
     padding-left: 0px !important;
     margin-left: 0px !important;
     padding-right: 0px !important;
     margin-right: 0px !important;
   }
-  .divNavSistemas{
-    margin-left:  30px !important;
-    padding-left: 0px !important;
-  }  
   .listaEspera{
     background-color: lightblue;
     margin-bottom: 20px;
@@ -718,7 +720,7 @@ h4 {
     font-size: 20px;
   }
 }
-@media(max-width: 425px){
+@media(max-width: 500px){
   .div-info-cursos{
     display: none;
   }
@@ -768,17 +770,6 @@ h4 {
   .img-logo{
     margin-right: 165px;
   }
-  #s-index, 
-  #s-vaga,
-  #s-servicos,
-  #s-cursos,
-  #s-palestras,
-  #s-estudante,
-  #s-admin{
-    width: 15vw;
-    height: 15vw;
-    margin-left: 15px;
-  }
   .banner_destaque{
     width: 80vw !important;
   }
@@ -810,10 +801,6 @@ h4 {
   }
   .text-f{
     width: 95vw;
-  }
-  .divNavSistemas{
-    margin-left:  100px !important;
-    padding-left: 0px !important;
   }
   .btn-pre-inscricao{
     width: 40vw !important;
@@ -844,6 +831,10 @@ h4 {
   .texto-nf{
     margin-right: 0px;
   }
+  .nav-a{
+    padding: 0 !important;
+    margin: 0 !important;
+  }
   .menuMobile{
     display: block;
     font-size: 15px;
@@ -859,17 +850,6 @@ h4 {
   }
   .img-logo{
     margin-right: 130px;
-  }
-  #s-index, 
-  #s-vaga,
-  #s-servicos,
-  #s-cursos,
-  #s-palestras,
-  #s-estudante,
-  #s-admin{
-    width: 15vw;
-    height: 15vw;
-    margin-left: 15px;
   }
   #mainBlock{
     padding: 0rem !important;
@@ -897,10 +877,6 @@ h4 {
   .text-f{
     width: 95vw;
   }
-  .divNavSistemas{
-    margin-left:  60px !important;
-    padding-left: 0px !important;
-  }
   .btn-pre-inscricao{
     width: 40vw !important;
   }
@@ -920,12 +896,9 @@ h4 {
     font-size: 20px;
   }
 }
-@media(max-width: 320px){
+@media(max-width: 330px){
   header{
     font-size: 12px;
-  }
-  #navegacao p {
-    margin-left: 0px !important;
   }
   .texto-nf{
     margin-right: 0px;
@@ -944,17 +917,6 @@ h4 {
   }
   .img-logo{
     margin-right: 70px;
-  }
-  #s-index, 
-  #s-vaga,
-  #s-servicos,
-  #s-cursos,
-  #s-palestras,
-  #s-estudante,
-  #s-admin{
-    width: 15vw;
-    height: 15vw;
-    margin-left: 15px;
   }
   #mainBlock{
     padding: 0rem !important;
@@ -978,10 +940,6 @@ h4 {
   }
   footer li a{
     color: #fff;
-  }
-  .divNavSistemas{
-    margin-left:  50px !important;
-    padding-left: 0px !important;
   }
   .btn-pre-inscricao{
     width: 40vw !important;

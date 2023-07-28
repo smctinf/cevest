@@ -58,17 +58,19 @@
   <header class="row fixed-top">
     <div class="col" style="border-bottom: 1px solid rgb(255, 255, 255);">
       <div class="row" id="nav-superior">
-        <div class="col px-4 d-flex text-light">
-          <div class="logo-nf nv-sp">
-            <a href="#">
-              <img src="{% static 'images/brasao-nf.png' %}" class="img-fluid">
-            </a>
+        <div class="col px-4 d-flex text-light nav-superior-container">
+          <div class="txt-logo">
+            <div class="logo-nf nv-sp">
+              <a href="#">
+                <img src="{% static 'images/brasao-nf.png' %}" class="img-fluid">
+              </a>
+            </div>
+            <p class="texto-nf my-auto ms-3">PREFEITURA DE NOVA FRIBURGO</p>
           </div>
-          <p class="texto-nf my-auto ms-3">PREFEITURA DE NOVA FRIBURGO</p>
           <div class="my-auto mx-auto divNavSistemas">
             <ul class="d-flex nav-a">
               <li>
-                <div class="dropdown mx-2" id="menuNav">
+                <div class="dropdown" id="menuNav">
                   <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuNav" data-bs-toggle="dropdown"
                     aria-expanded="false">
                     Outros sistemas
@@ -201,7 +203,7 @@
         </div>
       </div>
       <div class="row" id="nav-inferior">
-        <div class="col d-flex">
+        <div class="col nav-inferior-container">
           <div class="img-logo my-auto ms-4">
             <a href="/">
               <img src="{% static 'images/cevest_logo.png' %}" class="img-fluid">
