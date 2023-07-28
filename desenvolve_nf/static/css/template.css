@@ -29,8 +29,12 @@ header {
   background-color: var(--main-color);
 }
 #nav-inferior {
-  height: 76px;
   background-color: #ffffff;
+}
+.nav-inferior-container{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 .img-logo {
   width: 112px;
@@ -579,11 +583,6 @@ h4 {
   .img-logo img{
     width: 25vw;
   }
-  .nav-inferior-container{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
   #mainBlock{
     padding: 0rem !important;
     margin: 0rem !important;
@@ -644,6 +643,9 @@ h4 {
   }
 }
 @media(max-width: 768px){
+  header{
+    font-size: 80%;
+  }
   #nav-superior{
     display: flex;
     align-items: center;
