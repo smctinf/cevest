@@ -178,13 +178,13 @@
                           <h1>Turma</h1>
                           <p>{{matricula.turma}}</p>
                           <h1>Horário</h1>
+                          {% if matricula.turma.turnos.all %}
                           {% for i in matricula.turma.turnos.all %}
-                          {% if i == None %}
-                          <p>Não específicado</p>
-                          {% else %}
-                          <p>{{i}}</p>
-                          {% endif %}
+                          <p>{{ i }}</p>
                           {% endfor %}
+                          {% else %}
+                          <p>Não especificado</p>
+                          {% endif %}
                           <h1>Curso</h1>
                           <p>{{matricula.turma.curso.nome}}</p>
                           <h1>Data Inicial</h1>
