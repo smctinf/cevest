@@ -412,3 +412,30 @@ def editar_cadastro(request):
         'form_pessoa': form_pessoa
     }
     return render(request, 'cursos/editar_cadastro.html', context)
+
+def editar_cadastro_pessoa(request):    
+    pessoa=Pessoa.objects.get(user=request.user)
+    form_pessoa=Form_Pessoa(instance=pessoa)    
+    if request.method == 'POST':
+        form_pessoa=Form_Pessoa(request.POST, instance=pessoa)
+        if form_pessoa.is_valid:
+            form_pessoa.save()
+            return redirect('cursos:home')
+    context={        
+        'form_pessoa': form_pessoa
+    }
+    return render(request, 'cursos/editar_cadastro_pessoa.html', context)
+
+def alterar_senha(request):
+    form_user = PasswordChangeCustomForm(user=request.user)
+
+    if request.method == 'POST':
+        form_user = PasswordChangeCustomForm(user=request.user, data=request.POST)
+        if form_user.is_valid():
+            form_user.save()
+            return redirect('cursos:home')
+
+    context = {        
+        'form_user': form_user
+    }
+    return render(request, 'cursos/altera_senha.html', context)

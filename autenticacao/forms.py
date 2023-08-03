@@ -51,7 +51,6 @@ class Form_Pessoa(ModelForm):
         telefone = telefone.replace('-', '')
         return telefone
     
-
 class PasswordResetForm(forms.Form):
     email = forms.EmailField(
         label=_("Email"),
