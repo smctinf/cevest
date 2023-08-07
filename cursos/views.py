@@ -198,7 +198,7 @@ def prematricula(request):
         'form': form,
         'form_responsavel': form_responsavel,
         'categorias': cursos,
-        'titulo': 'Capacitação Profissional'
+        'titulo': apps.get_app_config('cursos').verbose_name,
     }
     return render(request, 'cursos/pre_matricula.html', context)
 
@@ -306,7 +306,7 @@ def matricular(request, tipo, id):
                         'age': age,
                         'form': form,
                         'form_responsavel': form_responsavel,     
-                        'titulo': 'Capacitação Profissional',
+                        'titulo': apps.get_app_config('cursos').verbose_name,
                         'curso': curso,
                         'pessoa': pessoa
                     }             
@@ -354,7 +354,7 @@ def matricular(request, tipo, id):
         'age': age,
         'form': form,
         'form_responsavel': form_responsavel,     
-        'titulo': 'Capacitação Profissional',
+        'titulo': apps.get_app_config('cursos').verbose_name,
         'curso': curso,
         'pessoa': pessoa
     }
@@ -362,7 +362,7 @@ def matricular(request, tipo, id):
 
 def ensino_superior(request):
     context = {
-        'titulo': 'Capacitação Profissional',
+        'titulo': apps.get_app_config('cursos').verbose_name,
         'cursos': Curso_Ensino_Superior.objects.all()
     }
     return render(request, 'cursos/ensino_superior.html', context)
@@ -379,14 +379,14 @@ def ensino_superior(request):
 
 def ensino_tecnico(request):
     context = {
-        'titulo': 'Capacitação Profissional',
+        'titulo': apps.get_app_config('cursos').verbose_name,
         # 'cursos': Curso_Ensino_Superior.objects.all()
     }
     return render(request, 'cursos/ensino_tecnico.html', context)
 
 def curriculo_vitae(request):
     context = {
-        'titulo': 'Capacitação Profissional'
+        'titulo': apps.get_app_config('cursos').verbose_name,
     }
     return render(request, 'cursos/curriculo_vitae.html', context)
 

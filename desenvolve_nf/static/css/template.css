@@ -506,7 +506,8 @@ h4 {
   margin-right: 0;
 }
 .listaEspera{
-  background-color: lightblue;
+  /* background-color: lightblue; */
+  padding: 18px;
   margin-bottom: 20px;
 }
 .listaEspera h1{

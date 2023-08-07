@@ -29,8 +29,12 @@ header {
   background-color: var(--main-color);
 }
 #nav-inferior {
-  height: 76px;
   background-color: #ffffff;
+}
+.nav-inferior-container{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 .img-logo {
   width: 112px;
@@ -60,6 +64,15 @@ li a:hover {
 }
 #navegacao {
   margin-top: 166px;
+}
+.links-nav-container{
+  width: 60%;
+  margin: 0 auto;
+}
+.links-nav{
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fill,minmax(80px,1fr));
 }
 .d-social {
   width: 30px;
@@ -97,7 +110,7 @@ a {
 }
 .banner_img_destaque {
   height: 300px;
-  width: 800px;
+  width: 500px;
 }
 .text-destaque {
   flex-grow: 1;
@@ -385,10 +398,10 @@ h4 {
 
 .nav-a .dropdown .dropdown-menu {
   border-radius: 0;
-  width: auto !important;
-  margin-top: 8px !important;
-  padding: 8px 10px !important;
-  border-color: rgb(223, 221, 221) !important;
+  width: auto ;
+  margin-top: 8px ;
+  padding: 8px 10px ;
+  border-color: rgb(223, 221, 221) ;
 }
 .nav-a .dropdown .dropdown-menu li a {
   margin: 0;
@@ -399,19 +412,19 @@ h4 {
   margin-top: 3px;
   margin-bottom: 3px;
   border: 1px solid #66c7ff81;
-  background-color: #0d578e !important;
-  color: #ffffff !important;
+  background-color: #0d578e ;
+  color: #ffffff ;
   width: 100%;
 }
 .nav-a .dropdown .dropdown-menu li a:hover {
   /* border: 1px solid #66c7ff81; */
   background-color: rgb(219, 238, 255);
-  color: #000000 !important;
+  color: #000000 ;
 }
 .nav-a .dropdown .dropdown-menu li .btn:hover {
   border: 1px solid #66c7ff81;
-  background-color: #0d578e !important;
-  color: #ffffff !important;
+  background-color: #0d578e ;
+  color: #ffffff ;
   width: 100%;
 }
 #dropdownMenuNav:focus {
@@ -471,7 +484,7 @@ h4 {
 }
 
 #s-admin {
-  margin-right: 1rem !important;
+    /* margin-right: 1rem !important; */
   background-color: white !important;
   background-image: url(/static/images/icones/curso_admin.png);
   background-size: contain;
@@ -483,22 +496,18 @@ h4 {
 #s-palestras,
 #s-estudante,
 #s-admin{
-  width: 4vw;
-  height: 4vw;
-  margin-left: 50px;
-}
-#navegacao p {
-  margin-top: 4px;
-  margin-left: 45px;
+  width: 60px;
+  height: 60px;
 }
 .menuMobile {
   display: none;
 }
 .texto-nf{
-  margin-right: 50vw;
+  margin-right: 0;
 }
 .listaEspera{
-  background-color: lightblue;
+  /* background-color: lightblue; */
+  padding: 18px;
   margin-bottom: 20px;
 }
 .listaEspera h1{
@@ -511,12 +520,58 @@ h4 {
 .curso-estudante h1{
   font-size: 20px;
 }
-@media(max-width: 1024px){
-  header{
-    font-size: 18px;
-  }
-  .texto-nf{
-    margin-right: 40vw;
+.div-info-cursos-mobile{
+  display: none;
+}
+.menuMobile-div{
+  display: none;
+}
+#menuLogin-mobile{
+  display: none;
+}
+.adm-pc{
+  margin-left: 80px !important;
+}
+#nav-superior{
+  display: flex;
+  align-items: center;
+}
+.nav-superior-container{
+  justify-content: space-between;
+}
+.txt-logo{
+  display: flex;
+}
+.divNavSistemas{
+  padding: 0;
+  margin: 0 !important;
+}
+#nav-superior{
+  display: flex;
+  align-items: center;
+}
+.nav-superior-container{
+  justify-content: space-between;
+}
+.txt-logo{
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+.nav-a{
+  gap: 10px;
+}
+.texto-nf{
+  margin-right: 0;
+}
+.div-container-main{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+@media(max-width: 1200px){
+  .nav-a{
+    align-items: flex-end;
   }
   .nav-a a{
     color: #fff;
@@ -533,17 +588,6 @@ h4 {
   .img-logo img{
     width: 25vw;
   }
-  #s-index, 
-  #s-vaga,
-  #s-servicos,
-  #s-cursos,
-  #s-palestras,
-  #s-estudante,
-  #s-admin{
-    width: 8vw;
-    height: 8vw;
-    margin-left: 44px;
-  }
   #mainBlock{
     padding: 0rem !important;
     margin: 0rem !important;
@@ -553,11 +597,11 @@ h4 {
     padding: 0px !important;
   }
   .banner_destaque{
-    width: 90vw !important;
+    display: flex;
+    align-items: center;
   }
   .banner_img_destaque{
-    width: 90vw !important;
-    height: 40vw !important;
+    width: 700px;
     margin-top: 30px;
     margin-bottom: 30px;
   }
@@ -566,9 +610,6 @@ h4 {
   }
   footer li a{
     color: #fff;
-  }
-  #navegacao p {
-    margin-left: 40px !important;
   }
   .listaEspera{
     background-color: lightblue;
@@ -580,22 +621,49 @@ h4 {
   .curso-estudante{
     background-color: lightblue;
     margin-bottom: 20px;
+    padding: 20px 20px 20px 20px !important;
+    height: auto !important;
+    border-radius: 10px;
+  }
+  .curso-inscrito{
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .curso-estudante p,h1{
+    width: 50%;
   }
   .curso-estudante h1{
+    font-size: 20px;
+  }
+  .div-info-cursos{
+    display: none;
+  }
+  .div-info-cursos-mobile{
+    display: block;
+  }
+  .div_info_candidato section{
+    gap: 5px;
+  }
+  .div_info_candidato h1{
     font-size: 20px;
   }
 }
 @media(max-width: 768px){
   header{
-    font-size: 18px;
+    font-size: 80%;
+  }
+  #nav-superior{
+    display: flex;
+    align-items: center;
+  }
+  .nav-superior-container{
+    justify-content: space-between;
+  }
+  .txt-logo{
+    display: flex;
   }
   .texto-nf{
-    margin-right: 150px;
-  }
-  .nav-a{
-    margin-left: 0px !important;
-    margin-right: 0px !important;
-    padding-left: 0px !important;
+    margin-right: 0;
   }
   .nav-a a{
     color: #fff;
@@ -613,18 +681,7 @@ h4 {
     width: 25vw;
   }
   .img-logo{
-    margin-right: 500px !important;
-  }
-  #s-index, 
-  #s-vaga,
-  #s-servicos,
-  #s-cursos,
-  #s-palestras,
-  #s-estudante,
-  #s-admin{
-    width: 10vw;
-    height: 10vw;
-    margin-left: 20px;
+    margin-right: 50%;
   }
   #mainBlock{
     padding: 0rem !important;
@@ -649,25 +706,13 @@ h4 {
   footer li a{
     color: #fff;
   }
-  #navegacao p {
-    margin-left: 15px !important;
-  }
-  .divNavSistemas{
-    padding-left: 100px !important;
-    margin-left: 0px !important;
-    padding-right: 0px !important;
-    margin-right: 10px !important;
-  }
+
   .nv-login{
     padding-left: 0px !important;
     margin-left: 0px !important;
     padding-right: 0px !important;
     margin-right: 0px !important;
   }
-  .divNavSistemas{
-    margin-left:  30px !important;
-    padding-left: 0px !important;
-  }  
   .listaEspera{
     background-color: lightblue;
     margin-bottom: 20px;
@@ -683,7 +728,13 @@ h4 {
     font-size: 20px;
   }
 }
-@media(max-width: 425px){
+@media(max-width: 500px){
+  .div-info-cursos{
+    display: none;
+  }
+  .div-info-cursos-mobile{
+    display: block;
+  }
   header{
     font-size: 15px;
   }
@@ -691,10 +742,29 @@ h4 {
     margin-right: 0px;
   }
   .menuMobile{
-    display: block;
-  }
-  .menuMobile a{
+    display: flex;
+    border: none;
+    background: none;
     color: #fff;
+  }
+  .divMobileAberta{
+    width: 100%;
+    height: 20px;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 0 5px 0; 
+  }
+  .divMobileAberta > .nav-a{
+    display: flex;
+  }
+  .nav-a a{
+    color: #000;
+    margin: 10px 10px 0 2%;
+  }
+  .nav-a a:hover{
+    color: #3d3434;
   }
   #menuLogin, #menuNav{
     display: none;
@@ -706,18 +776,7 @@ h4 {
     width: 25vw;
   }
   .img-logo{
-    margin-right: 165px !important;
-  }
-  #s-index, 
-  #s-vaga,
-  #s-servicos,
-  #s-cursos,
-  #s-palestras,
-  #s-estudante,
-  #s-admin{
-    width: 15vw;
-    height: 15vw;
-    margin-left: 15px;
+    margin-right: 165px;
   }
   .banner_destaque{
     width: 80vw !important;
@@ -751,10 +810,6 @@ h4 {
   .text-f{
     width: 95vw;
   }
-  .divNavSistemas{
-    margin-left:  100px !important;
-    padding-left: 0px !important;
-  }
   .btn-pre-inscricao{
     width: 40vw !important;
   }
@@ -768,9 +823,13 @@ h4 {
   .curso-estudante{
     background-color: lightblue;
     margin-bottom: 20px;
+    padding: 0 !important;
   }
   .curso-estudante h1{
     font-size: 20px;
+  }
+  .adm-pc{
+    display: none;
   }
 }
 @media(max-width: 375px){
@@ -780,15 +839,13 @@ h4 {
   .texto-nf{
     margin-right: 0px;
   }
-  li a{
-    color: #000;
+  .nav-a{
+    padding: 0 !important;
+    margin: 0 !important;
   }
   .menuMobile{
     display: block;
     font-size: 15px;
-  }
-  .menuMobile a{
-    color: #fff;
   }
   #menuLogin, #menuNav{
     display: none;
@@ -800,18 +857,7 @@ h4 {
     width: 25vw;
   }
   .img-logo{
-    margin-right: 130px !important;
-  }
-  #s-index, 
-  #s-vaga,
-  #s-servicos,
-  #s-cursos,
-  #s-palestras,
-  #s-estudante,
-  #s-admin{
-    width: 15vw;
-    height: 15vw;
-    margin-left: 15px;
+    margin-right: 130px;
   }
   #mainBlock{
     padding: 0rem !important;
@@ -839,10 +885,6 @@ h4 {
   .text-f{
     width: 95vw;
   }
-  .divNavSistemas{
-    margin-left:  60px !important;
-    padding-left: 0px !important;
-  }
   .btn-pre-inscricao{
     width: 40vw !important;
   }
@@ -856,29 +898,21 @@ h4 {
   .curso-estudante{
     background-color: lightblue;
     margin-bottom: 20px;
+    padding: 0 !important;
   }
   .curso-estudante h1{
     font-size: 20px;
   }
 }
-@media(max-width: 320px){
+@media(max-width: 330px){
   header{
     font-size: 12px;
   }
-  #navegacao p {
-    margin-left: 0px !important;
-  }
   .texto-nf{
     margin-right: 0px;
-  }
-  li a{
-    color: #000 !important;
-  }
+  } 
   .menuMobile{
     display: block;
-  }
-  .menuMobile a{
-    color: #fff !important;
   }
   #menuLogin, #menuNav{
     display: none;
@@ -890,18 +924,7 @@ h4 {
     width: 25vw;
   }
   .img-logo{
-    margin-right: 70px !important;
-  }
-  #s-index, 
-  #s-vaga,
-  #s-servicos,
-  #s-cursos,
-  #s-palestras,
-  #s-estudante,
-  #s-admin{
-    width: 15vw;
-    height: 15vw;
-    margin-left: 15px;
+    margin-right: 70px;
   }
   #mainBlock{
     padding: 0rem !important;
@@ -926,13 +949,6 @@ h4 {
   footer li a{
     color: #fff;
   }
-  .divNavSistemas{
-    margin-left:  50px !important;
-    padding-left: 0px !important;
-  }
-  .div_info_candidato h1{
-    font-size: 20px;
-  }
   .btn-pre-inscricao{
     width: 40vw !important;
   }
@@ -944,8 +960,10 @@ h4 {
     font-size: 12px;
   }
   .curso-estudante{
+    width: 100%;
     background-color: lightblue;
     margin-bottom: 20px;
+    padding: 0 !important;
   }
   .curso-estudante h1{
     font-size: 20px;

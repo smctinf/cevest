@@ -17,5 +17,4 @@ urlpatterns = [
     path('ensino-superior/', views.ensino_superior, name="ensino_superior"),
     path('ensino-tecnico/', views.ensino_tecnico, name="ensino_tecnico"),
     path('curriculo-vitae/', views.curriculo_vitae, name="curriculo_vitae"),
-
 ]
