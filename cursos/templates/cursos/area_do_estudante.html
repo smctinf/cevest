@@ -82,8 +82,6 @@
                           <th>Data Inicial</th>
                           <th>Data final</th>
                           <th>Status</th>
-                          <th class="text-center"></th>
-
                         </thead>
                         <tbody>
                           {% for matricula in matriculas %}
@@ -92,9 +90,11 @@
                             </td>
                             <td class="text-uppercase">{{matricula.turma}}</td>
                             {% if matricula.turma.turnos.all %}
-                            {% for i in matricula.turma.turnos.all %}
-                            <td>{{ i }}</td>
+                            
+                            <td>{% for i in matricula.turma.turnos.all %}
+                            <p>{{ i }}</p>
                             {% endfor %}
+                            </td>
                             {% else %}
                             <td>Não especificado</td>
                             {% endif %}
@@ -112,26 +112,6 @@
                               <div class="bg-info w-100 px-3 rounded text-dark">Ativa</div>
                               {% elif matricula.turma.status == 'enc' %}
                               <div class="bg-dark w-100 rounded text-light">Encerrada</div>
-                              {% endif %}
-                            </td>
-                            <td class="text-center">
-                              {% if matricula.turma.status == 'enc' %}
-                              <a target="_blank" href="#">
-                                <i class="me-1 fa-solid fa-print"></i>
-                                Certificado
-                              </a>
-                              {% elif matricula.turma.status == 'ati' %}
-                              <a target="_blank" href="#">
-                                <i class="me-1 fa-solid fa-clock"></i>
-                                Horários
-                              </a>
-                              {% elif matricula.turma.status == 'acc' %}
-                              <a target="_blank" href="#">
-                                Horários
-                                <i class="ms-1 fa-solid fa-clock"></i>
-                              </a>
-                              {% else %}
-                              Aguarde
                               {% endif %}
                             </td>
                           </tr>
