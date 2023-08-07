@@ -23,7 +23,7 @@ def index(request):
     except:
         eventos=[]
     
-    cursos = list(Curso.objects.filter(tipo='C', ativo=True).order_by('?')[:4])
+    cursos = list(Curso.objects.filter(tipo='C', ativo=True).order_by('?')[:8])
     palestras = list(Curso.objects.filter(tipo='P', ativo=True).order_by('?')[:4])
     shuffle(cursos)
     context = { 
