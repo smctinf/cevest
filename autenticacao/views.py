@@ -28,7 +28,14 @@ def login_view(request):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
+        try:
+            pessoa = Pessoa.objects.get(cpf=username)
+            user = authenticate(request, username=pessoa.email, password=password)
+        except:
+            user = authenticate(request, username=username, password=password)
+        print(user)
+        print(username)
+        print(username)
         if user is not None:
             login(request, user)
             try:

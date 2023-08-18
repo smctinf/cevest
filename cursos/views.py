@@ -202,28 +202,6 @@ def prematricula(request):
     }
     return render(request, 'cursos/pre_matricula.html', context)
 
-
-def login_view(request):
-    context = {}
-    if request.user.is_authenticated:
-        return redirect('/')
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            if "next" in request.GET:
-                return redirect(request.GET.get('next'))
-            return redirect('/')
-        else:
-            context = {
-                'error': True,
-            }
-
-    return render(request, 'registration/login.html', context)
-
-
 def alterarCad(request):
     return render(request, 'cursos/alterar_cad.html')
 
