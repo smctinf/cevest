@@ -428,7 +428,10 @@ class Disciplinas(models.Model):
         verbose_name = 'Disciplina'
         verbose_name_plural = "Disciplinas"
         ordering = ['nome']
-    
+
+    def __str__(self):
+        return f'{self.curso} - {self.nome} - {self.n_aulas} - {self.carga_horaria}' 
+        
     curso = models.ForeignKey(Curso, on_delete=models.CASCADE)
     nome = models.CharField(max_length=150, blank=False)
     n_aulas=models.CharField(max_length=5, blank=False)

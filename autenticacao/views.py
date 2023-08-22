@@ -122,7 +122,7 @@ def cadastro_user(request):
                             user.email = request.POST['email']
                             user.save()
                         else:                            
-                            user = User.objects.create_user(request.POST['email'], request.POST['email'], request.POST['password'])
+                            user = User.objects.create_user(request.POST['cpf'], request.POST['email'], request.POST['password'])
                             user.first_name = request.POST['nome']
                             user.save()
 

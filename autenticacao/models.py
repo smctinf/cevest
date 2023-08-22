@@ -11,7 +11,7 @@ class Pessoa(models.Model):
     
     user=models.OneToOneField(User, on_delete=models.CASCADE)
     nome=models.CharField(max_length=64, verbose_name='Nome')
-    email=models.EmailField()
+    email=models.EmailField(blank=True)
     cpf=models.CharField(max_length=14, verbose_name='CPF', unique=True, null=True)
     telefone=models.CharField(max_length=15, verbose_name='Telefone', null=True)
     dt_nascimento=models.DateField(verbose_name='Data de nascimento', null=True)
