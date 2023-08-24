@@ -18,7 +18,7 @@
                        <div class="row">
                         <div class="col">
                           <h1 class="text-uppercase">
-                            Painel -> ATIVIDADES
+                            Painel -> CURSOS
                           </h1>
                         </div>
                         <div class="col d-flex">
@@ -74,7 +74,7 @@
                                           <td>
                                             {{curso.categoria}}
                                           </td>
-                                          <td>{{curso.nome}}</td>
+                                          <td> <a href="{% url 'adm_curso_detalhes' curso.id %}">{{curso.nome}}</a></td>
                                           <td>{{curso.carga_horaria}}</td>
                                           <td class="text-center">
                                             <a href="{% url 'adm_curso_visualizar' curso.id %}">

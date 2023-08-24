@@ -97,6 +97,17 @@ def adm_curso_editar(request, id):
     }
     return render(request, 'app_cursos/cursos/adm_cursos_cad_edit.html', context)
 
+@staff_member_required
+def adm_curso_detalhes(request, id):
+    curso = Curso.objects.get(id=id)
+    interessados = Alertar_Aluno_Sobre_Nova_Turma.objects.filter(curso=curso, alertado=False)
+
+    context = {
+        'curso': curso,
+        'interessados': interessados
+    }
+    return render(request, 'app_cursos/cursos/adm_cursos_detalhes.html', context)
+
 # @staff_member_required
 # def adm_cadastrar_
 
