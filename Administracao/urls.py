@@ -70,6 +70,7 @@ urlpatterns = [
     path('alunos', views.adm_alunos_listar, name="adm_alunos_listar"),
     path('aluno/<id>', views.adm_aluno_visualizar, name="adm_aluno_visualizar"),
     path('aluno/<id>/editar', views.adm_aluno_editar, name="adm_aluno_editar"),
+        path('aluno/<id>/matricular/', views.matricular_aluno, name="adm_aluno_matricular"),
     path('aluno/<matricula>/desmatricular', views.desmatricular_aluno, name="adm_desmatricular_aluno"),
 
     path('csv', views.import_users_from_csv),

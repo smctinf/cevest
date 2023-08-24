@@ -255,7 +255,7 @@
         </div>
         <div class="modal-body px-5 {% if message.tags %}{{message.tags}}{% endif %}">
           <p class="px-4 py-3 text-center">
-            {{ message|escape }}
+            {{ message|safe }}
           </p>
         </div>
         <div class="modal-footer {% if message.tags %}{{message.tags}}{% endif %} border-0">

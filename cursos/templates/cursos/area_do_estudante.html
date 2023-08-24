@@ -77,6 +77,7 @@
 
                           </td>
                           <th>Turma</th>
+                          <th>Status</th>
                           <th>Horário</th>
                           <th>Curso</th>
                           <th>Data Inicial</th>
@@ -89,6 +90,7 @@
                             <td>
                             </td>
                             <td class="text-uppercase">{{matricula.turma}}</td>
+                            <td>{{matricula.get_status_display}}</td>
                             {% if matricula.turma.turnos.all %}
                             
                             <td>{% for i in matricula.turma.turnos.all %}

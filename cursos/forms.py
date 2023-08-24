@@ -211,3 +211,14 @@ class Justificativa_form(ModelForm):
         exclude = []
 
     descricao = forms.CharField(widget=forms.Textarea)
+
+#forms para matricular aluno em uma turma
+class MatriculaAlunoForm(ModelForm):
+
+    class Meta:
+        model = Matricula
+        widgets = {
+            'turma': forms.Select(attrs={'class': 'form-control'}),
+            'aluno': forms.HiddenInput(),
+        }
+        exclude=[]

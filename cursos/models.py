@@ -326,7 +326,7 @@ class Matricula(models.Model):
         ('e', 'Desistente'),
         ('d', 'Desmatriculado'),
         ('f', 'Formado'),
-        ('r', 'Realocado')
+        ('r', 'Realocar')
     )
 
     class Meta:

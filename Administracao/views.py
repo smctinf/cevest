@@ -1,7 +1,7 @@
 from bemestaranimal.models import *
 from bemestaranimal.forms import *
 from .functions import generateToken
-
+from django.db import IntegrityError
 import unicodedata
 from django.contrib.admin.views.decorators import staff_member_required
 from django.shortcuts import get_object_or_404, render, redirect
@@ -464,7 +464,9 @@ def adm_turmas_visualizar(request, id):
         'matriculas_candidatos': matriculas_candidatos,
         'qnt_alunos': matriculas_alunos.count(),
         'qnt_alunos_espera': matriculas_candidatos.count() + matriculas_selecionados.count(),
-        'is_cheio': turma.quantidade_permitido <= matriculas_alunos.count()
+        'is_cheio': turma.quantidade_permitido <= matriculas_alunos.count(),
+        'realocar': turma.status == 'pre' and len(Matricula.objects.filter(turma__curso=turma.curso, status='r')) > 0,
+
     }
 
     return render(request, 'app_cursos/turmas/adm_turma_visualizar.html', context)
@@ -472,13 +474,20 @@ def adm_turmas_visualizar(request, id):
 
 @staff_member_required
 def visualizar_turma_editar(request, id):
+    
     turma = Turma.objects.get(id=id)
     form = CadastroTurmaForm(instance=turma)
 
     if request.method == 'POST':
         form = CadastroTurmaForm(request.POST, instance=turma)
         if form.is_valid():
-            form.save()
+            turma=form.save()
+            if turma.status == 'ati':
+                matriculas = Matricula.objects.filter(turma=turma)
+                for matricula in matriculas:
+                    if matricula.status == 's' or matricula.status == 'c':
+                        matricula.status = 'r'
+                        matricula.save()
             messages.success(request, 'Turma editada com sucesso!')
             return redirect('adm_turma_visualizar', id)
         
@@ -555,38 +564,69 @@ def excluir_turma(request, id):
     return redirect('adm_turmas_listar')
 
 @staff_member_required
+def matricular_aluno(request, id):
+    context={
+        'form': MatriculaAlunoForm(initial={'aluno': id}),
+    }
+    return render(request, 'app_cursos/alunos/adm_aluno_matricular.html', context)
+@staff_member_required
 def adm_realocar(request, id):
-    turma = get_object_or_404(Turma, pk=id)
-
-    outras_turmas = Turma.objects.filter(curso=turma.curso).exclude(id=turma.id)
-
-    if outras_turmas.count() == 0:
-        messages.error(request, f"Antes de alocar os alunos é necessário criar uma turma do curso {turma.curso}")
-        return redirect('adm_turma_visualizar', turma.id)
-    
+    turma = Turma.objects.get(id=id)
     if request.method == "POST":
-        turma_nova = get_object_or_404(Turma, pk=request.POST['turma'])
         candidatos_selecionados = request.POST.getlist('candidatos_selecionados')
         for candidato in candidatos_selecionados:
             matricula_antiga = Matricula.objects.get(matricula=candidato)
-            matricula_antiga.status = 'r'
-            matricula_antiga.save()
-
-            matricula_nova = Matricula.objects.create(turma=turma_nova, aluno=matricula_antiga.aluno, status='c')
-
-        messages.success(request, f'Alunos realocados para a turma {turma_nova} com sucesso!')
-        return redirect('adm_turma_visualizar', turma_nova.id)
-
-    matriculas = Matricula.objects.filter(turma=turma)
-    candidatos = matriculas.filter(Q(status='s') | Q(status='c')).order_by('status')
-
-    context = {
+            matricula_antiga.status = 'd'
+            try:
+                matricula_nova = Matricula.objects.create(aluno=matricula_antiga.aluno, turma=turma, status='c')
+                matricula_nova.save()
+                matricula_antiga.save()
+                messages.success(request, f'Aluno(s) realocados para a turma {turma} com sucesso!')
+            except IntegrityError as e:
+                if str(e) == 'UNIQUE constraint failed: cursos_matricula.matricula':
+                    messages.warning(request, f'Alguns alunos realocados <b>já estão matriculados</b> na turma {turma}!')
+                    return redirect('adm_turma_visualizar', turma.id)
+        return redirect('adm_turma_visualizar', turma.id)
+    matriculas = Matricula.objects.filter(turma__curso=turma.curso, status='r').order_by('aluno__pessoa__nome')
+            
+    context={
         'turma': turma,
-        'outras_turmas': outras_turmas,
-        'candidatos': candidatos
+        'candidatos': matriculas
     }
-
     return render(request, 'app_cursos/turmas/adm_turma_realocar.html', context)
+# @staff_member_required
+# def adm_realocar(request, id):
+#     turma = get_object_or_404(Turma, pk=id)
+
+#     outras_turmas = Turma.objects.filter(curso=turma.curso).exclude(id=turma.id)
+
+#     if outras_turmas.count() == 0:
+#         messages.error(request, f"Antes de alocar os alunos é necessário criar uma turma do curso {turma.curso}")
+#         return redirect('adm_turma_visualizar', turma.id)
+    
+#     if request.method == "POST":
+#         turma_nova = get_object_or_404(Turma, pk=request.POST['turma'])
+#         candidatos_selecionados = request.POST.getlist('candidatos_selecionados')
+#         for candidato in candidatos_selecionados:
+#             matricula_antiga = Matricula.objects.get(matricula=candidato)
+#             matricula_antiga.status = 'r'
+#             matricula_antiga.save()
+
+#             matricula_nova = Matricula.objects.create(turma=turma_nova, aluno=matricula_antiga.aluno, status='c')
+
+#         messages.success(request, f'Alunos realocados para a turma {turma_nova} com sucesso!')
+#         return redirect('adm_turma_visualizar', turma_nova.id)
+
+#     matriculas = Matricula.objects.filter(turma=turma)
+#     candidatos = matriculas.filter(Q(status='s') | Q(status='c')).order_by('status')
+
+#     context = {
+#         'turma': turma,
+#         'outras_turmas': outras_turmas,
+#         'candidatos': candidatos
+#     }
+
+#     return render(request, 'app_cursos/turmas/adm_turma_realocar.html', context)
 
 @staff_member_required
 def adm_alunos_listar(request):
@@ -610,7 +650,7 @@ def adm_aluno_visualizar(request, id):
 
     context = {
         'aluno': aluno,
-        'matriculas': Matricula.objects.filter(aluno=aluno).exclude(status='d'),
+        'matriculas': Matricula.objects.filter(aluno=aluno),
         'responsavel': responsavel,
     }
 

@@ -105,7 +105,13 @@
                                   {% endif %}
                                   <div class="row">
                                     <div class="col table-responsive mt-4">
-                                      <h3>Matrículas do aluno</h3>
+                                      <div class="mb-2 w-100 d-flex">
+                                        <h3>Matrículas do aluno</h3>
+                                        <a class="btn btn-outline-dark ms-auto my-auto" href="{% url 'adm_aluno_matricular' aluno.id %}">
+                                          <i class="fa-solid fa-circle-plus me-2"></i>
+                                          Matricular
+                                        </a>  
+                                      </div>
                                       <table class="table table-striped">   
                                         <tr>
                                           <th>Status da turma</th>
