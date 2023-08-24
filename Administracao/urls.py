@@ -27,6 +27,7 @@ urlpatterns = [
     path('curso/cadastrar', views.adm_cursos_cadastrar, name="adm_cursos_cadastrar"),
     path('curso/<id>/editar', views.adm_curso_editar, name="adm_curso_editar"),
     path('curso/<id>/visualizar', views.adm_curso_visualizar, name="adm_curso_visualizar"),
+    path('cursos/<id>/detalhes', views.adm_curso_detalhes, name="adm_curso_detalhes"),
     # path('curso/<id>/requisito/criar', views.adm_curso_visualizar, name="adm_curso_visualizar"),
 
 

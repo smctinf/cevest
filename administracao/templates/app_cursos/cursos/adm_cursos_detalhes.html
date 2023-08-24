@@ -1,0 +1,72 @@
+{% extends 'template.html' %}
+{% load bootstrap5 %}
+{% load static%}
+{% block title %}BEM VINDO - CURSOS LIVRES{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/administrativo.css' %}">
+
+{% endblock %}
+{% block administrativo %}fw-bold{% endblock %}
+{% block main %}
+<div class="row">
+    <div class="col d-flex pt-5">
+        <h3>Detalhes do curso {{curso.nome}}</h3>
+
+        <button class="btn btn-primary ms-auto">Lista de Interessados</button>
+
+        <button class="btn btn-primary ms-2">Matriz Curricular</button>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col d-flex pb-5 pt-4" id="lista_interessados">
+        <table class="table">
+           <thead>
+            <th>Nome</th>
+            <th>CPF</th>
+            <th>Email</th>
+            <th>Telefone</th>
+            <th>Bairro</th>
+           </thead>
+           <tbody>
+            {% for interessados in interessados %}
+            <tr>
+                <td>
+                    {{aluno.pessoa.nome}}
+                </td>
+                <td>
+                    {{aluno.pessoa.cpf}}
+                </td>
+                <td>
+                    {{aluno.pessoa.email}}
+                </td>
+                <td>
+                    {{aluno.pessoa.telefone}}
+                </td>
+                <td>
+                    {{aluno.pessoa.bairro}}
+                </td>
+            </tr>
+            {% endfor %}
+           </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col d-flex py-5">
+        
+    </div>
+</div>
+
+
+
+  <script>
+
+  
+
+
+
+   
+  </script>
+{% endblock %}
