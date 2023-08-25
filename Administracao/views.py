@@ -101,10 +101,12 @@ def adm_curso_editar(request, id):
 def adm_curso_detalhes(request, id):
     curso = Curso.objects.get(id=id)
     interessados = Alertar_Aluno_Sobre_Nova_Turma.objects.filter(curso=curso, alertado=False)
+    matrizCur = Disciplinas.objects.all()
 
     context = {
         'curso': curso,
-        'interessados': interessados
+        'interessados': interessados,
+        'matrizesCur': matrizCur
     }
     return render(request, 'app_cursos/cursos/adm_cursos_detalhes.html', context)
 

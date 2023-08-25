@@ -12,14 +12,14 @@
     <div class="col d-flex pt-5">
         <h3>Detalhes do curso {{curso.nome}}</h3>
 
-        <button class="btn btn-primary ms-auto">Lista de Interessados</button>
+        <button class="btn btn-primary ms-auto" id="btn_lista_interessados" onclick="showList()">Lista de Interessados</button>
 
-        <button class="btn btn-primary ms-2">Matriz Curricular</button>
+        <button class="btn btn-primary ms-2" id="btn_matriz_curricular" onclick="showMatrix()">Matriz Curricular</button>
     </div>
 </div>
 
-<div class="row">
-    <div class="col d-flex pb-5 pt-4" id="lista_interessados">
+<div class="row" id="lista_interessados" style="display: none;">
+    <div class="col d-flex pt-3">
         <table class="table">
            <thead>
             <th>Nome</th>
@@ -29,22 +29,22 @@
             <th>Bairro</th>
            </thead>
            <tbody>
-            {% for interessados in interessados %}
+            {% for interessado in interessados %}
             <tr>
                 <td>
-                    {{aluno.pessoa.nome}}
+                    {{interessado.aluno.pessoa.nome}}
                 </td>
                 <td>
-                    {{aluno.pessoa.cpf}}
+                    {{interessado.aluno.pessoa.cpf}}
                 </td>
                 <td>
-                    {{aluno.pessoa.email}}
+                    {{interessado.aluno.pessoa.email}}
                 </td>
                 <td>
-                    {{aluno.pessoa.telefone}}
+                    {{interessado.aluno.pessoa.telefone}}
                 </td>
                 <td>
-                    {{aluno.pessoa.bairro}}
+                    {{interessado.aluno.pessoa.bairro}}
                 </td>
             </tr>
             {% endfor %}
@@ -53,20 +53,52 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="col d-flex py-5">
-        
+<div class="row" id="matriz_curricular" style="display: none;">
+    <div class="col d-flex py-3">
+        <table class="table">
+            <thead>
+             <th>Curso</th>
+             <th>Nome</th>
+             <th>Nº de aulas</th>
+             <th>Carga horária</th>
+            </thead>
+            <tbody>
+             {% for matriz in matrizesCur %}
+             <tr>
+                 <td>
+                     {{matriz.curso}}
+                 </td>
+                 <td>
+                     {{matriz.nome}}
+                 </td>
+                 <td>
+                     {{matriz.n_aulas}}
+                 </td>
+                 <td>
+                     {{matriz.carga_horaria}}
+                 </td>
+             </tr>
+             {% endfor %}
+            </tbody>
+         </table>
     </div>
 </div>
 
 
 
   <script>
+        const matriz = document.querySelector("#matriz_curricular")
+        const lista = document.querySelector("#lista_interessados")
+        
+        function showList(){
+            matriz.style.display = "none"
+            lista.style.display = "flex";
+        }
 
-  
+        function showMatrix(){
+            lista.style.display = "none"
+            matriz.style.display = "flex";
+        }
 
-
-
-   
   </script>
 {% endblock %}
