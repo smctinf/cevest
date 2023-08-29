@@ -13,6 +13,8 @@ from cursos.models import *
 from datetime import date
 from django.template.loader import render_to_string
 from django.db.models import Q
+from django.http import JsonResponse
+
 
 import csv
 import re
@@ -101,7 +103,7 @@ def adm_curso_editar(request, id):
 def adm_curso_detalhes(request, id):
     curso = Curso.objects.get(id=id)
     interessados = Alertar_Aluno_Sobre_Nova_Turma.objects.filter(curso=curso, alertado=False)
-    matrizCur = Disciplinas.objects.all()
+    matrizCur = Disciplinas.objects.filter(curso=curso)
 
     context = {
         'curso': curso,
@@ -129,6 +131,15 @@ def cadastrar_categoria(request):
     }
     return render(request, 'app_cursos/cursos/cadastrar_categoria.html', context)
 
+@staff_member_required
+def remover_interessado(request, id_curso, id):
+    try:
+        interessado = Alertar_Aluno_Sobre_Nova_Turma.objects.get(id=id)
+        interessado.alertado = True
+        interessado.save()
+        return JsonResponse({'success': True})  # Retorno de sucesso como JSON
+    except Alertar_Aluno_Sobre_Nova_Turma.DoesNotExist:
+        return JsonResponse({'success': False})  # Retorno de falha como JSON
 
 @staff_member_required
 def cadastrar_local(request):
