@@ -8,7 +8,7 @@
 {% endblock %}
 {% block administrativo %}fw-bold{% endblock %}
 {% block main %}
-<div class="row">
+<div class="row pt-4">
     <div class="col d-flex pt-5">
         <h3>Detalhes do curso {{curso.nome}}</h3>
         <a class="ms-auto btn btn-dark" href="{% url 'adm_cursos_listar' %}">Voltar</a>
@@ -18,7 +18,7 @@
     </div>
 </div>
 
-<div class="row" id="lista_interessados" style="display: none;">
+<div class="row" id="lista_interessados">
     <div class="col d-flex pt-3">
         <table class="table">
            <thead>

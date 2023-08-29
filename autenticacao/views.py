@@ -17,7 +17,7 @@ from .models import *
 from .forms import *
 
 from django.contrib.auth.decorators import login_required
-
+from cursos.forms import Aluno_form
 # Create your views here.
 
 
@@ -33,9 +33,7 @@ def login_view(request):
             user = authenticate(request, username=pessoa.email, password=password)
         except:
             user = authenticate(request, username=username, password=password)
-        print(user)
-        print(username)
-        print(username)
+   
         if user is not None:
             login(request, user)
             try:
@@ -102,12 +100,14 @@ def cadastro_user(request):
             form_pessoa = Form_Pessoa(initial={'email': request.user.email})
     else:
         form_pessoa = Form_Pessoa()
+        form_aluno = Aluno_form()
 
     if request.method == "POST":
         if pessoa:
             form_pessoa = Form_Pessoa(request.POST, instance=pessoa)
         else:
             form_pessoa = Form_Pessoa(request.POST)
+            form_aluno = Aluno_form(request.POST)
 
         if form_pessoa.is_valid():
 
@@ -128,8 +128,10 @@ def cadastro_user(request):
 
                         pessoa = form_pessoa.save(commit=False)
                         pessoa.user = user
-
                         pessoa.save()
+                        aluno=form_aluno.save(commit=False)
+                        aluno.pessoa = pessoa
+                        aluno.save()
                         messages.success(
                             request, 'Usuário cadastrado com sucesso!')
                         try:
@@ -137,6 +139,7 @@ def cadastro_user(request):
                         except:
                             return redirect('/login')
                     except Exception as e:
+                        print(e)
                         messages.error(
                             request, 'Email de usuário já cadastrado')
                         
@@ -147,7 +150,8 @@ def cadastro_user(request):
                 messages.error(request, 'As senhas digitadas não se coincidem')
     context = {
         'form_pessoa': form_pessoa,
-        'is_user': is_user
+        'is_user': is_user,
+        'form_aluno': form_aluno
     }    
     return render(request, 'adm/cadastro.html', context)
 

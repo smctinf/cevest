@@ -14,6 +14,7 @@ from datetime import date
 from django.template.loader import render_to_string
 from django.db.models import Q
 from django.http import JsonResponse
+from django.core.paginator import Paginator
 
 
 import csv
@@ -589,6 +590,15 @@ def excluir_turma(request, id):
 
 @staff_member_required
 def matricular_aluno(request, id):
+    if request.method == 'POST':
+        form = MatriculaAlunoForm(request.POST)
+        if form.is_valid():
+            matricula = form.save(commit=False)
+            matricula.dt_inclusao = datetime.datetime.now()
+            matricula.dt_ultima_atualizacao = datetime.datetime.now()
+            matricula.save()
+            messages.success(request, 'Aluno matriculado com sucesso!')
+            return redirect('adm_aluno_visualizar', matricula.aluno.id)
     context={
         'form': MatriculaAlunoForm(initial={'aluno': id}),
     }
@@ -651,13 +661,16 @@ def adm_realocar(request, id):
 #     }
 
 #     return render(request, 'app_cursos/turmas/adm_turma_realocar.html', context)
-
 @staff_member_required
 def adm_alunos_listar(request):
-    alunos = Aluno.objects.all()
-
+    if request.method == 'POST':
+        alunos = Aluno.objects.filter(pessoa__nome__icontains=request.POST['pesquisa'])
+    else:
+        alunos = Aluno.objects.all()
+    paginator = Paginator(alunos, 35)
     context = {
-        'alunos': alunos
+        'alunos': paginator.get_page(request.GET.get('page')),
+        'total_alunos': alunos.count(),
     }
     return render(request, 'app_cursos/alunos/adm_alunos_listar.html', context)
 
