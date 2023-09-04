@@ -20,6 +20,18 @@ from django.contrib.auth.decorators import login_required
 from cursos.forms import Aluno_form
 # Create your views here.
 
+def change_email_for_cpf(request):
+    pessoas = Pessoa.objects.all()
+    response = 'Tudo certo!'
+    for pessoa in pessoas:
+        try:
+            pessoa.user.username = pessoa.cpf
+            pessoa.user.email = pessoa.email
+            pessoa.user.save()
+        except:
+            response = 'Nem tudo são flores.'
+            print('CEVEST_ERROR - ', pessoa.cpf, pessoa.email)
+    return HttpResponse(response)
 
 def login_view(request):
     context = {}
