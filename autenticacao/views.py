@@ -122,13 +122,15 @@ def cadastro_user(request):
                             user.email = request.POST['email']
                             user.save()
                         else:                            
-                            user = User.objects.create_user(request.POST['cpf'], request.POST['email'], request.POST['password'])
-                            user.first_name = request.POST['nome']
+                            user = User.objects.create_user(username=str(validate_cpf(request.POST['cpf'])), email=request.POST['email'] or None, password=request.POST['password'])
                             user.save()
 
                         pessoa = form_pessoa.save(commit=False)
                         pessoa.user = user
                         pessoa.save()
+                        user.first_name = pessoa.nome
+                        user.username = pessoa.cpf
+                        user.save()
                         aluno=form_aluno.save(commit=False)
                         aluno.pessoa = pessoa
                         aluno.save()
@@ -139,11 +141,11 @@ def cadastro_user(request):
                         except:
                             return redirect('/login')
                     except Exception as e:
-                        print(e)
+                        print('ERROR:', str(e))
                         messages.error(
                             request, 'Email de usuário já cadastrado')
-                        
-                messages.error(
+                else:      
+                    messages.error(
                     request, 'A senha deve possuir pelo menos 8 caracteres')
             else:
                 # as senhas não se coincidem
