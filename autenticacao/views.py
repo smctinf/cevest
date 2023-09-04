@@ -30,9 +30,10 @@ def login_view(request):
         password = request.POST['password']
         try:
             pessoa = Pessoa.objects.get(cpf=username)
-            user = authenticate(request, username=pessoa.email, password=password)
+            user = authenticate(request, username=pessoa.cpf, password=password)
         except:
-            user = authenticate(request, username=username, password=password)
+            messages.error(request, 'Usuário não encontrado')
+            # user = authenticate(request, username=username.email, password=password)
    
         if user is not None:
             login(request, user)
@@ -41,6 +42,7 @@ def login_view(request):
             except:
                 return redirect('/')
         else:
+            print(username, password)
             context = {
                 'error': True,
             }
