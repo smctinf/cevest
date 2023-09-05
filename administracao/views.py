@@ -663,11 +663,10 @@ def adm_realocar(request, id):
 #     return render(request, 'app_cursos/turmas/adm_turma_realocar.html', context)
 @staff_member_required
 def adm_alunos_listar(request):
-    if request.method == 'POST':
-                
+    if request.method == 'POST':                
         alunos = Aluno.objects.filter(pessoa__nome__icontains=request.POST['pesquisa'])
         if alunos.count() == 0:
-            alunos = Aluno.objects.filter(cpf__icontains=request.POST['pesquisa'])
+            alunos = Aluno.objects.filter(pessoa__cpf__icontains=request.POST['pesquisa'])
             if alunos.count() == 0:
                 messages.warning(request, 'Nenhum aluno encontrado')
     else:
