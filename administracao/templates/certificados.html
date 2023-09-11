@@ -11,7 +11,7 @@
     }
     .break { 
         page-break-before: always;
-        margin-top:1cm;
+        margin-top:0cm;
         margin-bottom:1cm;
         margin-right:1cm;
         margin-left:1cm;
@@ -217,7 +217,7 @@
                 </thead>
                 <tbody>
                     {% for disciplina in disciplinas %}
-                    <tr>
+                    <tr style="line-height: 9pt;">
                         <td>{{forloop.counter}}</td>
                         <td>{{disciplina.nome}}</td>
                         <td>{{disciplina.n_aulas}}</td>
