@@ -146,11 +146,11 @@ def cadastro_user(request):
 
                         pessoa = form_pessoa.save(commit=False)
                         pessoa.user = user
-                        pessoa.save()
                         user.first_name = pessoa.nome
                         user.username = pessoa.cpf
                         user.email = pessoa.email
                         user.save()
+                        pessoa.save()
                         aluno=form_aluno.save(commit=False)
                         aluno.pessoa = pessoa
                         aluno.save()
