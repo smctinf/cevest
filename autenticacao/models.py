@@ -9,7 +9,7 @@ class Pessoa(models.Model):
     def __str__(self):
         return '%s - Email: %s' % (self.nome, self.email)
     
-    user=models.OneToOneField(User, on_delete=models.CASCADE)
+    user=models.OneToOneField(User, on_delete=models.CASCADE, blank=True, null=True, verbose_name='Usuário')
     nome=models.CharField(max_length=64, verbose_name='Nome')
     email=models.EmailField(blank=True, unique=False)
     cpf=models.CharField(max_length=14, verbose_name='CPF', unique=True, null=True)

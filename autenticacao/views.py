@@ -142,9 +142,9 @@ def cadastro_user(request):
                             user.save()
                         else:                            
                             user = User.objects.create_user(username=str(validate_cpf(request.POST['cpf'])), email=request.POST['email'] or None, password=request.POST['password'])
-                            user.save()
+                            
 
-                        pessoa = form_pessoa.save(commit=False)
+                        pessoa = form_pessoa.save()
                         pessoa.user = user
                         user.first_name = pessoa.nome
                         user.username = pessoa.cpf
