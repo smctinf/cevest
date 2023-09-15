@@ -163,7 +163,7 @@ def cadastro_user(request):
                     except Exception as e:
                         print('ERROR:', str(e))
                         messages.error(
-                            request, 'Email de usuário já cadastrado')
+                            request, 'Usuário já cadastrado')
                 else:      
                     messages.error(
                     request, 'A senha deve possuir pelo menos 8 caracteres')
