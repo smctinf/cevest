@@ -190,12 +190,21 @@ def adm_turmas_cadastrar(request):
 @staff_member_required
 def adm_turmas_listar(request):
 
-    turmas = Turma.objects.all().order_by('data_final')
+    turmas = Turma.objects.exclude(status='enc').order_by('data_final')
 
     context = {
         'turmas': turmas
     }
     return render(request, 'app_cursos/turmas/adm_turmas_listar.html', context)
+
+@staff_member_required
+def adm_turmas_listar_encerradas(request):
+    turmas = Turma.objects.filter(status="enc").order_by('data_final')
+
+    context = {
+        'turmas': turmas
+    }
+    return render(request, 'app_cursos/turmas/adm_turmas_listar_encerradas.html', context)
 
 
 @staff_member_required

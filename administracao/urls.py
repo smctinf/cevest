@@ -45,6 +45,7 @@ urlpatterns = [
     # -------- # -------- #
 
     path('turmas', views.adm_turmas_listar, name="adm_turmas_listar"),
+    path('turmas-encerradas', views.adm_turmas_listar_encerradas, name="adm_turmas_listar_encerradas"),
     path('turma/cadastrar', views.adm_turmas_cadastrar, name="adm_turmas_cadastrar"),
     path('turma/<id>', views.adm_turmas_visualizar, name="adm_turma_visualizar"),
     path('turma/<id>/editar', views.visualizar_turma_editar, name="adm_turma_editar"),
