@@ -101,7 +101,35 @@ def logout_view(request):
     else:
         return redirect('/')
 
+from django.contrib.auth.decorators import user_passes_test
 
+@login_required
+@user_passes_test(lambda u: u.is_superuser)
+def adm_cadastro_user(request):
+    if request.method == 'POST':
+        try:
+            pessoa=Pessoa.objects.get(cpf=request.POST['cpf'])
+            messages.error(request, 'Usuário já cadastrado')
+        except:
+            pessoa = None
+        if not pessoa:
+            form = Form_Pessoa(request.POST)
+            if form.is_valid():
+                pessoa=form.save()
+                partes=request.POST['dt_nascimento'].split('-')
+                user = User.objects.create_user(username=str(validate_cpf(request.POST['cpf'])), first_name=request.POST['nome'] ,email=request.POST['email'] or None, password=partes[2] + partes[1] + partes[0])
+                print(partes[2] + partes[1] + partes[0])
+                pessoa.user=user
+                pessoa.save()
+                messages.success(request, 'Usuário cadastrado com sucesso!')
+    else:
+        form = Form_Pessoa()
+    context = {
+        'form': form
+    }
+                            
+    return render(request, 'adm/adm_cadastro.html', context)   
+ 
 def cadastro_user(request):
     
     form_pessoa = ''
