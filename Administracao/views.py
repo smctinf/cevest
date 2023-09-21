@@ -199,7 +199,7 @@ def adm_turmas_listar(request):
 
 @staff_member_required
 def adm_turmas_listar_encerradas(request):
-    turmas = Turma.objects.filter(status="enc").order_by('data_final')
+    turmas = Turma.objects.filter(status="enc").order_by('-data_final')
 
     context = {
         'turmas': turmas
