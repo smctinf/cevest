@@ -10,7 +10,7 @@ class Pessoa(models.Model):
         return '%s - Email: %s' % (self.nome, self.email)
     
     user=models.OneToOneField(User, on_delete=models.CASCADE, blank=True, null=True, verbose_name='Usuário')
-    nome=models.CharField(max_length=64, verbose_name='Nome')
+    nome=models.CharField(max_length=64, verbose_name='Nome completo')
     email=models.EmailField(blank=True, unique=False)
     cpf=models.CharField(max_length=14, verbose_name='CPF', unique=True, null=True)
     telefone=models.CharField(max_length=15, verbose_name='Telefone', null=True)
