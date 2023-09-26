@@ -16,6 +16,6 @@ urlpatterns = [
     path('cadastro/', views.cadastro_user, name='cadastrar_usuario'),
     path('adm/cadastro/', views.adm_cadastro_user, name='adm_cadastrar_usuario'),
     path('cadastro_aluno/', views.cadastro_aluno, name='cadastrar_aluno'),
-
+    path('gambiarra/01/', views.gambiarra_01, name='gambiarra_01'),
 
 ]

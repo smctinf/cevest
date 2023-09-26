@@ -231,3 +231,38 @@ def cadastro_aluno(request):
 
     return render(request, 'adm/completar_cadastro.html', context)
 
+def gambiarra_01(request):
+    pessoas = Pessoa.objects.all()
+    for pessoa in pessoas:
+        try:
+            pessoa.user.username = pessoa.cpf
+            pessoa.user.save()
+        except:
+            print('USERNAME CEVEST_ERROR - ', pessoa.cpf)
+        try:
+            pessoa.user.email = pessoa.email
+            pessoa.user.save()
+        except:
+            print('EMAIL CEVEST_ERROR - ', pessoa.cpf)
+        try:
+            pessoa.user.first_name = pessoa.nome
+            pessoa.user.save()
+        except: 
+            print('FIRST_NAME CEVEST_ERROR - ', pessoa.cpf)
+        try:
+            aluno = Aluno.objects.get(pessoa=pessoa)
+        except:
+            try:
+                aluno = Aluno(
+                    pessoa = pessoa,
+                    profissão = 'Não informado',
+                    escolaridade = 'emc',
+                    estado_civil = 's',
+                    aceita_mais_informacoes = True,
+                    li_e_aceito_termos = True,
+                )
+                aluno.save()
+            except Exception as E:
+                print(E)
+                print(pessoa.cpf)
+    return HttpResponse('Tudo certo!')
