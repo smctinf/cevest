@@ -420,7 +420,7 @@ def adm_professores_editar(request, id):
             form.save()
             messages.success(
                 request, 'Informações do Instrutor atualizadas com sucesso!')
-            return redirect('adm_professores')
+            return redirect('adm_professores_Listar')
 
     context = {
         'form': form,
@@ -433,7 +433,7 @@ def adm_professores_editar(request, id):
 def adm_professores_excluir(request, id):
     instrutor = Instrutor.objects.get(id=id)
     instrutor.delete()
-    return redirect('adm_professores')
+    return redirect('adm_professores_listar')
 
 @staff_member_required
 def gerar_certificados(request, id):
