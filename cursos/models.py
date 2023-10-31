@@ -173,6 +173,17 @@ class Turno(models.Model):
     def __str__(self):
         return '%s, de %s às %s' % (self.get_dia_semana_display(), self.horario_inicio.strftime("%H:%M"), self.horario_fim.strftime("%H:%M"))
 
+class Disponibilidade(models.Model):
+    disponibilidade = models.CharField(max_length=100, verbose_name='Disponibilidade')
+    
+    class Meta:
+        verbose_name = 'Disponibilidade de turno'
+        verbose_name_plural = "Disponibilidade de turnos"
+        ordering = ['id']
+        
+    def __str__(self):
+        return '%s' % (self.disponibilidade)
+    
 class Turma(models.Model):
 
     STATUS_CHOICES = (
@@ -204,6 +215,7 @@ class Turma(models.Model):
     data_inicio = models.DateField()
     data_final = models.DateField()
 
+    disponibilidade = models.ManyToManyField(Disponibilidade, verbose_name='Disponibilidade de turno')
     turnos = models.ManyToManyField(Turno, through='Turno_estabelecido')
 
     dt_inclusao = models.DateTimeField(auto_now_add=True, editable=False)
@@ -269,8 +281,9 @@ class Aluno(models.Model):
     profissão = models.CharField(max_length=150, verbose_name='Profissão', null=True)
     escolaridade = models.CharField(max_length=3, choices=ESCOLARIDADE_CHOICES, verbose_name='Escolaridade', null=True, blank=True)
     estado_civil = models.CharField(max_length=1, choices=ESTADOCIVIL_CHOICES, verbose_name='Estado Civil', null=True)
-    aceita_mais_informacoes = models.BooleanField(verbose_name='Declaro que aceito receber email com as informações das atividades', null=True)
-    li_e_aceito_termos = models.BooleanField(verbose_name='Li e aceito os termos', null=True)
+    disponibilidade = models.ManyToManyField(Disponibilidade, verbose_name='Disponibilidade de turno')
+    aceita_mais_informacoes = models.BooleanField(verbose_name='Declaro que aceito receber email com as informações das atividades', null=True, default=False)
+    li_e_aceito_termos = models.BooleanField(verbose_name='Li e aceito os termos', null=True, default=False)
     dt_inclusao = models.DateTimeField(auto_now_add=True, editable=False, null=True)
 
     def __str__(self):

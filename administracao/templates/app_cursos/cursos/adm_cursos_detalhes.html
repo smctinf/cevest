@@ -23,6 +23,7 @@
         <table class="table">
            <thead>
             <th>Nome</th>
+            <th>Disponibilidade</th>
             <th>CPF</th>
             <th>Email</th>
             <th>Telefone</th>
@@ -35,6 +36,18 @@
             
                 <td>
                     {{interessado.aluno.pessoa.nome}}
+                </td>
+                <td>
+                    {% for i in interessado.aluno.disponibilidade.all %}
+                        {{ i }}
+                        {% if not forloop.last %}
+                            {% if forloop.revcounter == 2 %}
+                                e 
+                            {% else %}
+                                , 
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
                 </td>
                 <td>
                     {{interessado.aluno.pessoa.cpf}}

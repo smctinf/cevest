@@ -20,7 +20,7 @@ admin.site.register(Alertar_Aluno_Sobre_Nova_Turma)
 admin.site.register(Instituicao_Ensino_Superior)
 admin.site.register(Curso_Ensino_Superior)
 admin.site.register(Disciplinas)
-
+admin.site.register(Disponibilidade)
 
 
 

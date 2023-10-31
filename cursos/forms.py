@@ -53,6 +53,8 @@ class Aluno_form(ModelForm):
             'cpf': forms.TextInput(attrs={'onkeydown': 'mascara(this, icpf)'}),
             'rg': forms.TextInput(attrs={'onkeydown': 'mascara(this, irg)'}),
             'dt_nascimento': forms.TextInput(attrs={'type': 'date'}),
+            'disponibilidade': forms.CheckboxSelectMultiple(),   
+            
             'aceita_mais_informacoes': forms.CheckboxInput(attrs={'required': True}),
             'li_e_aceito_termos': forms.CheckboxInput(attrs={'required': True}),
 
@@ -101,7 +103,9 @@ class CadastroTurmaForm(ModelForm):
         widgets = {
             'data_inicio': forms.TextInput(attrs={'type': 'date'}),
             'data_final': forms.TextInput(attrs={'type': 'date'}),
-            'instrutor': forms.CheckboxSelectMultiple()
+            'instrutor': forms.CheckboxSelectMultiple(),
+            'disponibilidade': forms.CheckboxSelectMultiple(),
+            
         }
         exclude = ['dt_inclusao', 'dt_alteracao', 'turnos', 'nome', 'user_ultima_alteracao', 'user_inclusao']
 
@@ -221,4 +225,4 @@ class MatriculaAlunoForm(ModelForm):
             'turma': forms.Select(attrs={'class': 'form-control'}),
             'aluno': forms.HiddenInput(),
         }
-        fields = ['turma', 'aluno', 'status']
+        fields = ['turma', 'aluno','status']
