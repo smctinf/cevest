@@ -250,7 +250,7 @@ class Aluno(models.Model):
     class Meta:
         verbose_name = 'Aluno'
         verbose_name_plural = "Alunos"
-        ordering=['dt_inclusao']
+        ordering=['pessoa__nome','dt_inclusao']
 
     SEXO_CHOICES = (
         ('M', 'Masculino'),
