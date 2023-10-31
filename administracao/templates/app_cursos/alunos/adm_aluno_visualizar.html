@@ -34,7 +34,7 @@
                                 <div class="d-flex w-100">
                                   <div class="d-flex w-100">
                                     <h3>                                      
-                                      Aluno: {{aluno.nome}}
+                                      Aluno: {{aluno.pessoa.nome}}
                                     </h3>      
                                     <a class="btn btn-outline-dark ms-auto my-auto" href="{% url 'adm_alunos_listar' %}">
                                       <i class="me-2 fa-solid fa-rotate-left"></i>
@@ -60,7 +60,19 @@
                                           <td colspan="1"><b class="me-2">Endereço:</b><br>{{aluno.pessoa.endereco}}</td>
                                           <td><b class="me-2">Bairro:</b><br>{{aluno.pessoa.bairro}}</td>
                                           <td colspan="1"><b class="me-2">Data de inclusão:</b><br>{{aluno.pessoa.dt_inclusao}}</td>                                          
-                                          <td></td>
+                                          <td>
+                                            <b class="me-2">Disponibilidade:</b><br>
+                                            {% for i in aluno.disponibilidade.all %}
+                                                {{ i }}
+                                                {% if not forloop.last %}
+                                                    {% if forloop.revcounter == 2 %}
+                                                        e 
+                                                    {% else %}
+                                                        , 
+                                                    {% endif %}
+                                                {% endif %}
+                                            {% endfor %}
+                                          </td>
                                         </tr>
                                       </table>
                                     </div>
