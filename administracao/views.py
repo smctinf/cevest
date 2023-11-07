@@ -1158,9 +1158,9 @@ def gambiarra_cevest(request):
                     aceita_mais_informacoes=True,
                     li_e_aceito_termos=True
                 )
-                print('Aluno criado para o usuário {user.username} - {pessoa.nome}')
+                print(f'Aluno criado para o usuario {user.username} - {pessoa.nome}')
         except Pessoa.DoesNotExist:
-            print(f"Pessoa não encontrada para o usuário {user.username}")
+            print(f"Pessoa nao encontrada para o usuario {user.username}")
         except Exception as e:
-            print(f"Erro ao criar Aluno para o usuário {user.username}: {e}")
+            print(f"Erro ao criar Aluno para o usuario {user.username}: {e}")
     return redirect('/')
