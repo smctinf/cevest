@@ -121,15 +121,15 @@ def adm_cadastro_user(request):
                 print(partes[2] + partes[1] + partes[0])
                 pessoa.user=user
                 pessoa.save()
-                aluno = Aluno(
-                    pessoa = pessoa,
-                    profissão = 'Não informado',
-                    escolaridade = 'emc',
-                    estado_civil = 's',
-                    aceita_mais_informacoes = True,
-                    li_e_aceito_termos = True,
+                Aluno.objects.create(
+                    pessoa=pessoa,
+                    profissão='Não informado',
+                    escolaridade='emc',
+                    estado_civil='s',
+                    aceita_mais_informacoes=True,
+                    li_e_aceito_termos=True
                 )
-                aluno.save()
+                # aluno.save()
                 messages.success(request, 'Usuário cadastrado com sucesso!')
     else:
         form = Form_Pessoa()

@@ -1140,3 +1140,27 @@ def censo(request):
 
 #quantidade de animais castrados e não castrados
 # vacinados (mas não pede essa informação no usuário, só na hora de cadastrar as informações extras)
+@staff_member_required
+def gambiarra_cevest(request):
+    users = User.objects.all()
+    for user in users:
+        try:
+            pessoa = Pessoa.objects.get(user=user)
+            if len(user.username) != 11: 
+                user.username = pessoa.cpf  
+                user.save()
+            if not Aluno.objects.filter(pessoa=pessoa).exists():
+                Aluno.objects.create(
+                    pessoa=pessoa,
+                    profissão='Não informado',
+                    escolaridade='emc',
+                    estado_civil='s',
+                    aceita_mais_informacoes=True,
+                    li_e_aceito_termos=True
+                )
+                print('Aluno criado para o usuário {user.username} - {pessoa.nome}')
+        except Pessoa.DoesNotExist:
+            print(f"Pessoa não encontrada para o usuário {user.username}")
+        except Exception as e:
+            print(f"Erro ao criar Aluno para o usuário {user.username}: {e}")
+    return redirect('/')
