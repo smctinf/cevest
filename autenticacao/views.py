@@ -73,16 +73,16 @@ def passwd_reset(request):
             associated_users = User.objects.filter(email=data)
             if associated_users.exists():
                 for user in associated_users:
-                    subject = "Alteração de Senha do Sistema desenvolve da Secretária municipal de ciência e tecnologia de Nova Friburgo"
+                    subject = "CEVEST - Alteração de Senha"
                     email_template_name = "adm/email_passwd_reset.txt"
                     c = {
                         "email": user.email,
                         'domain': '127.0.0.1:8000',
-                        'site_name': 'Website',
+                        'site_name': 'CEVEST',
                         "uid": urlsafe_base64_encode(force_bytes(user.pk)),
                         "user": user,
                         'token': default_token_generator.make_token(user),
-                        'protocol': 'http',
+                        'protocol': 'https',
                     }
                     email = render_to_string(email_template_name, c)
                     try:
