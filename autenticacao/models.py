@@ -21,6 +21,7 @@ class Pessoa(models.Model):
     complemento=models.CharField(max_length=128, verbose_name='Complemento', blank=True, null=True)
     cep = models.CharField(max_length=9, verbose_name='CEP', null=True)
     dt_inclusao=models.DateField(auto_now_add=True, verbose_name='Data de inclusão')
+    possui_cnpj=models.BooleanField(default=False, verbose_name='Você possui empresa?')
 
     __original_email = None
     __original_nome = None
