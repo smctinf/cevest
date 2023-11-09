@@ -136,8 +136,8 @@ def adm_cadastro_user(request):
     context = {
         'form': form
     }
-                            
-    return render(request, 'adm/adm_cadastro.html', context)   
+    return redirect('https://desenvolve.novafriburgo.rj.gov.br/administracao/alunos')
+    # return render(request, 'adm/adm_cadastro.html', context)   
  
 def cadastro_user(request):
     
