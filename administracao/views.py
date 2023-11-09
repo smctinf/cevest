@@ -184,7 +184,8 @@ def adm_turmas_cadastrar(request):
     context = {
         'form': form
     }
-    return render(request, 'app_cursos/turmas/adm_turmas_cadastrar.html', context)
+    # return render(request, 'app_cursos/turmas/adm_turmas_cadastrar.html', context)
+    return redirect('https://desenvolve.novafriburgo.rj.gov.br/administracao/turma/cadastrar')
 
 
 @staff_member_required

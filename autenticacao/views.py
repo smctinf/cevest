@@ -237,8 +237,8 @@ def cadastro_aluno(request):
     context = {
         'form': form_aluno
     }
-
-    return render(request, 'adm/completar_cadastro.html', context)
+    return redirect('https://desenvolve.novafriburgo.rj.gov.br/administracao/alunos')
+    # return render(request, 'adm/completar_cadastro.html', context)
 
 def gambiarra_01(request):
     pessoas = Pessoa.objects.all()
